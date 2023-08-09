@@ -1,5 +1,5 @@
 # complete-ecommerce-store
- A full-stack e-commerce store complete with an admin dashboard. Built in Next.JS 13 App Router, React, TailwindCSS, MongoDB, Prisma, & NextAuth
+A full-stack e-commerce store with an admin dashboard built using Next.JS's App Router, TypeScript, React, TailwindCSS, MySQL, Prisma, & NextAuth.
 
 # Description
 
@@ -14,9 +14,12 @@ Uses Next.js 13
 
 # Technologies:
 
-Next.JS 13, React, TailwindCSS, MongoDB, Prisma, & NextAuth
+Next.JS 13, TypeScript, React, TailwindCSS, MySQL, Prisma, & NextAuth
 
 # Specifications
+
+- User can
+- 
 
 ## Ecommerce Store
 
@@ -27,8 +30,6 @@ Next.JS 13, React, TailwindCSS, MongoDB, Prisma, & NextAuth
 -
 
 # Instructions to run locally
-
-- Note: You are going to need an existing [MongoDB Atlas account](https://www.mongodb.com/), to [Get a Connection String](https://www.mongodb.com/docs/guides/atlas/connection-string/).
 
 **1. Clone this repo (or download zip on GitHub)**
 
@@ -50,16 +51,6 @@ Next.JS 13, React, TailwindCSS, MongoDB, Prisma, & NextAuth
 
 **4. Create an `.env` file**
 
-Setup values for the following parameters:
 
-- `MONGO_URL` - should be equal to your MongoDB connection string
-- `SECRET_KEY` - any string that is secret to you. You can use this [Key Generator](https://www.allkeysgenerator.com/)
-
-Example of a `.env` file:
-
-```js
-MONGO_URL="Your_MongoDB_Connection_String"
-SECRET_KEY="Secret_Key_You_Generated_Random_Characters"
-```
 
 **5. Run the app on localhost:3000**
