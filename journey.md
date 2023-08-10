@@ -22,6 +22,11 @@ Database
 - PlanetScale
 - Prisma (ORM)
 
+- Stripe
+
+Authentication
+- Clerk
+
 ## Discussion on why each tech was used
 
 - Next.js 13 App Router is my new favorite way to create front-end application with client-side routing.
@@ -313,6 +318,8 @@ Interesting to note is that the `Button` component from `shadcn/ui` is a *Named 
 import { Button } from "@/components/ui/button"
 ```
 
+### Styling the component
+
 Now we can add class styles to the `Button` component.
 
 - Let's say we want it a bit smaller:
@@ -333,3 +340,32 @@ Now we can add class styles to the `Button` component.
 <Button size="default">Click Me!</Button>
 ```
 
+We can also pass in the `variant` prop and give it different `variants`. Let's try `destructive`
+
+```js
+<Button size="default" variant="destructive">Click Me!</Button>
+```
+
+This looks like a button for deletion.
+
+This is great for our projects in that we have all the components we are using inside the project, under `/components` inside our structure rather than having it inside a random `npm` library inside our `node_modules` as a dependency and have no or little access to it.
+
+This completes our setup for the Next.js 13 project for the admin dashboard. Next let's implement our authentication.
+
+# Implementing the authentication
+
+For now we start with the planning of our authentication for admin dashboard.
+
+Let's use [Clerk](https://clerk.com/) user authentication and management platform to handle our authentication.
+
+Create an account @
+
+https://clerk.com/
+
+Then we can build our `<SignIn />` component. Once you've signed in after signing up, we arrive at the dashboard of the page.
+
+Inside the `Application name` input box, let's add the name `ecommerce-admin`.
+
+We can then add the many ways the users can sign-in to our app, I have email address & Google checked as ways to sign-in. There are Phone number, Username, Facebook, and Apple (and more) as choices whhich are off by default.
+
+We can then click `[Create Application]`.
