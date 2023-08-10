@@ -269,3 +269,67 @@ The phrase "reinventing the wheel" is an idiom that means to attempt to duplicat
 However, some people argue that reinventing the wheel is often necessary in order to work around software licensing incompatibilities or around technical and policy limitations present in parts or modules provided by third parties. 
 
 It depends on the context, but for our case this will divert our resources so using `shadcn/ui` is a boon.
+
+### Using the component
+
+To use our `Button` component, we can consult the [docs](https://ui.shadcn.com/docs/components/button).
+
+1. Let's import:
+
+```js
+import { Button } from "@/components/ui/button"
+```
+
+2. Then use it in our code:
+
+```js
+<Button variant="outline">Button</Button>
+```
+
+So in `page.tsx`:
+
+```js
+import { Button } from "@/components/ui/button";
+
+export default function Home() {
+  return (
+    <main className="">
+      <div className="p-4">
+        Admin Dashboard
+
+        <Button>Click Me!</Button>
+
+      </div>
+    </main>
+  )
+}
+```
+
+In VSCode, we can jump straight to step 2 and just use the `Button` component as it auto-completes the import. So by the time you type out `<Button`, right at the `n` we can press `[Enter]` to auto-import the component at the top of the file.
+
+Interesting to note is that the `Button` component from `shadcn/ui` is a *Named Export* rather than a [Default Export](https://javascript.info/import-export#export-default). This means we have to destructure the `Button` in the `import`:
+
+```js
+import { Button } from "@/components/ui/button"
+```
+
+Now we can add class styles to the `Button` component.
+
+- Let's say we want it a bit smaller:
+
+```js
+<Button size="sm">Click Me!</Button>
+```
+
+- Or want to make it an icon?
+
+```js
+<Button size="icon">Click Me!</Button>
+```
+
+- Or just stick with the default:
+
+```js
+<Button size="default">Click Me!</Button>
+```
+
