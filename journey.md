@@ -136,3 +136,43 @@ And to shut-down the application we can press `[Ctrl + C]` in the terminal. Sinc
 
 - Hot reloading is a feature that allows you to see the changes you make to your code in real-time without having to refresh the page. In Next.js, this feature is called Fast Refresh and it's enabled by default in all Next.js applications on 9.4 or newer. With Fast Refresh enabled, most edits should be visible within a second, without losing component state.
 
+## Cleaning Up the Project
+
+Now in Visual Studio Code, let's open up `/app/page.tsx` and go ahead and remove all the boilerplate code within the `Home` component. Also remove the import for `Image`.`
+
+So all we are left with is something like this:
+
+```js
+export default function Home() {
+  return (
+    <div>Admin Dashboard</div>
+  )
+}
+```
+
+Let's also change the `MetaData` in `layout.tsx`, we can just modify the `title` and `description`.
+
+```ts
+import './globals.css'
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'Admin Dashboard',
+  description: 'Admin Dashboard for e-commerce store',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>{children}</body>
+    </html>
+  )
+}
+```
