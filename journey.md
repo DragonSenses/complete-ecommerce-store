@@ -176,3 +176,17 @@ export default function RootLayout({
   )
 }
 ```
+
+## Add height configuration in `globals.css`
+
+The `globals.css` file contains all the styling for our app. All the code within has been modified by `shadcn-ui`. The only addition we want to add is adding a height configuration to nearly all our content.
+
+Right below the `@tailwind` directives, add this:
+
+```css
+html,
+body,
+:root {
+  height: 100%;
+}
+```
