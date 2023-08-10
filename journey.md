@@ -216,3 +216,56 @@ Let's create a folder named `(root)` inside `/app`.
 This folder `/(root)` will not affect the URL, meaning it won't be `/root`, it is simply a normal organization folder. Each Route Group may have the same URL hierarchy, but each group can have its own personalized layout in a `layout.js` file.
 
 Let's create the `page.tsx` file inside `/(root)`, we can just copy the `page.tsx` found in `/app` since the structure is the same and we will modify the contents later.
+
+We can now just remove `/app/page.tsx` from the `/app` folder. This will not change how the app works and we can still run the project again withh `npm run dev` and we can see the `/app/(root)/page.tsx` render.
+
+Despite the folder `/(root)` existing, it does not change the URL `http://localhost:3000`.
+
+# shadcn/ui
+
+Let's add our first component from `shadcn/ui`, let's try a [Button](https://ui.shadcn.com/docs/components/button).
+
+### Using the Command Line Interface (CLI)
+
+In the terminal, make sure to be in the right directory (usually where the `package.json` is located). In this case, `cd` into `/ecommerce-admin` folder.
+
+```sh
+cd /ecommerce-admin
+```
+
+Then let's run the command:
+
+```sh
+npx shadcn-ui@latest add button
+```
+
+which will prompt us whether we wish to proceed so type `y` and it will begin the installation.
+
+This made changes to the following files:
+
+- `/ecommerce-admin/components/ui/button.tsx`
+- `/ecommerce-admin/package-lock.json`
+- `/ecommerce-admin/package.json`
+
+In short, it created our `/components` folder, which contains another folder `/ui` with our `button.tsx` component nested within.
+
+Then it updated our `package.json` file, adding one more dependency:
+
+```json
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.0.2",
+```
+
+Inside the `button.tsx`, we can see the CSS styles in Tailwind CSS. It is fully accessible and customizable to us.
+
+We can modify the `button` component in any way we want. e.g., we can modify its `size` property by changing its height number in `h-10` to something like `h-20`. Or modify the padding.
+
+This is a high quality component that is built for us compared to building our own from scratch. A form of not [re-inventing the wheel](https://en.wikipedia.org/wiki/Reinventing_the_wheel).
+
+The phrase "reinventing the wheel" is an idiom that means to attempt to duplicate a basic method that has already been created or optimized by others. The inspiration for this metaphor is that the wheel is an ancient archetype of human ingenuity (one so profound that it continues to underlie much of modern technology). 
+
+**As it has already been invented and is not considered to have any inherent flaws, an attempt to reinvent it *would add no value to it and be a waste of time, diverting the investigator's resources from possibly more worthy goals.***
+
+However, some people argue that reinventing the wheel is often necessary in order to work around software licensing incompatibilities or around technical and policy limitations present in parts or modules provided by third parties. 
+
+It depends on the context, but for our case this will divert our resources so using `shadcn/ui` is a boon.
