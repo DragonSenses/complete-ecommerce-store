@@ -190,3 +190,29 @@ body,
   height: 100%;
 }
 ```
+
+## Organize `/app` folder via Route Groups
+
+Going to use [Route Groups](https://nextjs.org/docs/app/building-your-application/routing/route-groups) to restructure and organize our app folder. I do not want the `page.tsx` to be at the root of the `/app` folder.
+
+This allows us to **organize routes without affecting thhe URL path.** In Next.js, every folder you create inside the `/pages` folder (if using **Pages Router**) or inside the `/app` folder (if using **App Router**), is a route for itself.
+
+> In the `app` directory, nested folders are normally mapped to URL paths. However, you can mark a folder as a **Route Group** to prevent the folder from being included in the route's URL path.
+
+We want to organize things inside folders but don't necessarily want to create the routes. This can be done through *Route Grouping*.
+
+> This allows you to organize your route segments and project files into logical groups without affecting the URL path structure.
+
+How?
+
+#### Convention
+
+A route group can be created by wrapping a folder's name in parenthesis: `(folderName)`
+
+#### Create the Route Group
+
+Let's create a folder named `(root)` inside `/app`.
+
+This folder `/(root)` will not affect the URL, meaning it won't be `/root`, it is simply a normal organization folder. Each Route Group may have the same URL hierarchy, but each group can have its own personalized layout in a `layout.js` file.
+
+Let's create the `page.tsx` file inside `/(root)`, we can just copy the `page.tsx` found in `/app` since the structure is the same and we will modify the contents later.
