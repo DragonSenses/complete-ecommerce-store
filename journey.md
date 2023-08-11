@@ -452,3 +452,42 @@ export default function RootLayout({
   )
 }
 ```
+
+## Add `auth` middleware
+
+What's middleware?
+
+From [The Odin Project - Middleware](https://www.theodinproject.com/lessons/nodejs-express-101#middleware)
+
+> A middleware is just a plain JavaScript function that Express will call for you between the time it receives a network request and the time it fires off a response (i.e. it’s a function that sits in the middle).
+
+Middleware in Next.js is a piece of code that allows you to perform actions before a request is completed and modify the response accordingly. It bridges the incoming request and your application, providing flexibility and control over the request/response flow. Middleware can modify request headers, response headers, and send responses. You can use middleware for a variety of purposes such as adding authentication to pages, dynamically loading data, or even handling errors
+
+As we proceed to [Clerk docs - Protect your Application](https://clerk.com/docs/nextjs/get-started-with-nextjs#protect-your-application) we are tasked in adding a middleware.
+
+Step-by-Step:
+
+1. Navigate to the root of your project: `/ecommerce-admin`
+2. Create a new file called `middleware.ts`
+
+Copy the code from Clerk docs and paste it into `middleware.ts`
+
+```ts
+import { authMiddleware } from "@clerk/nextjs";
+
+export default authMiddleware({});
+
+export const config = {
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+};
+```
+
+Here is the comment associated with the code sample above:
+
+```ts
+// This example protects all routes including api/trpc routes
+// Please edit this to allow other routes to be public as needed.
+// See https://clerk.com/docs/nextjs/middleware for more information about configuring your middleware
+```
+
+It first imports an authentication middleware from Clerk. Then `export default` `authMiddleWare`. Finally, it has an `config` which contains a specific config needed for Clerk authentication (to my understanding).
