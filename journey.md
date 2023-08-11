@@ -400,8 +400,55 @@ Copy it from the dashboard and paste it in `.env`.
 
 Now after pasting the `.env` variables, we can click the [Continue in Docs](https://clerk.com/docs/nextjs/get-started-with-nextjs) which is the Clerk Docs in Next.js.
 
+1. Install Clerk in Next.js
+
 The first step is to install Clerk in our next project:
 
 ```sh
 npm install @clerk/nextjs
+```
+
+2. Set Environment Keys
+
+We already did this step when we passed in our API keys from Clerk dashboard into `.env` file.
+
+3. Mount Clerk Provider
+
+Clerk provides both configurations for App Router and Pages. 
+  - 3rd party libraries supporting the latest App Router in Next.js 13? That's a plus in my book.
+
+Let's add the `<ClerkProvider>` component to wrap our Next.js application.
+
+- navigate to `/app/layout.tsx`
+- Import `ClerkProvider` from the Clerk package
+- Wrap the entire app (The JSX element that we return from `RootLayout`) with `<ClerkProvider> ... </ClerkProvider>`
+
+So in `layout.tsx`, we can provide active session and user context to Clerk's hooks and other components. The `<ClerkProvider>` enables the [context](https://react.dev/learn/passing-data-deeply-with-context) to be accessible anywhere within the app.
+
+```tsx
+import './globals.css'
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import { ClerkProvider } from '@clerk/nextjs'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'Admin Dashboard',
+  description: 'Admin Dashboard for e-commerce store',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <ClerkProvider>
+      <html lang="en">
+        <body className={inter.className}>{children}</body>
+      </html>
+    </ClerkProvider>
+  )
+}
 ```
