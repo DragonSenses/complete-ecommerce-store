@@ -352,7 +352,7 @@ This is great for our projects in that we have all the components we are using i
 
 This completes our setup for the Next.js 13 project for the admin dashboard. Next let's implement our authentication.
 
-# Implementing the authentication
+# Authentication
 
 For now we start with the planning of our authentication for admin dashboard.
 
@@ -369,3 +369,39 @@ Inside the `Application name` input box, let's add the name `ecommerce-admin`.
 We can then add the many ways the users can sign-in to our app, I have email address & Google checked as ways to sign-in. There are Phone number, Username, Facebook, and Apple (and more) as choices whhich are off by default.
 
 We can then click `[Create Application]`.
+
+The next screen shows "Your <SignIn/> is ready!
+
+Then it shows "Quickstarts", allowing you to choose frameworks we wish to use. We click Next.js, usually it is there by default.
+
+We can see that it gives us the API Keys with `.env.local` file ready.
+
+## Create `.env` file
+
+Create the environment file named `.env` under `/ecommerce-admin`. This file contains *sensitive* information.
+
+By default `.env` file will be commited to our project, **which is not what we want**.
+
+So we must add this file to `.gitignore`. So this is what we add:
+
+```js
+# local env files
+.env*.local
+.env
+```
+
+Now `.env` won't be commited to our git repository.
+
+Next we can now just go into `.env` file and go to the Clerk dashboard and copy the API Keys. It should contain the `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY`.
+
+Copy it from the dashboard and paste it in `.env`.
+
+## Clerk Documentation
+
+Now after pasting the `.env` variables, we can click the [Continue in Docs](https://clerk.com/docs/nextjs/get-started-with-nextjs) which is the Clerk Docs in Next.js.
+
+The first step is to install Clerk in our next project:
+
+```sh
+npm install @clerk/nextjs
+```
