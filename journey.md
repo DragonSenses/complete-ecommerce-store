@@ -491,3 +491,62 @@ Here is the comment associated with the code sample above:
 ```
 
 It first imports an authentication middleware from Clerk. Then `export default` `authMiddleWare`. Finally, it has an `config` which contains a specific config needed for Clerk authentication (to my understanding).
+
+## Create the *Sign-Up* and *Sign-In* Pages
+
+The next step in the [Clerk docs - Build Sign-In & Sign-Up pages](https://clerk.com/docs/nextjs/get-started-with-nextjs#build-your-own-sign-in-and-sign-up-pages).
+
+Before we do so, let's create a Route Group named `(auth)`, and within it should be another folder named `(routes)`.
+
+So navigate to `/ecommerce-admin/app` folder, then create `/(auth)` folder. Then create `/(routes)` inside of it. Later on the plan is to create a `layout.tsx` for `/(auth)`.
+
+### The *Sign-Up* page
+
+Now finally inside of `/(routes)`, we need to follow the exact structure of creating a Sign-Up page:
+
+```tsx
+// app/sign-up/[[...sign-up]]/page.tsx
+
+import { SignUp } from "@clerk/nextjs";
+
+export default function Page() {
+  return <SignUp />;
+}
+```
+
+- So inside `/(routes)` create another folder, this time a route, named `sign-up`.
+- Inside of `/sign-up` we create *another* folder named `[[...sign-up]]`
+
+To re-iterate, that folder is named with double square brackets `[[ ]]`, then a spread operator `...` and finally `sign-up`.
+
+- This is the file path so far: `\ecommerce-admin\app\(auth)\(routes)\sign-up\[[...sign-up]]`
+
+This is another convention in Next.js 13, which allows Clerk all the routes it needs to handle the authentication in our project. This must be exactly how the documentation describes it.
+
+FINALLY we can make the file `page.tsx` inside of that folder.
+
+The file path name: `"...\ecommerce-admin\app\(auth)\(routes)\sign-up\[[...sign-up]]\page.tsx"`
+
+Now paste the Sign-Up page component:
+
+```tsx
+import { SignUp } from "@clerk/nextjs";
+
+export default function Page() {
+  return <SignUp />;
+}
+```
+
+### The *Sign-In* page
+
+The intended path for sign in page: `app/sign-in/[[...sign-in]]/page.tsx`
+
+Our file path: `"...\ecommerce-admin\app\(auth)\(routes)\sign-in\[[...sign-in]]\page.tsx"`
+
+```tsx
+import { SignIn } from "@clerk/nextjs";
+
+export default function Page() {
+  return <SignIn />;
+}
+```
