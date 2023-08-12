@@ -678,3 +678,29 @@ export default function SetupPage() {
 ```
 
 You can now see the User profile Icon, where they can log in and manage their account on the page.
+
+# Admin Dashboard
+
+Now that the user authentication is handled by Clerk, we move on to make the first Modal component of the Admin Dashboard.
+
+## First Modal Component - Create store
+
+What does this Modal component do?
+
+- Creates a new store
+- Triggers when logging in to Admin Dashboard and there is no store created
+- Creates additional stores
+
+It should have a 
+
+- input box that allows us to name the store
+- a cancel button for the modal (and cancelling the creation of a store)
+- and finally a continue button to create the store and leads to the next window
+
+I am going to use the [Dialog - shadcn/ui](https://ui.shadcn.com/docs/components/dialog) component, which is "A window overlaid on either the primary window or another dialog window, rendering the content underneath inert."
+
+Install it (via npm):
+
+```sh
+npx shadcn-ui@latest add dialog
+```
