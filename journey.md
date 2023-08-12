@@ -704,3 +704,71 @@ Install it (via npm):
 ```sh
 npx shadcn-ui@latest add dialog
 ```
+
+### Custom-made Modal component
+
+Now in `/components/ui` folder, let's add another component named `modal.tsx`.
+
+The `modal` will standardize the use of the `Dialog`.
+
+```tsx
+"use client";
+
+interface ModalProps {
+  title: string;
+  description: string;
+  isOpen: boolean;
+  onClose: () => void;
+  children?: React.ReactNode;
+}
+```
+
+- `"use client"` directive is needed because it will have interactivity
+- We create the `interface` named `ModalProps`
+- It will have `title`, `description` and `isOpen`
+- It will have an `onClose` function
+- It will have an [optional property](https://www.typescriptlang.org/docs/handbook/2/objects.html#optional-properties) `children` which will be of type `React.ReactNode`
+
+Now let's export our `Modal`:
+
+```tsx
+"use client";
+
+import { Dialog } from "./dialog";
+
+interface ModalProps {
+  title: string;
+  description: string;
+  isOpen: boolean;
+  onClose: () => void;
+  children?: React.ReactNode;
+}
+
+export const Modal: React.FC<ModalProps> = ({
+  title,
+  description,
+  isOpen,
+  onClose,
+  children
+}) => {
+  
+  const onChange = (open: boolean) => {
+    if(!open) {
+      onClose();
+    }
+  };
+
+  return(
+    <Dialog open={isOpen} onOpenChange={onChange}>
+      
+    </Dialog>
+  )
+
+}
+```
+
+- Make sure to `import` `Dialog` FROM our `/components` folder which is `./dialog` and not from `radix/ui` which is the underlying library that `shadcn/ui` uses. `radix` does not contain the styles that `shadcn/ui` has.
+
+- We export the Modal component with the its props
+- We give Modal component a method which detects the state change of when it is open
+- Finally, we return the `<Dialog>` component containing the props `open` and `onOpenChange`
