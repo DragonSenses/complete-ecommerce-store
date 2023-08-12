@@ -629,3 +629,52 @@ export default function AuthLayout({
 ```
 
 This will fully center our Sign-Up page, along with any of the routes within (this includes the sign-in page).
+
+## Working on the Set-Up page
+
+In the `(root)` folder, we have a `page.tsx` that returns a `Home` component.
+
+```tsx
+import { Button } from "@/components/ui/button";
+
+export default function Home() {
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
+        Admin Dashboard
+        <Button>Click Me!</Button>
+      </div>
+    </main>
+  )
+}
+```
+
+Let's change this to return a `SetupPage`, and remove the button. All it should return is some text that states that it is a protected route. This is because this page is what shows up after being logged-in using Clerk.
+
+Then let's add the `<UserButton />` component from Clerk, this allows the user to manage account information and log out, thus completing the full authentication circle.
+
+[Clerk - Embed the `<UserButton />`](https://clerk.com/docs/nextjs/get-started-with-nextjs#embed-the-user-button).
+
+Inside the `SetupPage`, we return a `div` containing this line of code:
+
+```tsx
+<UserButton afterSignOutUrl="/"/>
+```
+
+The `afterSignOutUrl` prop is equal to the home route, if this is not specified then it takes the user to the Clerk page.
+
+```tsx
+import { UserButton } from "@clerk/nextjs";
+
+export default function SetupPage() {
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between">
+      <div className="p=8">
+        <UserButton afterSignOutUrl="/"/>
+      </div>
+    </main>
+  )
+}
+```
+
+You can now see the User profile Icon, where they can log in and manage their account on the page.
