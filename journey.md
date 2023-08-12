@@ -605,3 +605,27 @@ export default function AuthLayout({
   )
 }
 ```
+
+We create an `AuthLayout` component which takes in `children` as a prop.
+
+In TypeScript, we have to specify the type of the parameter so here we set the type of `children` as `React.ReactNode`. Finally, we return a `div` that wraps the `children`.
+
+We can now add any style to it, which will reflect all the routes inside of our folder `(auth)`.
+
+Let's give it the Tailwind CSS utility classes of: `flex items-center justify-center h-full`
+
+```tsx
+export default function AuthLayout({
+  children
+} : {
+  children: React.ReactNode
+}) {
+  return (
+    <div className='flex items-center justify-center h-full'>
+      {children}
+    </div>
+  )
+}
+```
+
+This will fully center our Sign-Up page, along with any of the routes within (this includes the sign-in page).
