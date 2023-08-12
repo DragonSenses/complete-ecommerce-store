@@ -550,3 +550,58 @@ export default function Page() {
   return <SignIn />;
 }
 ```
+
+---
+
+#### Side-Note: [Ctrl] + [Shift] + [P] then type "reload window" in VSCode to refresh it without needing to shut it down
+
+---
+
+## Add environment variables
+
+[Clerk Next.js - Update your environment variables](https://clerk.com/docs/nextjs/get-started-with-nextjs#update-your-environment-variables), add the `signIn`, `signUp` and `afterSignUp`, `afterSignIn` paths:
+
+```ts
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
+```
+
+These values control the behavior of the components when you sign in or sign up and when you click on the respective links at the bottom of each component.
+
+- These paths refer to the routes we made where the Sign-In and Sign-Up pages are located.
+
+## Modifying the Sign-Up page
+
+**At this stage of the project, we should be re-directed to the Sign-In page**
+
+Run `npm run dev` in the shell.
+
+There is an issue, the sign-up page isn't centered. There are two ways I can solve this:
+
+1. Go to `page.tsx` where sign-up page is located, and return a JSX element wrapped in a `div` that contains the utility class of `flex`
+
+2. Setup the `layout.tsx` for the Route Group
+
+I am going with number 2 as it reflects all of the routes inside of that group.
+
+So inside of the `/(auth)` directory, create `layout.tsx`.
+
+Inside:
+
+```tsx
+import React from 'react'
+
+export default function AuthLayout({
+  children
+} : {
+  children: React.ReactNode
+}) {
+  return (
+    <div>
+      {children}
+    </div>
+  )
+}
+```
