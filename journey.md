@@ -15,7 +15,8 @@ The technologies I plan to use:
 Front-End
 - Next.js 13's App Router
 - Tailwind CSS
-- [shadcn/ui](https://ui.shadcn.com/), Radix UI
+- [shadcn/ui](https://ui.shadcn.com/)
+- zustand (global state management)
 
 Database
 - MySQL
@@ -832,4 +833,16 @@ export default function SetupPage() {
     </div>
   )
 }
+```
+
+`zustand` will be used to control whether the Modal is open or not.
+
+## Global State Management using zustand
+
+We will be using [zustand](https://www.npmjs.com/package/zustand) for global state management.
+
+In the shell:
+
+```sh
+npm i zustand
 ```
