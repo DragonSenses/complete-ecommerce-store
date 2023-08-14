@@ -811,3 +811,25 @@ import {
 Notice: The usage of the alias `from "@/components/ui/dialog";` which is the same thing as `from "./dialog";`
 
 It is a good practice to use [Module Path Aliases](https://nextjs.org/docs/app/building-your-application/configuring/absolute-imports-and-module-aliases) in NextJS.
+
+### Using the Modal component
+
+Back in `(root)`, in `page.tsx` file let's change the `<UserButton />` component to a `<Modal />`.
+Add the `"use client"` directive, then import the `Modal`.
+
+
+```tsx
+"use client";
+
+import { Modal } from "@/components/ui/modal";
+
+export default function SetupPage() {
+  return (
+    <div className='p-4'>
+      <Modal title="Title" description="test desc" isOpen={true} onClose={() => {}}>
+        Children
+      </Modal>
+    </div>
+  )
+}
+```
