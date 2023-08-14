@@ -1,11 +1,13 @@
 import { create } from "zustand";
 
-interface useStoreModalInterface {
-
+interface useStoreModalStore {
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
 }
 
-const useBearStore = create((set) => ({
-  bears: 0,
-  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-  removeAllBears: () => set({ bears: 0 }),
+export const useStoreModal = create<useStoreModalStore>((set) => ({
+  isOpen: false,
+  onOpen: () => set({ isOpen: true }),
+  onClose: () => set({ isOpen: false }),
 }))
