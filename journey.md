@@ -906,3 +906,42 @@ export default function StoreModal() {
   )
 }
 ```
+
+Now import the hook and bind our components:
+
+```tsx
+import { useStoreModal } from '@/hooks/use-store-modal';
+
+export default function StoreModal() {
+  const storeModal = useStoreModal();
+  // ...
+```
+
+Now that we have the `storeModal`, we can use its values to control the `isOpen` and `onClose` props.
+
+- set `isOpen` to `storeModal.isOpen`
+- set `onClose` to `storeModal.onClose`
+- Alias module path for `../ui/modal` to `@/components/ui/modal` for consistency
+
+```tsx
+"use client";
+
+import React from 'react';
+import { Modal } from "@/components/ui/modal";
+import { useStoreModal } from '@/hooks/use-store-modal';
+
+export default function StoreModal() {
+  const storeModal = useStoreModal();
+
+  return (
+    <Modal
+      title="Create store"
+      description="Add a new store to manage products and categories"
+      isOpen={storeModal.isOpen}
+      onClose={storeModal.onClose}
+    >
+      Create Store Modal
+    </Modal>
+  )
+}
+```
