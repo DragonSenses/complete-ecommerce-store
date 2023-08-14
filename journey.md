@@ -772,3 +772,29 @@ export const Modal: React.FC<ModalProps> = ({
 - We export the Modal component with the its props
 - We give Modal component a method which detects the state change of when it is open
 - Finally, we return the `<Dialog>` component containing the props `open` and `onOpenChange`
+
+Let's continue working on the `Dialog`
+
+```tsx
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./dialog";
+
+// ...
+  return(
+    <Dialog open={isOpen} onOpenChange={onChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
+        </DialogHeader>
+        <div>
+          {children}
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+```
+
+Again, please make sure the imports are from `"./dialog"` and *not* `"@radix-ui/react-dialog"`, especially when using VSCode's auto-import.
+
+Let's make that import a bit cleaner:
+
