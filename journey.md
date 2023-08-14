@@ -999,3 +999,51 @@ Right after the `useEffect`, we have a conditional check for `isMounted` which r
   }
 ```
 
+#### Modal Provider - Explained
+
+Let's take a step back and analyze what's going on here
+
+```tsx
+"use client";
+
+import { useEffect, useState } from "react";
+
+export const ModalProvider = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if(!isMounted) {
+    return null;
+  }
+}
+```
+
+- We will be using `ModalProvider` inside the `/app/layout.tsx`
+- However, `layout.tsx` is a [Server Component](https://nextjs.org/docs/getting-started/react-essentials#server-components) which means that we cannot simply add a [Client Component](https://nextjs.org/docs/getting-started/react-essentials#client-components) to it
+- We have to ensure that there will not be any [Hydration Errors](https://dev.to/olanetsoft/how-to-fix-react-hydration-error-in-nextjs-practical-guide-cjh), especially with Modals
+
+##### What is a Hydration Error?
+
+The React hydration error in Next.js occurs when the initial UI does not match what was rendered on the server. This error can be caused by inconsistencies between server and client-rendered markup and mismatched component states. When the markup generated on the server side differs from what is generated on the client side, or when the state of a component on the server side doesn’t match the state on the client side, the application can throw errors or behave unexpectedly.
+
+- There are a lot of ways you can trigger a Modal, but that can cause desynchronization between server-side rendering and client-side rendering
+- e.g., The server will not have any Modal open, but the client will. This will throw an Hydration Error
+
+The current `Modal Provider`, which has a `useEffect` React Hook that lets you [synchronize a component with an external system.](https://react.dev/learn/synchronizing-with-effects) 
+
+This ensures that until this life-cycle has run, which is only something that can happen in the client component, it will return `null` otherwise.
+
+```tsx
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if(!isMounted) {
+    return null;
+  }
+```
+
+In other words, if it has **not mounted** and it is still in server-side rendering then in that case I will `return null` so that a hydration error will not be possible from happening.
