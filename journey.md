@@ -846,3 +846,28 @@ In the shell:
 ```sh
 npm i zustand
 ```
+
+- Now create a folder named `hooks` in `/ecommerce-admin`.
+- Inside we create a file named `use-store-modal.tsx`
+- Create a store from zustand
+- Create our hook with primitives, obkects, functions. Update state through `set` function
+
+```tsx
+import { create } from "zustand";
+
+interface useStoreModalStore {
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+}
+
+export const useStoreModal = create<useStoreModalStore>((set) => ({
+  isOpen: false,
+  onOpen: () => set({ isOpen: true }),
+  onClose: () => set({ isOpen: false }),
+}))
+```
+
+We have `isOpen` state, and two functions that return void.
+
+When creating the store, we hhave the two functions set the state value.
