@@ -945,3 +945,57 @@ export default function StoreModal() {
   )
 }
 ```
+
+### Modal Provider
+
+I want to make Modal available throughout the application, to be triggered regardless of where it is (e.g., products page, navbar, etc.).
+
+To do that we need to create a `provider`. 
+
+A provider is a way to pass data down the component tree without having to pass props down manually at every level. Providers are used in conjunction with the [Context API](https://react.dev/reference/react/useContext). The Context API is a way to share data between components without having to pass props down manually at every level. Providers are used in conjunction with the Context API. You can use providers to pass data down the component tree and make it available to all child components that need it.
+
+Let's create a folder named `/providers` at the root of our project.
+
+Inside, we create a file named `modal-provider.tsx`
+
+```tsx
+"use client";
+
+import { useEffect, useState } from "react";
+
+export const ModalProvider = () => {
+  
+}
+```
+
+Let's setup the hooks:
+
+```tsx
+import { useEffect, useState } from "react";
+
+export const ModalProvider = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+}
+```
+
+Notice that we use:
+
+- [useState](https://react.dev/reference/react/useState)
+- [useEffect](https://react.dev/reference/react/useEffect)
+
+We create a [state variable](https://react.dev/learn/state-a-components-memory) `isMounted` along with its set function `setIsMounted`. The initial state is `false`.
+
+Next we have a `useEffect` lifecycle, with the setup containing `setIsMounted(true)` and with an empty dependency array.
+
+Right after the `useEffect`, we have a conditional check for `isMounted` which returns `null` in the case it is not mounted.
+
+```tsx
+  if(!isMounted) {
+    return null;
+  }
+```
+
