@@ -798,3 +798,16 @@ Again, please make sure the imports are from `"./dialog"` and *not* `"@radix-ui/
 
 Let's make that import a bit cleaner:
 
+```tsx
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogHeader, 
+  DialogTitle 
+} from "@/components/ui/dialog";
+```
+
+Notice: The usage of the alias `from "@/components/ui/dialog";` which is the same thing as `from "./dialog";`
+
+It is a good practice to use [Module Path Aliases](https://nextjs.org/docs/app/building-your-application/configuring/absolute-imports-and-module-aliases) in NextJS.
