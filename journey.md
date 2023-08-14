@@ -1047,3 +1047,42 @@ This ensures that until this life-cycle has run, which is only something that ca
 ```
 
 In other words, if it has **not mounted** and it is still in server-side rendering then in that case I will `return null` so that a hydration error will not be possible from happening.
+
+Again, this is a precaution to the Hydration Error. 
+
+**We will not render any Modals in server-side.**
+
+So what if we are on the client-side?
+
+- Import our `StoreModal` from our `/components`
+- For readability, we separate the global imports and local imports
+- Then let's render our `StoreModal`, wrapped in a [Fragment](https://react.dev/reference/react/Fragment).
+
+```tsx
+"use client";
+
+// global imports
+import { useEffect, useState } from "react";
+
+// local imports
+import StoreModal from "@/components/modals/store-modal";
+
+export const ModalProvider = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if(!isMounted) {
+    return null;
+  }
+
+  return(
+    <>
+      <StoreModal />
+    </>
+  )
+}
+```
+
