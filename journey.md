@@ -871,3 +871,38 @@ export const useStoreModal = create<useStoreModalStore>((set) => ({
 We have `isOpen` state, and two functions that return void.
 
 When creating the store, we hhave the two functions set the state value.
+
+### Creating re-usable modals components
+
+Create a folder named `modals` under `/components`. Then create a file named `store-modal.tsx`, with some template for a functional component.
+
+```tsx
+"use client";
+
+import React from 'react';
+
+export default function StoreModal() {
+  return (
+    <div>store-modal</div>
+  )
+}
+```
+
+Next import the `Modal` and fill in the props:
+
+```tsx
+import { Modal } from "../ui/modal";
+
+export default function StoreModal() {
+  return (
+    <Modal
+      title="Create store"
+      description="Add a new store to manage products and categories"
+      isOpen={false}
+      onClose={() => {}}
+    >
+      Create Store Modal
+    </Modal>
+  )
+}
+```
