@@ -1,11 +1,13 @@
-import { UserButton } from "@clerk/nextjs";
+"use client";
+
+import { Modal } from "@/components/ui/modal";
 
 export default function SetupPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <UserButton afterSignOutUrl="/"/>
-      </div>
-    </main>
+    <div className='p-4'>
+      <Modal title="Title" description="test desc" isOpen={true} onClose={() => {}}>
+        Children
+      </Modal>
+    </div>
   )
 }
