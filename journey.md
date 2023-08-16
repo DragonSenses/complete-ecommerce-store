@@ -1086,28 +1086,6 @@ export const ModalProvider = () => {
 }
 ```
 
-### Use Modal Provider
-
-Back in `/app`, in the file `layout.tsx`:
-
-```tsx
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={inter.className}>{children}</body>
-      </html>
-    </ClerkProvider>
-  )
-}
-```
-
-Let's render the `ModalProvider` right before the `children`
-
 ---
 
 ### **ISSUE** Next.Js module not found `lucide-react`
@@ -1138,3 +1116,84 @@ Import trace for requested module:
 
 ---
 
+### Use Modal Provider
+
+Back in `/app`, in the file `layout.tsx`:
+
+```tsx
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <ClerkProvider>
+      <html lang="en">
+        <body className={inter.className}>{children}</body>
+      </html>
+    </ClerkProvider>
+  )
+}
+```
+
+Let's render the `ModalProvider` right before the `children` in `layout.tsx`
+
+```tsx
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <ClerkProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          <ModalProvider />
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
+  )
+}
+```
+
+Now let's try to trigger the Modal in our root page, so in `/(root)/page.tsx`:
+
+```tsx
+"use client";
+
+import { Modal } from "@/components/ui/modal";
+
+export default function SetupPage() {
+  return (
+    <div className='p-4'>
+      <Modal title="Title" description="test desc" isOpen={true} onClose={() => {}}>
+        Children
+      </Modal>
+    </div>
+  )
+}
+```
+
+Remove the test Modal:
+
+```tsx
+export default function SetupPage() {
+  return (
+    <div className='p-4'>
+      Root Page
+    </div>
+  )
+}
+```
+
+Write `useState` to trigger our `ModalProvider`. Extract `onOpen` function and `isOpen` state from `zustand`.
+
+To do that we need to import our hook `useStoreModal`:
+
+```tsx
+import { useStoreModal } from "@/hooks/use-store-modal";
+
+export default function SetupPage() {
+  const storeModal = useStoreModal();
+```
