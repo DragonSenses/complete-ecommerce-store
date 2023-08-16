@@ -1230,3 +1230,28 @@ export default function SetupPage() {
   // ...
 }
 ```
+
+Now we can have this work with `useEffect`:
+  - We check for `isOpen`, if it is `false` then we invoke `onOpen()` which sets the `isOpen` state variable to `true`
+  - Add `isOpen` state variable and `onOpen` function in the dependency array
+
+```tsx
+import { useEffect } from "react";
+// ...
+
+  useEffect(() => {
+    if(!isOpen){
+      onOpen();
+    }
+  }, [isOpen, onOpen]);
+```
+
+Now this should trigger our *Create Store Modal*, which should be rendered on screen. 
+
+#### Modal Behavior 
+
+When we try to close the Modal, we can't. This is the behavior we want as this Modal should hold the *Create Store Form*, which will re-direct the user once we create our first store.
+
+The Navigation bar which also uses a Modal won't have this exact behavior so it can be closed.
+
+But when Modal is viewed from `(root)` organizational file, that means we do not have a store created yet. So user should not be allowed to go anywhere or close the current Modal until a store is created.
