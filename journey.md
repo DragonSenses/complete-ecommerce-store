@@ -1086,3 +1086,25 @@ export const ModalProvider = () => {
 }
 ```
 
+### Use Modal Provider
+
+Back in `/app`, in the file `layout.tsx`:
+
+```tsx
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <ClerkProvider>
+      <html lang="en">
+        <body className={inter.className}>{children}</body>
+      </html>
+    </ClerkProvider>
+  )
+}
+```
+
+Let's render the `ModalProvider` right before the `children`
+
