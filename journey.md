@@ -1197,3 +1197,36 @@ import { useStoreModal } from "@/hooks/use-store-modal";
 export default function SetupPage() {
   const storeModal = useStoreModal();
 ```
+
+#### Issue: Currently `storeModal` works fine, but does not work well when used inside `useEffect`
+
+According to [zustand docs](https://www.npmjs.com/package/zustand), when initializing the store here we are fetching everything with this line:
+
+```ts
+  const storeModal = useStoreModal();
+```
+
+> ... but bear in mind that it will cause the component to update on every state change!
+
+##### **Solution**: Select multiple state slices
+
+Back in the docs this is the example whhen selecting multiple state slices:
+
+> It detects changes with strict-equality (old === new) by default, this is efficient for atomic state picks.
+
+```tsx
+const nuts = useBearStore((state) => state.nuts)
+const honey = useBearStore((state) => state.honey)
+```
+
+So in our case, we want to directly import `onOpen` and `isOpen` from the `state`
+
+```tsx
+import { useStoreModal } from "@/hooks/use-store-modal";
+
+export default function SetupPage() {
+  const onOpen = useStoreModal((state) => state.onOpen);
+  const isOpen = useStoreModal((state) => state.isOpen);
+  // ...
+}
+```
