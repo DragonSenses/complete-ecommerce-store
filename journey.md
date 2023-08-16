@@ -1255,3 +1255,52 @@ When we try to close the Modal, we can't. This is the behavior we want as this M
 The Navigation bar which also uses a Modal won't have this exact behavior so it can be closed.
 
 But when Modal is viewed from `(root)` organizational file, that means we do not have a store created yet. So user should not be allowed to go anywhere or close the current Modal until a store is created.
+
+#### Globally Accessible Modal
+
+Making the Modal globally accessible is also the goal here, as it now lies inside the `app`'s `layout.tsx` inside `ModalProvider` rather than having to import the `Modal` componenet from `/components` and trying to render it with all its props inside the page.
+
+Another benefit is that we can trigger the Modal inside the root page, auth routes.
+
+e.g., this is the old way:
+
+```tsx
+import { Modal } from "@/components/ui/modal";
+
+const Page = () => {
+
+  return (
+    <div>
+      <StoreModal isOpen />
+    </div>
+  )
+}
+```
+
+Better way: 
+
+```tsx
+"use client";
+// Global Imports
+import { useEffect } from "react";
+
+// Local Imports
+import { useStoreModal } from "@/hooks/use-store-modal";
+
+export default function SetupPage() {
+  const onOpen = useStoreModal((state) => state.onOpen);
+  const isOpen = useStoreModal((state) => state.isOpen);
+
+  useEffect(() => {
+    if(!isOpen){
+      onOpen();
+    }
+  }, [isOpen, onOpen]);
+
+  return (
+    <div className='p-4'>
+      Root Page
+    </div>
+  )
+}
+```
