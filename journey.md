@@ -1108,3 +1108,33 @@ export default function RootLayout({
 
 Let's render the `ModalProvider` right before the `children`
 
+---
+
+### **ISSUE** Next.Js module not found `lucide-react`
+
+***Import bug in Next.js (v13.4.13)***
+
+[GitHub - Lucide-react Next.js Mapping Issue](https://github.com/lucide-icons/lucide/issues/1482#issuecomment-1672744695), there is a mapping issue regarding the current release of Next.js that I am using as of now (8-15-2023).
+
+This will be resolved in the next release or we can downgrade to `lucide-react version 0.263.1` using:
+
+```sh
+pnpm add lucide-react@0.263.1
+```
+
+Here is the issue in the terminal when trying to run `npm run dev`
+
+```sh
+Module not found: Can't resolve 'C:\Users\...\ecommerce-admin\node_modules\lucide-react\dist\cjs\icons\x'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./components/ui/dialog.tsx
+./components/ui/modal.tsx
+./components/modals/store-modal.tsx
+./providers/modal-provider.tsx
+```
+
+---
+
