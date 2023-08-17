@@ -1397,3 +1397,37 @@ const formSchema = z.object({
 ```
 
 What this means is that *at least* 1 character is required to properly name our Store.
+
+### Define a form
+
+The next step is to define a **hook** for our form. 
+
+Use the `useForm` hook from `react-hook-form` to create a form.
+
+- First import the `useForm` hook, and place it with the global imports for organization
+- Next, also `import { zodResolver } from "@hookform/resolvers/zod"`
+- Check `package.json` if `"@hookform/resolvers": "^3.2.0",` is in `dependencies`, if so then `shadcn/ui` has installed it and you can continue. Otherwise, you need to install the package.
+
+```tsx
+// Global Imports
+// ...
+import { useForm } from 'react-hook-form';
+import { zodResolver } from "@hookform/resolvers/zod"
+```
+
+Now use the `useForm` hook inside `StoreModal` to create a form:
+
+```tsx
+// ...
+export default function StoreModal() {
+  const storeModal = useStoreModal();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+    },
+  })
+
+  // ...
+```
