@@ -1322,8 +1322,53 @@ Well-designed HTML forms are:
 
 #### Installing `Form` component
 
-1. Command
+**Command**
 
 ```sh
 npx shadcn-ui@latest add form
+```
+
+Press y to continue the instllation.
+
+#### Installing `Input` component
+
+While we are still at the `shadcn/ui` docs, let's install `Input` component.
+
+[Input Component](https://ui.shadcn.com/docs/components/input)
+
+**Command**
+
+```sh
+npx shadcn-ui@latest add input
+```
+
+Now inside thhe `/ui` folder we have the newly added components:
+
+- `form`
+- `input`
+- `label`
+
+### Create a form schema
+
+Let's go to our `/components/modals/store-modal.tsx` file.
+
+Here we want to define our form schema. Define the shape of your form using a [Zod schema](https://zod.dev/).
+
+In the [shadcn/ui Form docs](https://ui.shadcn.com/docs/components/form) the example schema looks like this:
+
+```tsx
+"use client"
+
+import Link from "next/link"
+import * as z from "zod"
+
+const formSchema = z.object({
+  username: z.string().min(2).max(50),
+})
+```
+
+Let's try to define the form schema through zod in our `store-modal.tsx`:
+
+```tsx
+const formSchema = z;
 ```
