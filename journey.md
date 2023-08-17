@@ -1431,3 +1431,15 @@ export default function StoreModal() {
 
   // ...
 ```
+
+#### Define a submit handler
+
+Create the `onSubmit` function, which is going to be triggered in our form. For now it will just log values, and the implementation will be made later.
+
+```tsx
+  // Define a submit handler
+  function onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log(values);
+    // TODO: Create Store
+  }
+```
