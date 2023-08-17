@@ -1370,5 +1370,30 @@ const formSchema = z.object({
 Let's try to define the form schema through zod in our `store-modal.tsx`:
 
 ```tsx
-const formSchema = z;
+// Global Imports
+import React from 'react';
+import * as z from "zod";
+
+// Local Imports
+import { Modal } from "@/components/ui/modal";
+import { useStoreModal } from '@/hooks/use-store-modal';
+
+const formSchema = z.object({
+  name: z.string().min(1),
+});
+
+export default function StoreModal() {
 ```
+
+So what we added before our `StoreModal`:
+
+- `import * as z from "zod";`
+- Create the *form schema* / *zod schema*
+
+```tsx
+const formSchema = z.object({
+  name: z.string().min(1),
+});
+```
+
+What this means is that *at least* 1 character is required to properly name our Store.
