@@ -1304,3 +1304,26 @@ export default function SetupPage() {
   )
 }
 ```
+
+## Create Form - Create Store Form
+
+Its time to create a form for Create Store function using `shadcn/ui`'s form element.
+
+- [shadcn/ui - React Hook Form - Zod | docs](https://ui.shadcn.com/docs/components/form)
+- The underlying packages used by `shadcn/ui`'s form element are `React Hook Form` and `Zod`
+
+Well-designed HTML forms are:
+
+- Well-structured and semantically correct.
+- Easy to use and navigate (keyboard).
+- Accessible with ARIA attributes and proper labels.
+- Has support for client and server side validation.
+- Well-styled and consistent with the rest of the application.
+
+#### Installing `Form` component
+
+1. Command
+
+```sh
+npx shadcn-ui@latest add form
+```
