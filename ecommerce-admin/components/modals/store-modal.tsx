@@ -54,8 +54,11 @@ export default function StoreModal() {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-
+                      <Input placeholder="text" {...field} />
                     </FormControl>
+                    <div className="w-full pt-6 space-x-2 flex items-center justify-end">
+                      
+                    </div>
                   </FormItem>
                 )}
               />
