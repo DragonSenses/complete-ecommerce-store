@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 // Local Imports
 import { Modal } from "@/components/ui/modal";
 import { useStoreModal } from '@/hooks/use-store-modal';
-import { Form } from '@/components/ui/form';
+import { Form, FormField } from '@/components/ui/form';
 
 // Create a form using a Zod schema
 const formSchema = z.object({
@@ -46,6 +46,13 @@ export default function StoreModal() {
         <div className="py-2 pb-4 space-y-4">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+
+                )}
+              />
 
             </form>
           </Form>
