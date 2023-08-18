@@ -45,7 +45,9 @@ export default function StoreModal() {
       <div>
         <div className="py-2 pb-4 space-y-4">
           <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
 
+            </form>
           </Form>
         </div>
       </div>
