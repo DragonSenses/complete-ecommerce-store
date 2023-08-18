@@ -1508,3 +1508,33 @@ Now inside the `<Form>` component, we can write the actual HTML element `<form>`
 
 The `handleSubmit` is going to use our `onSubmit` function to provide our values that are going to be defined inside our inputs.
 
+#### Building the form inputs
+
+Let's use the `<FormField>` component inside the `<form>`. It should be imported from `'@/components/ui/form'`.
+
+```tsx
+import { Form, FormField } from '@/components/ui/form';
+```
+
+Make sure that `<FormField />` has a self-closing tag, meaning it shouldn't be `<FormField> </FormField>`, as the error that the "Type children ..." is not a type. That's because `FormField` is a self-closing tag without children, so remove the `</FormField>` and close it (e.g., `<FormField />`).
+
+Next this `<FormField>` will contain the following props:
+
+- `control` which we get from `form.control`
+- `name` a string name
+- `render` which takes an arrow function that extracts `field` and returns/renders something
+
+```tsx
+<Form {...form}>
+  <form onSubmit={form.handleSubmit(onSubmit)}>
+    <FormField
+      control={form.control}
+      name="name"
+      render={({ field }) => (
+
+      )}
+    />
+
+  </form>
+</Form>
+```
