@@ -1538,3 +1538,30 @@ Next this `<FormField>` will contain the following props:
   </form>
 </Form>
 ```
+
+Before we implement the `render`'s function we need to import a few more components: 
+
+- `FormItem`
+- `FormLabel`
+- `FormControl`
+
+Then build up the form:
+
+```tsx
+<FormField
+  control={form.control}
+  name="name"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Name</FormLabel>
+      <FormControl>
+        
+      </FormControl>
+    </FormItem>
+  )}
+/>
+```
+
+Inside the `<FormControl>` we want to use an `<Input>` component, which we must import from `"@/components/ui/input"`.
+
+- `<Input />` is a self-closing tag
