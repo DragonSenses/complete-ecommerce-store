@@ -9,7 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 // Local Imports
 import { Modal } from "@/components/ui/modal";
 import { useStoreModal } from '@/hooks/use-store-modal';
-import { Form, FormField } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Input } from "@/components/ui/input";
 
 // Create a form using a Zod schema
 const formSchema = z.object({
@@ -50,7 +51,12 @@ export default function StoreModal() {
                 control={form.control}
                 name="name"
                 render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
 
+                    </FormControl>
+                  </FormItem>
                 )}
               />
 
