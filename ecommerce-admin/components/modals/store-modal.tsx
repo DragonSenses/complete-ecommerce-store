@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 // Local Imports
 import { Modal } from "@/components/ui/modal";
 import { useStoreModal } from '@/hooks/use-store-modal';
+import { Form } from '@/components/ui/form';
 
 // Create a form using a Zod schema
 const formSchema = z.object({
@@ -27,7 +28,9 @@ export default function StoreModal() {
   })
 
   // Define a submit handler
-  function onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
     console.log(values);
     // TODO: Create Store
   }
@@ -39,7 +42,13 @@ export default function StoreModal() {
       isOpen={storeModal.isOpen}
       onClose={storeModal.onClose}
     >
-      Create Store Modal
+      <div>
+        <div className="py-2 pb-4 space-y-4">
+          <Form {...form}>
+
+          </Form>
+        </div>
+      </div>
     </Modal>
   )
 }
