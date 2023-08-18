@@ -1443,3 +1443,42 @@ Create the `onSubmit` function, which is going to be triggered in our form. For 
     // TODO: Create Store
   }
 ```
+
+Currently, `onSubmit` will throw a few errors:
+- '`onSubmit`', which lacks return-type annotation, implicitly has an 'any' return type.ts(7010)
+- Parsing error: '(' expected.eslint
+- `(local function) onSubmit(): any`
+
+To temporarily fix this, change `function` to `const`
+
+### Render the form
+
+Inside the `<Modal> ... </Modal>` component which we `return`, let's actually render the form.
+
+- Import `Form` with module aliases for style consistency
+
+```tsx
+import { Form } from '@/components/ui/form';
+```
+
+- Then replace the "Create Store Modal" text, with:
+
+```tsx
+  return (
+    <Modal
+      title="Create store"
+      description="Add a new store to manage products and categories"
+      isOpen={storeModal.isOpen}
+      onClose={storeModal.onClose}
+    >
+      <div>
+        <div className="py-2 pb-4 space-y-4">
+          <Form {...form}>
+
+          </Form>
+        </div>
+      </div>
+    </Modal>
+  )
+```
+
