@@ -1451,7 +1451,9 @@ Currently, `onSubmit` will throw a few errors:
 
 To temporarily fix this, change `function` to `const`
 
-### Render the form
+### Build your form
+
+We are now on step 3 of the [docs](https://ui.shadcn.com/docs/components/form).
 
 Inside the `<Modal> ... </Modal>` component which we `return`, let's actually render the form.
 
@@ -1481,4 +1483,28 @@ import { Form } from '@/components/ui/form';
     </Modal>
   )
 ```
+
+Notice that we spread out the values of `form` defined earlier from the hook:
+
+```tsx
+  // Define a form
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+    },
+  })
+```
+
+Now inside the `<Form>` component, we can write the actual HTML element `<form>`. We give the `onSubmit` prop to the `form` element the `form.handleSubmit(onSubmit)`:
+
+```tsx
+<Form {...form}>
+  <form onSubmit={form.handleSubmit(onSubmit)}>
+
+  </form>
+</Form>
+```
+
+The `handleSubmit` is going to use our `onSubmit` function to provide our values that are going to be defined inside our inputs.
 
