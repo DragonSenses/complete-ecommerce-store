@@ -1565,3 +1565,79 @@ Then build up the form:
 Inside the `<FormControl>` we want to use an `<Input>` component, which we must import from `"@/components/ui/input"`.
 
 - `<Input />` is a self-closing tag
+- Give it a property of `placeholder`
+- pass in the entire `field`, which should be spread out: `{...field}`
+
+```tsx
+<FormControl>
+  <Input placeholder="text" {...field} />
+</FormControl>
+```
+
+##### Exploring the `field` prop
+
+So what does passing in the entire `{...field}` mean? 
+
+Well if you work with inputs you know they take `onChange`, `value` prop, `onBlur` and `onFocus`. Usually these are written out ourselves. 
+
+But because we spread out the `field` prop, which we can explore. In VSCode, we can press `[Ctrl] + Click` on the `field` variable in our code. We are led to a file named `controller.d.ts`, the relative path is "ecommerce-admin\node_modules\react-hook-form\dist\types\controller.d.ts".
+
+Inside it we see this:
+
+```tsx
+export type ControllerProps<TFieldValues extends FieldValues = FieldValues, TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>> = {
+    render: ({ field, fieldState, formState, }: {
+        field: ControllerRenderProps<TFieldValues, TName>;
+        fieldState: ControllerFieldState;
+        formState: UseFormStateReturn<TFieldValues>;
+    }) => React.ReactElement;
+} & UseControllerProps<TFieldValues, TName>;
+```
+
+Now `[Ctrl] + Click` on the `ControllerRenderProps` variable in the code, which will lead us to a location in the same file:
+
+```tsx
+export type ControllerRenderProps<TFieldValues extends FieldValues = FieldValues, TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>> = {
+    onChange: (...event: any[]) => void;
+    onBlur: Noop;
+    value: FieldPathValue<TFieldValues, TName>;
+    name: TName;
+    ref: RefCallBack;
+};
+```
+
+We can see that the `field` prop has `onChange`, `onBlur`, `value`, `name`, and `ref`.
+
+This means that when we spread out the `field` prop inside this `Input` component like so: 
+
+```tsx
+<FormControl>
+  <Input placeholder="text" {...field} />
+</FormControl>
+```
+
+We are now handling `onChange`, `onBlur`, `value`, `name`, and `ref` props from it. This is the behavior we want.
+
+#### Back to building the `FormField`
+
+With that our `render` function's general layout is set:
+
+```tsx
+<FormField
+  control={form.control}
+  name="name"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Name</FormLabel>
+      <FormControl>
+        <Input placeholder="text" {...field} />
+      </FormControl>
+    </FormItem>
+  )}
+/>
+```
+
+Next, inside the HTML `<form>` but outside of the `<FormField />` we create a `<div>` that contains 2 elements.
+
+```tsx
+```
