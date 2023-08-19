@@ -11,6 +11,7 @@ import { Modal } from "@/components/ui/modal";
 import { useStoreModal } from '@/hooks/use-store-modal';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from "@/components/ui/input";
+import { Button } from '@/components/ui/button';
 
 // Create a form using a Zod schema
 const formSchema = z.object({
@@ -57,7 +58,8 @@ export default function StoreModal() {
                       <Input placeholder="text" {...field} />
                     </FormControl>
                     <div className="w-full pt-6 space-x-2 flex items-center justify-end">
-                      
+                      <Button>Cancel</Button>
+                      <Button>Continue</Button>
                     </div>
                   </FormItem>
                 )}
