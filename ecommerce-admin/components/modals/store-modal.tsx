@@ -65,7 +65,7 @@ export default function StoreModal() {
                     <FormControl>
                       <Input placeholder="text" {...field} />
                     </FormControl>
-
+                    <FormMessage />
                   </FormItem>
                 )}
               />
