@@ -1720,3 +1720,36 @@ Example:
 ```
 
 With that this is a fully working Zod Form validation.
+
+## Prisma & PlanetScale
+
+- [prisma](https://www.npmjs.com/package/prisma)
+- [What is PlanetScale?](https://planetscale.com/docs/concepts/what-is-planetscale)
+
+Let's install prisma as a *dev dependency*. To do that we need to add another argument to the `npm install` command: `-D`. 
+
+[npm install docs](https://docs.npmjs.com/cli/v9/commands/npm-install?v=true) mentions that the we can control where packages are save with addtional flags:
+
+- `-D`, `--save-dev`: Package will appear in your `devDependencies`.
+
+Make sure to be in the correct directory: `/ecommerce-admin` in this case.
+
+Install *prisma* as a dev dependency:
+
+```sh
+npm i -D prisma
+```
+
+After prisma is installed, we run another command to install [Prisma Client](https://www.npmjs.com/package/@prisma/client):
+
+```sh
+npm install @prisma/client
+```
+
+// To Do:
+
+Finally, we initialize prisma through this command:
+
+```sh
+npx prisma init
+```
