@@ -34,5 +34,8 @@
     "typescript": "5.1.6",
     "zod": "^3.22.1",
     "zustand": "^4.4.1"
+  },
+  "devDependencies": {
+    "prisma": "^5.1.1"
   }
 }
