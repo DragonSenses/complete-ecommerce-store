@@ -1637,7 +1637,22 @@ With that our `render` function's general layout is set:
 />
 ```
 
-Next, inside the HTML `<form>` but outside of the `<FormField />` we create a `<div>` that contains 2 elements.
+Next, inside the HTML `<form>` but outside & under the `<FormField />` we create a `<div>` that will contain 2 elements. Give it a style of `flex items-center justify-end` so I can have these elements at the right corner of the modal. For spacing it should have `pt-6 space-x-2` so the 2 elements are separated. Finally give it the `w-full` to take up the whole space it needs.
+
+The elements inside will have 2 `Button`s which will have Cancel and Continue functionality.
+
 
 ```tsx
+import { Button } from '@/components/ui/button';
+// ...
+
+<div className="w-full pt-6 space-x-2 flex items-center justify-end">
+  <Button>Cancel</Button>
+  <Button>Continue</Button>
+</div>
 ```
+
+#### Using `variant` on a `Button`
+
+Let's give some props such as `variant` and `onClick` on the `Button`s to differentiate between them.
+
