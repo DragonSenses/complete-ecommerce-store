@@ -9,9 +9,16 @@ import { zodResolver } from "@hookform/resolvers/zod"
 // Local Imports
 import { Modal } from "@/components/ui/modal";
 import { useStoreModal } from '@/hooks/use-store-modal';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
-import { Input } from "@/components/ui/input";
 import { Button } from '@/components/ui/button';
+import { Input } from "@/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 
 // Create a form using a Zod schema
 const formSchema = z.object({
@@ -58,19 +65,19 @@ export default function StoreModal() {
                     <FormControl>
                       <Input placeholder="text" {...field} />
                     </FormControl>
-                    <div className="w-full pt-6 space-x-2 flex items-center justify-end">
-                      <Button 
-                        variant="outline" 
-                        onClick={storeModal.onClose}
-                      >
-                        Cancel
-                      </Button>
-                      <Button type="submit">Continue</Button>
-                    </div>
+
                   </FormItem>
                 )}
               />
-
+              <div className="w-full pt-6 space-x-2 flex items-center justify-end">
+                <Button
+                  variant="outline"
+                  onClick={storeModal.onClose}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit">Continue</Button>
+              </div>
             </form>
           </Form>
         </div>
