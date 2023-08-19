@@ -1656,3 +1656,22 @@ import { Button } from '@/components/ui/button';
 
 Let's give some props such as `variant` and `onClick` on the `Button`s to differentiate between them.
 
+```tsx
+<Button 
+  variant="outline" 
+  onClick={storeModal.onClose}
+>
+  Cancel
+</Button>
+
+<Button type="submit">Continue</Button>
+```
+
+- For the Cancel button, the `variant` is `outline`. We use the `storeModal` hook's `onClose` function to pass into its `onClick` prop
+
+- Set Continue button's `type` to `"submit"`. We do not need an explicit `onClick` on this button because it is *inside* the `<form>` element. Once this button is clicked, it will trigger the `onSubmit` prop passed into the `<form>`:
+
+```tsx
+<form onSubmit={form.handleSubmit(onSubmit)}>
+```
+
