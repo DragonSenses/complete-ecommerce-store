@@ -19,6 +19,7 @@ const formSchema = z.object({
 });
 
 export default function StoreModal() {
+  // Store Modal hook
   const storeModal = useStoreModal();
 
   // Define a form
@@ -58,8 +59,13 @@ export default function StoreModal() {
                       <Input placeholder="text" {...field} />
                     </FormControl>
                     <div className="w-full pt-6 space-x-2 flex items-center justify-end">
-                      <Button>Cancel</Button>
-                      <Button>Continue</Button>
+                      <Button 
+                        variant="outline" 
+                        onClick={storeModal.onClose}
+                      >
+                        Cancel
+                      </Button>
+                      <Button type="submit">Continue</Button>
                     </div>
                   </FormItem>
                 )}
