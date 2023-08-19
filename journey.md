@@ -1637,10 +1637,13 @@ With that our `render` function's general layout is set:
 />
 ```
 
-Next, inside the HTML `<form>` but outside & under the `<FormField />` we create a `<div>` that will contain 2 elements. Give it a style of `flex items-center justify-end` so I can have these elements at the right corner of the modal. For spacing it should have `pt-6 space-x-2` so the 2 elements are separated. Finally give it the `w-full` to take up the whole space it needs.
+#### Button Container for "Cancel" and "Continue"
+
+Next, still inside the HTML `<form>` but under the closing tag `/>` of the `<FormField />` we create a `<div>` for the Button Container for 2 button elements. 
+
+Give it a style of `flex items-center justify-end` so I can have these elements at the right corner of the modal. For spacing it should have `pt-6 space-x-2` so the 2 elements are separated. Finally give it the `w-full` to take up the whole space it needs.
 
 The elements inside will have 2 `Button`s which will have Cancel and Continue functionality.
-
 
 ```tsx
 import { Button } from '@/components/ui/button';
@@ -1675,3 +1678,45 @@ Let's give some props such as `variant` and `onClick` on the `Button`s to differ
 <form onSubmit={form.handleSubmit(onSubmit)}>
 ```
 
+#### Adding Error message to the Form
+
+After testing, let's say we have a missing input field to name the store. It should give an error message when this occurs. Back in the [shadcn/ui Form docs](https://ui.shadcn.com/docs/components/form) we will need to use a `FormMessage` component.
+
+Under the `<FormControl>` add the `<FormMessage />` component.
+
+```tsx
+// ...
+      <FormControl>
+        <Input placeholder="text" {...field} />
+      </FormControl>
+      <FormMessage />
+```
+
+To test we can add "test" text inside the input field box of the Modal. We should now see in developer tools (i.e., press `[F12]` in Google Chrome) in the console we should see the object passed in to the `onSubmit` function:
+
+```tsx
+  // Define a submit handler
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+    // TODO: Create Store
+  }
+```
+
+We can see the text printed out in the console. This means that `values` are ready to be sent to the server, which can be added to the database.
+
+*Optional*: we can add a `<FormDescription>` component to add in between our `<FormControl>` and `<FormMessage>` to describe what the input field is for. 
+
+Example:
+```tsx
+<FormControl>
+  <Input placeholder="shadcn" {...field} />
+</FormControl>
+<FormDescription>
+  This is your public display name.
+</FormDescription>
+<FormMessage />
+```
+
+With that this is a fully working Zod Form validation.
