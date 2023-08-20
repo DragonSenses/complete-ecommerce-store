@@ -1856,3 +1856,21 @@ if(process.env.NODE_ENV !== "production") globalThis.prisma = prismadb;
 
 export default prismadb;
 ```
+
+### Setup PlanetScale
+
+[planetscale](https://planetscale.com/)
+
+Head on over to the website. Go ahead and sign-in.
+
+We are at a landing page named `app.planetscale.com/YOUR_USER_NAME`
+
+We can click on `[See how PlanetScale works >]`, but we can go ahead and create our databse by clicking on the button / hyperlink in [Ready to `create`].
+
+Set the `Database name` to `ecommerce-admin` change Plan Type to `Hobby`. Though you may have to put in your card as the message they give below is:
+
+> Please add a credit or debit card to this organization
+
+> In order to prevent fraud, PlanetScale requires a valid payment method to create databases. You will not be charged unless you create a Scaler or Scaler Pro database.
+
+It should say that your database is successfully created. We have to wait until database is successfully initialized. Afterwards we get a prompt to "Connect".
