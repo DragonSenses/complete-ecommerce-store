@@ -1884,3 +1884,33 @@ It will give us :
 - `schema.prisma` which contains what changes we need to make to this file.
 
 Let's place our connection string `DATABASE_URL` inside our `.env` and replace the old one. Now update our provider in `schema.prisma`.
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+```
+
+### Adding a simplified model of our store to push to the database
+
+Create a simplified store to attempt to push to the database to test our connection.
+
+Using Prisma Client, we can consult the docs here on [Prisma Docs - Prisma Client](https://www.prisma.io/docs/concepts/components/prisma-client) and we can see how to create a sample `Prisma scehma file` with its one model.
+
+So now in `schema.prisma` let's create our `model`:
+
+```prisma
+model Store {
+  id        String    @id @default(uuid())
+  name      String
+  userId    String
+  createAt  DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+```
