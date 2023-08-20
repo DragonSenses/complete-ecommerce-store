@@ -1820,3 +1820,39 @@ declare global {
 
 const prismadb = globalThis.prisma || new PrismaClient();
 ```
+
+- We import `PrismaClient`
+- `declare global` with `prisma` a type of `PrismaClient` or `undefined`
+- `const prismadb = globalThis.prisma || new PrismaClient();` 
+- Conditional statement will determine whether it should use `globalThis` or is it safe to initialize a `new PrismaClient`
+
+```ts
+const prismadb = globalThis.prisma || new PrismaClient();
+
+if(process.env.NODE_ENV !== "production") globalThis.prisma = prismadb;
+```
+
+Why do we have to do this check? Well if we just simply create a `new` `PrismaClient` and exported it:
+
+```ts
+// Initialize new Prisma Client
+const prismadb = new PrismaClient();
+```
+
+What happens in Next.js 13, and its hot reloading feature would initiate multiple prisma instances. This causing a warning and degradation of performance in your development.
+
+Let's wrap it up by exporting our `prismadb`:
+
+```ts
+import { PrismaClient } from "@prisma/client";
+
+declare global {
+  var prisma: PrismaClient | undefined
+};
+
+const prismadb = globalThis.prisma || new PrismaClient();
+
+if(process.env.NODE_ENV !== "production") globalThis.prisma = prismadb;
+
+export default prismadb;
+```
