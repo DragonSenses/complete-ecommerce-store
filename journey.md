@@ -1772,3 +1772,51 @@ More information in our documentation:
 https://pris.ly/d/getting-started
 ```
 
+This creates a `/prisma` folder, with a `schema.prisma` file inside.
+
+```prisma
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+```
+
+- the `provider` db will be changed from `"postgresql"` to `"mysql"` later
+
+We can also see that our `.env` file has a new change. It preserved our current environment variables and added a comment & variable `DATABASE_URL="..."`.
+
+ - This URL will be changed to PlanetScale URL later.
+
+### Create a lib for prisma database
+
+We actually already have a `/lib` folder that was installed by `shadcn/ui`. Inside we currently have `utils.ts`:
+
+```ts
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+ 
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+```
+
+We have a `cn` function that is used to merge our classnames in Tailwind.
+
+Let's create a `prismadb.ts` file inside `/lib`. Inside:
+
+```ts
+import { PrismaClient } from "@prisma/client";
+
+declare global {
+  var prisma: PrismaClient | undefined
+};
+
+const prismadb = globalThis.prisma || new PrismaClient();
+```
