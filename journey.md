@@ -1873,4 +1873,14 @@ Set the `Database name` to `ecommerce-admin` change Plan Type to `Hobby`. Though
 
 > In order to prevent fraud, PlanetScale requires a valid payment method to create databases. You will not be charged unless you create a Scaler or Scaler Pro database.
 
-It should say that your database is successfully created. We have to wait until database is successfully initialized. Afterwards we get a prompt to "Connect".
+It should say that your database is successfully created. We have to wait until database is successfully initialized. Afterwards we get a prompt to "Ready to `connect to your database`?". Or the button `[Get connection strings]`.
+
+It prompts us to create a new password. We can leave it exactly as it is and click `[Create password]`.
+
+We are this modal with a title "Connection strings". Here there is a drop-down menu right next to `[Connect with]`, we should select Prisma.
+
+It will give us :
+- `.env` file which contains our `DATABASE_URL='...'`
+- `schema.prisma` which contains what changes we need to make to this file.
+
+Let's place our connection string `DATABASE_URL` inside our `.env` and replace the old one. Now update our provider in `schema.prisma`.
