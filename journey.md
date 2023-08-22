@@ -1953,3 +1953,61 @@ const prisma = new PrismaClient()
 ```
 
 Nothing has been sent to the database yet but our `\node_modules\@prisma\client` has been updated.
+
+#### Testing out the store - demonstrate what `npx prisma generate` does
+
+Go into `/app`, in `layout.tsx`. Right before the `return` let's create an example store using Intellisense to auto-complete / auto-import:
+
+```tsx
+import prismadb from '@/lib/prismadb'
+// ...
+
+  const store = prismadb.store
+```
+
+We can now use `find()`, `delete()`, `update()` to our `prismadb.store`:
+
+```ts
+const store = prismadb.store.find(...)
+```
+
+- `npx prisma generate` added `store` to our `node_modules` so we can safely use it in our code with Intellisense.
+
+Now we can remove these changes to our `layout.tsx` if all things are in working order.
+
+#### Testing - Successfully setup the Database Connection String?
+
+Let's test in the terminal:
+
+```sh
+npx prisma db push
+```
+
+Output:
+```sh
+npx prisma db push                                                                                                   
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+Datasource "db": MySQL database "ecommerce-admin" at "aws.connect.psdb.cloud"
+
+Your database is now in sync with your Prisma schema. Done in 4.60s
+
+✔ Generated Prisma Client (5.1.1 | library) to .\node_modules\@prisma\client in 52ms
+```
+
+We can head over to planetscale dashboard and refresh the page, and we can see that we have 1 Table.
+
+We can click the table, which is a `Store` table:
+
+```js
+CREATE TABLE `Store` (
+	`id` varchar(191) NOT NULL,
+	`name` varchar(191) NOT NULL,
+	`userId` varchar(191) NOT NULL,
+	`createAt` datetime(3) NOT NULL DEFAULT current_timestamp(3),
+	`updatedAt` datetime(3) NOT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE InnoDB,
+  CHARSET utf8mb4,
+  COLLATE utf8mb4_unicode_ci;
+```
