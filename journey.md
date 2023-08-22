@@ -2048,6 +2048,8 @@ Inside the `/app` folder create a new folder named `api`, which is a reserved fo
 
 Inside of `/api`, we will create [Route Handlers](https://nextjs.org/docs/app/building-your-application/routing/route-handlers). Let's create a folder inside of it named `/stores`, with a file named `route.ts`.
 
+### Creating the stores POST route
+
 Inside of the route we create a `async function POST` that is of type `Request`. Inside a `try..catch` where we log the error.
 
 ```ts
@@ -2061,3 +2063,37 @@ export async function POST(
   }
 }
 ```
+
+- Let's make sure we return an error response after logging the error. Use `NextResponse`.
+- Use Clerk to authenticate this `POST` route
+
+```ts
+import { auth } from "@clerk/nextjs";
+import { NextResponse } from "next/server";
+
+export async function POST(
+  req: Request,
+) {
+  try {
+    // Use Clerk to authenticate POST route
+    const { userId } = auth();
+
+  } catch (error){
+    console.log('[STORES_POST]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}
+```
+
+With this we now have access to currently logged-in `userId` who is trying to create a new store using our API.
+
+Check if we do not have `userId`, then we can send back an Unauthorized response
+
+```ts
+// Send back 401 Unauthorized if userId does not exist
+if(!userId) {
+  return new NextResponse("Unauthorized", { status: 401 });
+}
+```
+
+TODO: check body
