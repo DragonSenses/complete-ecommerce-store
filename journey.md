@@ -652,6 +652,28 @@ export default function Home() {
 
 Let's change this to return a `SetupPage`, and remove the button. All it should return is some text that states that it is a protected route. This is because this page is what shows up after being logged-in using Clerk.
 
+---
+
+#### Important: to avoid the error: `You cannot have two parallel pages that resolve to the same path. Please check /page and /(root)/page.` make sure you have removed the `page.tsx` at the root of the `/app` folder
+
+```tsx
+export default function Home() {
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
+        Admin Dashboard
+      </div>
+    </main>
+  )
+}
+```
+
+Make sure to either move the `page.tsx` to the `/(root)` folder or delete it and make the `page.tsx` file in the `(root)` and place the code for the `SetupPage` inside.
+
+After you deleted the `page.tsx` at the root of the `/app` folder, go ahead and CTRL + C the terminal and restart next with `npm run dev`. Go to `http://localhost:3000` and you should see the page properly render.
+
+---
+
 Then let's add the `<UserButton />` component from Clerk, this allows the user to manage account information and log out, thus completing the full authentication circle.
 
 [Clerk - Embed the `<UserButton />`](https://clerk.com/docs/nextjs/get-started-with-nextjs#embed-the-user-button).
@@ -2011,3 +2033,14 @@ CREATE TABLE `Store` (
   CHARSET utf8mb4,
   COLLATE utf8mb4_unicode_ci;
 ```
+
+#### Troubleshooting
+
+- Check if `.env` file is correct, that you copied exactly the connection string for `DATABASE_URL`.
+
+- Make sure your project does not have a `.env.local` file because prisma may not be able to read it
+
+## API Routes
+
+Now we are going to attempt to create a `Store` to push to our database, we need to create our API route.
+
