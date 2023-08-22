@@ -1897,7 +1897,9 @@ It will give us :
 - `.env` file which contains our `DATABASE_URL='...'`
 - `schema.prisma` which contains what changes we need to make to this file.
 
-Let's place our connection string `DATABASE_URL` inside our `.env` and replace the old one. Now update our provider in `schema.prisma`.
+1. Let's place our connection string `DATABASE_URL` inside our `.env` and replace the old one. 
+
+2. Now update our provider in `schema.prisma`. Still inside the "Connecting to your database" window in planetscale, switch from the `.env` tab to `schema.prisma` tab.
 
 ```prisma
 generator client {
@@ -1928,3 +1930,26 @@ model Store {
   updatedAt DateTime  @updatedAt
 }
 ```
+
+With this complete, we can try to run the command in the terminal:
+
+```sh
+npx prisma generate
+```
+
+Output:
+
+```sh
+npx prisma generate                                                                                                  
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (5.1.1 | library) to .\node_modules\@prisma\client in 75ms
+You can now start using Prisma Client in your code. Reference: https://pris.ly/d/client
+
+import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient()
+
+```
+
+Nothing has been sent to the database yet but our `\node_modules\@prisma\client` has been updated.
