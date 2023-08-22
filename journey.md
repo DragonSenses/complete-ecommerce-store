@@ -2042,5 +2042,22 @@ CREATE TABLE `Store` (
 
 ## API Routes
 
-Now we are going to attempt to create a `Store` to push to our database, we need to create our API route.
+Now we are going to attempt to create a `Store` to push to our database, we need to create our API routes.
 
+Inside the `/app` folder create a new folder named `api`, which is a reserved folder.
+
+Inside of `/api`, we will create [Route Handlers](https://nextjs.org/docs/app/building-your-application/routing/route-handlers). Let's create a folder inside of it named `/stores`, with a file named `route.ts`.
+
+Inside of the route we create a `async function POST` that is of type `Request`. Inside a `try..catch` where we log the error.
+
+```ts
+export async function POST(
+  req: Request,
+) {
+  try {
+
+  } catch (error){
+    console.log('[STORES_POST]', error);
+  }
+}
+```
