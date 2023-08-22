@@ -1114,6 +1114,20 @@ Import trace for requested module:
 ./providers/modal-provider.tsx
 ```
 
+### **SOLUTION** Update Next.js v13.4.13 to Next.js v13.4.19
+
+If you want to exclusively just update Next.js 13:
+
+```sh
+npm i next@latest
+```
+
+To **Update core packages**:
+
+```sh
+npm i next@latest react@latest react-dom@latest eslint-config-next@latest
+```
+
 ---
 
 ### Use Modal Provider
