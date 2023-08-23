@@ -2096,4 +2096,43 @@ if(!userId) {
 }
 ```
 
-TODO: check body
+Now extract the body:
+
+```ts
+// Extract the body
+const body = await req.json();
+```
+
+Inside our body, confirm we have what we require in our store model. We can check our `schema.prisma` file for the `Store` model for that:
+
+```prisma
+// Create simplified model of our Store
+model Store {
+  id        String    @id @default(uuid())
+  name      String
+  userId    String
+  createAt  DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+```
+
+We can see that the ones automatically assigned are:
+
+- `id`,`createAt`, and `updatedAt`
+
+While we still need these fields:
+
+- `name`, which is received from the *store modal*'s input
+- `userId`, which is received from Clerk authentication
+
+So we should check the conditions for when these are empty. Let's destructure `name` from body and check:
+
+```ts
+const body = await req.json();
+
+const { name } = body;
+
+if (!name) {
+  return new NextResponse("Name is required", { status: 400 });
+}
+```
