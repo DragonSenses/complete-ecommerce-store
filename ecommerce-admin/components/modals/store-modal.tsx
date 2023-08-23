@@ -29,7 +29,7 @@ export default function StoreModal() {
   // Store Modal hook
   const storeModal = useStoreModal();
 
-  // Create loading state variable
+  // Create loading state variable to disable interactive elements
   const [loading, setLoading] = useState(false);
 
   // Define a form
@@ -66,7 +66,11 @@ export default function StoreModal() {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="text" {...field} />
+                      <Input 
+                        disabled={loading}
+                        placeholder="text" 
+                        {...field} 
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -74,12 +78,13 @@ export default function StoreModal() {
               />
               <div className="w-full pt-6 space-x-2 flex items-center justify-end">
                 <Button
+                  disabled={loading}
                   variant="outline"
                   onClick={storeModal.onClose}
                 >
                   Cancel
                 </Button>
-                <Button type="submit">Continue</Button>
+                <Button disabled={loading} type="submit">Continue</Button>
               </div>
             </form>
           </Form>
