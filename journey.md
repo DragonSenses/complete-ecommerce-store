@@ -2136,3 +2136,22 @@ if (!name) {
   return new NextResponse("Name is required", { status: 400 });
 }
 ```
+
+If the `name` field is not empty, then we can create our `store` with `prismadb.store.create()`.
+
+We need to pass in an object which contains another object named `data`, with `name` and `userId` within:
+
+```ts
+// Create store with data passed in
+const store = await prismadb.store.create({
+  data: {
+    name,
+    userId
+  }
+});
+
+// Send back response with the store
+return NextResponse.json(store);
+```
+
+Our API for creating a store is now ready.
