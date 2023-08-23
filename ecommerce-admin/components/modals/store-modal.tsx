@@ -1,7 +1,7 @@
 "use client";
 
 // Global Imports
-import React from 'react';
+import React, { useState } from 'react';
 import * as z from "zod";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -28,6 +28,9 @@ const formSchema = z.object({
 export default function StoreModal() {
   // Store Modal hook
   const storeModal = useStoreModal();
+
+  // Create loading state variable
+  const [loading, setLoading] = useState(false);
 
   // Define a form
   const form = useForm<z.infer<typeof formSchema>>({
