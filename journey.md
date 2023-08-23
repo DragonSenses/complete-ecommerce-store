@@ -2155,3 +2155,9 @@ return NextResponse.json(store);
 ```
 
 Our API for creating a store is now ready.
+
+### Using our API route
+
+Navigate to `/components/modals/store-modals.tsx`, and let's add a state variable: `loading`.
+
+This state variable will decide which elements will disabled once our form is loading.
