@@ -2156,8 +2156,41 @@ return NextResponse.json(store);
 
 Our API for creating a store is now ready.
 
-### Using our API route
+### Disable all our interactive elements when we are submitting our form.
 
 Navigate to `/components/modals/store-modals.tsx`, and let's add a state variable: `loading`.
 
 This state variable will decide which elements will disabled once our form is loading.
+
+```ts
+  // Create loading state variable to disable interactive elements
+  const [loading, setLoading] = useState(false);
+```
+
+So if `loading` is `true` then it should be passed on to the `disabled` prop.
+
+What I want to disable while the form is loading are:
+
+- `Input`
+- Both Submit and Cancel `Button`s
+
+When loading, I do not want user to access the `Input` or click Cancel or Submit.
+
+```tsx
+<Input 
+  disabled={loading}
+  placeholder="text" 
+  {...field} 
+/>
+
+// ...
+
+<Button
+  disabled={loading}
+  variant="outline"
+  onClick={storeModal.onClose}
+>
+  Cancel
+</Button>
+<Button disabled={loading} type="submit">Continue</Button>
+```
