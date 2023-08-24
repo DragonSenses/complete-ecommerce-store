@@ -2205,6 +2205,22 @@ When loading, I do not want user to access the `Input` or click Cancel or Submit
 npm i axios
 ```
 
-Now we can try to implement the `onSubmit` handler:
+Now we can try to implement the `onSubmit` handler. We try to set the state variable `loading` to `true` inside a `try`. Then log any error in the `catch`, and we want to make sure to set the `loading` variable `false`, so we use `finally` block.
 
-// TODO install axios and work on `onSubmit`
+```tsx
+// Define a submit handler
+const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  try {
+    setLoading(true);
+  } catch(error) {
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+}
+```
+
+Now we can attempt to create a new store through our API. We do this with axios:
+
+```tsx
+```
