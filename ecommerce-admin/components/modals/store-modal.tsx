@@ -48,6 +48,10 @@ export default function StoreModal() {
     
     try {
       setLoading(true);
+
+      // Create store via our API
+      const response = await axios.post('/api/stores', values);
+
     } catch(error) {
       console.log(error);
     } finally {
