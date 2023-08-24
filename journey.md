@@ -28,6 +28,9 @@ Database
 Authentication
 - Clerk
 
+- Axios
+- react-hot-toast
+
 ## Discussion on why each tech was used
 
 - Next.js 13 App Router is my new favorite way to create front-end application with client-side routing.
@@ -2255,3 +2258,21 @@ The form:
 ```
 
 Which has the `name`, which we can check the `route.ts` and the `name` field is exactly what we expect.
+
+#### Testing our API post route
+
+Now in our project @ `localhost:3000` we can put `test-store` inside the input of the Create-Store-Modal. We should have dev tools open to see the .
+
+What we should see is that our interactive elements are disabled. Then in the console we have our created store, complete with the details of `createdAt`, `id`, `name`, `updatedAt`, & `userId`. 
+
+This is the expected behavior we want.
+
+### Error Handling
+
+We want to find a better way to handle errors. Shut down project in terminal with Ctrl + C.
+
+Install [react-hot-toast](https://www.npmjs.com/package/react-hot-toast)
+
+```sh
+npm i react-hot-toast
+```
