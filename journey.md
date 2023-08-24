@@ -2271,8 +2271,28 @@ This is the expected behavior we want.
 
 We want to find a better way to handle errors. Shut down project in terminal with Ctrl + C.
 
-Install [react-hot-toast](https://www.npmjs.com/package/react-hot-toast)
+#### react-hot-toast
+
+Install [react-hot-toast package](https://www.npmjs.com/package/react-hot-toast), this allows us to add beautiful notifications to React app.
 
 ```sh
 npm i react-hot-toast
+```
+
+[react-hot-toast docs](https://react-hot-toast.com/docs)
+
+My plan was to trigger the toast in the `catch` when the error pops up in the submit handler.
+
+To use it we need to create a Toast provider and add it to our layout when using Next.js 13.
+
+Navigate to `/providers` and create `toast-provider.tsx`. It will just return `Toaster` component, which itself is self-closing tag.
+
+```tsx
+"use client"
+
+import { Toaster } from "react-hot-toast";
+
+export const ToasterProvider = () => {
+  return <Toaster />;
+}
 ```
