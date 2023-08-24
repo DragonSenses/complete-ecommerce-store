@@ -43,9 +43,16 @@ export default function StoreModal() {
   // Define a submit handler
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+    // This will be type-safe and validated.
     console.log(values);
-    // TODO: Create Store
+    
+    try {
+      setLoading(true);
+    } catch(error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
