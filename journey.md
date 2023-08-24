@@ -2220,7 +2220,38 @@ const onSubmit = async (values: z.infer<typeof formSchema>) => {
 }
 ```
 
-Now we can attempt to create a new store through our API. We do this with axios:
+Now we can attempt to create a new store through our API. The API route in our app is `/app/api/stores/route.ts`. 
+
+We do this with axios:
 
 ```tsx
+import axios from "axios";
+// ...
+
+  // Define a submit handler
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      setLoading(true);
+
+      // Create store via our API
+      const response = await axios.post('/api/stores', values);
+
+      // Print out data
+      console.log(response.data);
 ```
+
+We use `axios` `post` into our API route to create a store: `'/api/stores'`, where we pass in `values` which we receive from our form.
+
+The form:
+
+```tsx
+  // Define a form
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+    },
+  })
+```
+
+Which has the `name`, which we can check the `route.ts` and the `name` field is exactly what we expect.
