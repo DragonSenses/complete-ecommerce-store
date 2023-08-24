@@ -2,6 +2,7 @@
 
 // Global Imports
 import React, { useState } from 'react';
+import axios from "axios";
 import * as z from "zod";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -52,6 +53,9 @@ export default function StoreModal() {
       // Create store via our API
       const response = await axios.post('/api/stores', values);
 
+      // Print out data
+      console.log(response.data);
+      
     } catch(error) {
       console.log(error);
     } finally {
