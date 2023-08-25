@@ -2374,7 +2374,10 @@ So we know that `(dashboard)` is a route group. So what is `[storeId]` in square
 
 In other words, this particular route needs to have a `storeId`.
 
-`layout.tsx`:
+So our `layout.tsx`, is going to accept `children` and `params`.
+
+- `children` is type `React.ReactNode`
+- `params` will contain our `storeId`. We expect an object that contains `storeId`, a type of string.
 
 ```tsx
 // Global Imports
@@ -2393,3 +2396,8 @@ export default async function DashboardLayout({
   )
 }
 ```
+
+WE want to check if the the user is logged-in. We authenticate with Clerk and get a `userId`.
+
+Then check if `userId` does not exist, which we then redirect to the Sign-In page. But if we do have `userId`, then we can fetch the store to see if it exists.
+
