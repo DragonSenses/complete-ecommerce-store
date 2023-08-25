@@ -20,6 +20,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { toast } from 'react-hot-toast';
 
 // Create a form using a Zod schema
 const formSchema = z.object({
@@ -55,9 +56,13 @@ export default function StoreModal() {
 
       // Print out data
       console.log(response.data);
-      
+
+      // Successful toast notifcation
+      toast.success('Store successfully created!');
     } catch(error) {
       console.log(error);
+      // Error toast notification
+      toast.error('Something went wrong...');
     } finally {
       setLoading(false);
     }
