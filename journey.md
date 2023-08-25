@@ -2296,3 +2296,54 @@ export const ToasterProvider = () => {
   return <Toaster />;
 }
 ```
+
+Now add `ToasterProvider` in our layouts:
+
+```tsx
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <ClerkProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          <ToasterProvider />
+          <ModalProvider />
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
+  )
+}
+```
+
+Navigate to `/components/modals/store-modal.tsx`, and when we are logging the error we can also display a toast notification with `toast.error('error msg')`. Likewise, we can also make a notification when store creation was successful with `toast.success('success msg')`.
+
+```ts
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      setLoading(true);
+
+      // Create store via our API
+      const response = await axios.post('/api/stores', values);
+
+      // Print out data
+      console.log(response.data);
+
+      // Successful toast notifcation
+      toast.success('Store successfully created!');
+
+    } catch(error) {
+
+      console.log(error);
+
+      // Error toast notification
+      toast.error('Something went wrong...');
+      
+    } finally {
+      setLoading(false);
+    }
+  }
+```
