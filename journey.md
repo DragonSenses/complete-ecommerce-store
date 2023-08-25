@@ -705,7 +705,7 @@ export default function SetupPage() {
 
 You can now see the User profile Icon, where they can log in and manage their account on the page.
 
-# Admin Dashboard
+# Admin Dashboard - Project Setup
 
 Now that the user authentication is handled by Clerk, we move on to make the first Modal component of the Admin Dashboard.
 
@@ -2341,9 +2341,27 @@ Navigate to `/components/modals/store-modal.tsx`, and when we are logging the er
 
       // Error toast notification
       toast.error('Something went wrong...');
-      
+
     } finally {
       setLoading(false);
     }
   }
 ```
+
+#### Planning - What's next?
+
+Where do we go from here? We haven't even made the dashboard yet!
+
+We created the foundation - crucial elements of our project - that we will re-use to help shape our project.
+
+So far we are now able to **Create** a store, which is then saved in the database.
+
+Next, we are going to use the `response` `id` to re-route/re-direct to a new Route group named `dashboard`. 
+
+We can slowly start to implement our nav bar that loads all the stores we just created. This allows us to **Read** our store data.
+
+This dashboard will also have the "settings" form where we can either **Update** and/or **Delete** a store.
+
+This will complete are [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) app for the Admin dashboard where the user can control their ecommerce store(s).
+
+## 
