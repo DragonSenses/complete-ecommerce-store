@@ -2364,4 +2364,13 @@ This dashboard will also have the "settings" form where we can either **Update**
 
 This will complete are [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) app for the Admin dashboard where the user can control their ecommerce store(s).
 
-## 
+# Admin Dashboard
+
+Create a route in app folder named `(dashboard)/[storeId]/layout.tsx`.
+
+So we know that `(dashboard)` is a route group. So what is `[storeId]` in square brackets?
+
+`[storeId]` is what is known as a [Dynamic Route](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes) which creates a route from dynamic data, when we don't know the exact segment names ahead of time.
+
+In other words, this particular route needs to have a `storeId`.
+
