@@ -2374,3 +2374,22 @@ So we know that `(dashboard)` is a route group. So what is `[storeId]` in square
 
 In other words, this particular route needs to have a `storeId`.
 
+`layout.tsx`:
+
+```tsx
+// Global Imports
+import React from 'react';
+
+export default async function DashboardLayout({
+  children,
+  params
+} : {
+  children: React.ReactNode;
+  params: { storeId: string }
+}) {
+
+  return (
+    <div>layout</div>
+  )
+}
+```
