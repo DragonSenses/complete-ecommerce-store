@@ -18,7 +18,24 @@ export default async function DashboardLayout({
   if(!userId) {
     redirect('/sign-in');
   }
+
+  // If user IS logged-in, then fetch the store
+  const store = await prismadb.store.findFirst({
+    where: {
+      id: params.storeId,
+      userId
+    }
+  });
+
+  // Check if store does not exist, redirect to home-page
+  if (!store) {
+    redirect('/');
+  }
+
   return (
-    <div>layout</div>
+    <div>
+      <nav></nav>
+      {children}
+    </div>
   )
 }
