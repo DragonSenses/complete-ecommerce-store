@@ -1,10 +1,10 @@
 // Global Imports
-import { redirect } from "next/navigation";
 import React from 'react';
+import { auth } from '@clerk/nextjs';
+import { redirect } from "next/navigation";
 
 // Local Imports
 import prismadb from '@/lib/prismadb';
-import { auth } from '@clerk/nextjs';
 
 export default async function DashboardLayout({
   children,
