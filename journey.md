@@ -2506,3 +2506,54 @@ Next we extract `userId` with Clerk's `auth()`, and redirect to sign-in page if 
 So now we need to check the first active store our user has. In root layout, we do not have a `storeId` so there is no specific store we need to load. WE just need to attempt to load the first store. 
 
 That is how we are going to check whether we re-direct the user to `(dashboard)` routes OR keep user inside the `(root)` and show the Modal to create the first store.
+
+```tsx
+  // Fetch the first active store user has in database
+  const store = await prismadb.store.findFirst({
+    where: {
+      userId
+    }
+  });
+
+  // If store exists, redirect to dashboard's [storeId] route
+  if (store) {
+    redirect(`/${store.id}`);
+  }
+
+  // Just render out children if not redirected
+  return (
+    <>
+      {children}
+    </>
+  )
+```
+
+This redirects to the `(dashboard)`'s `[storeId]` route, inside we can see in the `layout.tsx`
+
+```tsx
+  // If user IS logged-in, then fetch the store
+  const store = await prismadb.store.findFirst({
+    where: {
+      id: params.storeId,
+      userId
+    }
+  });
+
+  // Check if store does not exist, redirect to home-page
+  if (!store) {
+    redirect('/');
+  }
+
+  return (
+    <div>
+      <nav>Navbar</nav>
+      {children}
+    </div>
+  )
+```
+
+It confirms again that `storeId` exists in combination to the currently logged-in user. 
+
+If it doesn't exist then it will return to the root or home page.
+
+If it does exist then it is going to render the `Navbar` and the `children`.
