@@ -8,6 +8,8 @@ This project consists of two parts: 1) E-commerce store front web application & 
 
 These will also include the API Calls.
 
+## Technologies used
+
 The technologies I plan to use:
 
 - TypeScript
@@ -2401,13 +2403,14 @@ WE want to check if the the user is logged-in. We authenticate with Clerk and ge
 
 Then check if `userId` does not exist, which we then redirect to the Sign-In page. But if we do have `userId`, then we can fetch the store to see if it exists.
 
-
-<!-- TODO:  -->
 ```tsx
 // Global Imports
-import { auth } from '@clerk/nextjs';
 import { redirect } from "next/navigation";
 import React from 'react';
+
+// Local Imports
+import prismadb from '@/lib/prismadb';
+import { auth } from '@clerk/nextjs';
 
 export default async function DashboardLayout({
   children,
@@ -2446,3 +2449,60 @@ export default async function DashboardLayout({
   )
 }
 ```
+
+Inside `[storeId]`, create a new Route group and a file: `(routes)/page.tsx`.
+
+```tsx
+import React from 'react';
+
+export default function DashboardPage() {
+  return (
+    <div>This is a Dashboard</div>
+  )
+}
+```
+
+So far the `Dashboard` file structure:
+
+- (dashboard)
+  |- [storeId]
+    |- layout.tsx
+    |- (routes)
+      |- page.tsx
+
+Next modify the layout of the `(root)`, which we have to make first: `layout.tsx`
+
+```tsx
+import React from 'react';
+
+export default async function SetupLayout({
+  children
+}: {
+  children: React.ReactNode;
+}) {
+  
+  
+  return (
+    <div>layout</div>
+  )
+}
+```
+
+- It has `children`, a `React.ReactNode` as params
+
+Next we extract `userId` with Clerk's `auth()`, and redirect to sign-in page if it doesn't exist.
+
+```tsx
+  // Check if user is logged-in
+  // Authenticate userId with Clerk
+  const { userId } = auth();
+
+  // If userId does not exist, redirect to sign-in
+  if(!userId) {
+    redirect('/sign-in');
+  }
+```
+
+So now we need to check the first active store our user has. In root layout, we do not have a `storeId` so there is no specific store we need to load. WE just need to attempt to load the first store. 
+
+That is how we are going to check whether we re-direct the user to `(dashboard)` routes OR keep user inside the `(root)` and show the Modal to create the first store.
