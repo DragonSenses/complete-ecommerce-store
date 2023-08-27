@@ -2594,3 +2594,83 @@ export default function SetupPage() {
 }
 ```
 
+### Tracking the flow of the project
+
+Run the project
+
+```sh
+npm run dev
+```
+
+Assuming we are logged in, we can see the Navbar and Dashboard. WE can see the URL has our exact `storeId`.
+
+Let's track the flow starting from `/app` folder.
+
+1. `/app` > `layout.tsx`
+
+This loads the providers, metadata, global css, and renders the `children`.
+
+By default, since we did not define any routes we just typed `localhost:3000` then the default route activated was `/(root)`
+
+2. Default route: `/(root)` > `layout.tsx`
+
+WE checked for currently active user in `layout.tsx`. If user is logged-in, then check if they have any stores created.
+
+```tsx
+  // Check if user is logged-in
+  // Authenticate userId with Clerk
+  const { userId } = auth();
+
+  // If userId does not exist, redirect to sign-in
+  if (!userId) {
+    redirect('/sign-in');
+  }
+
+  // Fetch the first active store user has in database
+  const store = await prismadb.store.findFirst({
+    where: {
+      userId
+    }
+  });
+
+  // If store exists, redirect to dashboard's [storeId] route
+  if (store) {
+    redirect(`/${store.id}`);
+  }
+```
+
+If a store exists, we redirect them to the route with `store.id` which is in the `(dashboard)`.
+
+3. Redirected to `(dashboard)` > `[storeId]` > `layout.tsx`
+
+Now we attempt to load the `store` with an id that was passed from the `redirect` of the `(root)` folder (in step 2). We use `id` in combination with `userId` to confirm the store's existence.
+
+```tsx
+// If user IS logged-in, then fetch the store
+  const store = await prismadb.store.findFirst({
+    where: {
+      id: params.storeId,
+      userId
+    }
+  });
+
+  // Check if store does not exist, redirect to home-page
+  if (!store) {
+    redirect('/');
+  }
+
+  return (
+    <div>
+      <nav>Navbar</nav>
+      {children}
+    </div>
+  )
+  ```
+
+  So then we render `Navbar` and `{children}`.
+
+4. Render the `(dashboard)` `children`
+
+What is `{children}`?
+
+We are in `(dashboard)/[storeId]`
