@@ -2712,3 +2712,50 @@ npx primsa generate
 ```sh
 npx primsa db push
 ```
+
+Now we should be able to be at the Create Store Modal once again @ `localhost:3000`.
+
+## Redirect to Dashboard when creating a new store
+
+Currently, when creating a new store through the Modal it does not redirect to the Dashboard.
+
+Let's fix that.
+
+Inside `/app/components/modals/store-modal.tsx` we can check our submit handler:
+
+```tsx
+  // Define a submit handler
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // Do something with the form values.
+    // This will be type-safe and validated.
+    console.log(values);
+    
+    try {
+      setLoading(true);
+
+      // Create store via our API
+      const response = await axios.post('/api/stores', values);
+
+      // Print out data
+      console.log(response.data);
+
+      // Successful toast notifcation
+      toast.success('Store successfully created!');
+    } catch(error) {
+      console.log(error);
+      // Error toast notification
+      toast.error('Something went wrong...');
+    } finally {
+      setLoading(false);
+    }
+  }
+```
+
+When we call our API to create our store, the `response` holds our newly created `storeId`.
+
+Our goal is to redirect the user to the `(dashboard)/[storeId]` and user can see the actual Dashboard `/(routes)/page.tsx`.
+
+We can remove the `toast.success()` because we will immediately redirect the user.
+
+So how do we navigate the user?
+
