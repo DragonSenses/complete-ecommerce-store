@@ -2673,4 +2673,42 @@ Now we attempt to load the `store` with an id that was passed from the `redirect
 
 What is `{children}`?
 
-We are in `(dashboard)/[storeId]`
+We are in `(dashboard)/[storeId]` the `children` is in `(dashboard)/[storeId]/(routes)/page.tsx`, which currently contains:
+
+```tsx
+import React from 'react';
+
+export default function DashboardPage() {
+  return (
+    <div>This is a Dashboard</div>
+  )
+}
+```
+
+Our project's system ensures that there is at least one store user has created before showing `Navbar`, statistics, products, tabs, etc.
+
+## Resetting Database using `prisma`
+
+In the directory `/ecommerce-admin`, in the terminal:
+
+1. Delete the DB
+
+```sh
+npx prisma migrate reset
+```
+
+This deletes the entire database. It prompts a yes or no.
+
+After reset is successful:
+
+2. Generate prisma
+
+```sh
+npx primsa generate
+```
+
+3. Push prisma db
+
+```sh
+npx primsa db push
+```
