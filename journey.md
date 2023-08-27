@@ -2759,3 +2759,33 @@ We can remove the `toast.success()` because we will immediately redirect the use
 
 So how do we navigate the user?
 
+[MDN - assign()](https://developer.mozilla.org/en-US/docs/Web/API/Location/assign)
+
+```tsx
+window.location.assign(`/${response.data.id}`);
+```
+
+Why are we using `window.location.assign()` instead of `Next` router / navigation?
+
+**Because this will do a complete refresh on our page.**
+
+```tsx
+// ...
+    // Create store via our API
+    const response = await axios.post('/api/stores', values);
+
+    // redirect the user to the dashboard
+    window.location.assign(`/${response.data.id}`);
+```
+
+The store that's just been newly created from the `response` after the refresh will be loaded in the database, 100% of the time as of now.
+
+After testing, the issue with Next router was that there was specific cases where:
+
+- database was not ready
+- the data was not in sync
+
+And the modal was kept open in the Dashboard. A UI error like that creates a poor user experience.
+
+So for now `window.location.assign()` is the way to go.
+
