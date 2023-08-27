@@ -57,8 +57,8 @@ export default function StoreModal() {
       // Print out data
       console.log(response.data);
 
-      // Successful toast notifcation
-      toast.success('Store successfully created!');
+      // redirect the user to the dashboard
+      window.location.assign(`/${response.data.id}`);
     } catch(error) {
       console.log(error);
       // Error toast notification
