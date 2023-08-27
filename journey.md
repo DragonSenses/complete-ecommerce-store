@@ -2789,3 +2789,14 @@ And the modal was kept open in the Dashboard. A UI error like that creates a poo
 
 So for now `window.location.assign()` is the way to go.
 
+#### Further testing
+
+Now when we create a store through the modal we should be redirected to our prototype Dashboard.
+
+Now we still stay on the same page that includes the `storeId` in the URL, in these cases:
+
+- Refresh the page
+- Remove the `storeId` from URL
+- Re-run the project
+- Re-open current browser or open in different browser
+
