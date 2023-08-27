@@ -2470,6 +2470,8 @@ So far the `Dashboard` file structure:
     |- (routes)
       |- page.tsx
 
+### Create the `(root)` layout
+
 Next modify the layout of the `(root)`, which we have to make first: `layout.tsx`
 
 ```tsx
@@ -2557,3 +2559,13 @@ It confirms again that `storeId` exists in combination to the currently logged-i
 If it doesn't exist then it will return to the root or home page.
 
 If it does exist then it is going to render the `Navbar` and the `children`.
+
+### Organizing the project
+
+Create a folder named `(routes)` inside `(root)`, and move the `page.tsx` from `(root)` to `/(root)/(routes)`.
+
+- Update imports if necessary
+- If you have an issue with `.next` folder, then either re-save the cached file or delete the `.next` folder entirely so that it can be re-made from scratch with `npm run dev`
+
+Now also change the `SetupPage` in `page.tsx` by returning `null` instead of some `div`. We only want to use `SetupPage` to trigger the modal.
+
