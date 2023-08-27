@@ -2800,3 +2800,16 @@ Now we still stay on the same page that includes the `storeId` in the URL, in th
 - Re-run the project
 - Re-open current browser or open in different browser
 
+Let's test if we can still access the `storeId` through the Dashboard page, so in `page.tsx` in `(routes)`
+
+```tsx
+import React from 'react';
+
+export default function DashboardPage() {
+  return (
+    <div>This is a Dashboard</div>
+  )
+}
+```
+
+Create interface, destructure params, make it async, attempt to load store
