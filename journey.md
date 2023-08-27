@@ -2569,3 +2569,28 @@ Create a folder named `(routes)` inside `(root)`, and move the `page.tsx` from `
 
 Now also change the `SetupPage` in `page.tsx` by returning `null` instead of some `div`. We only want to use `SetupPage` to trigger the modal.
 
+`/app/(root)/(routes)/page.tsx`
+
+```tsx
+"use client";
+
+// Global Imports
+import { useEffect } from "react";
+
+// Local Imports
+import { useStoreModal } from "@/hooks/use-store-modal";
+
+export default function SetupPage() {
+  const onOpen = useStoreModal((state) => state.onOpen);
+  const isOpen = useStoreModal((state) => state.isOpen);
+
+  useEffect(() => {
+    if(!isOpen){
+      onOpen();
+    }
+  }, [isOpen, onOpen]);
+
+  return null;
+}
+```
+
