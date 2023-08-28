@@ -2815,8 +2815,8 @@ export default function DashboardPage() {
 What I want to do is: 
 
 - Create interface
+- make it `async`
 - destructure params
-- make it async
 - attempt to load store.
 
 Let's convert it to React Arrow Function Component, then work on the above
@@ -2839,4 +2839,35 @@ const DashboardPage: React.FC<DashboardPageProps> = async () => {
 export default DashboardPage;
 ```
 
-Next we have to destructure the params
+Next we have to destructure the params. Then attempt to load store, then render the `store.name`.
+
+```tsx
+// Global Imports
+import React from 'react';
+
+// Local Imports
+import prismadb from '@/lib/prismadb';
+
+interface DashboardPageProps {
+  params: { storeId: string }
+};
+
+const DashboardPage: React.FC<DashboardPageProps> = async ({
+  params
+}) => {
+
+  const store = await prismadb.store.findFirst({
+    where: {
+      id: params.storeId
+    }
+  });
+
+  return (
+    <div>
+      Active Store is: {store?.name}
+    </div>
+  );
+}
+
+export default DashboardPage;
+```
