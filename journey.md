@@ -2812,4 +2812,31 @@ export default function DashboardPage() {
 }
 ```
 
-Create interface, destructure params, make it async, attempt to load store
+What I want to do is: 
+
+- Create interface
+- destructure params
+- make it async
+- attempt to load store.
+
+Let's convert it to React Arrow Function Component, then work on the above
+
+```tsx
+import React from 'react';
+
+interface DashboardPageProps {
+  params: { storeId: string }
+};
+
+const DashboardPage: React.FC<DashboardPageProps> = async () => {
+  return (
+    <div>
+      This is a Dashboard!
+    </div>
+  );
+}
+
+export default DashboardPage;
+```
+
+Next we have to destructure the params
