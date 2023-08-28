@@ -2871,3 +2871,18 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
 
 export default DashboardPage;
 ```
+
+We should now see in our localhost:3000 page that the active store's name is rendered.
+
+## Navigation Bar
+
+Next step is to make a navbar which holds our Store switcher. Which allows us to change our active `storeId` with other stores created. This should also trigger our modal, which is why we created our `ModalProvider` and zustand store so we can trigger them from multiple places at once.
+
+Create `Navbar.tsx` inside `/components` folder. It is not in the `ui` folder because it is not a re-usable component, it is just a component used for one layout. It does not match the project structure if it was inside `/components/ui`.
+
+Create a React functional component.
+
+```tsx
+```
+
+Navigate to `(dashboard)/[storeId]/layout.tsx`. 
