@@ -2939,4 +2939,14 @@ export default function Navbar() {
 
 Inside the navbar we will have the store switcher and routes.
 
-TODO: Add UserButton from Clerk
+Then under `routes`, we can create a `div` which will be placed all the way to the right using `ml-auto` by giving it a margin to the left. Give all the items inside some space, add flex and center it.
+
+Then add a `UserButton` component from `Clerk`, with the `afterSignOutUrl` prop set to the home page.
+
+```tsx
+import { UserButton } from '@clerk/nextjs'
+// ...
+        <div className="ml-auto flex items-center space-x-4">
+          <UserButton afterSignOutUrl="/" />
+        </div>
+```
