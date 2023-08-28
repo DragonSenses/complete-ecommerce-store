@@ -2883,6 +2883,35 @@ Create `Navbar.tsx` inside `/components` folder. It is not in the `ui` folder be
 Create a React functional component.
 
 ```tsx
+import React from 'react'
+
+export default function Navbar() {
+  return (
+    <nav>navbar</nav>
+  )
+}
 ```
 
-Navigate to `(dashboard)/[storeId]/layout.tsx`. 
+Navigate to `(dashboard)/[storeId]/layout.tsx`, and in the `return` statement instead of:
+
+```tsx
+  return (
+    <div>
+      <nav>Navbar</nav>
+      {children}
+    </div>
+  )
+```
+
+Render the navbar:
+
+```tsx
+import Navbar from '@/components/navbar';
+// ...
+  return (
+    <div>
+      <Navbar />
+      {children}
+    </div>
+  )
+```
