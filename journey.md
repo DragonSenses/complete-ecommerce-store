@@ -2887,7 +2887,7 @@ import React from 'react'
 
 export default function Navbar() {
   return (
-    <nav>navbar</nav>
+    <div>navbar</div>
   )
 }
 ```
@@ -2915,3 +2915,28 @@ import Navbar from '@/components/navbar';
     </div>
   )
 ```
+
+Now let's start developing our component Navbar and give it some styles.
+
+```tsx
+import React from 'react'
+
+export default function Navbar() {
+  return (
+    <div className="border-b">
+      <div className="flex h-16 items-center px-4">
+        <div className="store-switcher">
+          This will be a <b>Store Switcher</b>
+        </div>
+        <div className="routes">
+          This will be the <b>routes</b>
+        </div>
+      </div>
+    </div>
+  )
+}
+```
+
+Inside the navbar we will have the store switcher and routes.
+
+TODO: Add UserButton from Clerk
