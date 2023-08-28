@@ -5,10 +5,12 @@ interface DashboardPageProps {
 };
 
 // TODO: Arrow function, load store using prismadb, 
-export default function DashboardPage: React.FC<DashboardPageProps> = async({
-  params
-})() {
+const DashboardPage: React.FC<DashboardPageProps> = async () => {
   return (
-    <div>This is a Dashboard</div>
-  )
+    <div>
+      This is a Dashboard!
+    </div>
+  );
 }
+
+export default DashboardPage;
