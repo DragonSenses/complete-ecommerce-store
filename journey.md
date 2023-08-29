@@ -2950,3 +2950,19 @@ import { UserButton } from '@clerk/nextjs'
           <UserButton afterSignOutUrl="/" />
         </div>
 ```
+
+### Create `MainNav` component
+
+Create client react component `MainNav` in `/components`
+
+```tsx
+"use client"
+
+import React from 'react';
+
+export default function MainNav() {
+  return (
+    <div>main-nav</div>
+  )
+}
+```
