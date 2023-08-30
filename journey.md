@@ -3074,3 +3074,37 @@ Regardless of whether the `MainNav` is inside the `/components` folder, where it
 ```
 
 When we click on the link, we can ensure that the settings that are loaded are only going to be for that specific active store.
+
+Next specify the `label` property as `Settings`, and `active` prop.
+
+```tsx
+  const routes = [
+    {
+      href: `/${params.storeId}/settings`,
+      label: 'Settings',
+      active: pathname === `/${params.storeId}/settings`,
+    },
+  ];
+```
+
+Now we can map out each link in the `return` statement. Import `Link` component from `next`. Then map out the routes, for every route create a `Link` with the label as the child. Populate the props: `key`, `href` and `className`.
+
+```tsx
+import Link from 'next/link';
+// ...
+  return (
+    <nav
+      className={cn("flex items-center space-x-4 lg:space-x-6", className)}
+    >
+      {routes.map((route) => (
+        <Link
+          key={route.href}
+          href={route.href}
+          className={cn("")}
+        >
+          {route.label}
+        </Link>
+      ))}
+    </nav>
+  )
+```
