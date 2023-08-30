@@ -3182,3 +3182,26 @@ export default function Navbar() {
   )
 }
 ```
+
+#### Adding props to StoreSwitcher
+
+We have to create an `interface StoreSwitcherProps` which will extend `PopoverTriggerProps`  (from `shadcn/ui` Popover component). Do not import the one from `radix/ui`, as we will create our own. For now let's create the type `PopoverTriggerProps` to remove the warning.
+
+```tsx
+import React from 'react';
+
+import { PopoverTrigger } from '@/components/ui/popover';
+
+type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>
+
+interface StoreSwitcherProps extends PopoverTriggerProps {
+}
+
+export default function StoreSwitcher() {
+  return (
+    <div>StoreSwitcher</div>
+  )
+}
+```
+
+With the template added we can now work on the interface. We can add the items we want rendered inside our store switcher (i.e., an array of objects, and those objects will be our stores)
