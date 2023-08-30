@@ -3271,5 +3271,44 @@ We just need the `name` and `id` to be used in `Popover` and `Command` component
 Now we need to find which store is the currently active store. From all the stores the user has, which ones do we show as selected in the `StoreSwitcher`. We call this `currentStore` and use `find()` on `formattedItems`:
 
 ```tsx
-  const currentStore = formattedItems.find((item => item.value === params.storeId));
+  const currentStore = formattedItems.find((item) => item.value === params.storeId);
 ```
+
+Let's break the above function down:
+
+- Iterate over `formattedItems`
+- Pick a specific item
+- Compare specific item's value (i.e., `id` of the Store) to the currently active id (which is found in our URL)
+
+#### Implement the function to Switch Store
+
+Now let's add the function that triggers when we click on a different store.
+
+First we need a state variable named `open` that controls the `Popover` component.
+
+```tsx
+import React, { useState } from 'react';
+// ...
+  const [open, setOpen] = useState(false);
+```
+
+Now onto the function. It will take a "store", which is a type of "formattedItem". We will just open up an object that has both `value` and `label`, where both are type of strings.
+
+```tsx
+const onStoreSelect = (store: { value: string, label: string}) => {}
+```
+So how do we implement? Well once the user clicks on a new store, we want to do two things:
+
+1. Close the StoreSwitcher (drop down)
+2. Redirect the route to `/(dashboard)/[storeId]`, where `storeId` is the new one we selected from the StoreSwitcher
+
+So inside set the `open` state variable as `false`. Then push the route to the `store.value` route, since that contains the `storeId`.
+
+```tsx
+const onStoreSelect = (store: { value: string, label: string}) => {
+  setOpen(false);
+  router.push(`/${store.value}`);
+}
+```
+
+TODO: Create/work on Popover. Work on the return element.
