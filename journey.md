@@ -2997,3 +2997,41 @@ export default function Navbar() {
   )
 }
 ```
+
+Let's try to style the `MainNav`
+
+```tsx
+<MainNav className="mx-6"/>
+```
+
+The styles won't render because we have not passed the `className` prop to our element that we returned inside the `MainNav`.
+
+We can add the `className` to our element. We are going to us `cn` function from our `/lib` folder. `cn` allows us to merge multiple classnames. We can merge default classnames and the `className` we pass in.
+
+```tsx
+"use client"
+
+// Global Imports
+import React from 'react';
+
+// Local Imports
+import { cn } from '@/lib/utils';
+
+export default function MainNav({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLElement>) {
+  return (
+    <nav
+      className={cn("flex items-center space-x-4 lg:space-x-6", className)}
+    >
+
+    </nav>
+  )
+}
+```
+
+### Put routes inside `MainNav`
+
+Now we want to iterate over the routes inside the `nav`. But we don't have any routes yet.
+
