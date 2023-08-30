@@ -3126,3 +3126,59 @@ Let's add some styles, which we also merge with other classnames using `cn()`. O
   {route.label}
 </Link>
 ```
+
+As of now, inside the project site we can see the `Settings` rendered after the store switcher in the main nav. Clicking on it will lead to 404 page since the route does not exist yet.
+
+### Creating Store Switcher Component
+
+What our Store Switcher component should allow the user to search and select between active Stores. 
+
+[shadcn/ui - Combobox](https://ui.shadcn.com/docs/components/combobox) seems to fulfill our need here.
+
+> Autocomplete input and command palette with a list of suggestions.
+
+It is a drop down menu that clearly shows what is the current active store.
+
+Interesting to note that this is one of the components in `shadcn/ui` that *cannot* be installed individually. It is a composition of `Popover` and `Command` components.
+
+Let's go ahead and install them:
+
+```sh
+npx shadcn-ui@latest add popover
+```
+
+```sh
+npx shadcn-ui@latest add command
+```
+
+Create `StoreSwitcher.tsx` file in `/components`
+
+```tsx
+import React from 'react';
+
+export default function StoreSwitcher() {
+  return (
+    <div>StoreSwitcher</div>
+  )
+}
+```
+
+Then in `Navbar.tsx`, replace the store switcher `div`:
+
+```tsx
+import StoreSwitcher from '@/components/StoreSwitcher'
+
+export default function Navbar() {
+  return (
+    <div className="border-b">
+      <div className="flex h-16 items-center px-4">
+        <StoreSwitcher />
+        <MainNav className="mx-6"/>
+        <div className="ml-auto flex items-center space-x-4">
+          <UserButton afterSignOutUrl="/" />
+        </div>
+      </div>
+    </div>
+  )
+}
+```
