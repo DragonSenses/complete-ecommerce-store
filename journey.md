@@ -3086,6 +3086,7 @@ Next specify the `label` property as `Settings`, and `active` prop.
     },
   ];
 ```
+#### Map out the routes
 
 Now we can map out each link in the `return` statement. Import `Link` component from `next`. Then map out the routes, for every route create a `Link` with the label as the child. Populate the props: `key`, `href` and `className`.
 
@@ -3107,4 +3108,21 @@ import Link from 'next/link';
       ))}
     </nav>
   )
+```
+
+#### Style the Link
+
+Let's add some styles, which we also merge with other classnames using `cn()`. One thing to note is that we can add a conditional as the second parameter to `cn()`, going to use that to decide the text color.
+
+```tsx
+<Link
+  key={route.href}
+  href={route.href}
+  className={cn(
+    "text-sm font-medium transition-colors hover:text-primary",
+    route.active ? "text-black dark:text-white" : "text-muted-foreground"
+  )}
+>
+  {route.label}
+</Link>
 ```
