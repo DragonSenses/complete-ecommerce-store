@@ -3185,9 +3185,13 @@ export default function Navbar() {
 
 #### Adding props to StoreSwitcher
 
+Navigate back to `StoreSwitcher.tsx` and mark it as a client component by putting the `"use client"` directive at the top.
+
 We have to create an `interface StoreSwitcherProps` which will extend `PopoverTriggerProps`  (from `shadcn/ui` Popover component). Do not import the one from `radix/ui`, as we will create our own. For now let's create the type `PopoverTriggerProps` to remove the warning.
 
 ```tsx
+"use client";
+
 import React from 'react';
 
 import { PopoverTrigger } from '@/components/ui/popover';
@@ -3205,3 +3209,29 @@ export default function StoreSwitcher() {
 ```
 
 With the template added we can now work on the interface. We can add the items we want rendered inside our store switcher (i.e., an array of objects, and those objects will be our stores)
+
+```tsx
+import { Store } from '@prisma/client';
+
+interface StoreSwitcherProps extends PopoverTriggerProps {
+  items: Store[];
+};
+```
+
+Now let's go inside the parenthesis of the `StoreSwitcher()` function, and extract the following:
+
+- `className`
+- `items = []`, this is given a default value of empty array so we can safely iterate over even if the items have not been loaded
+- Then give a type to this object as `StoreSwitcherProps`
+
+```tsx
+export default function StoreSwitcher({
+  className,
+  // Default value of empty array to safely iterate over even if items are not loaded
+  items = []
+}: StoreSwitcherProps) {
+  return (
+    <div>StoreSwitcher</div>
+  )
+}
+```
