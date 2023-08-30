@@ -3235,3 +3235,41 @@ export default function StoreSwitcher({
   )
 }
 ```
+
+Now let's define all the constants, variables and items we need to be able to add to the element we return.
+
+```tsx
+import { useParams, useRouter } from 'next/navigation';
+
+import { useStoreModal } from '@/hooks/use-store-modal';
+
+export default function StoreSwitcher({
+  className,
+  // Default value of empty array to safely iterate over even if items are not loaded
+  items = [] 
+}: StoreSwitcherProps) {
+  // Constants
+  const storeModal = useStoreModal();
+  const params = useParams();
+  const router = useRouter();
+
+```
+
+Now we need to format our items. We need to iterate over them. Map each item out to an immediate object with `label` = to `item.name` and value = to `item.id`. 
+
+Recall that in prisma we have the `Store` model with `name`, `id`, `createdAt`, `updatedAt`, etc.
+
+```tsx
+  const formattedItems = items.map((item) => ({
+    label: item.name,
+    value: item.id
+  }));
+```
+
+We just need the `name` and `id` to be used in `Popover` and `Command` components.
+
+Now we need to find which store is the currently active store. From all the stores the user has, which ones do we show as selected in the `StoreSwitcher`. We call this `currentStore` and use `find()` on `formattedItems`:
+
+```tsx
+  const currentStore = formattedItems.find((item => item.value === params.storeId));
+```
