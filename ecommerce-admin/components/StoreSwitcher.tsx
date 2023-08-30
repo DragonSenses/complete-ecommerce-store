@@ -1,7 +1,7 @@
 "use client";
 
 // Global Imports
-import React from 'react';
+import React, { useState } from 'react';
 import { Store } from '@prisma/client';
 import { useParams, useRouter } from 'next/navigation';
 
@@ -20,7 +20,7 @@ export default function StoreSwitcher({
   // Default value of empty array to safely iterate over even if items are not loaded
   items = [] 
 }: StoreSwitcherProps) {
-  
+
   const storeModal = useStoreModal();
   const params = useParams();
   const router = useRouter();
@@ -30,7 +30,17 @@ export default function StoreSwitcher({
     value: item.id
   }));
 
-  const currentStore = formattedItems.find((item => item.value === params.storeId));
+  // Currently selected store's id is the same as the id from the URL
+  const currentStore = formattedItems.find((item) => item.value === params.storeId);
+
+  // State variable that controls Popover
+  const [open, setOpen] = useState(false);
+
+  // Store selector function which triggers when we click on a different store
+  const onStoreSelect = (store: { value: string, label: string}) => {
+    setOpen(false);
+    router.push(`/${store.value}`);
+  }
 
   return (
     <div>StoreSwitcher</div>
