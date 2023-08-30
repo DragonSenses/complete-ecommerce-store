@@ -3035,3 +3035,42 @@ export default function MainNav({
 
 Now we want to iterate over the routes inside the `nav`. But we don't have any routes yet.
 
+Inside the `MainNav` but before the `return`, let's create variables we need for the `routes`. We will use `usePathname` and `useParams` from `Next/Navigation`.
+
+```tsx
+import { useParams, usePathname } from 'next/navigation';
+// ...
+  const pathname = usePathname();
+  const params = useParams();
+
+  const routes = [];
+```
+
+Now inside the `routes` we can create an object that will use `pathname` and `params`.
+
+Regarding the object inside the `routes` we want to create the settings navigation first because:
+- We have the store modal in our database
+- This means we can create a form in the settings
+- Which will update & remove the very same store
+
+Let's write `href` with template string of `params.storeId`. We are using navigation bar in the dashboard layout, which has the `storeId`. 
+
+```tsx
+  const routes = [
+    {
+      href: `/${params.storeId}`
+    }
+  ];
+```
+
+Regardless of whether the `MainNav` is inside the `/components` folder, where its used we'll define whether we can use `storeId` in the parameters. We need to append `settings` to the special object in `href`.
+
+```tsx
+  const routes = [
+    {
+      href: `/${params.storeId}/settings`
+    }
+  ];
+```
+
+When we click on the link, we can ensure that the settings that are loaded are only going to be for that specific active store.
