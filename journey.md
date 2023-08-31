@@ -3449,3 +3449,68 @@ import {
   )
 }
 ```
+
+##### Dynamically styled `Check` icon component
+
+Now notice that `Check` component is a self-closing tag. It is an icon form `lucide-react`, and we want to dynamically style it. Use `cn()` to do this, by merging classNames we give by default and conditional styles when the currentStore is selected.
+
+In short, we want a Check icon next to the current store selected in the Command menu.
+
+```tsx
+<Check 
+  className={cn(
+    "ml-auto h-4 w-4",
+    currentStore?.value === store.value
+      ? "opacity-100"
+      : "opacity-0"
+  )}
+/>
+```
+
+##### Adding another `CommandList` component &  new group of Commands 
+
+Add a `<CommandSeparator />` component after the `CommandList`, and create another `CommandList`. This time this will contain a `CommandItem` button that will trigger the modal to create new stores.
+
+Import `PlusCircle` icon from `lucide-react` to accompany the text.
+
+```tsx
+          </CommandList>
+          <CommandSeparator />
+          <CommandList>
+            <CommandGroup>
+              <CommandItem
+                onSelect={() => {
+                  setOpen(false);
+                  storeModal.onOpen();
+                }}
+              >
+                <PlusCircle className="mr-2 h-5 w-5" />
+                Create Store
+              </CommandItem>
+            </CommandGroup>
+          </CommandList>
+```
+
+Now we can check our app's command menu and see at the bottom of the menu we have a "Create Store" text we can click which triggers the `storeModal`. This will actually create new stores through zustand state management.
+
+### TODO: Issue, replace Current Store text with actual name of store by passing data down
+
+- We have this code:
+
+```tsx
+export default function StoreSwitcher({
+  className,
+  // Default value of empty array to safely iterate over even if items are not loaded
+  items = [] 
+}: StoreSwitcherProps) {
+```
+
+Currently `items` is empty array and the `Navbar` is what renders `StoreSwitcher`. Yet we have the error:
+
+```sh
+Property 'items' is missing in type '{}' but required in type 'StoreSwitcherProps'.ts(2741)
+```
+
+We need to pass something down as prop. 
+
+- Need to fetch stores
