@@ -3398,3 +3398,54 @@ Accessibility features:
 
 - **`className`**: This prop specifies one or more CSS classes to apply to the button. It will apply two classes: `w-[200px]` and `justify-between`. The first class sets the width of the button to 200 pixels, while the second class aligns its contents to be evenly distributed along its horizontal axis. Then it will merge these classNames together with `className`
 
+#### Create `PopoverContent`
+
+So far we are working with a [Popover](https://ui.shadcn.com/docs/components/popover) component - which is a portal, triggered by a button.
+
+After completing the `PopoverTrigger`, we can now work on the `PopoverContent`.
+
+Inside of the `PopoverContent` component will be a `Command` component from `shadcn/ui`.
+
+[shadcn/ui - Command](https://ui.shadcn.com/docs/components/command) is a fast, composable, unstyled command menu for React. This will contain our user's stores, which are stored in `formattedItems`.
+
+Check out all the items we need to import to implement our `Command`
+
+```tsx
+import { Check, ChevronsUpDown, Store as StoreIcon} from 'lucide-react';
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
+
+// ...
+      </PopoverTrigger>
+      <PopoverContent className="w-[200px] p-0">
+        <Command>
+          <CommandList>
+            <CommandInput placeholder="Search store..." />
+            <CommandEmpty>No store found.</CommandEmpty>
+            <CommandGroup heading="Stores">
+              {formattedItems.map((store) => (
+                <CommandItem
+                  key={store.value}
+                  onSelect={() => onStoreSelect(store)}
+                  className="text-sm"
+                >
+                  <StoreIcon className="mr-2 h-4 w-4" />
+                  {store.label}
+                  <Check />
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  )
+}
+```
