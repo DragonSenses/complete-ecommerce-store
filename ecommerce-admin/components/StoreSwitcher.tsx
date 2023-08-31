@@ -3,12 +3,13 @@
 // Global Imports
 import React, { useState } from 'react';
 import { Store } from '@prisma/client';
-import { ChevronsUpDown, Store as StoreIcon} from 'lucide-react';
+import { Check, ChevronsUpDown, Store as StoreIcon} from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 
 // Local Imports
 import { Button } from '@/components/ui/button';
-import { Popover, PopoverTrigger } from '@/components/ui/popover';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useStoreModal } from '@/hooks/use-store-modal';
 import { cn } from '@/lib/utils';
 
@@ -61,6 +62,27 @@ export default function StoreSwitcher({
           <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
+      <PopoverContent className="w-[200px] p-0">
+        <Command>
+          <CommandList>
+            <CommandInput placeholder="Search store..." />
+            <CommandEmpty>No store found.</CommandEmpty>
+            <CommandGroup heading="Stores">
+              {formattedItems.map((store) => (
+                <CommandItem
+                  key={store.value}
+                  onSelect={() => onStoreSelect(store)}
+                  className="text-sm"
+                >
+                  <StoreIcon className="mr-2 h-4 w-4" />
+                  {store.label}
+                  <Check />
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
     </Popover>
   )
 }
