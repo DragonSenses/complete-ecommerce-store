@@ -3,6 +3,7 @@
 // Global Imports
 import React, { useState } from 'react';
 import { Store } from '@prisma/client';
+import { Store as StoreIcon} from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 
 // Local Imports
@@ -47,7 +48,7 @@ export default function StoreSwitcher({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button>
-          
+          <StoreIcon />
         </Button>
       </PopoverTrigger>
     </Popover>
