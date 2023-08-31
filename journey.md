@@ -3340,3 +3340,24 @@ import { Button } from '@/components/ui/button';
 }
 ```
 
+##### Issue: Import name conflict - `Store` name already exists from another package
+
+Next we want to import a Store icon from `lucide-react` but its name is `Store` and we already have a `Store` import from `@prisma/client`. How do we fix this conflict?
+
+**Solution:** Use `as` import syntax to rename the import. See [MDN - import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) and [javascript.info - import "as"](https://javascript.info/import-export#import-as).
+
+```tsx
+import { Store } from '@prisma/client';
+import { Store as StoreIcon} from 'lucide-react';
+// ...
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button>
+          <StoreIcon />
+        </Button>
+      </PopoverTrigger>
+    </Popover>
+  )
+```
+
