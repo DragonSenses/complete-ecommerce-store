@@ -3361,3 +3361,40 @@ import { Store as StoreIcon} from 'lucide-react';
   )
 ```
 
+#### Finishing the `PopoverTrigger`
+
+Styling the `Button`, `StoreIcon` and `ChevronsUpDown`:
+
+```tsx
+import { cn } from '@/lib/utils';
+
+<Button
+  variant="outline"
+  size="sm"
+  role="combobox"
+  aria-expanded={open}
+  aria-label="Select a store"
+  className={cn("w-[200px] justify-between", className)}
+>
+  <StoreIcon className="mr-2 h-4 w-4" />
+  Current Store
+  <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+</Button>
+```
+
+Explanation:
+
+- **`variant`**: This prop specifies the visual style of the button. In this case, it is set to `"outline"`, which means that the button will have an outline border instead of a solid one.
+
+- **`size`**: This prop specifies the size of the button. In this case, it is set to `"sm"` or small.
+
+- **`role`**: This prop specifies the role of the button in the accessibility tree. In this case, it is set to `"combobox"`, which means that the button is part of a combobox widget.
+
+Accessibility features:
+
+- **`aria-expanded`**: This prop specifies whether the combobox is expanded or not. In this case, its value is set to `{open}`, which means that its value depends on the value of the `open` variable.
+
+- **`aria-label`**: This prop specifies a label for the button that will be read by screen readers. In this case, it is set to `"Select a store"`, which means that when a screen reader encounters this button, it will read out "Select a store".
+
+- **`className`**: This prop specifies one or more CSS classes to apply to the button. It will apply two classes: `w-[200px]` and `justify-between`. The first class sets the width of the button to 200 pixels, while the second class aligns its contents to be evenly distributed along its horizontal axis. Then it will merge these classNames together with `className`
+
