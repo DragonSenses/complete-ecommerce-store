@@ -3311,4 +3311,32 @@ const onStoreSelect = (store: { value: string, label: string}) => {
 }
 ```
 
-TODO: Create/work on Popover. Work on the return element.
+#### Return element for the Store Switcher
+
+Replace the return element with `Popover` component. Make sure to import from `/components` and not radix-ui.
+
+```tsx
+import { Popover, PopoverTrigger } from '@/components/ui/popover';
+// ...
+  return (
+    <Popover></Popover>
+  )
+```
+
+Inside we have `PopoverTrigger` and `Button`:
+
+```tsx
+import { Button } from '@/components/ui/button';
+// ...
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button>
+          
+        </Button>
+      </PopoverTrigger>
+    </Popover>
+  )
+}
+```
+
