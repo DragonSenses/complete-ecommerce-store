@@ -2704,13 +2704,13 @@ After reset is successful:
 2. Generate prisma
 
 ```sh
-npx primsa generate
+npx prisma generate
 ```
 
 3. Push prisma db
 
 ```sh
-npx primsa db push
+npx prisma db push
 ```
 
 Now we should be able to be at the Create Store Modal once again @ `localhost:3000`.
@@ -3598,4 +3598,62 @@ export default async function Navbar() {
     <div className="border-b">
       <div className="flex h-16 items-center px-4">
         <StoreSwitcher items={stores} />
+```
+
+### Testing Navbar and Command Menu
+
+Current Features of the Navbar & Command Menu:
+
+- Current Active store name is rendered on the Command
+- Can search for an existing Store
+- Searching for non-existing store returns the CommandEmpty message
+- Click create store > Create store in Modal > Active store has now changed to new store
+- URL dynamically changes to the `[storeId]` route in the dashboard
+- Can switch between stores through Command
+
+Now we can move on to renaming our store or deleting it through the `Settings`.
+
+#### Troubleshoot - unable to connect to branch *
+
+If you see the following:
+
+```sh
+Error: Schema engine error:
+unavailable: unable to connect to branch *******
+```
+
+Know that this may be due to your database in Planetscale is sleeping, so you must wake it up before you can query it.
+
+See [Planetscale - Sleeping Databases](https://planetscale.com/docs/concepts/database-sleeping#what-is-branch-sleeping)
+
+After waking up your database, you can now run your project again and run these commands:
+
+To reset prisma DB:
+
+1. Delete the DB
+2. Generate prisma
+3. Push prisma db
+
+```sh
+npx prisma migrate reset
+
+npx prisma generate
+
+npx prisma db push
+```
+
+## Settings Form
+
+Navigate to `/app/(dashboard)/(routes)` and create a new folder named `settings`, with `page.tsx` file within.
+
+```tsx
+import React from 'react';
+
+export default function SettingsPage() {
+  return (
+    <div>
+      Settings Page
+    </div>
+  )
+}
 ```
