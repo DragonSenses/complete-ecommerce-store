@@ -1,9 +1,15 @@
-import React from 'react';
+interface SettingsPageProps {
+  params: {
+    storeId: string;
+  }
+};
 
-export default function SettingsPage() {
+function SettingsPage({params}: SettingsPageProps): JSX.Element {
   return (
     <div>
       Settings Page
     </div>
   )
 }
+
+export default SettingsPage
