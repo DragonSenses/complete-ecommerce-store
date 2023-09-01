@@ -20,14 +20,14 @@ export default async function Navbar() {
   // Find All the stores whose userId matches the userId authenticated with Clerk
   const stores = await prismadb.store.findMany({
     where: {
-      userId
-    }
+      userId,
+    },
   })
   
   return (
     <div className="border-b">
       <div className="flex h-16 items-center px-4">
-        <StoreSwitcher />
+        <StoreSwitcher items={stores} />
         <MainNav className="mx-6"/>
         <div className="ml-auto flex items-center space-x-4">
           <UserButton afterSignOutUrl="/" />
