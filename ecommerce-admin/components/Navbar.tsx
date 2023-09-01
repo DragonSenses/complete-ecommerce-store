@@ -1,12 +1,29 @@
 // Global Imports
-import { UserButton } from '@clerk/nextjs'
-import React from 'react'
+import React from 'react';
+import { auth, UserButton } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
 // Local Imports
-import MainNav from '@/components/main-nav'
-import StoreSwitcher from '@/components/StoreSwitcher'
+import MainNav from '@/components/main-nav';
+import StoreSwitcher from '@/components/StoreSwitcher';
+import prismadb from '@/lib/prismadb';
 
-export default function Navbar() {
+export default async function Navbar() {
+  // Authenticate userId with Clerk to check if user is logged-in
+  const { userId } = auth();
+  
+  // If userId does not exist, redirect to sign-in page
+  if (!userId) {
+    redirect("/sign-in");
+  }
+
+  // Find All the stores whose userId matches the userId authenticated with Clerk
+  const stores = await prismadb.store.findMany({
+    where: {
+      userId
+    }
+  })
+  
   return (
     <div className="border-b">
       <div className="flex h-16 items-center px-4">
