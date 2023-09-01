@@ -3493,9 +3493,25 @@ Import `PlusCircle` icon from `lucide-react` to accompany the text.
 
 Now we can check our app's command menu and see at the bottom of the menu we have a "Create Store" text we can click which triggers the `storeModal`. This will actually create new stores through zustand state management.
 
-### TODO: Issue, replace Current Store text with actual name of store by passing data down
+### Fetch all stores that user owns inside `Navbar`
 
-- We have this code:
+Currently, in our `StoreSwitcher` we have the text "Current Store". Instead of this we want to render the actual current store name. We can do this by using the `const currentStore`.
+
+In `StoreSwitcher.tsx`:
+
+```tsx
+          <StoreIcon className="mr-2 h-4 w-4" />
+          Current Store
+```
+
+Is replaced with:
+
+```tsx
+          <StoreIcon className="mr-2 h-4 w-4" />
+          {currentStore?.label}
+```
+
+The issue is that this will be empty, because we have not passed in any store inside the `StoreSwitcher`. We can see that `StoreSwitcher` accepts the `items`:
 
 ```tsx
 export default function StoreSwitcher({
@@ -3505,12 +3521,15 @@ export default function StoreSwitcher({
 }: StoreSwitcherProps) {
 ```
 
-Currently `items` is empty array and the `Navbar` is what renders `StoreSwitcher`. Yet we have the error:
+But in `Navbar` component we have not passed in an `items`. Which yields an error:
 
 ```sh
 Property 'items' is missing in type '{}' but required in type 'StoreSwitcherProps'.ts(2741)
 ```
 
-We need to pass something down as prop. 
+So let's go ahead and solve this by fetching all the stores available to the user.
 
-- Need to fetch stores
+- Authenticate `userId`
+- Redirect to sign-in if no `userId`
+- Get stores with `prisma`
+
