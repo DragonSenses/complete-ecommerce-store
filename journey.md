@@ -3529,7 +3529,62 @@ Property 'items' is missing in type '{}' but required in type 'StoreSwitcherProp
 
 So let's go ahead and solve this by fetching all the stores available to the user.
 
+What we need to do:
+
 - Authenticate `userId`
 - Redirect to sign-in if no `userId`
 - Get stores with `prisma`
 
+The imports:
+
+```tsx
+// Global Imports
+import React from 'react';
+import { auth, UserButton } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
+
+// Local Imports
+import MainNav from '@/components/main-nav';
+import StoreSwitcher from '@/components/StoreSwitcher';
+import prismadb from '@/lib/prismadb';
+```
+
+- Make function `async`
+- Authenticate `userId` with Clerk
+- Redirect user to sign-in if no `userId`
+- Use `prismadb.store.findMany` to find all the stores where `userId` is equal to current `userId`
+
+```tsx
+export default async function Navbar() {
+  const { userId } = auth();
+  
+  if (!userId) {
+    redirect("/sign-in");
+  }
+
+  const stores = await prismadb.store.findMany({
+    where: {
+      userId
+    }
+  })
+```
+
+Notice that:
+
+```tsx
+  const stores = await prismadb.store.findMany({
+    where: {
+      userId
+    }
+  })
+```
+
+Is shorthand for:
+
+```tsx
+  const stores = await prismadb.store.findMany({
+    where: {
+      userId: userId
+    }
+  })
+```
