@@ -3588,3 +3588,14 @@ Is shorthand for:
     }
   })
 ```
+
+Now finally, pass in `items` prop to the `StoreSwitcher` component in the `return`:
+
+```tsx
+export default async function Navbar() {
+  // ...
+  return (
+    <div className="border-b">
+      <div className="flex h-16 items-center px-4">
+        <StoreSwitcher items={stores} />
+```
