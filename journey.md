@@ -3825,7 +3825,9 @@ While we are using the Navigation Bar we are going to get the correct URL with t
 
 If the user were to say put any random input inside the `[storeId]` URL, then we want to protect from that kind of behavior. So in this case the user will not find a `store` from the params since it won't exist, and therefore we redirect them back to the dashboard.
 
-Step 4 protects the user from unwanted behavior when manually changing the URL, most notably the `storeId`.
+Step 4 protects the user from unwanted behavior when manually changing the URL, most notably the `storeId`. 
+
+In short, it is a user experience protection and also TypeScript protection as `store` can potentially be `undefined`. We are going to pass in `store` as data to a child component later.
 
 #### Styling the Settings Page
 
@@ -3845,7 +3847,7 @@ Going to add Flex to the page and give it some spacing all around:
 Next, replace the text inside with a `SettingsForm` component.
 
 
-##### `SettingsForm` component
+### `SettingsForm` component
 
 `SettingsForm` component is *only* going to be used inside of the settings route. So we can safely create it inside settings.
 
@@ -3884,3 +3886,32 @@ const SettingsPage: React.FC<SettingsPageProps> = async ({
 ```
 
 Notice that we import without Module Path Aliases because we are accessing a different `components` folder that is one directory level below the current file.
+
+#### Passing in data to SettingsForm
+
+In the Settings Page, we load the `store` and we want to pass it into the `SettingsForm` to serve as initial data.
+
+- `SettingsForm` will be a client component
+- We want to pre-fill some input coming from the store
+
+Let's change `SettingsForm` so that it can accept these parameters:
+
+```tsx
+// Global Imports
+import React from 'react';
+import { Store } from '@prisma/client';
+
+interface SettingsFormProps {
+  initialData: Store
+}
+
+const SettingsForm: React.FC<SettingsFormProps> = ({
+  initialData
+}) => {
+  return (
+    <div>SettingsForm</div>
+  )
+}
+
+export default SettingsForm
+```
