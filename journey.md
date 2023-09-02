@@ -3657,3 +3657,107 @@ export default function SettingsPage() {
   )
 }
 ```
+
+### Settings Page
+
+Now we should check in this page is:
+
+- are we authenticated?
+- can I get the store in the URL?
+
+Notice that the project structure reflects the URL where it is the "[storeId]/settings".
+
+We are using `NextJS 13` so that means we always have the `params` in the Server components. We can extract the props like so:
+
+```tsx
+import React from 'react';
+
+interface SettingsPageProps {
+  params: {
+    storeId: string;
+  }
+};
+
+const SettingsPage: React.FC<SettingsPageProps> = ({
+  params
+}) => {
+  return (
+    <div>
+      Settings Page
+    </div>
+  )
+}
+
+export default SettingsPage
+```
+
+The alternative way without using arrow function syntax , replaced with normal function declaration:
+
+```tsx
+interface SettingsPageProps {
+  params: {
+    storeId: string;
+  }
+};
+
+function SettingsPage({params}: SettingsPageProps): JSX.Element {
+  return (
+    <div>
+      Settings Page
+    </div>
+  )
+}
+
+export default SettingsPage
+```
+
+##### TypeScript, React and function declaations
+
+Let's review a bit and take a step back. 
+
+In TypeScript, a normal function declaration with parameters in React can be written as follows:
+
+```typescript
+type Props = {
+  // declare the type of props
+  name: string;
+  age: number;
+};
+
+function MyComponent(props: Props) {
+  // use the props
+  const { name, age } = props;
+
+  return (
+    <div>
+      <p>Name: {name}</p>
+      <p>Age: {age}</p>
+    </div>
+  );
+}
+```
+
+- Here, `Props` is a type that declares the type of the `props` object. 
+
+- The `MyComponent` function takes in an argument of type `Props`, which is destructured to obtain the `name` and `age` properties. 
+
+- These properties are then used to render the component.
+
+The equivalent TypeScript arrow function syntax:
+
+```tsx 
+type Props = {
+  // declare the type of props
+  name: string;
+  age: number;
+};
+
+const MyComponent = ({name, age}: Props): JSX.Element => (
+    <div>
+      <p>Name: {name}</p>
+      <p>Age: {age}</p>
+    </div>
+);
+
+export default MyComponent;
+```
