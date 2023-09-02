@@ -1,10 +1,14 @@
+import React from 'react';
+
 interface SettingsPageProps {
   params: {
     storeId: string;
   }
 };
 
-function SettingsPage({params}: SettingsPageProps): JSX.Element {
+const SettingsPage: React.FC<SettingsPageProps> = ({
+  params
+}) => {
   return (
     <div>
       Settings Page
