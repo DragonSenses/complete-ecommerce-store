@@ -3711,7 +3711,7 @@ function SettingsPage({params}: SettingsPageProps): JSX.Element {
 export default SettingsPage
 ```
 
-##### TypeScript, React and function declaations
+##### TypeScript, React and function declarations
 
 Let's review a bit and take a step back. 
 
@@ -3761,3 +3761,69 @@ const MyComponent = ({name, age}: Props): JSX.Element => (
 
 export default MyComponent;
 ```
+
+#### Settings Page - Implementation
+
+```tsx
+// Global Imports
+import React from 'react';
+import { auth } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
+
+// Local Imports
+import prismadb from '@/lib/prismadb';
+
+interface SettingsPageProps {
+  params: {
+    storeId: string;
+  }
+};
+
+const SettingsPage: React.FC<SettingsPageProps> = async ({
+  params
+}) => {
+
+  // Authenticate userId with Clerk to check if user is logged-in
+  const { userId } = auth();
+  
+  // If userId does not exist, redirect to sign-in page
+  if (!userId) {
+    redirect("/sign-in");
+  }
+
+  // Find the user's store from the parameters
+  const store = await prismadb.store.findFirst({
+    where: {
+      id: params.storeId,
+      userId
+    }
+  })
+
+  // If there is no store, then redirect to dashboard
+  if (!store) {
+    redirect("/");
+  }
+
+  return (
+    <div>
+      Settings Page
+    </div>
+  )
+}
+
+export default SettingsPage
+```
+
+1. Authenticate `userId` with Clerk
+2. Redirect if no `userId`
+3. Find user `store` from `params`
+4. If no store then redirect back to dashboard.
+
+Steps 1-3 are familiar, but let's explain step 4 a bit. 
+
+While we are using the Navigation Bar we are going to get the correct URL with the `storeId`. However, what if the user directly changes the URL?
+
+If the user were to say put any random input inside the `[storeId]` URL, then we want to protect from that kind of behavior. So in this case the user will not find a `store` from the params since it won't exist, and therefore we redirect them back to the dashboard.
+
+Step 4 protects the user from unwanted behavior when manually changing the URL, most notably the `storeId`.
+
