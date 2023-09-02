@@ -3827,3 +3827,60 @@ If the user were to say put any random input inside the `[storeId]` URL, then we
 
 Step 4 protects the user from unwanted behavior when manually changing the URL, most notably the `storeId`.
 
+#### Styling the Settings Page
+
+Going to add Flex to the page and give it some spacing all around:
+
+```tsx
+  return (
+    <div className="flex-col">
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        Settings Page
+      </div>
+    </div>
+  )
+}
+```
+
+Next, replace the text inside with a `SettingsForm` component.
+
+
+##### `SettingsForm` component
+
+`SettingsForm` component is *only* going to be used inside of the settings route. So we can safely create it inside settings.
+
+Navigate to `/settings`, create a `components` folder which contains `SettingsForm.tsx`.
+
+`SettingsForm.tsx`
+```tsx
+import React from 'react';
+
+export default function SettingsForm() {
+  return (
+    <div>SettingsForm</div>
+  )
+}
+```
+
+Back in `/settings/page.tsx` we can import and render the `SettingsForm`
+
+
+`/settings/page.tsx`
+```tsx
+import SettingsForm from "./components/SettingsForm";
+// ...
+const SettingsPage: React.FC<SettingsPageProps> = async ({
+  params
+}) => {
+  // ...
+  return (
+    <div className="flex-col">
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <SettingsForm />
+      </div>
+    </div>
+  )
+}
+```
+
+Notice that we import without Module Path Aliases because we are accessing a different `components` folder that is one directory level below the current file.
