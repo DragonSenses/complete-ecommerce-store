@@ -3944,3 +3944,22 @@ export const Heading: React.FC<HeadingProps> = ({
 ```
 
 We are going to use the Heading component inside our `SettingsForm`.
+
+Let's pass in some data to `title` and `description`:
+
+```tsx
+import { Heading } from '@/components/ui/heading';
+
+const SettingsForm: React.FC<SettingsFormProps> = ({
+  initialData
+}) => {
+  return (
+    <div className="flex items-center justify-between">
+      <Heading
+        title="Settings"
+        description="Manage store preferences"
+      />
+    </div>
+  )
+}
+```
