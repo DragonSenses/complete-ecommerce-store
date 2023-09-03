@@ -4012,3 +4012,41 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
 
 We can either go with `size` as "icon" or "sm".
 
+#### Using a `Separator`
+
+Now after the `Heading` & `Button` we want to add a Separator. First let's wrap the `div` inside a React fragment `<>...</>`.
+
+Then we can go to [shadcn/ui docs - Separator](https://ui.shadcn.com/docs/components/separator) which will visually and/or semantically separates content.
+
+Install `Separator`
+
+```sh
+npx shadcn-ui@latest add separator
+```
+
+Now we can use it to separate our content:
+
+```tsx
+const SettingsForm: React.FC<SettingsFormProps> = ({
+  initialData
+}) => {
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        <Heading
+          title="Settings"
+          description="Manage store preferences"
+        />
+        <Button
+          variant="destructive"
+          size="icon"
+          onClick={() => { }}
+        >
+          <Trash className="h-4 w-4" />
+        </Button>
+      </div>
+      <Separator />
+    </>
+  )
+}
+```
