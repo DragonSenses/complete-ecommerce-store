@@ -3982,3 +3982,33 @@ export const Heading: React.FC<HeadingProps> = ({
 };
 ```
 
+### Settings Form functionality
+
+We want to have a way for the user to delete the store in the Settings page.
+
+We are going to add a `Button`, which will contain a Trash icon.
+
+```tsx
+const SettingsForm: React.FC<SettingsFormProps> = ({
+  initialData
+}) => {
+  return (
+    <div className="flex items-center justify-between">
+      <Heading
+        title="Settings"
+        description="Manage store preferences"
+      />
+      <Button 
+        variant="destructive"
+        size="icon"
+        onClick={() => {}}
+      >
+        <Trash className="h-4 w-4" />
+      </Button>
+    </div>
+  )
+}
+```
+
+We can either go with `size` as "icon" or "sm".
+
