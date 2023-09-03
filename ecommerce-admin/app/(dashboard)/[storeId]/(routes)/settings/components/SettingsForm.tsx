@@ -1,8 +1,10 @@
 // Global Imports
 import React from 'react';
 import { Store } from '@prisma/client';
+import { Trash } from 'lucide-react';
 
 // Local Imports
+import { Button } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 
 interface SettingsFormProps {
@@ -18,6 +20,13 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
         title="Settings"
         description="Manage store preferences"
       />
+      <Button 
+        variant="destructive"
+        size="icon"
+        onClick={() => {}}
+      >
+        <Trash className="h-4 w-4" />
+      </Button>
     </div>
   )
 }
