@@ -3915,3 +3915,32 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
 
 export default SettingsForm
 ```
+
+### Heading component
+
+Let's create a re-usable component named `Heading` inside `/components` folder at the root of the app. Navigate to `/app/components/ui` and create `heading.tsx`. It will have two props: `title` and `description`.
+
+```tsx
+import React from 'react';
+
+interface HeadingProps {
+  title: string;
+  description: string;
+};
+
+export const Heading: React.FC<HeadingProps> = ({
+  title,
+  description
+}) => {
+  return (
+    <div>
+      <h2>{title}</h2>
+      <p>
+        {description}
+      </p>
+    </div>
+  )
+};
+```
+
+We are going to use the Heading component inside our `SettingsForm`.
