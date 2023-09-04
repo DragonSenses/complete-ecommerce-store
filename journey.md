@@ -4051,15 +4051,15 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
 }
 ```
 
-### Building the Settings Form
+### Implementing the Settings Form
 
-Now I want to add the Form Schema by using `zod` and `react-hook-form`.
+Now I want to create a Form Schema using `zod` and `react-hook-form`.
 
 [shadcn/ui - React Hook Form](https://ui.shadcn.com/docs/components/form)
 
 [zod docs - Basic usage - Creating an object schema](https://zod.dev/?id=basic-usage)
 
-#### Defining the shape of form using a [Zod](https://zod.dev/) schema
+#### 1. Defining the shape of form using a [Zod](https://zod.dev/) schema
 
 Form validation for the Settings Form using `zod`.
 
@@ -4080,4 +4080,34 @@ Now we create the type of `SettingsFormValues`
 type SettingsFormValues = z.infer<typeof formSchema>;
 ```
 
-So that we don't have to re-write it every time, and we can re-use it when needed. 
+So that we don't have to re-write it every time, and we can re-use it when needed.
+
+e.g., instead of:
+
+```tsx
+const form = useForm<z.infer<typeof formSchema>>({
+```
+
+we use:
+
+```tsx
+const form = useForm<SettingsFormValues>({
+```
+
+#### 2. Define a form
+
+We go with step 2 in [shadcn/ui - React Hook Form](https://ui.shadcn.com/docs/components/form).
+
+Use the `useForm` hook from `react-hook-form` to create a form.
+
+```tsx
+import * as z from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+// ...
+  const form = useForm<SettingsFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: initialData
+  })
+```
+
