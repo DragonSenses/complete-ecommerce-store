@@ -33,11 +33,16 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
   // Create loading state to disable interactive elements
   const [loading, setLoading] = useState(false);
 
-  // useForm hook with zodResolver for validation
+  // 1. Define form with useForm hook & zodResolver for validation
   const form = useForm<SettingsFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData
   })
+
+  // 2. Define a submit handler
+  const onSubmit = async (data: SettingsFormValues) => {
+    console.log(data);
+  }
 
   return (
     <>
