@@ -4138,3 +4138,23 @@ The create store modal, wherever its opened does the exact same API call to crea
 The delete modal has to confirm deletion of different entities. e.g., in our Settings it will delete our store, in our products it will delete products, in categories it will delete category, etc.
 
 ##### 2.2 Define a submit handler for the form
+
+In the [shadcn/ui - React Hook Form docs](https://ui.shadcn.com/docs/components/form):
+
+```tsx
+  // 2. Define a submit handler.
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values)
+  }
+```
+
+We will use our inferred type and call it `data` instead of `values`:
+
+```tsx
+  // 2. Define a submit handler
+  const onSubmit = async (data: SettingsFormValues) => {
+    console.log(data);
+  }
+```
