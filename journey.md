@@ -4096,7 +4096,7 @@ const form = useForm<SettingsFormValues>({
 
 #### 2. Define a form
 
-We go with step 2 in [shadcn/ui - React Hook Form](https://ui.shadcn.com/docs/components/form).
+We go with step 2 in [shadcn/ui - React Hook Form](https://ui.shadcn.com/docs/components/form) by defining our form.
 
 Use the `useForm` hook from `react-hook-form` to create a form.
 
@@ -4111,3 +4111,30 @@ import { zodResolver } from '@hookform/resolvers/zod';
   })
 ```
 
+ZodResolver is a **validation resolver** for React Hook Form library that allows you to integrate an external validation library like Zod with the React Hook Form library. It is a function that takes the schema you define as an argument and enables you to access Zod's functions and features. 
+
+You can use zodResolver hook that is imported from `@hookform/resolvers/zod` to validate your schema using Zod.
+
+##### 2.1 Create states for our form
+
+Right before we declared our `const form`, let's create two state variables: `open` and `loading`
+
+```tsx
+import React, { useState } from 'react';
+// ...
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+```
+- `loading` & `setLoading` just like before it will be used to track whether an interactive element is loading so that it can be `disabled`
+
+-`open` & `setOpen` will control our Alert modal
+
+Alert modal? Why not create Alert modal in the zustand store just like the Create Store modal.
+
+That's because the Alert modal will call different API routes every single time, so it cannot be reused the same way the create store modal.
+
+The create store modal, wherever its opened does the exact same API call to create a new store.
+
+The delete modal has to confirm deletion of different entities. e.g., in our Settings it will delete our store, in our products it will delete products, in categories it will delete category, etc.
+
+##### 2.2 Define a submit handler for the form
