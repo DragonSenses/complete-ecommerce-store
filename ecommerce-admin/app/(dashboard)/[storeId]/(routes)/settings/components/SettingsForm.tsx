@@ -1,4 +1,5 @@
 // Global Imports
+import * as z from 'zod';
 import React from 'react';
 import { Store } from '@prisma/client';
 import { Trash } from 'lucide-react';
@@ -11,6 +12,14 @@ import { Separator } from '@/components/ui/separator';
 interface SettingsFormProps {
   initialData: Store
 }
+
+// Create zod object schema with string name and min of 1 letter
+const formSchema = z.object({
+  name: z.string().min(1),
+});
+
+// extract the inferred type
+type SettingsFormValues = z.infer<typeof formSchema>;
 
 const SettingsForm: React.FC<SettingsFormProps> = ({
   initialData
