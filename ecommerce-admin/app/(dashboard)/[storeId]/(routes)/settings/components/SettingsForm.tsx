@@ -1,8 +1,10 @@
 // Global Imports
 import * as z from 'zod';
-import React from 'react';
+import React, { useState } from 'react';
 import { Store } from '@prisma/client';
 import { Trash } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 // Local Imports
 import { Button } from '@/components/ui/button';
@@ -24,6 +26,19 @@ type SettingsFormValues = z.infer<typeof formSchema>;
 const SettingsForm: React.FC<SettingsFormProps> = ({
   initialData
 }) => {
+
+  // Create open state to control the Alert modal
+  const [open, setOpen] = useState(false);
+
+  // Create loading state to disable interactive elements
+  const [loading, setLoading] = useState(false);
+
+  // useForm hook with zodResolver for validation
+  const form = useForm<SettingsFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: initialData
+  })
+
   return (
     <>
       <div className="flex items-center justify-between">
