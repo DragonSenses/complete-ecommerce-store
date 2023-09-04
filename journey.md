@@ -4158,3 +4158,27 @@ We will use our inferred type and call it `data` instead of `values`:
     console.log(data);
   }
 ```
+
+#### 3. Build Settings Form
+
+We can now use the `<Form />` component to build the form. Import `Form` from `components/ui/form` and add it right after the `Separator`.
+
+```tsx
+import { Form } from '@/components/ui/form';
+
+const SettingsForm: React.FC<SettingsFormProps> = ({
+  initialData
+}) => {
+//..
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        ...
+      </div>
+      <Separator />
+      <Form {...form}>
+      </Form>
+    </>
+  )
+}
+```
