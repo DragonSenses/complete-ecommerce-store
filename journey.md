@@ -4050,3 +4050,34 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
   )
 }
 ```
+
+### Building the Settings Form
+
+Now I want to add the Form Schema by using `zod` and `react-hook-form`.
+
+[shadcn/ui - React Hook Form](https://ui.shadcn.com/docs/components/form)
+
+[zod docs - Basic usage - Creating an object schema](https://zod.dev/?id=basic-usage)
+
+#### Defining the shape of form using a [Zod](https://zod.dev/) schema
+
+Form validation for the Settings Form using `zod`.
+
+In `SettingsForm.tsx`, the `formSchema` we will use `z.object()` with a field `name` that is a string with a minimum of one letter.
+
+```tsx
+import * as z from 'zod';
+
+const formSchema = z.object({
+  name: z.string().min(1),
+});
+```
+
+Now we create the type of `SettingsFormValues`
+
+```tsx
+// extract the inferred type
+type SettingsFormValues = z.infer<typeof formSchema>;
+```
+
+So that we don't have to re-write it every time, and we can re-use it when needed. 
