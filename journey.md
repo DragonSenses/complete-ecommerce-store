@@ -4295,3 +4295,42 @@ const SettingsPage: React.FC<SettingsPageProps> = async ({
 ##### Button - Save Changes
 
 Now back to the Settings Form add the `Button` to save changes right after the `div` but right before the `</form>`.
+
+One last thing we should do is add a `FormMessage` component to give us an error when an invalid input is given and user hits submit
+
+```tsx
+            <FormField 
+              control={form.control}
+              name="name"
+              render={({field}) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Store name" {...field}/>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+```
+
+Now we can test the data being passed when the submit button is triggered.
+
+```tsx
+  const onSubmit = async (data: SettingsFormValues) => {
+    console.log(data);
+  };
+```
+
+It should print the data to the console. So open up developer tools, change the name and hit "Save changes" to see if the store name updated. I named it `test-store-update` and in the console:
+
+```sh
+{
+    "name": "test-store-update"
+}
+```
+
+It logged the new changes.
+
+## TODO: API call to Update the store
+
