@@ -4117,7 +4117,11 @@ You can use zodResolver hook that is imported from `@hookform/resolvers/zod` to 
 
 ##### 2.1 Create states for our form
 
-Right before we declared our `const form`, let's create two state variables: `open` and `loading`
+Since we want to `useState`, we need to mark the `SettingsForm` as a client component. 
+
+So add the `"use client"` directive  at the top.
+
+Now let's create two state variables: `open` and `loading`
 
 ```tsx
 import React, { useState } from 'react';
