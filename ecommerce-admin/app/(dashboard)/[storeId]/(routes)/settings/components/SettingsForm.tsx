@@ -1,3 +1,4 @@
+
 // Global Imports
 import * as z from 'zod';
 import React, { useState } from 'react';
@@ -86,6 +87,9 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
               )}
             />
           </div>
+          <Button disabled={loading} className="ml-auto" type="submit">
+            Save changes
+          </Button>
         </form>
       </Form>
     </>
