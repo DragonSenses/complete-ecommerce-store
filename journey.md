@@ -4182,3 +4182,53 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
   )
 }
 ```
+
+### 3. Building the Settings Form
+
+Import all the components we may need:
+
+```tsx
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+```
+
+Inside the `Form` component will be a native `<form>` element which contains our submit handler and some styles.
+
+Inside of the form, we will have our content divided out in a grid. Right now we have just one input: the name. But later when we make products and categories, they are going to have a lot of inputs so we need a way to manage them. e.g., a grid with 3 inputs in a row.
+
+```tsx
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+          <div className="grid grid-cols-3 gap-8">
+
+          </div>
+        </form>
+      </Form>
+```
+
+Inside we give it a `FormField`, with props `control` and `name`. The `name` is referring to the property its going to control. It matches the `name` property/field of the store in the database.
+
+```tsx
+<Form {...form}>
+  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+    <div className="grid grid-cols-3 gap-8">
+      <FormField 
+        control={form.control}
+        name="name"
+        render={({field}) => (
+          <FormItem>
+            <FormLabel>Name</FormLabel>
+          </FormItem>
+        )}
+      />
+    </div>
+  </form>
+</Form>
+```
