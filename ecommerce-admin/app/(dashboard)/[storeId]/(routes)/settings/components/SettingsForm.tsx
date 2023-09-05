@@ -10,6 +10,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 
 interface SettingsFormProps {
   initialData: Store
@@ -37,12 +46,12 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
   const form = useForm<SettingsFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData
-  })
+  });
 
   // 2. Define a submit handler
   const onSubmit = async (data: SettingsFormValues) => {
     console.log(data);
-  }
+  };
 
   return (
     <>
@@ -60,6 +69,21 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
         </Button>
       </div>
       <Separator />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+          <div className="grid grid-cols-3 gap-8">
+            <FormField 
+              control={form.control}
+              name="name"
+              render={({field}) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                </FormItem>
+              )}
+            />
+          </div>
+        </form>
+      </Form>
     </>
   )
 }
