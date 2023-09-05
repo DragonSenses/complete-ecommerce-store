@@ -18,7 +18,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 interface SettingsFormProps {
   initialData: Store
@@ -78,6 +79,9 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
               render={({field}) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Store name" {...field}/>
+                  </FormControl>
                 </FormItem>
               )}
             />
