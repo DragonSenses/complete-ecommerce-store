@@ -4197,6 +4197,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 ```
 
 Inside the `Form` component will be a native `<form>` element which contains our submit handler and some styles.
@@ -4232,3 +4233,22 @@ Inside we give it a `FormField`, with props `control` and `name`. The `name` is 
   </form>
 </Form>
 ```
+
+Let's work on the JSX element returned by the `render` prop:
+
+```tsx
+<FormField 
+  control={form.control}
+  name="name"
+  render={({field}) => (
+    <FormItem>
+      <FormLabel>Name</FormLabel>
+      <FormControl>
+        <Input disabled={loading} placeholder="Store name" {...field}/>
+      </FormControl>
+    </FormItem>
+  )}
+/>
+```
+
+Add a `FormControl` that wraps the `Input` with props `disabled`, `placeholder`, and spread out the `field` object. Spreading out the `field` allows the input to get `onChange`, `onBlur`, and `values`.
