@@ -15,7 +15,6 @@ import { Separator } from '@/components/ui/separator';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -84,6 +83,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
                   <FormControl>
                     <Input disabled={loading} placeholder="Store name" {...field}/>
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
