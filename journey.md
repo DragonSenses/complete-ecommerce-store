@@ -4252,3 +4252,42 @@ Let's work on the JSX element returned by the `render` prop:
 ```
 
 Add a `FormControl` that wraps the `Input` with props `disabled`, `placeholder`, and spread out the `field` object. Spreading out the `field` allows the input to get `onChange`, `onBlur`, and `values`.
+
+Notice that our store name is auto-filled inside the `Input` already. That's because:
+
+- We passed in the `initialData` for the initial values
+
+```tsx
+  const form = useForm<SettingsFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: initialData
+  });
+```
+
+- `initialData` is passed in from the Settings Page, which is the `store`
+
+```tsx
+const SettingsPage: React.FC<SettingsPageProps> = async ({
+  params
+}) => {
+// ...
+  const store = await prismadb.store.findFirst({
+    where: {
+      id: params.storeId,
+      userId
+    }
+  })
+
+  return (
+    <div className="flex-col">
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <SettingsForm initialData={store}/>
+      </div>
+    </div>
+  )
+}
+```
+
+##### Button - Save Changes
+
+Now back to the Settings Form add the `Button` to save changes right after the `div` but right before the `</form>`.
