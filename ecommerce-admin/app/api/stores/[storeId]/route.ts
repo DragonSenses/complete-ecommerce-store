@@ -1,5 +1,4 @@
 import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
 export async function PATCH (
@@ -10,11 +9,23 @@ export async function PATCH (
     // Authenticate userId with Clerk to check if user is logged-in
     const { userId } = auth();
     
-    // If userId does not exist, redirect to sign-in page
+    // If userId does not exist send back 401 response
     if (!userId) {
-      redirect("/sign-in");
-  }
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
 
+    // Extract body from the request
+    const body = await req.json();
+
+    const { name } = body;
+
+    if (!name) {
+      return new NextResponse("Name is required", { status: 400 });
+    }
+
+    if (!params.storeId){
+      return new NextResponse("Store id is required", { status: 400 });
+    }
   } catch (error) {
     console.log('[STORE_PATCH]', error);
     return new NextResponse("Internal error", { status: 500 });
