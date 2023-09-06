@@ -4350,5 +4350,46 @@ Before moving on, remember the `Button` earlier that deletes a store with a `Tra
 </Button>
 ```
 
-## TODO: API call to Update the store
+## API Route Handler to Update & Delete the store
+
+Let's create the API call to update and delete a store.
+
+Navigate to `/app/stores` directory and create a [Dynamic Route](https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes) named `[storeId]`. This allows us to target individual stores.
+
+Inside create the file `route.ts`. Inside we create two routes:
+
+1. PATCH route - updates the store
+2. DELETE route - deletes the store
+
+Let's go ahead and create the [Route Handler](https://nextjs.org/docs/app/building-your-application/routing/route-handlers).
+
+Starting with the Patch route:
+
+```tsx
+export async function PATCH (
+  req: Request,
+  { params }: { params: { storeId: string }}
+){
+  
+}
+```
+
+Where did `params` come from? Well params are available in here because we use a Dynamic Route Segment to create dynamic routes that can accept parameters.
+
+In Next.js, **Route Handlers** allow you to create custom request handlers for a given route using the Web Request and Response APIs. 
+
+The `params` object is **not** available in Route Handlers by default. However, you can use **Dynamic Route Segments** to create dynamic routes that can accept parameters. 
+
+For instance, if you have a page with the following URL: `/posts/[id]`, you can access the `id` parameter in the corresponding Route Handler as follows:
+
+```javascript
+export default function handler(req, res) {
+  const { id } = req.query;
+  // ...
+}
+```
+
+Here, `req.query` is an object that contains the query parameters of the request. The `id` parameter is accessed using destructuring assignment.
+
+So since `params` is a parameter, and `storeId` comes from the folder name which is automatically in the route name.
 
