@@ -4463,3 +4463,72 @@ export async function PATCH (
   }
 }
 ```
+
+Now we can find and update our store
+
+- Import and use `prismadb` and `updateMany`
+- We have to pass in an object with property `where`
+
+where:
+- `id` is equal to `params.storeId`
+- `userId` is equal to `userId`
+
+The next propert of the object parameter is `data`
+- we pass in the `data` which is an object that contains what we are going to update
+- in this case it is the `name`
+
+With that done we can `return` a `NextResponse`. We don't have to use the keyword `new` because we will use `.json()` with the `store` passed in.
+
+```tsx
+import prismadb from "@/lib/prismadb";
+import { auth } from "@clerk/nextjs";
+import { NextResponse } from "next/server";
+
+export async function PATCH (
+  req: Request,
+  { params }: { params: { storeId: string }}
+){
+  try {
+    // Authenticate userId with Clerk to check if user is logged-in
+    const { userId } = auth();
+    
+    // If userId does not exist send back 401 response
+    if (!userId) {
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
+
+    // Extract body from the request
+    const body = await req.json();
+
+    const { name } = body;
+
+    if (!name) {
+      return new NextResponse("Name is required", { status: 400 });
+    }
+
+    if (!params.storeId){
+      return new NextResponse("Store id is required", { status: 400 });
+    }
+
+    // Find and Update store
+    const store = await prismadb.store.updateMany({
+      where: {
+        id: params.storeId,
+        userId
+      },
+      data: {
+        name
+      }
+    });
+
+    return NextResponse.json(store);
+  } catch (error) {
+    console.log('[STORE_PATCH]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}
+```
+
+#### TODO: Delete Route
+
+Create delete store method in the same API route.
