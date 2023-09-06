@@ -4332,5 +4332,23 @@ It should print the data to the console. So open up developer tools, change the 
 
 It logged the new changes.
 
+##### Delete Store Button - add  more props
+
+Before moving on, remember the `Button` earlier that deletes a store with a `Trash` icon inside? 
+
+- We should disable it while it is `loading`.
+- Also set the `onClick` function to set state variable of `open` to `true`
+
+```tsx
+<Button
+  disabled={loading}
+  variant="destructive"
+  size="icon"
+  onClick={() => setOpen(true)}
+>
+  <Trash className="h-4 w-4" />
+</Button>
+```
+
 ## TODO: API call to Update the store
 
