@@ -4,6 +4,7 @@
 import * as z from 'zod';
 import React, { useState } from 'react';
 import { Store } from '@prisma/client';
+import { toast } from 'react-hot-toast';
 import { Trash } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -52,7 +53,13 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
 
   // 2. Define a submit handler
   const onSubmit = async (data: SettingsFormValues) => {
-    console.log(data);
+    try {
+      setLoading(true);
+    } catch (error) {
+      toast.error("Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
