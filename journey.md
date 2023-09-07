@@ -4573,3 +4573,39 @@ export async function DELETE (
 ```
 
 Notice I use `prismadb.store.deleteMany()` as opposed to `delete()`. That is because `userId` is not unique.
+
+###### Note: Why do we still have `req` request in the Delete function?
+
+That's because in the parameters `params` is only available in the 2nd argument of the `DELETE` function.
+
+Likewise, the `req` request is only available as the 1st argument to the function.
+
+Optionally, you can add an underscore to the front of it to mark it private and unused.
+
+```tsx
+export async function DELETE (
+  _req: Request,
+  { params }: { params: { storeId: string }}
+){
+```
+
+### Modify the Submit Handler of the SettingsForm
+
+With that complete, let's navigate back to `SettingsForm.tsx` and update our submit handler.
+
+- Open up a `try..catch..finally` block
+- In the catch, use toast to print an error
+- set `loading` state to `true` in `try` block
+- set `loading` state to `false` in `finally` block
+
+```tsx
+  const onSubmit = async (data: SettingsFormValues) => {
+    try {
+      setLoading(true);
+    } catch (error) {
+      toast.error("Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+```
