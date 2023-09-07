@@ -4529,6 +4529,47 @@ export async function PATCH (
 }
 ```
 
-#### TODO: Delete Route
+#### Delete Route
 
 Create delete store method in the same API route.
+
+We can copy the same logic we did for PATCH but with some tweaks:
+
+- Replace PATCH or Update with delete
+- Remove the extract the `body`, `name` and `name` check
+
+```tsx
+export async function DELETE (
+  req: Request,
+  { params }: { params: { storeId: string }}
+){
+  try {
+    // Authenticate userId with Clerk to check if user is logged-in
+    const { userId } = auth();
+    
+    // If userId does not exist send back 401 response
+    if (!userId) {
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
+
+    if (!params.storeId){
+      return new NextResponse("Store id is required", { status: 400 });
+    }
+
+    // Find and Delete store
+    const store = await prismadb.store.deleteMany({
+      where: {
+        id: params.storeId,
+        userId
+      }
+    });
+
+    return NextResponse.json(store);
+  } catch (error) {
+    console.log('[STORE_DELETE]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+};
+```
+
+Notice I use `prismadb.store.deleteMany()` as opposed to `delete()`. That is because `userId` is not unique.
