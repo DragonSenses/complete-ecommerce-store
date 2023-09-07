@@ -4609,3 +4609,44 @@ With that complete, let's navigate back to `SettingsForm.tsx` and update our sub
     }
   };
 ```
+
+We are going to use `axios` but before that we need the `params` and `router` both from `next/navigation`.
+
+```tsx
+import axios from 'axios';
+import { useParams, useRouter } from 'next/navigation';
+// ...
+const SettingsForm: React.FC<SettingsFormProps> = ({
+  initialData
+}) => {
+  // Extract params to get storeId
+  const params = useParams();
+  const router = useRouter();
+  // ...
+```
+
+We will need params to get `storeId` which we pass into the template string in `axios.patch()` function.
+
+Inside submit handler's try block:
+
+- in the `axios.patch()` pass in the template string with the api route to `storeId` and pass in the updated data
+- `router.refresh()` will re-synchronize our server component with the newly updated initial data in `page.tsx`
+- Add toast success message
+
+```tsx
+  // 2. Define a submit handler
+  const onSubmit = async (data: SettingsFormValues) => {
+    try {
+      setLoading(true);
+      await axios.patch(`/api/stores/${params.storeId}`, data);
+      // Re-synchronize server component that fetches our store
+      // Re-initializes the updated `initialData`
+      router.refresh();
+      toast.success("Store updated.");
+    } catch (error) {
+      toast.error("Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+```
