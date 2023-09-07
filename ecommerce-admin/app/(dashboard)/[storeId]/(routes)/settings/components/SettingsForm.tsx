@@ -2,11 +2,13 @@
 
 // Global Imports
 import * as z from 'zod';
+import axios from 'axios';
 import React, { useState } from 'react';
 import { Store } from '@prisma/client';
 import { toast } from 'react-hot-toast';
 import { Trash } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { useParams, useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 // Local Imports
@@ -38,6 +40,9 @@ type SettingsFormValues = z.infer<typeof formSchema>;
 const SettingsForm: React.FC<SettingsFormProps> = ({
   initialData
 }) => {
+  // Extract params to get storeId
+  const params = useParams();
+  const router = useRouter();
 
   // Create open state to control the Alert modal
   const [open, setOpen] = useState(false);
@@ -55,6 +60,11 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
   const onSubmit = async (data: SettingsFormValues) => {
     try {
       setLoading(true);
+      await axios.patch(`/api/stores/${params.storeId}`, data);
+      // Re-synchronize server component that fetches our store
+      // Re-initializes the updated `initialData`
+      router.refresh();
+      toast.success("Store updated.");
     } catch (error) {
       toast.error("Something went wrong.");
     } finally {
