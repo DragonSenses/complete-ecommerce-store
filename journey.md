@@ -901,7 +901,7 @@ When creating the store, we hhave the two functions set the state value.
 
 ### Creating re-usable modals components
 
-Create a folder named `modals` under `/components`. Then create a file named `store-modal.tsx`, with some template for a functional component.
+Create a folder named `modals` under `/components`. Then create a file named `StoreModal.tsx`, with some template for a functional component.
 
 ```tsx
 "use client";
@@ -1092,7 +1092,7 @@ So what if we are on the client-side?
 import { useEffect, useState } from "react";
 
 // local imports
-import StoreModal from "@/components/modals/store-modal";
+import StoreModal from "@/components/modals/StoreModal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -1137,7 +1137,7 @@ https://nextjs.org/docs/messages/module-not-found
 Import trace for requested module:
 ./components/ui/dialog.tsx
 ./components/ui/modal.tsx
-./components/modals/store-modal.tsx
+./components/modals/StoreModal.tsx
 ./providers/modal-provider.tsx
 ```
 
@@ -1391,7 +1391,7 @@ Now inside thhe `/ui` folder we have the newly added components:
 
 ### Create a form schema
 
-Let's go to our `/components/modals/store-modal.tsx` file.
+Let's go to our `/components/modals/StoreModal.tsx` file.
 
 Here we want to define our form schema. Define the shape of your form using a [Zod schema](https://zod.dev/).
 
@@ -1408,7 +1408,7 @@ const formSchema = z.object({
 })
 ```
 
-Let's try to define the form schema through zod in our `store-modal.tsx`:
+Let's try to define the form schema through zod in our `StoreModal.tsx`:
 
 ```tsx
 // Global Imports
@@ -2163,7 +2163,7 @@ Our API for creating a store is now ready.
 
 ### Disable all our interactive elements when we are submitting our form.
 
-Navigate to `/components/modals/store-modals.tsx`, and let's add a state variable: `loading`.
+Navigate to `/components/modals/StoreModal.tsx`, and let's add a state variable: `loading`.
 
 This state variable will decide which elements will disabled once our form is loading.
 
@@ -2321,7 +2321,7 @@ export default function RootLayout({
 }
 ```
 
-Navigate to `/components/modals/store-modal.tsx`, and when we are logging the error we can also display a toast notification with `toast.error('error msg')`. Likewise, we can also make a notification when store creation was successful with `toast.success('success msg')`.
+Navigate to `/components/modals/StoreModal.tsx`, and when we are logging the error we can also display a toast notification with `toast.error('error msg')`. Likewise, we can also make a notification when store creation was successful with `toast.success('success msg')`.
 
 ```ts
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -2721,7 +2721,7 @@ Currently, when creating a new store through the Modal it does not redirect to t
 
 Let's fix that.
 
-Inside `/app/components/modals/store-modal.tsx` we can check our submit handler:
+Inside `/app/components/modals/StoreModal.tsx` we can check our submit handler:
 
 ```tsx
   // Define a submit handler
@@ -2979,7 +2979,7 @@ import { UserButton } from '@clerk/nextjs'
 import React from 'react'
 
 // Local Imports
-import MainNav from '@/components/main-nav'
+import MainNav from '@/components/MainNav'
 
 export default function Navbar() {
   return (
@@ -3544,7 +3544,7 @@ import { auth, UserButton } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 
 // Local Imports
-import MainNav from '@/components/main-nav';
+import MainNav from '@/components/MainNav';
 import StoreSwitcher from '@/components/StoreSwitcher';
 import prismadb from '@/lib/prismadb';
 ```
@@ -4649,4 +4649,44 @@ Inside submit handler's try block:
       setLoading(false);
     }
   };
+```
+
+##### Testing PATCH in Settings Page
+
+Now let's test the Settings page and update the name. 
+
+- Change the name in `Input` component and hit "Save Changes". 
+- The navigation bar should also update the name of the store.
+
+### `AlertModal` component to Delete the Store
+
+Next we have to create a delete store modal. Remember we will call this the `AlertModal`.
+
+Create `AlertModal.tsx` in `/components/modals` folder and mark it as a client component.
+
+- A React Arrow Functional component with the interface `AlertModalProps` which contains:
+`isOpen`, `onClose`, `onConfirm` and `loading`.
+- Assign those props as the type of `React.FC<AlertModalProps>`, a React Functional Component
+- Destructure all of the props in the parameters to the arrow function
+
+```tsx
+import React from 'react';
+
+interface AlertModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  loading: boolean;
+}
+
+export const AlertModal: React.FC<AlertModalProps> = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  loading
+}) => {
+  return (
+    <div>AlertModal</div>
+  )
+}
 ```
