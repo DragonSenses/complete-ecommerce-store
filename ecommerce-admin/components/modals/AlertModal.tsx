@@ -1,4 +1,8 @@
-import React from 'react';
+// Global Imports
+import React, { useEffect, useState } from 'react';
+
+// Local Imports
+import { Modal } from '@/components/ui/modal';
 
 interface AlertModalProps {
   isOpen: boolean;
@@ -13,7 +17,19 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   onConfirm,
   loading
 }) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+
   return (
-    <div>AlertModal</div>
+    <Modal
+
+    </Modal>
   )
 }
