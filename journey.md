@@ -4831,3 +4831,54 @@ import { Modal } from '@/components/ui/modal';
     </Modal>
   )
 ```
+
+### Using `AlertModal` component in Settings Page
+
+Navigate to `app\(dashboard)\[storeId]\(routes)\settings\components\SettingsForm.tsx`, and inside the fragment we `return` add the `AlertModal` at the top. Pass in the necessary props.
+
+```tsx
+"use client"
+// ...
+// Local Imports
+import { AlertModal } from '@/components/modals/AlertModal';
+// ...
+const SettingsForm: React.FC<SettingsFormProps> = ({
+  initialData
+}) => {
+  // ...
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  // ...
+  return (
+    <>
+      <AlertModal 
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={() => {}}
+        loading={loading}
+      />
+      <div className="flex items-center justify-between">
+        <Heading
+          title="Settings"
+          description="Manage store preferences"
+        />
+        <Button
+          disabled={loading}
+          variant="destructive"
+          size="icon"
+          onClick={() => setOpen(true)}
+        >
+          <Trash className="h-4 w-4" />
+        </Button>
+      </div>
+      // ...
+    </>
+  )
+}
+
+export default SettingsForm
+```
+
+With that when we click the Delete button, the trash icon, the `AlertModal` will pop up with the Cancel and Continue buttons to provide the user a way to delete the store.
+
+As of now, the Continue button does not actually delete the store. We need to connect it.
