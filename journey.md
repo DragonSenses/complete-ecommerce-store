@@ -4882,3 +4882,106 @@ export default SettingsForm
 With that when we click the Delete button, the trash icon, the `AlertModal` will pop up with the Cancel and Continue buttons to provide the user a way to delete the store.
 
 As of now, the Continue button does not actually delete the store. We need to connect it.
+
+#### Link up the Delete Event Handler to the `AlertModal`
+
+We need to link the `DELETE` API route we created earlier to the `onConfirm` or "Continue" button of the Alert Model.
+
+We have to create the Delete event handler. 
+
+**Event handling is the process of defining and executing functions that respond to user actions, such as clicking a button, typing in a text field, or hovering over an element.**
+
+Event handling in React TypeScript JS involves the following steps:
+
+- Define a function that contains the logic for handling the event, such as updating the state, calling an API, or navigating to another page. The function can be defined inside or outside the component, depending on the scope and reusability of the logic. The function can also accept parameters, such as the event object or custom data.
+
+- Pass the function as a prop to the component that triggers the event, such as a button, an input, or a link. The prop name should match the name of the event type, such as `onClick`, `onChange`, or `onMouseOver`. The prop value should be either the function name or an arrow function that calls the function with arguments.
+
+- Use the prop inside the component to attach the function to the event listener of the corresponding element, such as a button, an input, or a link. The event listener can be added using either the JSX syntax or the React.createElement function.
+
+
+Let's define our `onDelete` function to handle the event
+
+```tsx
+  // 3. Define a delete handler
+  const onDelete = async () => {
+    try {
+
+    } catch (error) {
+      toast.error("Make sure you removed all products and categories first.");
+    }
+  };
+```
+
+- Notice the error message reminds the user to remove all products and categories in the store first. In the delete store api route, we do not manually remove any of these. It will not be possible to delete a store if you have active products and categories still inside a store. A safety-mechanism to be more cautious when it comes to deleting data.
+
+##### prisma - relations & onDelete cascade
+
+The way we are going to create relations in `schema.prisma` file is going to control how the relations will be able to get deleted.
+
+As of now we have no relations in that store yet:
+
+`schema.prisma`
+```prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+// Create simplified model of our Store
+model Store {
+  id        String    @id @default(uuid())
+  name      String
+  userId    String
+  createAt  DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+```
+
+We will add relations to this store such as `products`, `categories` and even `billboards`.
+We can add a special `onDelete` cascade to that relation.
+
+One of the features of Prisma is the ability to define the schema of your database using the Prisma Schema Language (PSL). The PSL allows you to specify the models, fields, relations, and constraints of your data. One of the constraints that you can define in the PSL is the `onDelete` cascade, which means that when a record is deleted, all the related records are also deleted automatically.
+
+For example, suppose you have two models in your schema: `User` and `Post`. A `User` can have many `Posts`, and a `Post` belongs to one `User`. You can define this relation using the PSL as follows:
+
+```prisma
+model User {
+  id    Int     @id @default(autoincrement())
+  name  String
+  posts Post[]
+}
+
+model Post {
+  id     Int    @id @default(autoincrement())
+  title  String
+  author User   @relation(fields: [authorId], references: [id])
+  authorId Int
+}
+```
+
+By default, Prisma does not allow you to delete a User if they have any Posts. This is to prevent orphaned records in the database. However, if you want to delete a User and all their Posts at once, you can use the onDelete cascade constraint on the relation field. You can do this by adding `@onDelete(Cascade)` after the `@relation` attribute, like this:
+
+```prisma
+model User {
+  id    Int     @id @default(autoincrement())
+  name  String
+  posts Post[]
+}
+
+model Post {
+  id     Int    @id @default(autoincrement())
+  title  String
+  author User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId Int
+}
+```
+
+Now, if you delete a User using Prisma Client, all their Posts will also be deleted automatically. This can save you from writing extra code to handle the deletion of related records.
+
+However, for our store as of now we will favor the safety feature that prevents orphaned records in the database. So we will disallow a User from deleting a Store that still has products and categories.
