@@ -4751,3 +4751,52 @@ The following technique is called "conditional rendering" or "lazy loading":
 In this case, the function's side effect will set `isMounted` to `true` which prevents rendering of the `AlertModal` component before the effect has run. This can avoid potential hydration errors or unwanted flashes of content.
 
 By returning `null` when `isMounted` is `false`, the component will not render anything until the `useEffect` hook sets it to `true`.
+
+```tsx
+// Global Imports
+import React, { useEffect, useState } from 'react';
+
+// Local Imports
+import { Modal } from '@/components/ui/modal';
+
+interface AlertModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  loading: boolean;
+}
+
+export const AlertModal: React.FC<AlertModalProps> = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  loading
+}) => {
+  // Declare isMounted state variable and initialize it to false
+  const [isMounted, setIsMounted] = useState(false);
+
+  // useEffect hook to set isMounted variable to true
+  // Delays the execution of client-side-only code until after hydration
+  useEffect(() => {
+    setIsMounted(true);
+  }, []); // Only run once after the initial render
+
+  // Prevent rendering of the component before the effect has run
+  // To protect from hydration errors or unwanted flashes of content
+  if (!isMounted) {
+    return null;
+  }
+
+  return (
+    <Modal>
+      ...
+    </Modal>
+  )
+}
+```
+
+1. Create `isMounted` state variable to prevent rendering of component before effect has run
+2. `useEffect` will run the side effect once after initial render
+3. Side effect sets the `isMounted` to true
+4. Return `null` if `isMounted` is `false`, which prevents rendering of component
+5. Otherwise, if `isMounted` is `true` render and return the `Modal` component
