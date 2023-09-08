@@ -73,6 +73,27 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
     }
   };
 
+  // 3. Define a delete handler
+  const onDelete = async () => {
+    try {
+      setLoading(true);
+      // Call an API with dynamic route to delete the store
+      await axios.delete(`/api/stores/${params.storeId}`);
+      // Re-synchronize server component to update data
+      router.refresh();
+      // Push user back to root layout where we check if there is another existing store
+      router.push("/");
+      toast.success("Store deleted.");
+    } catch (error) {
+      // Safety mechanism will prompt a warning to delete any related records to the store
+      toast.error("Make sure you removed all products and categories first.");
+    } finally {
+      setLoading(false);
+      // Close the Modal
+      setOpen(false);
+    }
+  };
+
   return (
     <>
       <AlertModal 
