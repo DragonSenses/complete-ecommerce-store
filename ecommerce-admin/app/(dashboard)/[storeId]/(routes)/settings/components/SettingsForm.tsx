@@ -12,6 +12,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 // Local Imports
+import { AlertModal } from '@/components/modals/AlertModal';
 import { Button } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
@@ -74,6 +75,12 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
 
   return (
     <>
+      <AlertModal 
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={() => {}}
+        loading={loading}
+      />
       <div className="flex items-center justify-between">
         <Heading
           title="Settings"
