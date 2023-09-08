@@ -4985,3 +4985,79 @@ model Post {
 Now, if you delete a User using Prisma Client, all their Posts will also be deleted automatically. This can save you from writing extra code to handle the deletion of related records.
 
 However, for our store as of now we will favor the safety feature that prevents orphaned records in the database. So we will disallow a User from deleting a Store that still has products and categories.
+
+#### Complete Delete event handler
+
+Similarly to submit handler, we set the proper `loading` states in the `try..catch..finally` block.
+- in the `try` block, set `loading` to `true`, call the API route, refresh to update, and push the user back to the root page
+
+```tsx
+  // 3. Define a delete handler
+  const onDelete = async () => {
+    try {
+      setLoading(true);
+      // Call an API with dynamic route to delete the store
+      await axios.delete(`/api/stores/${params.storeId}`);
+      // Re-synchronize server component to update data
+      router.refresh();
+      // Push user back to root layout where we check if there is another existing store
+      router.push("/");
+      toast.success("Store deleted.");
+    } catch (error) {
+      // Safety mechanism will prompt a warning to delete any related records to the store
+      toast.error("Make sure you removed all products and categories first.");
+    } finally {
+      setLoading(false);
+      // Close the Modal
+      setOpen(false);
+    }
+  };
+```
+
+###### Tracking the flow of the `router.push("/")`
+
+1. *When the user deletes a store, but still has another store:* 
+
+From here when we delete the store, we refresh to load the updated data. Then we push the user back to the root or the slash route `"/"`.
+
+In other words, we navigate to `ecommerce-admin\app\(root)\layout.tsx` where we check if there is any other existing store for the user:
+
+```tsx
+  // Fetch the first active store user has in database
+  const store = await prismadb.store.findFirst({
+    where: {
+      userId
+    }
+  });
+```
+
+Then the navbar will default to the new store.
+
+2. *When the user deletes a store, but has no other store:* 
+
+It will then default to `ecommerce-admin\app\(root)\(routes)\page.tsx`, or the page which triggers the create store modal:
+
+```tsx
+"use client";
+
+// Global Imports
+import { useEffect } from "react";
+
+// Local Imports
+import { useStoreModal } from "@/hooks/use-store-modal";
+
+export default function SetupPage() {
+  const onOpen = useStoreModal((state) => state.onOpen);
+  const isOpen = useStoreModal((state) => state.isOpen);
+
+  useEffect(() => {
+    if(!isOpen){
+      onOpen();
+    }
+  }, [isOpen, onOpen]);
+
+  return null;
+}
+```
+
+Which will prompt the user to create their first store.
