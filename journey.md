@@ -4800,3 +4800,34 @@ export const AlertModal: React.FC<AlertModalProps> = ({
 3. Side effect sets the `isMounted` to true
 4. Return `null` if `isMounted` is `false`, which prevents rendering of component
 5. Otherwise, if `isMounted` is `true` render and return the `Modal` component
+
+#### AlertModal - the actual `Modal` component
+
+We will return a `Modal` component that contains a `div` with 2 `Button` components. For both cancel and click buttons.
+
+Pass in the props.
+
+`AlertModal.tsx`
+```tsx
+// Local Imports
+import { Button } from '@/components/ui/button';
+import { Modal } from '@/components/ui/modal';
+// ...
+  return (
+    <Modal
+      title="Are you sure?"
+      description="This action is irreversible!"
+      isOpen={isOpen}
+      onClose={onClose}
+    >
+      <div className="pt-6 space-x-2 flex items-center justify-end w-full">
+        <Button disabled={loading} variant="outline" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button disabled={loading} variant="destructive" onClick={onConfirm}>
+          Continue
+        </Button>
+      </div>
+    </Modal>
+  )
+```
