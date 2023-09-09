@@ -88,7 +88,7 @@ export default function StoreModal() {
                     <FormControl>
                       <Input 
                         disabled={loading}
-                        placeholder="text" 
+                        placeholder="Write here..." 
                         {...field} 
                       />
                     </FormControl>
