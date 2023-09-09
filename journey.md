@@ -5061,3 +5061,17 @@ export default function SetupPage() {
 ```
 
 Which will prompt the user to create their first store.
+
+###### Link up the Delete event handler
+
+Now finally we can use this `onDelete` event handler and pass it to the prop of `AlertModal`.
+
+```tsx
+<AlertModal 
+  isOpen={open}
+  onClose={() => setOpen(false)}
+  onConfirm={onDelete}
+  loading={loading}
+/>
+```
+
