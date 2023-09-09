@@ -35,7 +35,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
 
   return (
     <Modal
-      title="Are you sure?"
+      title="Are you sure you want to delete?"
       description="This action is irreversible!"
       isOpen={isOpen}
       onClose={onClose}
