@@ -5120,3 +5120,46 @@ We will use [shadcn/ui - Alert](https://ui.shadcn.com/docs/components/alert)
 ```sh
 npx shadcn-ui@latest add alert
 ```
+
+We are going to create another component that will use `Alert` and also call an API.
+
+So we name this component `ApiAlert.tsx` inside of `ecommerce-admin\components\ui`.
+
+We have to give it an interface for the props that contains a `title`, `description` and `variant`.
+
+The following `variant` will either have `public` or `admin`.
+
+It will also contain the `Alert` component as part of the output.
+
+```tsx
+import { Alert } from "@/components/ui/alert";
+
+interface ApiAlertProps {
+  title: string;
+  description: string;
+  variant: "public" | "admin";
+};
+
+export const ApiAlert: React.FC<ApiAlertProps> = ({
+  title,
+  description,
+  variant = "public",
+}) => {
+  return (
+    <Alert></Alert>
+  )
+}
+```
+
+Why do we have variant as either type: `public` or `admin`?
+
+That's because we re-use this `ApiAlert` for all of the routes that will be shown in the products tab, or categories tab, etc.
+
+It will be quite similar to the code snippets we copy from `shadcn/ui`. It will have the "code" which in this case is the API_URL. And a button to allow copying the link. The only difference is that it has a title that will specify what the API URL is for, and whether its public or admin. 
+
+e.g.,
+
+```sh
+NEXT_PUBLIC_API_URL [Public]
+[https://... ]  [Clipboard Icon]
+```
