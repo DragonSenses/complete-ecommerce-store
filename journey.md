@@ -5075,7 +5075,7 @@ Now finally we can use this `onDelete` event handler and pass it to the prop of 
 />
 ```
 
-## SettingsForm , UI Testing
+## Settings Page - Additional Features
 
 Testing:
 
@@ -5110,3 +5110,13 @@ Its route will simply be the home route with `storeId`. We can label it: Home, D
 Overview: a general review or summary of a subject.
 
 According to the definition of Overview, I went with that as it best describes what that specific page from the Dashboard is, a summary of its objects.
+
+### Display environment key with `Alert` component
+
+Another thing we want to do in the Settings page is show environment key, which is useful for connecting the front-end.
+
+We will use [shadcn/ui - Alert](https://ui.shadcn.com/docs/components/alert)
+
+```sh
+npx shadcn-ui@latest add alert
+```
