@@ -5075,3 +5075,38 @@ Now finally we can use this `onDelete` event handler and pass it to the prop of 
 />
 ```
 
+## SettingsForm , UI Testing
+
+Testing:
+
+- Just a final check. GO ahead and delete the stores and see if the behaviors that we expect from tracking the flow works. 
+
+- Also try updating the store name if it immediately reflects in the UI.
+
+After testing there was currently no way for the user to navigate from the Settings page to the Dashboard. We can only select Settings.
+
+### Add a way for user to navigate from Settings page to Dashboard.
+
+Navigate to `ecommerce-admin\components\MainNav.tsx` and in the `routes` we want to create the route to bring us back to the dashboard:
+
+```tsx
+
+  const routes = [
+    {
+      href: `/${params.storeId}`,
+      label: 'Overview',
+      active: pathname === `/${params.storeId}`,
+    },
+    {
+      href: `/${params.storeId}/settings`,
+      label: 'Settings',
+      active: pathname === `/${params.storeId}/settings`,
+    },
+  ];
+```
+
+Its route will simply be the home route with `storeId`. We can label it: Home, Dashboard, Overview.
+
+Overview: a general review or summary of a subject.
+
+According to the definition of Overview, I went with that as it best describes what that specific page from the Dashboard is, a summary of its objects.
