@@ -25,6 +25,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ApiAlert } from '@/components/ui/ApiAlert';
 
 interface SettingsFormProps {
   initialData: Store
@@ -139,6 +140,8 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
           </Button>
         </form>
       </Form>
+      <Separator />
+      <ApiAlert title="test" description="test description" variant="public"/>
     </>
   )
 }
