@@ -5271,4 +5271,69 @@ export const ApiAlert: React.FC<ApiAlertProps> = ({
   )
 }
 ```
-- Construct AlertTitle etc.
+
+Let's add the `AlertTitle` and render the `title` inside
+
+```tsx
+  return (
+    <Alert>
+      <Server className="h-4 w-4" />
+      <AlertTitle className="flex items-center gap-x-2">
+        {title}
+      </AlertTitle>
+    </Alert>
+  )
+```
+
+##### Using `Badge` component
+
+[shadcn/ui - Badge](https://ui.shadcn.com/docs/components/badge)
+
+Install:
+
+```sh
+npx shadcn-ui@latest add badge
+```
+
+Now add Badge to output, where we interpolate the `textMap[variant]` inside.
+
+```tsx
+export const ApiAlert: React.FC<ApiAlertProps> = ({
+  title,
+  description,
+  variant = "public",
+}) => {
+  return (
+    <Alert>
+      <Server className="h-4 w-4" />
+      <AlertTitle className="flex items-center gap-x-2">
+        {title}
+        <Badge>{textMap[variant]}</Badge>
+      </AlertTitle>
+    </Alert>
+  )
+}
+```
+
+That's is the reason why we created the maps. This is how we create safe objects with TypeScript using existing props.
+
+The only variants available are `public` and `admin`.
+
+Our routes will be available either to `public` like **GET** routes or `admin` routes like **PATCH**,**DELETE**, and **POST**.
+
+Now let's add our `variant` to the `Badge`
+
+```tsx
+  return (
+    <Alert>
+      <Server className="h-4 w-4" />
+      <AlertTitle className="flex items-center gap-x-2">
+        {title}
+        <Badge variant={variantMap[variant]}>
+          {textMap[variant]}
+        </Badge>
+      </AlertTitle>
+    </Alert>
+  )
+}
+```
