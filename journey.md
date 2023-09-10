@@ -5229,10 +5229,46 @@ export const ApiAlert: React.FC<ApiAlertProps> = ({
 
 #### Output of `ApiAlert`
 
-Click on code in docs
-https://ui.shadcn.com/docs/components/alert
+Click on code in docs [shadcn/ui - Alert](https://ui.shadcn.com/docs/components/alert).
 
-Todo:
+To see our `ApiAlert` changing, let's add it in `SettingsForm`. Navigate to `ecommerce-admin\app\(dashboard)\[storeId]\(routes)\settings\components\SettingsForm.tsx`.
 
-- Use icon, from lucide-react
+Add a `Separator` below the `Form` and then add an `ApiAlert`
+
+```tsx
+"use client"
+// ...
+import { ApiAlert } from '@/components/ui/ApiAlert';
+// ...
+const SettingsForm: React.FC<SettingsFormProps> = ({
+  initialData
+}) => {
+  // ...
+  return (
+    // ...
+      </Form>
+      <Separator />
+      <ApiAlert title="test" description="test description" variant="public"/>
+    </>
+  )
+}
+```
+
+Now back to `ApiAlert.tsx`, add a `Server` icon from lucide-react in the ouput, inside the `Alert`.
+
+```tsx
+import { Server } from "lucide-react";
+// ...
+export const ApiAlert: React.FC<ApiAlertProps> = ({
+  title,
+  description,
+  variant = "public",
+}) => {
+  return (
+    <Alert>
+      <Server className="h-4 w-4" />
+    </Alert>
+  )
+}
+```
 - Construct AlertTitle etc.
