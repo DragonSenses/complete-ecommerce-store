@@ -1,3 +1,5 @@
+import { Server } from "lucide-react";
+
 import { Alert } from "@/components/ui/alert";
 
 interface ApiAlertProps {
@@ -23,7 +25,7 @@ export const ApiAlert: React.FC<ApiAlertProps> = ({
 }) => {
   return (
     <Alert>
-      
+      <Server className="h-4 w-4" />
     </Alert>
   )
 }
