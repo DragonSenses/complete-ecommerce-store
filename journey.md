@@ -5337,3 +5337,41 @@ Now let's add our `variant` to the `Badge`
   )
 }
 ```
+
+##### Issue: Type 'string' is not assignable to ...
+
+This code shows an error:
+
+```tsx
+<Badge variant={variantMap[variant]}>
+  {textMap[variant]}
+</Badge>
+```
+
+Error Message:
+```js
+Type 'string' is not assignable to type '"secondary" | "destructive" | "default" | "outline" | null | undefined'.ts(2322)
+badge.tsx(10, 7): The expected type comes from property 'variant' which is declared here on type 'IntrinsicAttributes & BadgeProps'
+(property) variant?: "secondary" | "destructive" | "default" | "outline" | null | undefined
+```
+
+The issue is this:
+
+```tsx
+const variantMap: Record<ApiAlertProps["variant"], string> = {
+  public: "secondary",
+  admin: "destructive"
+};
+```
+
+The 2nd parameter is defined to be any string, which is not true. As we can see the `Badge variant` can only take: `"secondary" | "destructive" | "default" | "outline"`.
+
+**Solution:** Redefine the 2nd type to be `BadgeProps["variant"]` and pick the variant
+
+```tsx
+import { Badge, BadgeProps } from "@/components/ui/badge";
+
+const variantMap: Record<ApiAlertProps["variant"], BadgeProps["variant"]> = {
+  public: "secondary",
+  admin: "destructive"
+};```
