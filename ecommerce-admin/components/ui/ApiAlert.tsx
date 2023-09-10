@@ -6,6 +6,7 @@ import {
   AlertTitle,
 } from "@/components/ui/alert";
 import { Badge, BadgeProps } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 interface ApiAlertProps {
   title: string;
@@ -37,6 +38,14 @@ export const ApiAlert: React.FC<ApiAlertProps> = ({
           {textMap[variant]}
         </Badge>
       </AlertTitle>
+      <AlertDescription >
+        <code >
+          {description}
+        </code>
+        <Button>
+
+        </Button>
+      </AlertDescription>
     </Alert>
   )
 }
