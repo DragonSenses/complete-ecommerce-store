@@ -5121,6 +5121,8 @@ We will use [shadcn/ui - Alert](https://ui.shadcn.com/docs/components/alert)
 npx shadcn-ui@latest add alert
 ```
 
+### ApiAlert component
+
 We are going to create another component that will use `Alert` and also call an API.
 
 So we name this component `ApiAlert.tsx` inside of `ecommerce-admin\components\ui`.
@@ -5163,3 +5165,74 @@ e.g.,
 NEXT_PUBLIC_API_URL [Public]
 [https://... ]  [Clipboard Icon]
 ```
+
+#### Dynamically render Alert Component based on variant prop
+
+- A **map** is a data structure that holds key/value pairs, where each key is unique. 
+
+- A `Record` utility type allows you to create a map with a predefined set of keys and values of a certain type.
+
+The Record utility type in TypeScript is a way to create an object type that has a fixed set of keys and a specific type for each value. You can use it to map the properties of one type to another type, or to restrict the keys and values of an object type.
+
+To use the Record utility type, you need to specify two type parameters: the first one is the type of the keys, and the second one is the type of the values. For example, if you want to create a type that represents a map from strings to numbers, you can write:
+
+```ts
+type StringNumberMap = Record<string, number>;
+```
+
+For more, see [TypeScript: Documentation - Utility Types](https://www.typescriptlang.org/docs/handbook/utility-types.html).
+
+We now need to create a `textMap` and `variantMap`.
+
+The `textMap` and `variantMap` objects are used to dynamically render the `Alert` component based on the variant prop. For example, if the variant prop is "admin", then the Alert component will have the text "Admin" and the variant "destructive".
+
+`textMap` and `variantMap` are two objects that use the Record utility type to create a map in TypeScript. 
+
+The `textMap` object has the keys "public" and "admin", which are the possible values of the variant prop in the `ApiAlertProps` interface. The values of these keys are strings that represent the text to be displayed for each variant. 
+
+- For example, `textMap["public"]` returns `"Public"`.
+
+The variantMap object has the same keys as the textMap object, but the values are strings that represent the variant to be passed to the Alert component. 
+
+- For example, `variantMap["admin"]` returns `"destructive"`.
+
+`ApiAlert.tsx`
+```tsx
+import { Alert } from "@/components/ui/alert";
+
+interface ApiAlertProps {
+  title: string;
+  description: string;
+  variant: "public" | "admin";
+};
+
+const textMap: Record<ApiAlertProps["variant"], string> = {
+  public: "Public",
+  admin: "Admin"
+};
+
+const variantMap: Record<ApiAlertProps["variant"], string> = {
+  public: "secondary",
+  admin: "destructive"
+};
+
+export const ApiAlert: React.FC<ApiAlertProps> = ({
+  title,
+  description,
+  variant = "public",
+}) => {
+  return (
+    <Alert></Alert>
+  )
+}
+```
+
+#### Output of `ApiAlert`
+
+Click on code in docs
+https://ui.shadcn.com/docs/components/alert
+
+Todo:
+
+- Use icon, from lucide-react
+- Construct AlertTitle etc.
