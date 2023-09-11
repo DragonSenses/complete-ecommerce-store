@@ -5374,4 +5374,47 @@ import { Badge, BadgeProps } from "@/components/ui/badge";
 const variantMap: Record<ApiAlertProps["variant"], BadgeProps["variant"]> = {
   public: "secondary",
   admin: "destructive"
-};```
+};
+```
+
+`variantMap` is a `Record` with the first string being either `public` or `admin` as that what `ApiAlertProps["variant"]` interpolates to. Whereas the 2nd string can be any choice of `BadgeProps["variant"]`.
+
+Finally, let's work on `AlertDescription`. Inside we will interpolate the `description` prop surrounded by HTML [inline code element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/code) to add some semantics.
+
+Then right below we have a `Button`.
+
+```tsx
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert";
+import { Badge, BadgeProps } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+export const ApiAlert: React.FC<ApiAlertProps> = ({
+  title,
+  description,
+  variant = "public",
+}) => {
+  return (
+    <Alert>
+      <Server className="h-4 w-4" />
+      <AlertTitle className="flex items-center gap-x-2">
+        {title}
+        <Badge variant={variantMap[variant]}>
+          {textMap[variant]}
+        </Badge>
+      </AlertTitle>
+      <AlertDescription>
+        <code>
+          {description}
+        </code>
+        <Button>
+
+        </Button>
+      </AlertDescription>
+    </Alert>
+  )
+}
+```
