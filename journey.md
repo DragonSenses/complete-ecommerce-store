@@ -5418,3 +5418,60 @@ export const ApiAlert: React.FC<ApiAlertProps> = ({
   )
 }
 ```
+
+##### Copy function - event handler
+
+Style up the `Button` and have a `Copy` icon inside.
+
+```tsx
+import { Copy, Server } from "lucide-react";
+// ...
+  <Button variant="outline" size="icon" onClick={() => {}}>
+    <Copy className="h-4 w-4" />
+  </Button>
+```
+
+The `onClick` will contain our copy function event handler. What this does is copies the user clipboard the text inside. In this case it is the `description`.
+
+To do this we use [Navigator](https://developer.mozilla.org/en-US/docs/Web/API/Navigator).
+
+The `navigator.clipboard` returns a `Clipboard` object that provides read and write access to the system clipboard.
+
+In action:
+```tsx
+export const ApiAlert: React.FC<ApiAlertProps> = ({
+  title,
+  description,
+  variant = "public",
+}) => {
+
+  // Copy Event Handler
+  const onCopy = () => {
+    navigator.clipboard.writeText(description);
+    toast.success("Copied to clipboard.");
+  }
+```
+
+Notice we use the `description` that is outside of the scope of `onCopy`, but inside `ApiAlert` since we have access to it. So when we attach the `onCopy` event handler to the `onClick` of the `Button` we can call it without parameters:
+
+```tsx
+<Button variant="outline" size="icon" onClick={onCopy}>
+  <Copy className="h-4 w-4" />
+</Button>
+```
+
+Alternatively, we can assign a local `description` inside the `onCopy` and pass it in to the `onClick`:
+
+```tsx
+  // Copy Event Handler
+  const onCopy = (description: string) => {
+    navigator.clipboard.writeText(description);
+    toast.success("Copied to clipboard.");
+  }
+// ...
+  return (
+    // ...
+        <Button variant="outline" size="icon" onClick={() => onCopy(description)}>
+          <Copy className="h-4 w-4" />
+        </Button>
+```
