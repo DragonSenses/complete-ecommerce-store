@@ -5475,3 +5475,33 @@ Alternatively, we can assign a local `description` inside the `onCopy` and pass 
           <Copy className="h-4 w-4" />
         </Button>
 ```
+
+Now whatever we passed into the `description` prop inside the `ApiAlert` component in `SettingsForm`, is what we can copy to the clipboard when we hit the copy `Button`.
+
+### Feature - Display Environment Variables in Settings Page
+
+Navigate back to `SettingsForm.tsx`.
+
+Let's pass in proper data to `title`.
+
+At this point we want to help the user by showing them what environment variables should be named for this store when they connect to their front-end.
+
+For now, going to just set `title` to `NEXT_PUBLIC_API_URL` inside the `ApiAlert`. This gives a more accurate title for what the function of `ApiAlert` is.
+
+Before we change the `description`, let's add another hook.
+
+#### `useOrigin` hook - to safely access Window object in Next.js 13
+
+Note that a key part of Next.js is Server-Side rendering, and on the server the [Window](https://developer.mozilla.org/en-US/docs/Web/API/Window) object does not exist. This is only available in the browser.
+
+Navigate to `/app/hooks` and create `use-origin.tsx`
+
+```tsx
+import React, { useState, useEffect } from 'react';
+
+export const useOrigin = () => {
+  return (
+    <div>useOrigin</div>
+  )
+}
+```
