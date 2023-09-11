@@ -5494,6 +5494,12 @@ Before we change the `description`, let's add another hook.
 
 Note that a key part of Next.js is Server-Side rendering, and on the server the [Window](https://developer.mozilla.org/en-US/docs/Web/API/Window) object does not exist. This is only available in the browser.
 
+How do we work around this? We will use `origin`.
+
+In this TypeScript React code, `origin` is a variable that holds the value of the origin of the current page, which is the combination of the *protocol*, *hostname*, and *port* of the URL. 
+
+For example, if the URL is https://www.bing.com/search?q=useOrigin+hook, then the origin is https://www.bing.com. The `origin` variable is useful for generating dynamic base URLs for your application, such as for API calls or links to other pages.
+
 Navigate to `/app/hooks` and create `use-origin.tsx`
 
 ```tsx
@@ -5503,5 +5509,85 @@ export const useOrigin = () => {
   return (
     <div>useOrigin</div>
   )
+}
+```
+
+- Create state variable `mounted` to track when element is created and inserted into the DOM. Hydration check to prevent rendering of the component before the effect has run.
+
+```tsx
+  // Declare isMounted state variable and initialize it to false
+  const [isMounted, setIsMounted] = useState(false);
+```
+
+- Get `origin`, with fallbacks. Check if `window` object and its `location` property are defined. If true then assign it to `origin`, which returns the origin variable of the current page. Otherwise, assign `origin` to empty string.
+
+1. First we check if window is available
+
+```tsx
+typeof window !== "undefined"
+```
+
+2. If `window` is available, then check if `window.location.origin` exists
+
+```tsx
+typeof window !== "undefined" && window.location.origin 
+```
+
+3. If `window.location.origin` exists then use it, otherwise pass in an empty string
+
+```tsx
+window.location.origin ? window.location.origin : ''
+```
+
+The full line to get `origin`:
+
+```tsx
+  const origin = typeof window !== "undefined" && window.location.origin ? window.location.origin : '';
+```
+
+- `useEffect` to prevent rendering of component before it is mounted, to protect against Hydration errors
+
+```tsx
+  // useEffect hook to set isMounted variable to true
+  // Delays the execution of client-side-only code until after hydration
+  useEffect(() => {
+    setIsMounted(true);
+  }, []); // Only run once after the initial render
+
+  // Prevent rendering of the component before the effect has run
+  // To protect from hydration errors or unwanted flashes of content
+  if (!isMounted) {
+    return null;
+  }
+```
+
+- Otherwise, if `isMounted` is true, then return `origin`
+
+`use-origin.tsx`
+```tsx
+import React, { useState, useEffect } from 'react';
+
+// Hook that safely access Windows Object in Next.js
+export const useOrigin = () => {
+  // Declare isMounted state variable and initialize it to false
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Check if window object and its location property are defined
+  // Assign it to origin if true, otherwise pass in an empty string
+  const origin = typeof window !== "undefined" && window.location.origin ? window.location.origin : '';
+
+  // useEffect hook to set isMounted variable to true
+  // Delays the execution of client-side-only code until after hydration
+  useEffect(() => {
+    setIsMounted(true);
+  }, []); // Only run once after the initial render
+
+  // Prevent rendering of the component before the effect has run
+  // To protect from hydration errors or unwanted flashes of content
+  if (!isMounted) {
+    return null;
+  }
+
+  return origin;
 }
 ```
