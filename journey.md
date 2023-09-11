@@ -5496,9 +5496,13 @@ Note that a key part of Next.js is Server-Side rendering, and on the server the 
 
 How do we work around this? We will use `origin`.
 
+##### What is origin?
+
 In this TypeScript React code, `origin` is a variable that holds the value of the origin of the current page, which is the combination of the *protocol*, *hostname*, and *port* of the URL. 
 
 For example, if the URL is https://www.bing.com/search?q=useOrigin+hook, then the origin is https://www.bing.com. The `origin` variable is useful for generating dynamic base URLs for your application, such as for API calls or links to other pages.
+
+##### Create `useOrigin` hook
 
 Navigate to `/app/hooks` and create `use-origin.tsx`
 
@@ -5591,3 +5595,81 @@ export const useOrigin = () => {
   return origin;
 }
 ```
+
+#### Dynamically generate URL using `origin` & `useOrigin` hook
+
+Now we want to use this hook to generate the correct URL to access the store.
+
+Navigate back to `SettingsForm.tsx` and use the hook to dynamically generate base URLs for our application.
+
+Update the `description` prop, from this:
+
+```tsx
+<ApiAlert 
+  title="NEXT_PUBLIC_API_URL" 
+  description="test description" 
+  variant="public"
+/>
+```
+
+To this:
+
+```tsx
+"use client"
+// ...
+import { ApiAlert } from '@/components/ui/ApiAlert';
+import { useOrigin } from '@/hooks/use-origin';
+
+const SettingsForm: React.FC<SettingsFormProps> = ({
+  initialData
+}) => {
+  // Extract params to get storeId
+  const params = useParams();
+  // ...
+
+  // Safely access the window object, only after the component is mounted
+  const origin = useOrigin();
+  
+  // ...
+
+  return (
+    <>
+      // ...
+      <ApiAlert 
+        title="NEXT_PUBLIC_API_URL" 
+        description={`${origin}/api/${params.storeId}`} 
+        variant="public"
+      />
+    </>
+  )
+}
+```
+
+So why use the hook to safely access the Windows object, rather than using windows object directly?
+
+In short, it would cause hydration errors. Since we are trying to access the window object while the component may still be mounting, Next.js will throw an error that the document or window is not defined.
+
+For example, we could've use the global variable: `origin`
+
+```tsx
+<ApiAlert 
+  title="NEXT_PUBLIC_API_URL" 
+  description={`${origin}/api/${params.storeId}`} 
+  variant="public"
+/>
+```
+
+Which is equivalent to `windows.location.origin`
+
+```tsx
+<ApiAlert 
+  title="NEXT_PUBLIC_API_URL" 
+  description={`${window.location.origin}/api/${params.storeId}`} 
+  variant="public"
+/>
+```
+
+This may work, **but this can cause hydration errors because we are trying to access the window object while the component is still mounting.**
+
+See #2 of [Common NextJS Errors](https://blog.logrocket.com/common-next-js-errors/).
+
