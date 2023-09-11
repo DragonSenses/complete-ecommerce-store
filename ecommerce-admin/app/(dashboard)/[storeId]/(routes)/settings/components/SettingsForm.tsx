@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ApiAlert } from '@/components/ui/ApiAlert';
+import { useOrigin } from '@/hooks/use-origin';
 
 interface SettingsFormProps {
   initialData: Store
@@ -51,6 +52,9 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
 
   // Create loading state to disable interactive elements
   const [loading, setLoading] = useState(false);
+
+  // Safely access the window object, only after the component is mounted
+  const origin = useOrigin();
 
   // 1. Define form with useForm hook & zodResolver for validation
   const form = useForm<SettingsFormValues>({
@@ -141,7 +145,11 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
         </form>
       </Form>
       <Separator />
-      <ApiAlert title="test" description="test description" variant="public"/>
+      <ApiAlert 
+        title="NEXT_PUBLIC_API_URL" 
+        description={`${origin}/api/${params.storeId}`} 
+        variant="public"
+      />
     </>
   )
 }
