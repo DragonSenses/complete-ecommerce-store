@@ -5827,6 +5827,12 @@ model Billboard {
 
 ##### prisma warning index relational db
 
+- [Indexes & Index Validation - prisma](https://pris.ly/d/relation-mode-prisma-indexes)
+
+- [Index configuration - prisma docs](https://www.prisma.io/docs/concepts/components/prisma-schema/indexes#index-configuration)
+
+- [Index - prisma](https://www.prisma.io/docs/concepts/components/prisma-schema/indexes)
+
 We still have a warning in our prisma
 
 ```sh
@@ -5841,9 +5847,51 @@ model Billboard {
 }
 ```
 
-The fix: later. 
-[Index - prisma](https://www.prisma.io/docs/concepts/components/prisma-schema/indexes)
-- Fix with index decorator.
+**Solution** to the warning regarding "relation fields will not benefit form index..." is by using the `@@index` attribute to configure indexes in Prisma SQL.
+
+The `@@index` attribute is a way to configure indexes in Prisma SQL. 
+
+An *index* is a secondary data structure that helps the database to perform queries faster by storing a subset of the table's data in a sorted order. 
+
+The `@@index` attribute allows you to specify which fields of a model are involved in the index and how they are referenced. You can also use additional arguments to customize the index, such as the name, the type, the sort order, and the length.
+
+For example, if you want to create an index on the title and content fields of a Post model, you can write something like this:
+
+```prisma
+model Post {
+  id      Int    @id @default(autoincrement())
+  title   String
+  content String
+  @@index([title, content], name: "post_index")
+}
+```
+
+This code creates an index named `"post_index"` on the `title` and `content` fields of the `Post` model. You can use this index to speed up queries that involve these fields, such as searching for posts by `title` or `content`.
+
+To fix our warning the `Billboard` we should create an index named `store_id` on the `storeId` field of the `Billboard` model to speed up queries involving this field.
+
+```prisma
+model Billboard {
+  id        String @id @default(uuid())
+  store     Store @relation("StoreToBillboard", fields: [storeId], references: [id])
+  storeId   String // relation scalar field (used in the `@relation` attribute)
+  label     String
+  imageUrl  String
+  createAt  DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([storeId], name: "store_id")
+}
+```
+
+or we could just give it no name but still index `storeId`:
+
+```prisma
+model Billboard {
+  // ...
+  @@index([storeId])
+}
+```
 
 #### More to add to `Billboard` model
 
