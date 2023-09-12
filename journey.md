@@ -5685,6 +5685,48 @@ Add `"use client"` directive to `ecommerce-admin\components\ui\ApiAlert.tsx`.
 
 As of now, it is currently working as a server component because the only place we are using it is inside the `SettingsForm` which is a client component itself. But since we plan to use it in other ways, such as in server components, we need to explicitly mark it as a client component to prevent any problems later.
 
-## TODO - Dashboard , Billboard for stores
+## Billboards
 
-- Add Billboard to DB, schema prisma
+The next entity we want in our database are Billboards. 
+
+[Prisma Client docs](https://www.prisma.io/docs/concepts/components/prisma-client)
+
+A model represents an entity of your application domain, which maps to maps to a table (in relational databases) or a collection (in MongoDB) in your database. You can use models to query and manipulate data with Prisma Client, which is a type-safe and auto-generated database client.
+
+A model consists of a number of fields, which can be scalar types, enums, or relations. You can also use attributes and functions to change the behavior of fields and models.
+
+#### Relations - Prisma - DB
+
+We will make a [relation in prisma](https://www.prisma.io/docs/concepts/components/prisma-schema/relations). A relation is a connection between two models in the Prisma schema. 
+
+To make a relation in Prisma SQL, you need to define two models in the Prisma schema and use the `@relation` attribute to connect them. The `@relation` attribute specifies which fields are involved in the relation and how they reference each other. For example, if you want to make a one-to-many relation between a `User` model and a `Post` model, you can write something like this:
+
+```prisma
+model User {
+  id    Int    @id @default(autoincrement())
+  posts Post[]
+}
+
+model Post {
+  id       Int    @id @default(autoincrement())
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId Int    // relation scalar field (used in the `@relation` attribute above)
+}
+```
+
+This code defines a `User` model with an `id` field and a `posts` field, which is a relation field that represents the connection to the `Post` model. 
+
+Similarly, it defines a `Post` model with an `id` field, an `author` field, which is another relation field that references the `User` model, and an `authorId` field, which is a scalar field that stores the foreign key value of the author. The `@relation` attribute on the author field specifies that it uses the `authorId` field to reference the id field of the User model.
+
+### Create Billboard model in `schema.prisma`
+
+Fields of `Billboard` model:
+
+- `id`, type String
+
+Next we want to create a relation to the `Store`, so `Billboard` can only exist inside a specific `Store`
+
+- `storeId` type String
+- `store` type `Store` model with a relation
+
+The relation will be called "StoreToBillboard" and it will have `fields` that contain `[storeId]` and `references` will contain `[id]`
