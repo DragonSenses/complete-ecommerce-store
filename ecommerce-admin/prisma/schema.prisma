@@ -16,12 +16,13 @@ model Store {
   id        String    @id @default(uuid())
   name      String
   userId    String
+  billboards Billboard[] @relation("StoreToBillboard")
   createAt  DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
 
 model Billboard {
   id      String @id @default(uuid())
-  storeId String
   store   Store @relation("StoreToBillboard", fields: [storeId], references: [id])
+  storeId String // relation scalar field (used in the `@relation` attribute)
 }
