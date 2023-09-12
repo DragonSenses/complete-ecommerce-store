@@ -5673,3 +5673,18 @@ This may work, **but this can cause hydration errors because we are trying to ac
 
 See #2 of [Common NextJS Errors](https://blog.logrocket.com/common-next-js-errors/).
 
+So during that small time-frame of server-side rendering, where the component is still being mounted, we won't have that hydration error by using our `useOrigin` hook.
+
+#### Completing `ApiAlert` component
+
+With that we have completed `ApiAlert`, which helps avoid code re-duplication because we are going to use this throughout the project.
+
+The final thing to do now is to mark it as a client component. 
+
+Add `"use client"` directive to `ecommerce-admin\components\ui\ApiAlert.tsx`.
+
+As of now, it is currently working as a server component because the only place we are using it is inside the `SettingsForm` which is a client component itself. But since we plan to use it in other ways, such as in server components, we need to explicitly mark it as a client component to prevent any problems later.
+
+## TODO - Dashboard , Billboard for stores
+
+- Add Billboard to DB, schema prisma
