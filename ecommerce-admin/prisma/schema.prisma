@@ -22,7 +22,11 @@ model Store {
 }
 
 model Billboard {
-  id      String @id @default(uuid())
-  store   Store @relation("StoreToBillboard", fields: [storeId], references: [id])
-  storeId String // relation scalar field (used in the `@relation` attribute)
+  id        String @id @default(uuid())
+  store     Store @relation("StoreToBillboard", fields: [storeId], references: [id])
+  storeId   String // relation scalar field (used in the `@relation` attribute)
+  label     String
+  imageUrl  String
+  createAt  DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
