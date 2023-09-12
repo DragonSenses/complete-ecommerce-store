@@ -5846,3 +5846,22 @@ The fix: later.
 - Fix with index decorator.
 
 #### More to add to `Billboard` model
+
+`Billboard` model will also addition fields:
+
+-  a `label` field
+- `imageUrl`
+- `createdAt`
+- `updatedAt`
+
+```prisma
+model Billboard {
+  id        String @id @default(uuid())
+  store     Store @relation("StoreToBillboard", fields: [storeId], references: [id])
+  storeId   String // relation scalar field (used in the `@relation` attribute)
+  label     String
+  imageUrl  String
+  createAt  DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+```
