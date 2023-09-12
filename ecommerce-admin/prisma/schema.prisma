@@ -29,4 +29,7 @@ model Billboard {
   imageUrl  String
   createAt  DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  // Manually add index on relation scalar field
+  @@index([storeId])
 }
