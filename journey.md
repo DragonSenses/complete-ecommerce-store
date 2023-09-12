@@ -5730,3 +5730,119 @@ Next we want to create a relation to the `Store`, so `Billboard` can only exist 
 - `store` type `Store` model with a relation
 
 The relation will be called "StoreToBillboard" and it will have `fields` that contain `[storeId]` and `references` will contain `[id]`
+
+`schema.prisma` file
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+// Create simplified model of our Store
+model Store {
+  id        String    @id @default(uuid())
+  name      String
+  userId    String
+  createAt  DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Billboard {
+  id      String @id @default(uuid())
+  storeId String
+  store   Store @relation("StoreToBillboard", fields: [storeId], references: [id])
+}
+```
+
+#### Issue: Error validating field `store` in model `Billboard` ... 
+
+This line:
+```prisma
+model Billboard {
+  store   Store @relation("StoreToBillboard", fields: [storeId], references: [id])
+}
+```
+
+Throws this error:
+
+```sh
+Error validating field `store` in model `Billboard`: The relation field `store` on model `Billboard` is missing an opposite relation field on the model `Store`. Either run `prisma format` or add it manually.
+With `relationMode = "prisma"`, no foreign keys are used, so relation fields will not benefit from the index usually created by the relational database under the hood. This can lead to poor performance when querying these fields. We recommend adding an index manually. Learn more at https://pris.ly/d/relation-mode-prisma-indexes" 
+```
+
+**Solution:** we have an error because we have defined a relation here inside `Billboard` but we have not defined it in the `Store` model. So add the the field `billboards` with a `Billboard[]` array, just like in the `User` and `Post` model example.
+
+```prisma
+model Store {
+  id        String    @id @default(uuid())
+  name      String
+  userId    String
+  billboards Billboard[]
+  createAt  DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Billboard {
+  id      String @id @default(uuid())
+  store   Store @relation("StoreToBillboard", fields: [storeId], references: [id])
+  storeId String // relation scalar field (used in the `@relation` attribute)
+}
+```
+
+Another issue shows up:
+
+```sh
+Error validating field `billboards` in model `Store`: The relation field `billboards` on model `Store` is missing an opposite relation field on the model `Billboard`. Either run `prisma format` or add it manually.
+```
+
+**Solution** is to use the `@relation` attribute to connect them. Append `@relation("StoreToBillboard")` to `Billboard[]`
+
+```prisma
+model Store {
+  id        String    @id @default(uuid())
+  name      String
+  userId    String
+  billboards Billboard[] @relation("StoreToBillboard")
+  createAt  DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Billboard {
+  id      String @id @default(uuid())
+  store   Store @relation("StoreToBillboard", fields: [storeId], references: [id])
+  storeId String // relation scalar field (used in the `@relation` attribute)
+}
+```
+
+- We have added a `storeId` property to ths `Billboard`. Then defined a relation, which is connected to the relation in the `Store`. The name, "StoreToBillboard", remains the same.
+
+- In the `fields`, it is targeting the field `storeId`
+- In the `references`, it is referring to `id`  in the `Store`
+
+##### prisma warning index relational db
+
+We still have a warning in our prisma
+
+```sh
+With `relationMode = "prisma"`, no foreign keys are used, so relation fields will not benefit from the index usually created by the relational database under the hood. This can lead to poor performance when querying these fields. We recommend adding an index manually. Learn more at https://pris.ly/d/relation-mode-prisma-indexes" 
+```
+
+Which is thrown by this code:
+
+```prisma
+model Billboard {
+  store   Store @relation("StoreToBillboard", fields: [storeId], references: [id])
+}
+```
+
+The fix: later. 
+[Index - prisma](https://www.prisma.io/docs/concepts/components/prisma-schema/indexes)
+- Fix with index decorator.
+
+#### More to add to `Billboard` model
