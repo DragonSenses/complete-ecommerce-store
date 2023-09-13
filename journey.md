@@ -5951,7 +5951,8 @@ npx prisma db push
 Output:
 
 ```sh
- npx prisma db push                                                                                                        
+npx prisma db push          
+
 Environment variables loaded from .env
 Prisma schema loaded from prisma\schema.prisma
 Datasource "db": MySQL database "ecommerce-admin" at "aws.connect.psdb.cloud"
@@ -5959,4 +5960,23 @@ Datasource "db": MySQL database "ecommerce-admin" at "aws.connect.psdb.cloud"
 Your database is now in sync with your Prisma schema. Done in 2.58s
 
 ✔ Generated Prisma Client (5.1.1 | library) to .\node_modules\@prisma\client in 59ms
+```
+
+#### Update `prisma`
+
+After `npx prisma db push`, you may get an update message:
+
+```sh
+Update available 5.1.1 -> 5.3.0                        │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest
+```
+
+Let's run those commands:
+
+```sh
+npm i --save-dev prisma@latest
+
+npm i @prisma/client@latest
 ```
