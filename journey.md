@@ -5913,3 +5913,50 @@ model Billboard {
   updatedAt DateTime  @updatedAt
 }
 ```
+
+### Generate prisma
+
+[Generating Prisma Client](https://www.prisma.io/docs/concepts/components/prisma-client/working-with-prismaclient/generating-prisma-client)
+
+**Important**: You need to re-run the `prisma generate` command after every change that's made to your Prisma schema to update the generated Prisma Client code.
+
+Before we can start using Prisma Client in our application and start using `Billboard` we need to 
+
+be in the right directory
+
+```sh
+cd ./ecommerce-admin/
+```
+
+and re-run the command
+
+```sh
+npx prisma generate
+```
+
+To demonstrate, now we can navigate to `ecommerce-admin\app\(root)\layout.tsx` and use `prisma` to create `billboard`. We can remove this right after we see it auto-complete.
+
+```tsx
+const billboard = await prismadb.billboard
+```
+
+#### Push new `schema.prisma` to planetscale
+
+Run the command
+
+```sh
+npx prisma db push
+```
+
+Output:
+
+```sh
+ npx prisma db push                                                                                                        
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+Datasource "db": MySQL database "ecommerce-admin" at "aws.connect.psdb.cloud"
+
+Your database is now in sync with your Prisma schema. Done in 2.58s
+
+✔ Generated Prisma Client (5.1.1 | library) to .\node_modules\@prisma\client in 59ms
+```
