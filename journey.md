@@ -5967,10 +5967,12 @@ Your database is now in sync with your Prisma schema. Done in 2.58s
 After `npx prisma db push`, you may get an update message:
 
 ```sh
-Update available 5.1.1 -> 5.3.0                        │
+┌─────────────────────────────────────────────────────────┐
+│  Update available 5.1.1 -> 5.3.0                        │
 │  Run the following to update                            │
 │    npm i --save-dev prisma@latest                       │
-│    npm i @prisma/client@latest
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
 ```
 
 Let's run those commands:
@@ -5979,4 +5981,81 @@ Let's run those commands:
 npm i --save-dev prisma@latest
 
 npm i @prisma/client@latest
+```
+
+### Navigation for Billboard
+
+Navigate to `ecommerce-admin\components\MainNav.tsx`, and create a billboards route
+
+```tsx
+  const routes = [
+    {
+      href: `/${params.storeId}`,
+      label: 'Overview',
+      active: pathname === `/${params.storeId}`,
+    },
+    {
+      href: `/${params.storeId}/billboards`,
+      label: 'Billboards',
+      active: pathname === `/${params.storeId}/billboards`,
+    },
+    {
+      href: `/${params.storeId}/settings`,
+      label: 'Settings',
+      active: pathname === `/${params.storeId}/settings`,
+    },
+  ];
+```
+
+Clicking on it will give us a 404, so we need to actually build the page
+
+Create a folder named `billboards` in `ecommerce-admin\app\(dashboard)\[storeId]\(routes)`.
+
+Inside make `page.tsx` with a React Functional Component named `BillboardsPage`
+
+```tsx
+// Global Imports
+import React from 'react';
+
+// Local Imports
+import BillboardClient from './components/client';
+
+const BillboardsPage = () => {
+  return (
+    <div className='flex-col'>
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <BillboardClient />
+      </div>
+    </div>
+  );
+}
+
+export default BillboardsPage;
+```
+
+#### `BillboardClient` component
+
+Notice that in the output we also render another component named `BillboardClient`.
+
+It is a client component that loads all our Billboards. Similar to the `SettingsForm`, we will have this component in a different location.
+
+Under `billboards`, create a `components` folder with `client.tsx` file inside. The file is a React functional component.
+
+`ecommerce-admin\app\(dashboard)\[storeId]\(routes)\billboards\components\client.tsx`
+
+```tsx
+"use client"
+
+// Client component that loads all our Billboards
+const BillboardClient = () => {
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        Billboard Client
+      </div>
+    </>
+  )
+}
+
+export default BillboardClient;
 ```
