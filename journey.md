@@ -6033,7 +6033,7 @@ const BillboardsPage = () => {
 export default BillboardsPage;
 ```
 
-#### `BillboardClient` component
+### `BillboardClient` component
 
 Notice that in the output we also render another component named `BillboardClient`.
 
@@ -6059,3 +6059,50 @@ const BillboardClient = () => {
 
 export default BillboardClient;
 ```
+
+The `BillboardClient`'s top section will have:
+
+- Add `Heading`
+- Add `Button`
+- Add `Separator`
+
+The section below the `Separator` will contain a large data table, but since we do not have any billboards or data to iterate over, we will a comment as a reminder for now.
+
+Also note that the `Heading`'s `title` will be dynamically rendered, but for now it is hardcoded.
+
+```tsx
+"use client";
+
+// Global Imports
+import { Plus } from "lucide-react";
+
+// Local Imports
+import { Button } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
+import { Separator } from "@/components/ui/separator";
+
+// Client component that loads all our Billboards
+const BillboardClient = () => {
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        <Heading 
+          title="Billboards (0)"
+          description="Manage billboards for your store"
+        />
+        <Button>
+          <Plus className="h-4 w-4 mr-2" />
+          Add New
+        </Button>
+      </div>
+      <Separator />
+      {/* Data Table */}
+    </>
+  )
+}
+
+export default BillboardClient;
+```
+
+### Functionality: Form to create new Billboards
+
