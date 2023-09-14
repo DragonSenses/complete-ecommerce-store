@@ -6302,3 +6302,67 @@ Now rename each instance of `SettingsForm` to `BillboardForm`.
 
 We will still have an error inside `BillboardPage` because we copied it from `SettingsForm`, so we need to make some changes.
 
+### Fixing Errors in `BillboardForm` 
+
+1. `initialData` is incorrect type
+
+- Notice our props and type. The `initialData` in Settings expects it to be of type `Store`.
+
+```tsx
+interface BillboardFormProps {
+  initialData: Store
+}
+```
+
+But this should not be the case here in `BillboardForm`. We need to change the type to either be `Billboard` or `null` as there is a chance the billboard was not found. Also import `Billboard` type in place of `Store` from `@prisma/client`.
+
+`BillboardForm.tsx`
+```tsx
+import { Billboard } from '@prisma/client';
+
+interface BillboardFormProps {
+  initialData: Billboard | null
+}
+```
+
+2. Type is not assignable to type ...
+
+In this code, the `defaultValues` is underlined with an error
+
+```tsx
+  // 1. Define form with useForm hook & zodResolver for validation
+  const form = useForm<BillboardFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: initialData
+  });
+```
+
+Error message:
+
+```tsx
+Type '{ id: string; storeId: string; label: string; imageUrl: string; createAt: Date; updatedAt: Date; } | null' is not assignable to type 'AsyncDefaultValues<{ name: string; }> | { name?: string | undefined; } | undefined'.
+  Type 'null' is not assignable to type 'AsyncDefaultValues<{ name: string; }> | { name?: string | undefined; } | undefined'.ts(2322)
+(property) defaultValues?: AsyncDefaultValues<{
+    name: string;
+}> | {
+    name?: string | undefined;
+} | undefined
+```
+
+Notice the text: "Type 'null' is not assignable to type ..."
+
+That means the error in the line: `defaultValues: initialData` is that there is a possibility that it is `null`. 
+
+**Fix:** Define default value that is not null. An object with the properties set to empty values.
+
+Add a pipe and an object, and manually add the properties to be empty. That means `label` and `imageUrl` should be empty string.
+
+```tsx
+  const form = useForm<BillboardFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: initialData || {
+      label: '',
+      imageUrl: ''
+    }
+  });
+```
