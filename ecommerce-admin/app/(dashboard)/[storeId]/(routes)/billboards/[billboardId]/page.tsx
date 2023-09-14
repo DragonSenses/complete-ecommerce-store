@@ -1,8 +1,23 @@
+// Global Imports
+import prismadb from '@/lib/prismadb';
 import React from 'react';
 
-const BillboardPage =  async ({}:{}) => {
+// Local Imports
+
+const BillboardPage =  async ({
+  params
+}:{
+  params: { billboardId: string }
+}) => {
+  // Fetch an existing billboard
+  const billboard = await prismadb.billboard.findUnique({
+    where: {
+      id: params.billboardId
+    }
+  });
+
   return (
-    <div>Form for billboards</div>
+    <div>Existing Billboard: {billboard?.label}</div>
   )
 }
 
