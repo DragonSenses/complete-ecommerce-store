@@ -6366,3 +6366,74 @@ Add a pipe and an object, and manually add the properties to be empty. That mean
     }
   });
 ```
+
+3. We still have an error for `defaultValues`
+
+Error message
+
+```tsx
+Type '{ id: string; storeId: string; label: string; imageUrl: string; createAt: Date; updatedAt: Date; } | { label: string; imageUrl: string; }' is not assignable to type 'AsyncDefaultValues<{ name: string; }> | { name?: string | undefined; } | undefined'.
+  Type '{ id: string; storeId: string; label: string; imageUrl: string; createAt: Date; updatedAt: Date; }' is not assignable to type 'AsyncDefaultValues<{ name: string; }> | { name?: string | undefined; } | undefined'.ts(2322)
+(property) defaultValues?: AsyncDefaultValues<{
+    name: string;
+}> | {
+    name?: string | undefined;
+} | undefined
+```
+
+The code, where `defaultValues` is highlighted
+
+```tsx
+  // 1. Define form with useForm hook & zodResolver for validation
+  const form = useForm<BillboardFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: initialData || {
+      label: '',
+      imageUrl: ''
+    }
+  });
+```
+
+The error remains because we are using `zod`.
+
+`zod` has different fields defined in our `formSchema`, as we can see here:
+
+`BillboardForm.tsx`
+```tsx
+// Create zod object schema with string name and min of 1 letter
+const formSchema = z.object({
+  name: z.string().min(1),
+});
+```
+
+Recall that in our `prisma.schema`, the `Billboard` model:
+
+```prisma
+model Billboard {
+  id        String @id @default(uuid())
+  store     Store @relation("StoreToBillboard", fields: [storeId], references: [id])
+  storeId   String // relation scalar field (used in the `@relation` attribute)
+  label     String
+  imageUrl  String
+  createAt  DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Manually add index on relation scalar field
+  @@index([storeId])
+}
+```
+
+**Fix:** add the required properties within the zod object when creating formSchema
+
+So to fix the error, we make the following changes:
+
+- Change `name` to `label`
+- Add `imageUrl` property
+
+```tsx
+// Create zod object schema
+const formSchema = z.object({
+  label: z.string().min(1),
+  imageUrl: z.string().min(1),
+});
+```
