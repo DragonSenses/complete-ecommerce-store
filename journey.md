@@ -6253,3 +6253,52 @@ So this would trigger the creation of a new Billboard instead of updating an exi
 *What if the `billboardId` does exist, and the id in the URL is correct?*
 
 Then we use the `billboardId` to fetch an existing `billboard` and just use it as `initialData` just like in the Settings. This `initialData` will trigger the option to update the existing billboard rather than creating a new one.
+
+##### `BillboardPage` output
+
+Working on the return statement. We will create the `BillboardForm` after this.
+```tsx
+// Global Imports
+import prismadb from '@/lib/prismadb';
+import React from 'react';
+
+// Local Imports
+import BillboardForm from './components/BillboardForm';
+
+const BillboardPage =  async ({
+  params
+}:{
+  params: { billboardId: string }
+}) => {
+
+  // Fetch an existing billboard
+  const billboard = await prismadb.billboard.findUnique({
+    where: {
+      id: params.billboardId
+    }
+  });
+
+  return (
+    <div className="flex-col">
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <BillboardForm initialData={billboard}/>
+      </div>
+    </div>
+  )
+}
+
+export default BillboardPage;
+```
+
+## `BillboardForm`
+
+Copy the `components` folder of the `settings`, (the relative path is `ecommerce-admin\app\(dashboard)\[storeId]\(routes)\settings\components`).
+
+Paste it into the `[billboardId]` folder (the path is `ecommerce-admin\app\(dashboard)\[storeId]\(routes)\billboards\[billboardId]`).
+
+Now rename the file inside the `\(routes)\billboards\[billboardId]\components` to `BillboardForm.tsx`.
+
+Now rename each instance of `SettingsForm` to `BillboardForm`.
+
+We will still have an error inside `BillboardPage` because we copied it from `SettingsForm`, so we need to make some changes.
+
