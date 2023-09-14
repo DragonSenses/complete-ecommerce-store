@@ -6106,3 +6106,59 @@ export default BillboardClient;
 
 ### Functionality: Form to create new Billboards
 
+The next goal is to implement the functionality to create new billboards through a Form. This will be linked up with the `Button`.
+
+First get `router` and `params` in `BillboardClient`.
+
+Then for `Button` add an `onClick` function to the following route: `/${params.storeId}/billboards/new`
+
+```tsx
+// Client component that loads all our Billboards
+const BillboardClient = () => {
+  const router = useRouter();
+  const params = useParams();
+
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        <Heading
+          title="Billboards (0)"
+          description="Manage billboards for your store"
+        />
+        <Button
+          onClick={() => router.push(`/${params.storeId}/billboards/new`)}
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Add New
+        </Button>
+      </div>
+      <Separator />
+      {/* Data Table */}
+    </>
+  )
+}
+```
+
+#### `BillboardPage`
+
+Now we have to create a page for this route, so create a folder in `billboards` named `[billboardId]` with `page.tsx` within:
+
+```tsx
+import React from 'react';
+
+const BillboardPage =  async ({}:{}) => {
+  return (
+    <div>Form for billboards</div>
+  )
+}
+
+export default BillboardPage;
+```
+
+This will return a page for a specific `Billboard`.
+
+Why do we redirect to `/billboards/new` exactly?
+
+TODO: 
+
+- extract params from server component `BillboardPage`
