@@ -4,7 +4,7 @@
 import * as z from 'zod';
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Store } from '@prisma/client';
+import { Billboard } from '@prisma/client';
 import { toast } from 'react-hot-toast';
 import { Trash } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -28,10 +28,6 @@ import { Input } from "@/components/ui/input";
 import { ApiAlert } from '@/components/ui/ApiAlert';
 import { useOrigin } from '@/hooks/use-origin';
 
-interface BillboardFormProps {
-  initialData: Store
-}
-
 // Create zod object schema with string name and min of 1 letter
 const formSchema = z.object({
   name: z.string().min(1),
@@ -39,6 +35,11 @@ const formSchema = z.object({
 
 // extract the inferred type
 type BillboardFormValues = z.infer<typeof formSchema>;
+
+// Define type and shape of props
+interface BillboardFormProps {
+  initialData: Billboard | null
+}
 
 const BillboardForm: React.FC<BillboardFormProps> = ({
   initialData
@@ -59,7 +60,10 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
   // 1. Define form with useForm hook & zodResolver for validation
   const form = useForm<BillboardFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData
+    defaultValues: initialData || {
+      label: '',
+      imageUrl: ''
+    }
   });
 
   // 2. Define a submit handler
