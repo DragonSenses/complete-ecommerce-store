@@ -1781,11 +1781,25 @@ Install *prisma* as a dev dependency:
 npm i -D prisma
 ```
 
+### Prisma Client
+
 After prisma is installed, we run another command to install [Prisma Client](https://www.npmjs.com/package/@prisma/client):
 
 ```sh
 npm install @prisma/client
 ```
+
+Prisma Client documentation:
+
+- [Prisma Client - Set up](https://www.prisma.io/docs/concepts/components/prisma-client)
+
+- [Prisma Client - CRUD](https://www.prisma.io/docs/concepts/components/prisma-client/crud)
+
+- [Prisma Client - Select Fields](https://www.prisma.io/docs/concepts/components/prisma-client/select-fields)
+
+- [Prisma Client - Relation Queries](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries)
+
+- [Prisma Client - Filtering and Sorting](https://www.prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting)
 
 ### Create Prisma schema
 
@@ -6157,8 +6171,85 @@ export default BillboardPage;
 
 This will return a page for a specific `Billboard`.
 
-Why do we redirect to `/billboards/new` exactly?
+Question: Why do we redirect to `/billboards/new` exactly?
 
-TODO: 
+Answer: In our `BillboardPage` we will attempt to fetch an existing Billboard. The information we get, whether a Billboard is found in the database or not, will allow us to decide whether we should display a new form or an edit form. The user can either create a new Billboard or edit an existing billboard. 
 
-- extract params from server component `BillboardPage`
+When we redirect to `/new`, we map it to `billboardId` because of the dynamic route `[billboardId]`. So when we fetch a Billboard with the `id: 'new'`, no Billboard would be found. We will use this fact that nothing was to turn on a specific form that triggers the creation of a new Billboard rather than updating an existing one.
+
+I'll come back to this `/new` idea in a bit, let's start implementing a few things.
+
+Updates to make to `BillboardPage`:
+
+- Convert it to `async`
+- We can extract the `params` from `BillboardPage` because it is a server component.
+- In the `params` we can get `billboardId` because the page is inside a Next.js Dynamic Route a folder named `[billboardId]`
+- With that we can attempt to fetch an existing billboard using `billboardId` found in our . Use `prismadb` and `findUnique` method
+- Dynamically render `billboard?.label` in the output
+
+Prisma Client docs:
+
+- [Prisma Client - CRUD](https://www.prisma.io/docs/concepts/components/prisma-client/crud)
+- [Prisma Client - API reference - findUnique](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#findunique)
+
+`ecommerce-admin\app\(dashboard)\[storeId]\(routes)\billboards\[billboardId]\page.tsx`
+```tsx
+import prismadb from '@/lib/prismadb';
+import React from 'react';
+
+const BillboardPage =  async ({
+  params
+}:{
+  params: { billboardId: string }
+}) => {
+  // Fetch an existing billboard
+  const billboard = await prismadb.billboard.findUnique({
+    where: {
+      id: params.billboardId
+    }
+  });
+  
+  return (
+    <div>Existing Billboard: {billboard?.label}</div>
+  )
+}
+
+export default BillboardPage;
+```
+
+##### Tracing the `/new` route in `BillboardPage`
+
+Notice when we fetch
+
+```tsx
+  const billboard = await prismadb.billboard.findUnique({
+    where: {
+      id: params.billboardId
+    }
+  });
+```
+
+This maps out to
+```tsx
+  const billboard = await prismadb.billboard.findUnique({
+    where: {
+      id: 'new'
+    }
+  });
+```
+
+Recall in the `BillboardClient`
+
+```tsx
+<Button
+  onClick={() => router.push(`/${params.storeId}/billboards/new`)}
+>
+```
+
+We push to the route new, which becomes the `billboardId` and when we search for `new` as a `billboardId` in the database we won't find it.
+
+So this would trigger the creation of a new Billboard instead of updating an existing one.
+
+*What if the `billboardId` does exist, and the id in the URL is correct?*
+
+Then we use the `billboardId` to fetch an existing `billboard` and just use it as `initialData` just like in the Settings. This `initialData` will trigger the option to update the existing billboard rather than creating a new one.
