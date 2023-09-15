@@ -28,9 +28,10 @@ import { Input } from "@/components/ui/input";
 import { ApiAlert } from '@/components/ui/ApiAlert';
 import { useOrigin } from '@/hooks/use-origin';
 
-// Create zod object schema with string name and min of 1 letter
+// Create zod object schema
 const formSchema = z.object({
-  name: z.string().min(1),
+  label: z.string().min(1),
+  imageUrl: z.string().min(1),
 });
 
 // extract the inferred type
