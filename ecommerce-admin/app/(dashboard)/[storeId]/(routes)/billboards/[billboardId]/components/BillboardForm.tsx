@@ -58,7 +58,7 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
   // Create loading state to disable interactive elements
   const [loading, setLoading] = useState(false);
 
-  // Create dynamic data to pass into props
+  // Create dynamic data to pass into output
   const title = initialData ? "Edit billboard" : "Create billboard";
   const description = initialData ? "Edit a billboard" : "Add a new billboard";
   const toastMessage = initialData ? "Billboard updated." : "Billboard created.";
@@ -120,8 +120,8 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
       />
       <div className="flex items-center justify-between">
         <Heading
-          title="Settings"
-          description="Manage store preferences"
+          title={title}
+          description={description}
         />
         <Button
           disabled={loading}
@@ -151,16 +151,11 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
             />
           </div>
           <Button disabled={loading} className="ml-auto" type="submit">
-            Save changes
+            {action}
           </Button>
         </form>
       </Form>
       <Separator />
-      <ApiAlert 
-        title="NEXT_PUBLIC_API_URL" 
-        description={`${origin}/api/${params.storeId}`} 
-        variant="public"
-      />
     </>
   )
 }
