@@ -33,6 +33,9 @@ Authentication
 - Axios
 - react-hot-toast
 
+Image Delivery
+- Cloudinary & Next Cloudinary
+
 ## Discussion on why each tech was used
 
 - Next.js 13 App Router is my new favorite way to create front-end application with client-side routing.
@@ -6508,3 +6511,27 @@ Currently, the Create billboard page still has the delete button. We want to onl
   </Button>
 )}
 ```
+
+### Image Upload - Using Cloudinary
+
+We are going to need a component for Image Upload. Before that, we need to set up a [Cloudinary](https://cloudinary.com/) account. If it asks what best describes you, select that you are a developer.
+
+After signing up, go ahead and click the Dashboard tab. We should be in a page with `Product Environment Credentials`.
+
+We will also need [Next Cloudinary](https://next.cloudinary.dev/). We can select installation.
+
+1. Install Next Cloudinary
+
+```sh
+npm install next-cloudinary
+```
+
+2. Configuration
+
+Add the following variable to your `.env` file.
+
+```sh
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="<Your Cloud Name>"
+```
+
+You can find your cloud name in the cloudinary Dashboard.
