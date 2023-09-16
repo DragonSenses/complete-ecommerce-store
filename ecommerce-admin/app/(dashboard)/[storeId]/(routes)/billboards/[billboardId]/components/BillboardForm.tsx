@@ -138,12 +138,12 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
           <div className="grid grid-cols-3 gap-8">
             <FormField 
               control={form.control}
-              name="name"
+              name="label"
               render={({field}) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Label</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} placeholder="Store name" {...field}/>
+                    <Input disabled={loading} placeholder="Billboard label" {...field}/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

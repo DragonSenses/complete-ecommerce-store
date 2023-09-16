@@ -6468,3 +6468,26 @@ Also the `Button` that says `Save changes`
 ```
 
 Let's also remove `ApiAlert`
+
+#### Adding the proper fields in `FormField`
+
+`Billboard` does not have a `name` but a `label` field.
+- Set `name` prop to `label`
+- Change `FormLabel` to `label`
+- Renamed `placeholder` prop of `Input` to `Billboard label`
+
+```tsx
+<FormField 
+  control={form.control}
+  name="label"
+  render={({field}) => (
+    <FormItem>
+      <FormLabel>Label</FormLabel>
+      <FormControl>
+        <Input disabled={loading} placeholder="Billboard label" {...field}/>
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+```
