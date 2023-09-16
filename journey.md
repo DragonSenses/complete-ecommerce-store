@@ -6449,3 +6449,22 @@ We will create four variables: `title`, `description`, `toastMessage`, and `acti
   const toastMessage = initialData ? "Billboard updated." : "Billboard created.";
   const action = initialData ? "Save changes" : "Create";
 ```
+
+Now we can pass data into props of `Heading`
+
+```tsx
+<Heading
+  title={title}
+  description={description}
+/>
+```
+
+Also the `Button` that says `Save changes`
+
+```tsx
+<Button disabled={loading} className="ml-auto" type="submit">
+  {action}
+</Button>
+```
+
+Let's also remove `ApiAlert`
