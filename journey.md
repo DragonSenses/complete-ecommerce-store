@@ -6437,3 +6437,15 @@ const formSchema = z.object({
   imageUrl: z.string().min(1),
 });
 ```
+
+### Fixing Output
+
+We will create four variables: `title`, `description`, `toastMessage`, and `action`. These variables are used to store some dynamic data that will be passed into the props of a component. The data depends on whether the variable `initialData` is defined or not.
+
+```tsx
+  // Create dynamic data to pass into props
+  const title = initialData ? "Edit billboard" : "Create billboard";
+  const description = initialData ? "Edit a billboard" : "Add a new billboard";
+  const toastMessage = initialData ? "Billboard updated." : "Billboard created.";
+  const action = initialData ? "Save changes" : "Create";
+```
