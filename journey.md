@@ -6491,3 +6491,20 @@ Let's also remove `ApiAlert`
   )}
 />
 ```
+
+#### Conditionally render the delete button
+
+Currently, the Create billboard page still has the delete button. We want to only render the delete Button if `initialData` is defined.
+
+```tsx
+{initialData && (
+  <Button
+    disabled={loading}
+    variant="destructive"
+    size="icon"
+    onClick={() => setOpen(true)}
+  >
+    <Trash className="h-4 w-4" />
+  </Button>
+)}
+```
