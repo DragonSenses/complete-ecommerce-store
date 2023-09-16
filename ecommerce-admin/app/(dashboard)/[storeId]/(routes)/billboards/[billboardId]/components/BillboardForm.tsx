@@ -48,6 +48,9 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
   // Extract params to get storeId
   const params = useParams();
   const router = useRouter();
+  
+  // Safely access the window object, only after the component is mounted
+  const origin = useOrigin();
 
   // Create open state to control the Alert modal
   const [open, setOpen] = useState(false);
@@ -55,8 +58,11 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
   // Create loading state to disable interactive elements
   const [loading, setLoading] = useState(false);
 
-  // Safely access the window object, only after the component is mounted
-  const origin = useOrigin();
+  // Create dynamic data to pass into props
+  const title = initialData ? "Edit billboard" : "Create billboard";
+  const description = initialData ? "Edit a billboard" : "Add a new billboard";
+  const toastMessage = initialData ? "Billboard updated." : "Billboard created.";
+  const action = initialData ? "Save changes" : "Create";
 
   // 1. Define form with useForm hook & zodResolver for validation
   const form = useForm<BillboardFormValues>({
