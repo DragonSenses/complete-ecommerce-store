@@ -1,8 +1,12 @@
 "use client";
 
+// Global Imports
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Trash } from 'lucide-react';
+
+// Local Imports
+import { Button } from '@/components/ui/button';
 
 interface ImageUploadProps {
   disabled?: boolean;
@@ -52,6 +56,12 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                 <Trash className="h-4 w-4" />
               </Button>
             </div>
+            <Image 
+              fill
+              className="object-cover"
+              alt="Image"
+              src={url}
+            />
           </div>
         ))}
       </div>
