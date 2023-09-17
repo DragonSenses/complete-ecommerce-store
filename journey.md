@@ -6535,3 +6535,30 @@ NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="<Your Cloud Name>"
 ```
 
 You can find your cloud name in the cloudinary Dashboard.
+
+### `ImageUpload` component
+
+Navigate to `ecommerce-admin\components\ui` and create a file named `ImageUpload.tsx`.
+
+It will be a client component.
+
+```tsx
+"use client";
+
+import React from 'react';
+
+const ImageUpload = () => {
+  return (
+    <div>ImageUpload</div>
+  )
+}
+
+export default ImageUpload
+```
+
+### Connecting to Cloudinary
+
+- mark as `client`
+- `interface` for props
+- assign props
+- Add our `useEffect` mount trick to protect against Hydration errors
