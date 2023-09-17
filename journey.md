@@ -6824,3 +6824,20 @@ In the `FormField`,
 // ...
 ```
 
+Pass in the necessary props to `ImageUpload`
+
+- `value` will be the either `field.value` wrapped in an array or an empty array
+  - Billboard only takes one image, but `ImageUpload` expects an array of images
+  - Current Billboard has no images, pass in an empty array
+- `disabled` prop is based on `loading`
+- `onChange` has a function that passes `url` parameter to `field.onChange(url)`
+- `onRemove` has no parameters and just passes an empty string to `field.onChange("")` to remove the `url`
+
+```tsx
+<ImageUpload 
+  value={field.value ? [field.value] : []}
+  disabled={loading}
+  onChange={(url) => field.onChange(url)}
+  onRemove={() => field.onChange("")}
+/>
+```
