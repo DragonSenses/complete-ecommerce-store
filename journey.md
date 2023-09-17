@@ -6841,3 +6841,60 @@ Pass in the necessary props to `ImageUpload`
   onRemove={() => field.onChange("")}
 />
 ```
+
+### Trying out the ImageUpload
+
+```sh
+npm run dev
+```
+
+Navigate to Store > Billboards > Create New Billboard
+
+Click on Upload image.
+
+#### Issue: UNhandled Runtime Error - next/image
+
+We get an "Unhandled Runtime Error"
+
+```sh
+Unhandled Runtime Error
+Error: Invalid src prop (https://res.cloudinary.com/dkepcyjuy/image/upload/v1694969684/wd9xbby7vut4zi1mdipw.jpg) on `next/image`, hostname "res.cloudinary.com" is not configured under images in your `next.config.js`
+See more info: https://nextjs.org/docs/messages/next-image-unconfigured-host
+```
+
+This is because we are using the `Image` component from `next/image`, inside our `ImageUpload` component.
+
+Whenever we use `Image` component, and when we use an *external URL* (i.e.,  foreign sources and hosts such as Cloudinary), we must add it to [remotePatterns](https://nextjs.org/docs/app/api-reference/components/image#remotepatterns) in `next.config.js`.
+
+[NextJS - App Router - Image component](https://nextjs.org/docs/app/api-reference/components/image). See [NextJS - Image - src](https://nextjs.org/docs/app/api-reference/components/image#src) section.
+
+*Fix:* Navigate to `next.config.js`
+
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {}
+
+module.exports = nextConfig
+```
+
+Now according to the [Next Image Unconfigured Host](https://nextjs.org/docs/messages/next-image-unconfigured-host), here is how we add 
+
+res.cloudinary.com
+
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '',
+      },
+    ],
+  }
+}
+
+module.exports = nextConfig
+```
