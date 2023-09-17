@@ -6556,7 +6556,7 @@ const ImageUpload = () => {
 export default ImageUpload
 ```
 
-### Connecting to Cloudinary
+#### Setting up `ImageUpload`
 
 - mark as `client`
 - This component will both upload an image and display those uploaded images
@@ -6667,3 +6667,41 @@ We want a `div` that serves as a container for the Images. We need a mapping of 
 
 Next, inside each image is a delete button which will have its `onClick` as `onRemove(url)`.
 
+The last thing to map is the `Image` component, we import from `next/image`.
+
+```tsx
+  return (
+    <div>
+      <div className="mb-4 flex items-center gap-4">
+        {value.map((url) => (
+          <div key={url} className="relative w-[200px] h-[200px] rounded-md overflow-hidden">
+            <div className="z-10 aboslute top-2 right-2">
+              <Button
+               type="button"
+               onClick={() => onRemove(url)} 
+               variant="destructive"
+               size="icon"
+              > 
+                <Trash className="h-4 w-4" />
+              </Button>
+            </div>
+            <Image 
+              fill
+              className="object-cover"
+              alt="Image"
+              src={url}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+```
+
+#### Connecting to Cloudinary
+
+The first thing we want to make is the Upload functionality using `CldUploadWidget` from Cloudinary.
+
+[Next Cloudinary - CldUploadWidget](https://next.cloudinary.dev/clduploadwidget/basic-usage)
+
+ToDo: Upload Presets
