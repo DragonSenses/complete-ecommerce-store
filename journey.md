@@ -6765,25 +6765,29 @@ Inside create a `onClick` function that just invokes `open()` function.
 
 Then return a `Button` that holds an `ImagePlus` icon from `lucide-react`. This `Button` will open Cloudinary Upload widget.
 
-```tsx
-      <CldUploadWidget onUpload={onUpload} uploadPreset="uiyqivqw">
-        {({ open }) => {
-          const onClick = () => {
-            open();
-          }
+Also add some text within the `Button` to define what it does, e.g., "Upload an Image".
 
-          return (
-            <Button
-              type="button"
-              disabled={disabled}
-              variant="secondary"
-              onClick={onClick}
-            >
-              <ImagePlus className="h-4 w-4 mr-2" />
-            </Button>
-          )
-        }}
-      </CldUploadWidget>
+`ImageUpload.tsx`
+```tsx
+<CldUploadWidget onUpload={onUpload} uploadPreset="uiyqivqw">
+  {({ open }) => {
+    const onClick = () => {
+      open();
+    }
+
+    return (
+      <Button
+        type="button"
+        disabled={disabled}
+        variant="secondary"
+        onClick={onClick}
+      >
+        <ImagePlus className="h-4 w-4 mr-2" />
+        Upload an Image
+      </Button>
+    )
+  }}
+</CldUploadWidget>
 ```
 
 ### Adding ImageUpload to Billboard Form
@@ -6819,3 +6823,4 @@ In the `FormField`,
     <div className="grid grid-cols-3 gap-8">
 // ...
 ```
+
