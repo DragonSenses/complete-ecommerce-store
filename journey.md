@@ -6704,4 +6704,84 @@ The first thing we want to make is the Upload functionality using `CldUploadWidg
 
 [Next Cloudinary - CldUploadWidget](https://next.cloudinary.dev/clduploadwidget/basic-usage)
 
-ToDo: Upload Presets
+Still inside the main `div` the element right after the mapping will be `<CldUploadWidget>`. Pass in the upload event handler to `onUpload` prop. And an `uploadPreset` prop.
+
+```tsx
+  return (
+    <div>
+      <div className="mb-4 flex items-center gap-4">
+        // ... Mapping images here
+      </div>
+      <CldUploadWidget onUpload={onUpload} uploadPreset="">
+      </CldUploadWidget>
+    </div>
+  )
+}
+```
+
+There are two options when using the CldUploadWidget: signed and unsigned. These options allow you to control the amount of security and restrictions you place on uploads.
+
+[Signed & Unsigned upload](https://cloudinary.com/documentation/upload_images#uploading_assets_to_the_cloud)
+
+##### Adding `uploadPreset`
+
+What do we put in `uploadPreset`?
+
+Go to Cloudinary dashboard and in the lower left corner there is a settings button with a cog icon.
+
+Click on `Upload` under `Product environment settings`.
+
+Then you can scroll down to see `Upload presets`. As a first time cloudinary user, you would probably only have `ml_default`.
+
+Click on `Add upload preset`.
+
+- Signing Mode: Unsigned
+- Copy the Upload preset name
+- Now go ahead and click `Save` in the top right.
+
+The upload preset name we will paste it into the `CldUploadWidget`'s `uploadPreset` prop
+
+Now inside the Widget we should open an object that it expects. 
+
+- `{}`
+
+Open the props
+
+- `{()}`
+
+Destructure the `open` immediately
+
+- `{({ open })}`
+
+Return a function
+
+```tsx
+{({ open }) => {
+
+}}
+```
+
+Inside create a `onClick` function that just invokes `open()` function. 
+
+Then return a `Button` that holds an `ImagePlus` icon from `lucide-react`. This `Button` will open Cloudinary Upload widget.
+
+```tsx
+      <CldUploadWidget onUpload={onUpload} uploadPreset="uiyqivqw">
+        {({ open }) => {
+          const onClick = () => {
+            open();
+          }
+
+          return (
+            <Button
+              type="button"
+              disabled={disabled}
+              variant="secondary"
+              onClick={onClick}
+            >
+              <ImagePlus className="h-4 w-4 mr-2" />
+            </Button>
+          )
+        }}
+      </CldUploadWidget>
+```
