@@ -25,8 +25,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ApiAlert } from '@/components/ui/ApiAlert';
 import { useOrigin } from '@/hooks/use-origin';
+import ImageUpload from '@/components/ui/ImageUpload';
 
 // Create zod object schema
 const formSchema = z.object({
@@ -48,7 +48,7 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
   // Extract params to get storeId
   const params = useParams();
   const router = useRouter();
-  
+
   // Safely access the window object, only after the component is mounted
   const origin = useOrigin();
 
@@ -112,7 +112,7 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
 
   return (
     <>
-      <AlertModal 
+      <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
         onConfirm={onDelete}
@@ -137,15 +137,30 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
       <Separator />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+          <FormField
+            control={form.control}
+            name="imageUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Background image</FormLabel>
+                <FormControl>
+                  <ImageUpload 
+                    value={field.value ? [field.value] : []}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="grid grid-cols-3 gap-8">
-            <FormField 
+            <FormField
               control={form.control}
               name="label"
-              render={({field}) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Label</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} placeholder="Billboard label" {...field}/>
+                    <Input disabled={loading} placeholder="Billboard label" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
