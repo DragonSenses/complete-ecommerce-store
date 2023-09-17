@@ -6559,8 +6559,14 @@ export default ImageUpload
 ### Connecting to Cloudinary
 
 - mark as `client`
+- This component will both upload an image and display those uploaded images
 - `interface` for props
 - assign props
+  - optional `disabled`, `onChange`, `onRemove` and `value`
+  - `disabled` just a boolean that disables
+  - `onChange` function that takes a string `value`
+  - `onRemove` function that takes a string `value`
+  - `value` an array of `string` to display multiple images at once
 - Add our `useEffect` mount trick to protect against Hydration errors
 
 ```tsx
@@ -6602,4 +6608,32 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 }
 
 export default ImageUpload
+```
+
+#### Upload function
+
+```tsx
+  // Upload event handler
+  const onUpload = (result: any) => {
+    onChange(result.info.secure_url);
+  }
+```
+
+The paramater is `result` which is a type of `any` because Cloudinary does not have the typings.
+
+Passes a `result.info.secure_url` to `onChange` because that is the result we needed after the image was uploaded using the Next Cloudinary component. That is the information we find out when we console.log the `result`.
+
+Make sure the `isMounted` null check is *below* `ImageUpload`.
+
+```tsx
+  // Upload event handler
+  const onUpload = (result: any) => {
+    onChange(result.info.secure_url);
+  }
+  
+  // Prevent rendering of the component before the effect has run
+  // To protect from hydration errors or unwanted flashes of content
+  if (!isMounted) {
+    return null;
+  }
 ```
