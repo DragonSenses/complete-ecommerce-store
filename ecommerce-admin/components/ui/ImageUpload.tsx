@@ -23,6 +23,11 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   useEffect(() => {
     setIsMounted(true);
   }, []); // Only run once after the initial render
+  
+  // Upload event handler
+  const onUpload = (result: any) => {
+    onChange(result.info.secure_url);
+  }
 
   // Prevent rendering of the component before the effect has run
   // To protect from hydration errors or unwanted flashes of content
