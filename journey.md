@@ -6785,3 +6785,37 @@ Then return a `Button` that holds an `ImagePlus` icon from `lucide-react`. This 
         }}
       </CldUploadWidget>
 ```
+
+### Adding ImageUpload to Billboard Form
+
+Navigate to `BillboardForm.tsx`, and copy the `<FormField />` element and paste it right before the `div` with grid.
+
+In the `FormField`,
+
+- rename the `name` to imageUrl
+- rename the `label` to Background image
+- Replace `Input` with `ImageUpload` component
+- Pass in values to `ImageUpload`
+
+```tsx
+// ...
+<Form {...form}>
+  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+    <FormField
+      control={form.control}
+      name="imageUrl"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Background image</FormLabel>
+          <FormControl>
+            <ImageUpload 
+              value={field.value ? [field.value] : []}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+    <div className="grid grid-cols-3 gap-8">
+// ...
+```
