@@ -77,11 +77,18 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
   const onSubmit = async (data: BillboardFormValues) => {
     try {
       setLoading(true);
-      await axios.patch(`/api/stores/${params.storeId}`, data);
+      if (initialData) {
+        // Update specific Billboard
+        await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data);
+      } else {
+        // Create new Billboard
+        await axios.post(`/api/${params.storeId}/billboards`, data);
+      }
       // Re-synchronize server component that fetches our store
       // Re-initializes the updated `initialData`
       router.refresh();
-      toast.success("Store updated.");
+      // Success notification with dynamic message
+      toast.success(toastMessage);
     } catch (error) {
       toast.error("Something went wrong.");
     } finally {
