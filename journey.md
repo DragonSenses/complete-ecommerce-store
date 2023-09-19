@@ -6927,3 +6927,47 @@ Replace it with:
   "extends": ["next/babel","next/core-web-vitals"]
 }
 ```
+
+### Testing ImageUpload
+
+Now uploading an image should create an image with a delete button in the top right.
+
+Now we need to modify the routes inside `BillboardForm`.
+
+### Modifying routes in `BillboardForm`
+
+Navigate back to `ecommerce-admin\app\(dashboard)\[storeId]\(routes)\billboards\[billboardId]\components\BillboardForm.tsx`.
+
+#### Submit Handler
+
+Quite similar to the submit handler of the `SettingsForm`, with the following changes:
+
+1. if clause checks for `initialData` to decide whether to create or update
+  - Update is a `patch`
+  - Create is a `post`
+2. Pass in the `toastMessage` into `toast.success`
+
+```tsx
+  // 2. Define a submit handler
+  const onSubmit = async (data: BillboardFormValues) => {
+    try {
+      setLoading(true);
+      if (initialData) {
+        // Update specific Billboard
+        await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data);
+      } else {
+        // Create new Billboard
+        await axios.post(`/api/${params.storeId}/billboards`, data);
+      }
+      // Re-synchronize server component that fetches our store
+      // Re-initializes the updated `initialData`
+      router.refresh();
+      // Success notification with dynamic message
+      toast.success(toastMessage);
+    } catch (error) {
+      toast.error("Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+```
