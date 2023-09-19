@@ -10,30 +10,48 @@ export async function POST(
   try {
     // Use Clerk to authenticate POST route
     const { userId } = auth();
-    // Now have access to currently logged-in userId who is trying to create a new store using our API
+
+    // Send back 401, unauthenticated if user is not logged-in
+    if (!userId) {
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
 
     // Extract the body
     const body = await req.json();
 
-    // Destructure name out of body
+    // Destructure fields out of body
     const { label, imageUrl } = body;
 
-    // Send back 401 Unauthorized if userId does not exist
-    if(!userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-    
     // Check label field
-    if(!label){
+    if (!label){
       return new NextResponse("Label is required", { status: 400 });
     }
 
     // Check imageUrl field
-    if(!imageUrl){
+    if (!imageUrl){
       return new NextResponse("Image URL is required", { status: 400 });
     }
 
-    // Create store with data passed in
+    // Check if storeId exists
+    if (!params.storeId) {
+      return new NextResponse("Store id is required", { status: 400 });
+    }
+
+    // Check database if store exists for current user
+    const storeByUserId = await prismadb.store.findFirst({
+      where: {
+        id: params.storeId,
+        userId
+      }
+    });
+
+    // User is logged-in but does not have permission to modify the store
+    if (!storeByUserId) {
+      // Respond with 403 Forbidden, current user is unauthorized to modify
+      return new NextResponse("Unauthorized", { status: 403 });
+    }
+
+    // Create billboard for user's specific store in the database
     const billboard = await prismadb.billboard.create({
       data: {
         label,
@@ -43,9 +61,9 @@ export async function POST(
     });
 
     // Send back response with the store
-    return NextResponse.json(store);
+    return NextResponse.json(billboard);
   } catch (error){
-    console.log('[STORES_POST]', error);
+    console.log('[BILLBOARDS_POST]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
