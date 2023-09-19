@@ -7000,3 +7000,43 @@ Quite similar to the submit handler of the `SettingsForm`, with the following ch
     }
   };
 ```
+
+### Creating API routes for Billboard
+
+Notice in the routes we updated:
+
+Submit Handler routes for `BillboardForm`
+```tsx
+if (initialData) {
+  // Update specific Billboard
+  await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data);
+} else {
+  // Create new Billboard
+  await axios.post(`/api/${params.storeId}/billboards`, data);
+}
+```
+
+Delete Handler routes for `BillboardForm`
+```tsx
+await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
+```
+
+The route are `/api/${params.storeId}/billboards` and `/api/${params.storeId}/billboards/${params.billboardId}`.
+
+We immediately go to the `storeId` after `api`.
+
+So create a folder named `[storeId]` inside `ecommerce-admin\app\api`.
+
+Inside `[storeId]` create a folder named `billboards`, with a file named `route.ts`.
+
+We need to create a `POST` route, a `PATCH` route & a `DELETE` route.
+
+Go ahead an copy the code from `ecommerce-admin\app\api\stores\route.ts`.
+
+#### `POST` route for Billboard
+
+- Get `params` with `storeId` inside `POST`
+- Authenticate `userId`
+- Extract `label` and `imageUrl` from `body`
+  - Check for each field
+- Create billboard with `prismadb` and pass in data: `label`, `imageUrl` and `storeId`
