@@ -7155,7 +7155,90 @@ export async function GET(
 
 Create a folder named `[billboardId]` in `billboards` with a `route.ts` file.
 
-`ecommerce-admin\app\api\[storeId]\billboards\[billboardId]\route.ts`
-
 This will contain both a `PATCH` and `DELETE` function, quite similar to `[storeId]/route.ts`.
 
+##### `PATCH` for *specific* Billboard
+
+- Extract params in function, then open up `try..catch`
+- `params` will contain `storeId` & `billboardId`
+  - Check for required `params`
+- Authenticate user
+- Extract `data` from `body`
+  - `data` includes `label` and `imageUrl`
+  - Check for each data field
+- Check db if store exists for current user, send back 403 if false
+- In db, find specific billboard then update
+- Update final response and error message
+
+`ecommerce-admin\app\api\[storeId]\billboards\[billboardId]\route.ts`
+```ts
+export async function PATCH (
+  req: Request,
+  { params }: { params: { storeId: string, billboardId: string }}
+){
+  try {
+    // Check parameters
+    if (!params.storeId){
+      return new NextResponse("Store id is required", { status: 400 });
+    }
+
+    if (!params.billboardId){
+      return new NextResponse("Billboard id is required", { status: 400 });
+    }
+
+    // Authenticate userId with Clerk to check if user is logged-in
+    const { userId } = auth();
+    
+    // If userId does not exist send back 401 response
+    if (!userId) {
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
+
+    // Extract body from the request
+    const body = await req.json();
+    
+    // Destructure data from body
+    const { label, imageUrl } = body;
+
+    // Check data
+    if (!label) {
+      return new NextResponse("Label is required", { status: 400 });
+    }
+
+    if (!imageUrl) {
+      return new NextResponse("Image URL is required", { status: 400 });
+    }
+
+    // Check database if store exists for current user
+    const storeByUserId = await prismadb.store.findFirst({
+      where: {
+        id: params.storeId,
+        userId
+      }
+    });
+
+    // User is logged-in but does not have permission to modify the store
+    if (!storeByUserId) {
+      // Respond with 403 Forbidden, current user is unauthorized to modify
+      return new NextResponse("Unauthorized", { status: 403 });
+    }
+
+    // Find and Update a specific Billboard
+    const billboard = await prismadb.billboard.updateMany({
+      where: {
+        id: params.billboardId
+      },
+      data: {
+        label,
+        imageUrl
+      }
+    });
+
+    return NextResponse.json(billboard);
+  } catch (error) {
+    console.log('[BILLBOARD_PATCH]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+};
+```
+##### `DELETE` for *specific* Billboard
