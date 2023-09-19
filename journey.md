@@ -7109,7 +7109,7 @@ export async function POST(
       }
     });
 
-    // Send back response with the store
+    // Send back response with the billboard
     return NextResponse.json(billboard);
   } catch (error){
     console.log('[BILLBOARDS_POST]', error);
@@ -7117,4 +7117,45 @@ export async function POST(
   }
 }
 ```
+
+#### `GET` route for *all* Billboards
+
+Copy the `POST` function and paste it inside the same file `route.ts`. Rename it to `GET`.
+
+This function will get all the Billboards available within that store. So it will need the `params.storeId`.
+
+```tsx
+export async function GET(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  try {
+    // Check if storeId exists
+    if (!params.storeId) {
+      return new NextResponse("Store id is required", { status: 400 });
+    }
+
+    // Find all billboards available in that store in the database
+    const billboards = await prismadb.billboard.findMany({
+      where: {
+        storeId: params.storeId
+      }
+    });
+
+    // Send back response with all billboards
+    return NextResponse.json(billboards);
+  } catch (error){
+    console.log('[BILLBOARDS_GET]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}
+```
+
+#### Routes for a *specific* Billboard
+
+Create a folder named `[billboardId]` in `billboards` with a `route.ts` file.
+
+`ecommerce-admin\app\api\[storeId]\billboards\[billboardId]\route.ts`
+
+This will contain both a `PATCH` and `DELETE` function, quite similar to `[storeId]/route.ts`.
 
