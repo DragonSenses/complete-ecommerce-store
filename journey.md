@@ -6852,7 +6852,7 @@ Navigate to Store > Billboards > Create New Billboard
 
 Click on Upload image.
 
-#### Issue: UNhandled Runtime Error - next/image
+#### Issue: Unhandled Runtime Error - next/image
 
 We get an "Unhandled Runtime Error"
 
@@ -6866,7 +6866,9 @@ This is because we are using the `Image` component from `next/image`, inside our
 
 Whenever we use `Image` component, and when we use an *external URL* (i.e.,  foreign sources and hosts such as Cloudinary), we must add it to [remotePatterns](https://nextjs.org/docs/app/api-reference/components/image#remotepatterns) in `next.config.js`.
 
-[NextJS - App Router - Image component](https://nextjs.org/docs/app/api-reference/components/image). See [NextJS - Image - src](https://nextjs.org/docs/app/api-reference/components/image#src) section.
+- [NextJS - App Router - Image component](https://nextjs.org/docs/app/api-reference/components/image). See [NextJS - Image - src](https://nextjs.org/docs/app/api-reference/components/image#src) section.
+
+- [NextJS - Image - remotePatterns](https://nextjs.org/docs/app/api-reference/components/image#remotepatterns)
 
 *Fix:* Navigate to `next.config.js`
 
@@ -6897,4 +6899,31 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
+```
+
+#### Parsing error: Cannot find module 'next/babel'
+
+In the `next.config.js` we may have another error that looks like this:
+
+```sh
+Parsing error: Cannot find module 'next/babel'
+Require stack:
+- C:\Users\...
+- ...
+```
+
+*Fix:* Navigate to `.eslintrc.json` that contains:
+
+```json
+{
+  "extends": "next/core-web-vitals"
+}
+```
+
+Replace it with:
+
+```json
+{
+  "extends": ["next/babel","next/core-web-vitals"]
+}
 ```
