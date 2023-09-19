@@ -7037,6 +7037,84 @@ Go ahead an copy the code from `ecommerce-admin\app\api\stores\route.ts`.
 
 - Get `params` with `storeId` inside `POST`
 - Authenticate `userId`
+  - `userId` check is "Unauthenticated" message
 - Extract `label` and `imageUrl` from `body`
   - Check for each field
+- Check for `storeId`, taken from `params`
+- Check if current user also permission to modify the current store
+  - Return a 403 Forbidden response if user does not have the `storeId`
 - Create billboard with `prismadb` and pass in data: `label`, `imageUrl` and `storeId`
+
+`ecommerce-admin\app\api\[storeId]\billboards\route.ts`
+```tsx
+// Global Imports
+import prismadb from "@/lib/prismadb";
+import { auth } from "@clerk/nextjs";
+import { NextResponse } from "next/server";
+
+export async function POST(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  try {
+    // Use Clerk to authenticate POST route
+    const { userId } = auth();
+
+    // Send back 401, unauthenticated if user is not logged-in
+    if (!userId) {
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
+
+    // Extract the body
+    const body = await req.json();
+
+    // Destructure fields out of body
+    const { label, imageUrl } = body;
+
+    // Check label field
+    if (!label){
+      return new NextResponse("Label is required", { status: 400 });
+    }
+
+    // Check imageUrl field
+    if (!imageUrl){
+      return new NextResponse("Image URL is required", { status: 400 });
+    }
+
+    // Check if storeId exists
+    if (!params.storeId) {
+      return new NextResponse("Store id is required", { status: 400 });
+    }
+
+    // Check database if store exists for current user
+    const storeByUserId = await prismadb.store.findFirst({
+      where: {
+        id: params.storeId,
+        userId
+      }
+    });
+
+    // User is logged-in but does not have permission to modify the store
+    if (!storeByUserId) {
+      // Respond with 403 Forbidden, current user is unauthorized to modify
+      return new NextResponse("Unauthorized", { status: 403 });
+    }
+
+    // Create billboard for user's specific store in the database
+    const billboard = await prismadb.billboard.create({
+      data: {
+        label,
+        imageUrl,
+        storeId: params.storeId
+      }
+    });
+
+    // Send back response with the store
+    return NextResponse.json(billboard);
+  } catch (error){
+    console.log('[BILLBOARDS_POST]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}
+```
+
