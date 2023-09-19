@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(
   req: Request,
+  { params }: { params: { storeId: string } }
 ) {
   try {
     // Use Clerk to authenticate POST route
@@ -15,23 +16,29 @@ export async function POST(
     const body = await req.json();
 
     // Destructure name out of body
-    const { name } = body;
+    const { label, imageUrl } = body;
 
     // Send back 401 Unauthorized if userId does not exist
     if(!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     
-    // Check name field
-    if(!name){
-      return new NextResponse("Name is required", { status: 400 });
+    // Check label field
+    if(!label){
+      return new NextResponse("Label is required", { status: 400 });
+    }
+
+    // Check imageUrl field
+    if(!imageUrl){
+      return new NextResponse("Image URL is required", { status: 400 });
     }
 
     // Create store with data passed in
-    const store = await prismadb.store.create({
+    const billboard = await prismadb.billboard.create({
       data: {
-        name,
-        userId
+        label,
+        imageUrl,
+        storeId: params.storeId
       }
     });
 
