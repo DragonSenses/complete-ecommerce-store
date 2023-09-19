@@ -6971,3 +6971,32 @@ Quite similar to the submit handler of the `SettingsForm`, with the following ch
     }
   };
 ```
+
+#### Delete Handler
+
+1. Change the route in `axios.delete`
+2. Change notification messages for success and delete
+  - A Billboard cannot be delete if they have an active category
+
+```tsx
+  // 3. Define a delete handler
+  const onDelete = async () => {
+    try {
+      setLoading(true);
+      // Call an API with dynamic route to delete the store
+      await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
+      // Re-synchronize server component to update data
+      router.refresh();
+      // Push user back to root layout where we check if there is another existing store
+      router.push("/");
+      toast.success("Billboard deleted.");
+    } catch (error) {
+      // Safety mechanism will prompt a warning to delete any related records to the Billboard
+      toast.error("Make sure you removed all categories using this billboard first.");
+    } finally {
+      setLoading(false);
+      // Close the Modal
+      setOpen(false);
+    }
+  };
+```
