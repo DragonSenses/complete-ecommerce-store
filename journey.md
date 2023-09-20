@@ -1970,7 +1970,7 @@ model Store {
   id        String    @id @default(uuid())
   name      String
   userId    String
-  createAt  DateTime  @default(now())
+  createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
 ```
@@ -2048,7 +2048,7 @@ CREATE TABLE `Store` (
 	`id` varchar(191) NOT NULL,
 	`name` varchar(191) NOT NULL,
 	`userId` varchar(191) NOT NULL,
-	`createAt` datetime(3) NOT NULL DEFAULT current_timestamp(3),
+	`createdAt` datetime(3) NOT NULL DEFAULT current_timestamp(3),
 	`updatedAt` datetime(3) NOT NULL,
 	PRIMARY KEY (`id`)
 ) ENGINE InnoDB,
@@ -2133,14 +2133,14 @@ model Store {
   id        String    @id @default(uuid())
   name      String
   userId    String
-  createAt  DateTime  @default(now())
+  createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
 ```
 
 We can see that the ones automatically assigned are:
 
-- `id`,`createAt`, and `updatedAt`
+- `id`,`createdAt`, and `updatedAt`
 
 While we still need these fields:
 
@@ -4955,7 +4955,7 @@ model Store {
   id        String    @id @default(uuid())
   name      String
   userId    String
-  createAt  DateTime  @default(now())
+  createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
 ```
@@ -5766,7 +5766,7 @@ model Store {
   id        String    @id @default(uuid())
   name      String
   userId    String
-  createAt  DateTime  @default(now())
+  createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
 
@@ -5797,12 +5797,12 @@ With `relationMode = "prisma"`, no foreign keys are used, so relation fields wil
 
 ```prisma
 model Store {
-  id        String    @id @default(uuid())
-  name      String
-  userId    String
+  id         String    @id @default(uuid())
+  name       String
+  userId     String
   billboards Billboard[]
-  createAt  DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Billboard {
@@ -5822,12 +5822,12 @@ Error validating field `billboards` in model `Store`: The relation field `billbo
 
 ```prisma
 model Store {
-  id        String    @id @default(uuid())
-  name      String
-  userId    String
+  id         String    @id @default(uuid())
+  name       String
+  userId     String
   billboards Billboard[] @relation("StoreToBillboard")
-  createAt  DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Billboard {
@@ -5894,7 +5894,7 @@ model Billboard {
   storeId   String // relation scalar field (used in the `@relation` attribute)
   label     String
   imageUrl  String
-  createAt  DateTime  @default(now())
+  createdAt  DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
   @@index([storeId], name: "store_id")
@@ -5926,7 +5926,7 @@ model Billboard {
   storeId   String // relation scalar field (used in the `@relation` attribute)
   label     String
   imageUrl  String
-  createAt  DateTime  @default(now())
+  createdAt  DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
 ```
@@ -6343,7 +6343,7 @@ In this code, the `defaultValues` is underlined with an error
 Error message:
 
 ```tsx
-Type '{ id: string; storeId: string; label: string; imageUrl: string; createAt: Date; updatedAt: Date; } | null' is not assignable to type 'AsyncDefaultValues<{ name: string; }> | { name?: string | undefined; } | undefined'.
+Type '{ id: string; storeId: string; label: string; imageUrl: string; createdAt: Date; updatedAt: Date; } | null' is not assignable to type 'AsyncDefaultValues<{ name: string; }> | { name?: string | undefined; } | undefined'.
   Type 'null' is not assignable to type 'AsyncDefaultValues<{ name: string; }> | { name?: string | undefined; } | undefined'.ts(2322)
 (property) defaultValues?: AsyncDefaultValues<{
     name: string;
@@ -6375,8 +6375,8 @@ Add a pipe and an object, and manually add the properties to be empty. That mean
 Error message
 
 ```tsx
-Type '{ id: string; storeId: string; label: string; imageUrl: string; createAt: Date; updatedAt: Date; } | { label: string; imageUrl: string; }' is not assignable to type 'AsyncDefaultValues<{ name: string; }> | { name?: string | undefined; } | undefined'.
-  Type '{ id: string; storeId: string; label: string; imageUrl: string; createAt: Date; updatedAt: Date; }' is not assignable to type 'AsyncDefaultValues<{ name: string; }> | { name?: string | undefined; } | undefined'.ts(2322)
+Type '{ id: string; storeId: string; label: string; imageUrl: string; createdAt: Date; updatedAt: Date; } | { label: string; imageUrl: string; }' is not assignable to type 'AsyncDefaultValues<{ name: string; }> | { name?: string | undefined; } | undefined'.
+  Type '{ id: string; storeId: string; label: string; imageUrl: string; createdAt: Date; updatedAt: Date; }' is not assignable to type 'AsyncDefaultValues<{ name: string; }> | { name?: string | undefined; } | undefined'.ts(2322)
 (property) defaultValues?: AsyncDefaultValues<{
     name: string;
 }> | {
@@ -6418,7 +6418,7 @@ model Billboard {
   storeId   String // relation scalar field (used in the `@relation` attribute)
   label     String
   imageUrl  String
-  createAt  DateTime  @default(now())
+  createdAt  DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
   // Manually add index on relation scalar field
@@ -6648,7 +6648,7 @@ We want a `div` that serves as a container for the Images. We need a mapping of 
       <div className="mb-4 flex items-center gap-4">
         {value.map((url) => (
           <div key={url} className="relative w-[200px] h-[200px] rounded-md overflow-hidden">
-            <div className="z-10 aboslute top-2 right-2">
+            <div className="z-10 absolute top-2 right-2">
               <Button
                type="button"
                onClick={() => onRemove(url)} 
@@ -6900,6 +6900,10 @@ const nextConfig = {
 
 module.exports = nextConfig
 ```
+
+##### Update - Misconfiguration in `next.config.js`
+
+The above next config caused an issue, see #### Issue: Unhandled Runtime Error - TypeError: Expected a non-empty string. The fix is to remove the empty `port` and `pathname`.
 
 #### Parsing error: Cannot find module 'next/babel'
 
@@ -7327,3 +7331,185 @@ export async function GET (
   }
 };
 ```
+
+### Testing the Routes
+
+Navigate back to `BillboardForm.tsx`, click the upload widget and choose an image.
+
+Click F12 for developer tools in the browser, click Network tab. Check "Preserve log".
+
+Now click the "Create" and check the tab for "billboards". We should see the Request payload and the Response. We should see an object with all the properties from `id`, `storeId`, `label` and `imageUrl`.
+
+Copy that `id` from the response and replace the `new` inside the URL. 
+
+We should be able to go to the Edit Billboard page. Check the image and label if the data was transmitted properly. Now modify the label and click save changes.
+
+#### Issue: Unhandled Runtime Error - TypeError: Expected a non-empty string
+
+Problem: After uploading an image using Cloudinary's `CldUploadWidget`, we get a "Unhandled Runtime Error. Type Error: Expected a non-empty string".
+
+More Details:
+```sh
+Unhandled Runtime Error
+TypeError: Expected a non-empty string
+
+Call Stack
+picomatch.makeRe
+node_modules\next\dist\compiled\micromatch\index.js (15:21411)
+micromatch.makeRe
+node_modules\next\dist\compiled\micromatch\index.js (15:2586)
+Next.js
+Array.some
+<anonymous>
+Next.js
+Array.map
+<anonymous>
+Next.js
+renderWithHooks
+node_modules\next\dist\compiled\react-dom\cjs\react-dom.development.js (10707:0)
+// ...
+```
+
+Fixes:
+
+- Attempt 1: Update Next.js and core packages
+
+```sh
+npm i next@latest react@latest react-dom@latest eslint-config-next@latest 
+```
+
+- Attempt 2: Check misconfiguration in `next.config.js`
+
+Currently, `next.config.js` is:
+
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '',
+      },
+    ],
+  }
+}
+
+module.exports = nextConfig
+```
+
+The issue may be because of the empty `port` and `pathname`.
+
+So updated it to be:
+
+```js
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
+    ],
+  }
+}
+```
+
+#### Issue: `ImageUpload` optimizations
+
+- Delete button is not loading for Image, so an issue with the styles was found. Typo with `absolute`
+
+#### Feature - after creating or editing a Billboard, redirect to Billboards page
+
+Navigate to the submit handler of the `BillboardForm`.
+
+Before the `toast.success()`, push the router to `billboards` route.
+
+`BillboardForm.tsx`
+```tsx
+  // 2. Define a submit handler
+  const onSubmit = async (data: BillboardFormValues) => {
+    try {
+      setLoading(true);
+      if (initialData) {
+        // Update specific Billboard
+        await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data);
+      } else {
+        // Create new Billboard
+        await axios.post(`/api/${params.storeId}/billboards`, data);
+      }
+      // Re-synchronize server component that fetches our store
+      // Re-initializes the updated `initialData`
+      router.refresh();
+      // Re-route the user to the Billboards page
+      router.push(`/${params.storeId}/billboards`)
+      // Success notification with dynamic message
+      toast.success(toastMessage);
+    } catch (error) {
+      toast.error("Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+```
+
+While we are still in `BillboardForm` remove any unused items:
+
+- `ApiAlert` import
+- `origin` and `useOrigin`
+
+## Data Table
+
+Let's create the Data Table to load all our Billboards.
+
+### Billboards Page
+
+Navigate to `ecommerce-admin\app\(dashboard)\[storeId]\(routes)\billboards\page.tsx`, where we added the `BillboardClient`.
+
+Use prisma to fetch all existing billboards specific to the active store.
+
+- Mark as async
+- Destructure params
+- Use `prismadb.billboard.findMany()`
+
+```tsx
+import prismadb from '@/lib/prismadb';
+
+const BillboardsPage = async ({
+  params
+}: {
+  params: { storeId: string }
+}) => {
+  // Fetch all Billboards specific to the active store
+  const billboards = await prismadb.billboard.findMany();
+```
+
+Now let's add an object to pass into `findMany()`.
+  - `where` contains `storeId`
+  - `orderBy` `createdAt` descending, so we order billboards by newest
+
+```ts
+const BillboardsPage = async ({
+  params
+}: {
+  params: { storeId: string }
+}) => {
+  
+  // Fetch all Billboards specific to the active store
+  const billboards = await prismadb.billboard.findMany({
+    where: {
+      storeId: params.storeId
+    },
+    orderBy: {
+      createdAt: 'desc'
+    }
+  });
+```
+
+Now we can pass in the data to the `BillboardClient`.
+
+TODO:
+
+https://nextjs.org/docs/pages/api-reference/components/image#sizes
