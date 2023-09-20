@@ -17,7 +17,7 @@ model Store {
   name      String
   userId    String
   billboards Billboard[] @relation("StoreToBillboard")
-  createAt  DateTime  @default(now())
+  createdAt  DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
 
@@ -27,7 +27,7 @@ model Billboard {
   storeId   String // relation scalar field (used in the `@relation` attribute)
   label     String
   imageUrl  String
-  createAt  DateTime  @default(now())
+  createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
   // Manually add index on relation scalar field
