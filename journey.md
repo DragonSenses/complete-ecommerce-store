@@ -7510,6 +7510,143 @@ const BillboardsPage = async ({
 
 Now we can pass in the data to the `BillboardClient`.
 
-TODO:
+```tsx
+// ...
+  return (
+    <div className='flex-col'>
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <BillboardClient data={billboards}/>
+      </div>
+    </div>
+  );
+}
+```
 
-https://nextjs.org/docs/pages/api-reference/components/image#sizes
+#### Dynamically render the Billboards title
+
+Navigate to `ecommerce-admin\app\(dashboard)\[storeId]\(routes)\billboards\components\client.tsx` and lets add the interface for the props.
+
+- Describe the shape and type of the props you want to pass to the component
+- Then tell TypeScript that your component is a function component that accepts props of the specified interface type.
+
+```tsx
+interface BillboardClientProps {
+  data: Billboard[]
+}
+
+// Client component that loads all our Billboards
+const BillboardClient: React.FC<BillboardClientProps> = ({
+  data
+}) => {
+```
+
+Change the hardcoded string in the `title` prop of `Heading`, and add dynamic text.
+
+```tsx
+<Heading
+  title={`Billboards (${data.length})`}
+  description="Manage billboards for your store"
+/>
+```
+
+### Data Table - Preface
+
+Now we can finally move on to creating the Data Table.
+
+[shadcn/ui - Data Table](https://ui.shadcn.com/docs/components/data-table)
+
+There is an introduction in the shadcn docs on *data table*. 
+
+They all behave differently, have specific sorting and filtering requirements, and work with different data sources.
+
+It doesn't make sense to combine all of these variations into a single component. If we do that, we'll lose the flexibility that [headless UI](https://tanstack.com/table/v8/docs/guide/introduction#what-is-headless-ui) provides.
+
+So instead of a data-table component, shadcn/ui recommends bulding your own starting from the basic `<Table />` and building up from there.
+
+#### Headless UI
+
+[headless UI](https://tanstack.com/table/v8/docs/guide/introduction#what-is-headless-ui)
+
+**Headless UI** is a term for libraries and utilities that provide the logic, state, processing and API for UI elements and interactions, but **do not provide markup, styles, or pre-built implementations.**
+
+Headless UI main goals:
+
+The hardest parts of building complex UIs usually revolve around state, events, side-effects, data computation/management. By removing these concerns from the markup, styles and implementation details, our logic and components can be more modular and reusable.
+
+Building UI is a very branded and custom experience, even if that means choosing a design system or adhering to a design spec. To support this custom experience, component-based UI libraries need to support a massive (and seemingly endless) API surface around markup and style customization. Headless UI libraries decouple your logic from your UI
+
+When you use a headless UI library, the complex task of **data-processing, state-management, and business logic** are handled for you, leaving you worry about higher-cardinality decisions that differ across implementations and use cases.
+
+##### Component-based libraries vs Headless libraries
+
+In the ecosystem of table/datagrid libraries, there are two main categories:
+
+- Component-based table libraries
+- Headless table libraries
+
+Which kind of table library should I use?
+
+Each approach has subtle tradeoffs. Understanding these subtleties will help you make the right decision for your application and team.
+
+###### Component-based Table Libraries
+
+Component-based table libraries will typically supply you with a feature-rich drop-in solution and ready-to-use components/markup complete with styles/theming. [AG Grid](https://ag-grid.com/react-data-grid/?utm_source=reacttable&utm_campaign=githubreacttable) is a great example of this type of table library.
+
+Pros:
+
+- Ship with ready-to-use markup/styles
+- Little setup required
+- Turn-key experience
+
+Cons:
+
+- Less control over markup
+- Custom styles are typically theme-based
+- Larger bundle-sizes
+- Highly coupled to framework adapters and platforms
+
+Use case:
+
+**If you want a ready-to-use table and design/bundle-size are not hard requirements**, then you should consider using a component-based table library.
+
+There are a lot of component-based table libraries out there, but we believe AG Grid is the gold standard and is by far our favorite grid-sibling.
+
+###### Headless Table Libraries
+
+Headless table libraries will typically supply you with functions, state, utilities and event listeners to build your own table markup or attach to existing table markups.
+
+Pros:
+
+- Full control over markup and styles
+- Supports all styling patterns (CSS, CSS-in-JS, UI libraries, etc)
+- Smaller bundle-sizes
+- Portable. Run anywhere JS runs!
+
+Cons:
+
+- More setup required
+- No markup, styles or themes provided
+
+Use case:
+
+**If you want a lighter-weight table or full control over the design**, then you should consider using a headless table library.
+
+There are very few headless table libraries out there and obviously, TanStack Table is our favorite!
+
+### Data Table - Implementation
+
+Our Data Table will have a completely unique implementation.
+
+Do we want to have the following features?
+
+- Filter
+- Checkbox
+- Sort
+- Columns
+- Pagination
+
+So let's start by building the [TanStack Table](https://tanstack.com/table) while using the [shadcn/ui - Table](https://ui.shadcn.com/docs/components/table) to build our own custom data table.
+
+Follow along the steps in [shadcn/ui - Data Table](https://ui.shadcn.com/docs/components/data-table) documentation.
+
+1. Installation
