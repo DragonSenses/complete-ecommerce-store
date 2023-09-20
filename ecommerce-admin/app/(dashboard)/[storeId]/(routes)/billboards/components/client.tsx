@@ -1,6 +1,7 @@
 "use client";
 
 // Global Imports
+import { Billboard } from "@prisma/client";
 import { Plus } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
@@ -9,8 +10,14 @@ import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 
+interface BillboardClientProps {
+  data: Billboard[]
+}
+
 // Client component that loads all our Billboards
-const BillboardClient = () => {
+const BillboardClient: React.FC<BillboardClientProps> = ({
+  data
+}) => {
   const router = useRouter();
   const params = useParams();
 
@@ -18,7 +25,7 @@ const BillboardClient = () => {
     <>
       <div className="flex items-center justify-between">
         <Heading
-          title="Billboards (0)"
+          title={`Billboards (${data.length})`}
           description="Manage billboards for your store"
         />
         <Button
