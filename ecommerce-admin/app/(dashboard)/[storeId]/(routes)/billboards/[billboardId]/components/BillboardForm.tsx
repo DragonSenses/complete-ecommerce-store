@@ -25,7 +25,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useOrigin } from '@/hooks/use-origin';
 import ImageUpload from '@/components/ui/ImageUpload';
 
 // Create zod object schema
@@ -48,9 +47,6 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
   // Extract params to get storeId
   const params = useParams();
   const router = useRouter();
-
-  // Safely access the window object, only after the component is mounted
-  const origin = useOrigin();
 
   // Create open state to control the Alert modal
   const [open, setOpen] = useState(false);
@@ -87,6 +83,8 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
       // Re-synchronize server component that fetches our store
       // Re-initializes the updated `initialData`
       router.refresh();
+      // Re-route the user to the Billboards page
+      router.push(`/${params.storeId}/billboards`)
       // Success notification with dynamic message
       toast.success(toastMessage);
     } catch (error) {
@@ -144,6 +142,21 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
       <Separator />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+          <div className="grid grid-cols-3 gap-8">
+            <FormField
+              control={form.control}
+              name="label"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Label</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Billboard label" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name="imageUrl"
@@ -162,21 +175,6 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
               </FormItem>
             )}
           />
-          <div className="grid grid-cols-3 gap-8">
-            <FormField
-              control={form.control}
-              name="label"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Label</FormLabel>
-                  <FormControl>
-                    <Input disabled={loading} placeholder="Billboard label" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
           <Button disabled={loading} className="ml-auto" type="submit">
             {action}
           </Button>
