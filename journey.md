@@ -7721,3 +7721,35 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ]
 ```
+
+Let's modify the code from the docs to fit our project.
+
+Modify the type that defines the shape of our data. A `BillboardColumn` with the `id`, `label` and `createdAt`. We set `createdAt` as a string, yet in our database it is a Date, so we will format it before we pass it into the Data Table.
+
+```tsx
+// This type is used to define the shape of our data.
+export type BillboardColumn = {
+  id: string
+  label: string
+  createdAt: string
+}
+```
+
+Next, modify the `accessorKey` and `header` according to the types we have.
+
+```tsx
+export const columns: ColumnDef<BillboardColumn>[] = [
+  {
+    accessorKey: "label",
+    header: "Label",
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Date",
+  },
+]
+```
+
+Notice, we do not have the `id` in the `columns`. That is because we will add it later, it will come from actions where we are able to copy the `id`.
+
+Format `billboards` before passing it into `BillboardClient`
