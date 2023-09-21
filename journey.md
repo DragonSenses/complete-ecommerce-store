@@ -7649,4 +7649,75 @@ So let's start by building the [TanStack Table](https://tanstack.com/table) whil
 
 Follow along the steps in [shadcn/ui - Data Table](https://ui.shadcn.com/docs/components/data-table) documentation.
 
-1. Installation
+#### Installation
+
+1. Add the [<Table />](https://ui.shadcn.com/docs/components/table) component
+
+```sh
+npx shadcn-ui@latest add table
+```
+
+2. Add `tanstack/react-table` dependency
+
+```sh
+npm install @tanstack/react-table
+```
+
+#### Project Structure
+
+We can see from the sample project structure
+
+```sh
+app
+└── payments
+    ├── columns.tsx
+    ├── data-table.tsx
+    └── page.tsx
+```
+
+In our app, 
+  - `columns` is something we will create
+  - `data-table` is a re-usable global component
+  - `page` is our `client`
+
+#### Basic Table
+
+Let's start by building a basic table.
+
+1. Column Definitions
+
+First we'll define our columns.
+
+Columns are where you define the core of what your table will look like. They define the data that will be displayed, how it will be formatted, sorted and filtered.
+
+Navigate to `\app\(dashboard)\[storeId]\(routes)\billboards\components` and create a file named `columns.tsx`
+
+```tsx
+"use client"
+
+import { ColumnDef } from "@tanstack/react-table"
+
+// This type is used to define the shape of our data.
+// You can use a Zod schema here if you want.
+export type Payment = {
+  id: string
+  amount: number
+  status: "pending" | "processing" | "success" | "failed"
+  email: string
+}
+
+export const columns: ColumnDef<Payment>[] = [
+  {
+    accessorKey: "status",
+    header: "Status",
+  },
+  {
+    accessorKey: "email",
+    header: "Email",
+  },
+  {
+    accessorKey: "amount",
+    header: "Amount",
+  },
+]
+```
