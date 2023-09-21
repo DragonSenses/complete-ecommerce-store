@@ -1,17 +1,17 @@
 "use client";
 
 // Global Imports
-import { Billboard } from "@prisma/client";
 import { Plus } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
 // Local Imports
+import { BillboardColumn } from "./columns";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 
 interface BillboardClientProps {
-  data: Billboard[]
+  data: BillboardColumn[]
 }
 
 // Client component that loads all our Billboards
