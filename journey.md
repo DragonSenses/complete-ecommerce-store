@@ -7752,4 +7752,64 @@ export const columns: ColumnDef<BillboardColumn>[] = [
 
 Notice, we do not have the `id` in the `columns`. That is because we will add it later, it will come from actions where we are able to copy the `id`.
 
-Format `billboards` before passing it into `BillboardClient`
+##### Format `billboards` before passing it into `BillboardClient`
+
+Create a `formattedBillboards` that is an array of `BillboardColumn`. It will map each billboard to an object with `id`, `label`, and `createdAt`.
+
+- In order to safely convert `createdAt` from a Date to a string, we are going to use a package
+
+[date-fns](https://www.npmjs.com/package/date-fns)
+
+```sh
+npm i date-fns
+```
+
+- Use the `format()` function by passing in the `Date` as the 1st argument and the format style in the 2nd argument. e.g., `format(new Date(2014, 1, 11), 'yyyy-MM-dd')`
+
+- Finally, pass in the `formattedBillboards` into the client
+
+`app\(dashboard)\[storeId]\(routes)\billboards\page.tsx`
+```tsx
+// Global Imports
+import React from 'react';
+import prismadb from '@/lib/prismadb';
+import { format } from 'date-fns';
+
+// Local Imports
+import BillboardClient from './components/client';
+import { BillboardColumn } from './components/columns';
+
+const BillboardsPage = async ({
+  params
+}: {
+  params: { storeId: string }
+}) => {
+  
+  // Fetch all Billboards specific to the active store
+  const billboards = await prismadb.billboard.findMany({
+    where: {
+      storeId: params.storeId
+    },
+    orderBy: {
+      createdAt: 'desc'
+    }
+  });
+
+  // Format each Billboard into a BillboardColumn
+  const formattedBillboards: BillboardColumn[] = billboards.map((item) => ({
+    id: item.id,
+    label: item.label,
+    createdAt: format(item.createdAt, "MMMM do, yyyy"),
+  }))
+
+  return (
+    <div className='flex-col'>
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <BillboardClient data={formattedBillboards}/>
+      </div>
+    </div>
+  );
+}
+
+export default BillboardsPage;
+```
