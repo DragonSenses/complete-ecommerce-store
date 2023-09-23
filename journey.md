@@ -8376,6 +8376,101 @@ const BillboardClient: React.FC<BillboardClientProps> = ({
 
 Now test our filtering search input. It should now filter the data table based on the input in the search bar.
 
-#### ***TODO: Row Actions***
+#### ***Cell Actions***
 
-##### **1. TODO**
+What I want to add is a way to interact with each row. Going to add another column that contains the list of actions that allows the user to edit or delete a row.
+
+Where we created the `columns.tsx`, we want to add another component named `cell-action.tsx`.
+
+`app\(dashboard)\[storeId]\(routes)\billboards\components\cell-action.tsx`
+```tsx
+import React from 'react';
+
+export const CellAction = () => {
+  return (
+    <div>cell-action</div>
+  )
+}
+```
+
+Now in `columns.tsx`, let's add a column that contains `id` of actions and a function that renders the `<CellAction />`.
+
+```tsx
+export const columns: ColumnDef<BillboardColumn>[] = [
+  {
+    accessorKey: "label",
+    header: "Label",
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Date",
+  },
+  {
+    id: "actions",
+    cell: () => <CellAction />
+  },
+]
+```
+
+Continue working on `CellAction`,
+
+- Mark as client component
+- Add interface for props. `data` is of type `BillboardColumn`
+- Give `CellAction` the type of `React.FC<CellActionProps>`
+- Extract the props, the `data`
+
+```tsx
+"use client";
+
+import React from 'react';
+import { BillboardColumn } from './columns';
+
+interface CellActionProps {
+  data: BillboardColumn
+}
+
+export const CellAction: React.FC<CellActionProps> = ({
+  data
+}) => {
+  return (
+    <div>cell-action</div>
+  )
+}
+```
+
+Now we can extract the `row` and use `row.original`.
+
+This is from the [TanStack Table docs - Row](https://tanstack.com/table/v8/docs/api/core/row).
+
+Let's go into `columns.tsx` and extract the `row` inside `cell`'s function. Then pass in the data as `row.original`.
+
+```tsx
+export const columns: ColumnDef<BillboardColumn>[] = [
+  {
+    accessorKey: "label",
+    header: "Label",
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Date",
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <CellAction data={row.original} />
+  },
+]
+```
+
+What `row.original` allows us to do is to work with the "original row object provided to the table." And that original object is the `BillboardColumn` which we defined right before inside the same `columns.tsx`:
+
+```tsx
+// This type is used to define the shape of our data.
+export type BillboardColumn = {
+  id: string
+  label: string
+  createdAt: string
+}
+```
+
+It has an `id`, a `label` and a `createdAt`.
+
