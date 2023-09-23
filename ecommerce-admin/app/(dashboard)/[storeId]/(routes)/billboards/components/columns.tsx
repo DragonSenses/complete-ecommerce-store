@@ -2,6 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
+import { CellAction } from "./cell-action"
+
 // This type is used to define the shape of our data.
 export type BillboardColumn = {
   id: string
@@ -17,5 +19,9 @@ export const columns: ColumnDef<BillboardColumn>[] = [
   {
     accessorKey: "createdAt",
     header: "Date",
+  },
+  {
+    id: "actions",
+    cell: () => <CellAction />
   },
 ]
