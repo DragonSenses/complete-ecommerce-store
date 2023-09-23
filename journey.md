@@ -7913,13 +7913,17 @@ export function DataTable<TData, TValue>({
 }
 ```
 
-Now back to the `BillboardClient`, let's render the `DataTable` like this:
+#### **3. Render the table**
+
+Finally, we'll render our table in our page component.
+
+Let's render the `DataTable` like this:
 
 ```tsx
 <DataTable columns={columns} data={data} />
 ```
 
-In `client.tsx`,
+Now back to the `BillboardClient`, in `client.tsx`,
 ```tsx
 "use client";
 
@@ -7966,4 +7970,67 @@ const BillboardClient: React.FC<BillboardClientProps> = ({
 }
 
 export default BillboardClient;
+```
+
+### Enhance the Data Table
+
+We will now add more features to our Data Table to make it more advanced.
+
+[shadcn/ui - Data Table](https://ui.shadcn.com/docs/components/data-table)
+
+The documentation has these features:
+
+- Cell Formatting
+- Row Actions
+- Pagination
+- Sorting
+- Filtering
+- Visibility
+- Row Selection
+
+What do I want currently?
+
+1. Search Option
+2. Pagination
+3. Row Actions - individual action for each row item
+
+#### Pagination
+
+Next, we'll add pagination to our table.
+
+##### **1. Update `<DataTable />`**
+
+```tsx
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table"
+
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+}: DataTableProps<TData, TValue>) {
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+  })
+
+  // ...
+}
+```
+
+We have to add `getPaginationRowModel` then add it as a property to the object we pass into `useReactTable()`.
+
+This will automatically paginate your rows into pages of 10. See the [pagination docs](https://tanstack.com/table/v8/docs/api/features/pagination) for more information on customizing page size and implementing manual pagination.
+
+##### **2. Add Pagination Controls`**
+
+We can add pagination controls to our table using the `<Button />` component and the `table.previousPage()`, `table.nextPage()` API methods.
+
+```tsx
 ```
