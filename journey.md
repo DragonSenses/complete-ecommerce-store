@@ -8248,4 +8248,134 @@ import { useState } from "react";
   )
 ```
 
-4. 
+4. Now add the following to the `table`
+
+As properties to the object passed into `useReactTable()`:
+
+- `onColumnFiltersChange: setColumnFilters,`
+- `getFilteredRowModel: getFilteredRowModel(),`
+- Create a `state`'s object as a property, and inside it is an object with a property named `columnFilters`
+
+```tsx
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      columnFilters,
+    },
+  })
+```
+
+5. Finally, add the *filtering* to the output of `<DataTable />`
+
+We add this code:
+
+```tsx
+      <div className="flex items-center py-4">
+        <Input
+          placeholder="Filter emails..."
+          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("email")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+      </div>
+```
+
+Inside the main `div` that wraps the `div` containing the `Table` component. Looks like this:
+
+```tsx
+  return (
+    <div>
+      <div className="flex items-center py-4">
+        <Input
+          placeholder="Filter emails..."
+          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("email")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+      </div>
+      <div className="rounded-md border">
+        <Table>{ ... }</Table>
+      </div>
+    </div>
+  )
+}
+```
+
+##### **2. Adjust filtering search input to filter dynamically**
+
+The output so far filterings through email in the data table. But our billboards don't email,  so when we try to search it does nothing.
+
+We need to filter by labels. But an even better idea is to filter *dynamically*.
+
+This is not within the docs, but to suit our needs we want to filter our data table through not just one static data field. Sometimes it would be labels, other times a date, we want to filter these things dynamically.
+
+1. Add a `searchKey` to the `DataTable` props and interface
+
+```tsx
+interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+  searchKey: string;
+}
+
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+  searchKey,
+}: DataTableProps<TData, TValue>) {
+```
+
+2. Modify the `Input` prop data
+
+- Change the value of `placeholder`
+- Replace instances of `"email"` with `searchKey`
+
+```tsx
+  return (
+    <div>
+      {/* Filtering Search Input */}
+      <div className="flex items-center py-4">
+        <Input
+          placeholder="Search..."
+          value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn(searchKey)?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+      </div>
+```
+
+3. Pass in `searchKey` prop to `DataTable` inside `BillboardClient`
+
+For now, let's set the `searchKey` to "label"
+
+```tsx
+const BillboardClient: React.FC<BillboardClientProps> = ({
+  data
+}) => {
+  // ...
+  return (
+    <>
+      // ...
+      <Separator />
+      <DataTable columns={columns} data={data} searchKey={"label"}/>
+    </>
+  )
+}
+```
+
+Now test our filtering search input. It should now filter the data table based on the input in the search bar.
+
+#### ***TODO: Row Actions***
+
+##### **1. TODO**
