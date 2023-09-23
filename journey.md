@@ -8380,6 +8380,8 @@ Now test our filtering search input. It should now filter the data table based o
 
 What I want to add is a way to interact with each row. Going to add another column that contains the list of actions that allows the user to edit or delete a row.
 
+*What I did differently:* I'm separating the *Row Actions* logic into a different component called *Cell Actions* instead of placing it all in the Columns definition. We will still be using a Dropdown menu and TanStack table's API.
+
 Where we created the `columns.tsx`, we want to add another component named `cell-action.tsx`.
 
 `app\(dashboard)\[storeId]\(routes)\billboards\components\cell-action.tsx`
@@ -8474,3 +8476,98 @@ export type BillboardColumn = {
 
 It has an `id`, a `label` and a `createdAt`.
 
+##### **Dropdown Menu**
+
+Next we can finally add a `Dropdown` so that we can see the cell actions.
+
+[shadcn/ui - Dropdown Menu](https://ui.shadcn.com/docs/components/dropdown-menu)
+
+```sh
+npx shadcn-ui@latest add dropdown-menu
+```
+
+##### Update `<CellAction />` component
+
+Now back in `cell-action.tsx`, instead of a `div` render a `<DropDownMenu />`
+
+```tsx
+export const CellAction: React.FC<CellActionProps> = ({
+  data
+}) => {
+  return (
+    <DropdownMenu>
+      
+    </DropdownMenu>
+  )
+}
+```
+
+Let's `import` all the things we may need
+
+```tsx
+// Global Imports
+import React from 'react';
+import { MoreHorizontal } from "lucide-react"
+ 
+// Local Imports
+import { BillboardColumn } from './columns';
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+```
+
+From here we can follow along the [shadcn/ui docs - Data Table's Row Actions](https://ui.shadcn.com/docs/components/data-table#row-actions) while make the changes we need.
+
+- Inside `DropdownMenu`, add the `DropdownMenuTrigger`.
+- Then inside the `DropdownMenuTrigger` add a `Button` 
+  - Give the `Button` a variant of ghost and className of `h-8 w-8 p-0`
+  - Inside make a `span` with a classname of `sr-only` and the child text of "Open menu"
+  - `sr-only` class ensures that it is readable by screen readers, an accessibility feature
+  - Right after the `span`, and still inside the `Button`, add a `<MoreHorizontal />`
+
+```tsx
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+    </DropdownMenu>
+  )
+```
+
+Next we have to give the `DropdownMenu` options.
+
+TODO: use `DropdownMenuContent`
+
+```tsx
+return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(payment.id)}
+            >
+              Copy payment ID
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>View customer</DropdownMenuItem>
+            <DropdownMenuItem>View payment details</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )
+```
