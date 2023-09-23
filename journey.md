@@ -8032,5 +8032,90 @@ This will automatically paginate your rows into pages of 10. See the [pagination
 
 We can add pagination controls to our table using the `<Button />` component and the `table.previousPage()`, `table.nextPage()` API methods.
 
+The code sample:
 ```tsx
+import { Button } from "@/components/ui/button"
+
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+}: DataTableProps<TData, TValue>) {
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+  })
+
+  return (
+    <div>
+      <div className="rounded-md border">
+        <Table>
+          { // .... }
+        </Table>
+      </div>
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
+      </div>
+    </div>
+  )
+}
 ```
+
+Updating our Data Table with pagination controls,
+
+1. import `Button`
+
+```tsx
+import { Button } from "@/components/ui/button";
+```
+
+2. Wrap entire Data Table with a `div`
+3. Add the pagination controls at the end of `</div>` that contains the `</Table>`
+
+The pagination controls:
+
+```tsx
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
+      </div>
+```
+
+So what is added? A `div` with `flex items-center justify-end`, with two `Button`s:
+  - A "Previous" `Button`
+  - A "Next" `Button`
+
+Now in our project, when we have more than 10 billboards the buttons will be activated.
+
+> See [Reusable Components](https://ui.shadcn.com/docs/components/data-table#reusable-components) section for a more advanced pagination component.
+
