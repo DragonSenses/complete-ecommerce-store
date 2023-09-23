@@ -7651,7 +7651,7 @@ Follow along the steps in [shadcn/ui - Data Table](https://ui.shadcn.com/docs/co
 
 #### Installation
 
-1. Add the [<Table />](https://ui.shadcn.com/docs/components/table) component
+1. Add the [`<Table />`](https://ui.shadcn.com/docs/components/table) component
 
 ```sh
 npx shadcn-ui@latest add table
@@ -7994,7 +7994,7 @@ What do I want currently?
 2. Pagination
 3. Row Actions - individual action for each row item
 
-#### Pagination
+#### ***Pagination***
 
 Next, we'll add pagination to our table.
 
@@ -8026,9 +8026,12 @@ export function DataTable<TData, TValue>({
 
 We have to add `getPaginationRowModel` then add it as a property to the object we pass into `useReactTable()`.
 
+1. import getPaginationRowModel from `"@tanstack/react-table"`
+2. Add property `getPaginationRowModel` with its value as a function call, `getPaginationRowModel()`, to the object passed into `useReactTable` 
+
 This will automatically paginate your rows into pages of 10. See the [pagination docs](https://tanstack.com/table/v8/docs/api/features/pagination) for more information on customizing page size and implementing manual pagination.
 
-##### **2. Add Pagination Controls`**
+##### **2. Add Pagination Controls**
 
 We can add pagination controls to our table using the `<Button />` component and the `table.previousPage()`, `table.nextPage()` API methods.
 
@@ -8119,3 +8122,130 @@ Now in our project, when we have more than 10 billboards the buttons will be act
 
 > See [Reusable Components](https://ui.shadcn.com/docs/components/data-table#reusable-components) section for a more advanced pagination component.
 
+#### ***Filtering***
+
+Let's add filtering so we can *search* through our billboard labels.
+
+This adds a search input to filter a field in our table.
+
+##### **1. Update `<DataTable>`**
+
+The code sample that adds a search input to filter emails in our table.
+
+`app/payments/data-table.tsx`
+```tsx
+"use client"
+
+import * as React from "react"
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table"
+
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+}: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  )
+
+  const table = useReactTable({
+    data,
+    columns,
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      sorting,
+      columnFilters,
+    },
+  })
+
+  return (
+    <div>
+      <div className="flex items-center py-4">
+        <Input
+          placeholder="Filter emails..."
+          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("email")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+      </div>
+      <div className="rounded-md border">
+        <Table>{ ... }</Table>
+      </div>
+    </div>
+  )
+}
+```
+
+To add filtering for our Data Table:
+
+1. Import `ColumnFiltersState` and `getFilteredRowModel` from `"@tanstack/react-table"`
+
+2. `import { Input } from "@/components/ui/input"`
+
+3. Add the state variable `columnFilters` with setter method `setColumnFilters` to `DataTableProps`,
+
+Add this:
+```tsx
+const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+)
+```
+
+Just above the `const table = useReactTable({...})`, we add it to the `DataTableProps`:
+
+```tsx
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+}: DataTableProps<TData, TValue>) {
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  )
+```
+
+###### ReferenceError: React is not defined
+
+We can fix this by importing React
+
+```tsx
+import * as React from "react"
+```
+
+Or we can be more specific:
+
+```tsx
+import React, { useState } from "react";
+```
+
+Or we can remove the `React` and just import `useState`
+
+```tsx
+import { useState } from "react";
+// ...
+  // Remove `React` and just have `useState`
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
+    []
+  )
+```
+
+4. 
