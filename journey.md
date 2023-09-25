@@ -8892,3 +8892,46 @@ export const CellAction: React.FC<CellActionProps> = ({
     }
   };
 ```
+
+###### `BillboardForm` delete redirects to `/billboards`
+
+4. Behavior feature: `BillboardForm` delete should redirect back to Billboards
+
+The delete handler of `BillboardForm` and `CellAction` are similar, but have some minor differences.
+
+- `CellAction` should refresh the route, such that after deleting a Billboard we arrive at the Billboards page where the `DataTable` is
+- `BillboardForm`, when we navigate to the page to update or delete a Billboard, upon deletion we should *redirect* to the Billboards page where the `DataTable` is
+
+Let's update the delete handler for `BillboardForm`.
+
+- Update the `router.push()` route to billboards page for specific store
+- Update comments to reflect new behavior
+
+```tsx
+  // 3. Define a delete handler
+  const onDelete = async () => {
+    try {
+      setLoading(true);
+      // Call an API with dynamic route to delete the Billboard
+      await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
+      // Re-synchronize server component to update data
+      router.refresh();
+      // Navigate back to the specific store's billboards page after deletion
+      router.push(`${params.storeId}/billboards`);
+      toast.success("Billboard deleted.");
+    } catch (error) {
+      // Safety mechanism will prompt a warning to delete any related records to the Billboard
+      toast.error("Make sure you removed all categories using this billboard first.");
+    } finally {
+      setLoading(false);
+      // Close the Modal
+      setOpen(false);
+    }
+  };
+```
+
+4.1 `BillboardForm` remove `<Separator />`
+
+Let's also remove the last `Separator` in the output to tidy up our form.
+
+### Data Table TODO 
