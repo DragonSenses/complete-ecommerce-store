@@ -28,7 +28,7 @@ export const CellAction: React.FC<CellActionProps> = ({
   // Copy Event Handler
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
-    toast.success("Billboard Id copied to clipboard.");
+    toast.success("Billboard ID copied to clipboard.");
   }
 
   return (
