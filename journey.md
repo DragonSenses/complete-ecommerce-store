@@ -8581,7 +8581,7 @@ export const CellAction: React.FC<CellActionProps> = ({
         </DropdownMenuLabel>
         <DropdownMenuItem>
           <Copy className="mr-2 h-4 w-4" />
-          Copy Id
+          Copy ID
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Edit className="mr-2 h-4 w-4" />
@@ -8596,3 +8596,42 @@ export const CellAction: React.FC<CellActionProps> = ({
   )
 }
 ```
+
+##### Create the actions for `<CellAction />`
+
+5. Implement the actions for the options to actually happen
+
+Now that we have the actions for our `<DropdownMenu />`, we need to create the functionality for them to operate properly.
+
+The first one we can implement is the **Copy** action. We've done something similar to `ApiAlert` component.
+
+```tsx
+  // Copy Event Handler
+  const onCopy = () => {
+    navigator.clipboard.writeText(description);
+    toast.success("Copied to clipboard.");
+  }
+```
+
+Let's paste this into our `cell-action`, then modify it. It needs to be able to copy the `id` of the `Billboard` in the cell and into the clipboard of the user.
+
+- Give the Copy Event Handler function a parameter of `id` with a type `string`
+- Pass the `id` into the clipboard
+
+```tsx
+  // Copy Event Handler
+  const onCopy = (id: string) => {
+    navigator.clipboard.writeText(id);
+    toast.success("Billboard ID copied to clipboard.");
+  }
+```
+
+Now link up the copy event handler to the `DropdownMenuItem` for "Copy Id".
+
+```tsx
+<DropdownMenuItem onClick={() => onCopy(data.id)}>
+  <Copy className="mr-2 h-4 w-4" />
+  Copy ID
+</DropdownMenuItem>
+```
+
