@@ -8743,3 +8743,84 @@ Now assign the delete event handler (because it is triggered by an click event o
 
 Before that we need to wrap the entire output by a React fragment, so we can safely encapsulate the `AlertModal`.
 
+- Render the `AlertModal` at the top and pass in the right props
+
+```tsx
+<>
+  <AlertModal 
+    isOpen={open}
+    onClose={() => setOpen(false)}
+    onConfirm={(onDelete)}
+    loading={loading}
+  />
+  //...
+</>
+```
+
+- Update the delete `DropdownMenuItem`'s `onClick` to open the `AlertModal`
+
+```tsx
+<DropdownMenuItem
+  onClick={() => setOpen(true)}
+>
+  <Trash className="mr-2 h-4 w-4" />
+  Delete
+</DropdownMenuItem>
+```
+
+Full output:
+
+```tsx
+ return (
+    <>
+      <AlertModal 
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={(onDelete)}
+        loading={loading}
+      />
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>
+            Actions
+          </DropdownMenuLabel>
+          <DropdownMenuItem onClick={() => onCopy(data.id)}>
+            <Copy className="mr-2 h-4 w-4" />
+            Copy ID
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => router.push(`/${params.storeId}/billboards/${data.id}`)}
+          >
+            <Edit className="mr-2 h-4 w-4" />
+            Update
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => setOpen(true)}
+          >
+            <Trash className="mr-2 h-4 w-4" />
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
+  )
+```
+
+###### Testing - Cell Action: **Delete**
+
+At this point there are a few issues to take note of.
+
+- Let's use the Billboards page to trigger the delete cell action
+- The `AlertModal` opens up, and pressing continue will redirect us to the store route
+- Upon checking the Billboards page it seems that the billboard was not deleted.
+
+
+Behavior fixes:
+
+- Let's remove the 
