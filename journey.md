@@ -6963,8 +6963,9 @@ Quite similar to the submit handler of the `SettingsForm`, with the following ch
         // Create new Billboard
         await axios.post(`/api/${params.storeId}/billboards`, data);
       }
-      // Re-synchronize server component that fetches our store
-      // Re-initializes the updated `initialData`
+      // Refresh current route to make new request to server
+      // Re-fetch data requests & re-render server components
+      // Re-initializes initialData
       router.refresh();
       // Success notification with dynamic message
       toast.success(toastMessage);
@@ -7440,8 +7441,9 @@ Before the `toast.success()`, push the router to `billboards` route.
         // Create new Billboard
         await axios.post(`/api/${params.storeId}/billboards`, data);
       }
-      // Re-synchronize server component that fetches our store
-      // Re-initializes the updated `initialData`
+      // Refresh current route to make new request to server
+      // Re-fetch data requests & re-render server components
+      // Re-initializes initialData
       router.refresh();
       // Re-route the user to the Billboards page
       router.push(`/${params.storeId}/billboards`)
@@ -8821,6 +8823,72 @@ At this point there are a few issues to take note of.
 - Upon checking the Billboards page it seems that the billboard was not deleted.
 
 
-Behavior fixes:
+1. Behavior fix: *Billboard was not deleted.*
 
-- Let's remove the 
+- The reason why Billboard was not delete via cell actions was because of the following line of code:
+
+```tsx
+await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
+```
+
+The route is incorrect because we are using `params.billboardId` instead of `data.Id`. The `params` do not contain the `billboardId` here. We find the `billboardId` inside `data` prop.
+
+Why? Because of our project structure. `CellAction.tsx` is not inside the `[billboardId]`. It is together with the `billboard\components` together with the `client.tsx` where we load all the billboards. Unlike `BillboardForm.tsx` which has access to the dynamic route parameters of `[billboardId]`.
+
+Comparing the routes:
+  - `app\(dashboard)\[storeId]\(routes)\billboards\components\cell-action.tsx`
+  - `app\(dashboard)\[storeId]\(routes)\billboards\[billboardId]\components\BillboardForm.tsx`
+
+2. Behavior fix: *route is pushed to active store*
+
+We should not re-direct the user to the store page, instead they should stay where the `DataTable` is but refresh the route to re-synchronize the server components.
+
+- Let's remove the `router.push()` in the delete handler. Also change the comments for `router` and `router.refresh()` to reflect the changes.
+
+Note: `router.refresh()` from [Next.js useRouter()](https://nextjs.org/docs/app/api-reference/functions/use-router)
+
+`router.refresh()` is a method that allows you to refresh the current route in Next.js. 
+
+It makes a new request to the server, re-fetches data requests, and re-renders Server Components. 
+
+The client will merge the updated React Server Component payload without losing unaffected client-side React (e.g. useState) or browser state (e.g. scroll position).
+
+This method is useful for cases where you want to update the page after a data mutation or a change in query parameters. 
+
+For example, if you have a page that displays a list of posts and you want to refresh the page after adding a new post, you can use `router.refresh()` to do so. You can also use `router.refresh()` to reload the current URL, which is equivalent to clicking the browser’s refresh button.
+
+
+3. Behavior fix: the code changes
+
+- Change comment for `router`
+- Update API route and its comment. From `params.billboardId` to `data.id`
+- Remove `router.push("/")`
+- Change comment for `router.refresh()`
+
+```tsx
+export const CellAction: React.FC<CellActionProps> = ({
+  data
+}) => {
+  // Create router object to perform client-side navigation
+  const router = useRouter();
+  
+    // Define a delete handler
+  const onDelete = async () => {
+    try {
+      setLoading(true);
+      // Call an API with dynamic route to delete the store
+      await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
+      // Refresh current route to make new request to server
+      // Re-fetch data requests & re-render server components
+      router.refresh();
+      toast.success("Billboard deleted.");
+    } catch (error) {
+      // Safety mechanism will prompt a warning to delete any related records to the Billboard
+      toast.error("Make sure you removed all categories using this billboard first.");
+    } finally {
+      setLoading(false);
+      // Close the Modal
+      setOpen(false);
+    }
+  };
+```
