@@ -3,6 +3,7 @@
 // Global Imports
 import React from 'react';
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react"
+import { useParams, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
  
 // Local Imports
@@ -24,6 +25,8 @@ interface CellActionProps {
 export const CellAction: React.FC<CellActionProps> = ({
   data
 }) => {
+  const router = useRouter();
+  const params = useParams();
 
   // Copy Event Handler
   const onCopy = (id: string) => {
@@ -47,7 +50,9 @@ export const CellAction: React.FC<CellActionProps> = ({
           <Copy className="mr-2 h-4 w-4" />
           Copy ID
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem 
+          onClick={() => router.push(`/${params.storeId}/billboards/${data.id}`)}
+        >
           <Edit className="mr-2 h-4 w-4" />
           Update
         </DropdownMenuItem>
