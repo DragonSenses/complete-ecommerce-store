@@ -19,7 +19,10 @@ interface BillboardClientProps {
 const BillboardClient: React.FC<BillboardClientProps> = ({
   data
 }) => {
+  // Create router object to perform client-side navigation
   const router = useRouter();
+
+  // Hook returns an object containing current route's filled in dynamic parameters
   const params = useParams();
 
   return (

@@ -44,9 +44,11 @@ interface BillboardFormProps {
 const BillboardForm: React.FC<BillboardFormProps> = ({
   initialData
 }) => {
-  // Extract params to get storeId
-  const params = useParams();
+  // Create router object to perform client-side navigation
   const router = useRouter();
+
+  // Hook returns an object containing current route's filled in dynamic parameters
+  const params = useParams();
 
   // Create open state to control the Alert modal
   const [open, setOpen] = useState(false);
@@ -80,8 +82,9 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
         // Create new Billboard
         await axios.post(`/api/${params.storeId}/billboards`, data);
       }
-      // Re-synchronize server component that fetches our store
-      // Re-initializes the updated `initialData`
+      // Refresh current route to make new request to server
+      // Re-fetch data requests & re-render server components
+      // Re-initializes initialData
       router.refresh();
       // Re-route the user to the Billboards page
       router.push(`/${params.storeId}/billboards`)
