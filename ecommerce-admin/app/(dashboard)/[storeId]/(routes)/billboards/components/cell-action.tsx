@@ -2,7 +2,7 @@
 
 // Global Imports
 import React from 'react';
-import { MoreHorizontal } from "lucide-react"
+import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react"
  
 // Local Imports
 import { BillboardColumn } from './columns';
@@ -31,6 +31,23 @@ export const CellAction: React.FC<CellActionProps> = ({
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>
+          Actions
+        </DropdownMenuLabel>
+        <DropdownMenuItem>
+          <Copy className="mr-2 h-4 w-4" />
+          Copy Id
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Edit className="mr-2 h-4 w-4" />
+          Update
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Trash className="mr-2 h-4 w-4" />
+          Delete
+        </DropdownMenuItem>
+      </DropdownMenuContent>
     </DropdownMenu>
   )
 }
