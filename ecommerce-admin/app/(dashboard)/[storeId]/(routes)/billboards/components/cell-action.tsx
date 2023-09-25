@@ -27,7 +27,7 @@ interface CellActionProps {
 export const CellAction: React.FC<CellActionProps> = ({
   data
 }) => {
-  // Create router object to perform client-side navigation (pushing to new URL)
+  // Create router object to perform client-side navigation
   const router = useRouter();
 
   // Hook returns an object containing current route's filled in dynamic parameters
@@ -49,12 +49,11 @@ export const CellAction: React.FC<CellActionProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true);
-      // Call an API with dynamic route to delete the store
-      await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
-      // Re-synchronize server component to update data
+      // Call an API with dynamic route to delete the Billboard
+      await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
+      // Refresh current route to make new request to server
+      // Re-fetch data requests & re-render server components
       router.refresh();
-      // Push user back to root layout where we check if there is another existing store
-      router.push("/");
       toast.success("Billboard deleted.");
     } catch (error) {
       // Safety mechanism will prompt a warning to delete any related records to the Billboard
