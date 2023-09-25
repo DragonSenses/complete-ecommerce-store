@@ -8488,7 +8488,9 @@ npx shadcn-ui@latest add dropdown-menu
 
 ##### Update `<CellAction />` component
 
-Now back in `cell-action.tsx`, instead of a `div` render a `<DropDownMenu />`
+1. Render `DropdownMenu`
+
+Now back in `cell-action.tsx`, instead of a `div` render a `<DropdownMenu />`
 
 ```tsx
 export const CellAction: React.FC<CellActionProps> = ({
@@ -8501,6 +8503,8 @@ export const CellAction: React.FC<CellActionProps> = ({
   )
 }
 ```
+
+2. `import` packages
 
 Let's `import` all the things we may need
 
@@ -8524,6 +8528,8 @@ import {
 
 From here we can follow along the [shadcn/ui docs - Data Table's Row Actions](https://ui.shadcn.com/docs/components/data-table#row-actions) while make the changes we need.
 
+3. Implement output of `DropdownMenu`
+
 - Inside `DropdownMenu`, add the `DropdownMenuTrigger`.
 - Then inside the `DropdownMenuTrigger` add a `Button` 
   - Give the `Button` a variant of ghost and className of `h-8 w-8 p-0`
@@ -8544,30 +8550,49 @@ From here we can follow along the [shadcn/ui docs - Data Table's Row Actions](ht
   )
 ```
 
-Next we have to give the `DropdownMenu` options.
+4. Add options to `DropdownMenu`
 
-TODO: use `DropdownMenuContent`
+Next we have to give the `DropdownMenu` options. To do that we need to use `DropdownMenuContent`.
 
+- Give it `align="end"`
+- Insert `DropdownMenuLabel` within content, and add "Actions" as to label our menu
+- Below Label, create a `DropdownMenuItem`, which should allow us to Copy the id of our billboard
+- The next `DropdownMenuItem`. Inside it:
+  - This item should allow us to *update* or edit, so import and use `Edit` icon from `lucide-react`
+  - The text that describes our menu item, for our case it is "Update"
+- Another `DropdownMenuItem` should allow us to *delete* the Billboard item
+
+`cell-action.tsx`
 ```tsx
-return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
+export const CellAction: React.FC<CellActionProps> = ({
+  data
+}) => {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>
+          Actions
+        </DropdownMenuLabel>
+        <DropdownMenuItem>
+          <Copy className="mr-2 h-4 w-4" />
+          Copy Id
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Edit className="mr-2 h-4 w-4" />
+          Update
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Trash className="mr-2 h-4 w-4" />
+          Delete
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
 ```
