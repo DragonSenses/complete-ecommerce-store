@@ -4472,7 +4472,7 @@ export async function PATCH (
     }
 
     if (!params.storeId){
-      return new NextResponse("Store id is required", { status: 400 });
+      return new NextResponse("Store ID is required", { status: 400 });
     }
   } catch (error) {
     console.log('[STORE_PATCH]', error);
@@ -4524,7 +4524,7 @@ export async function PATCH (
     }
 
     if (!params.storeId){
-      return new NextResponse("Store id is required", { status: 400 });
+      return new NextResponse("Store ID is required", { status: 400 });
     }
 
     // Find and Update store
@@ -4570,7 +4570,7 @@ export async function DELETE (
     }
 
     if (!params.storeId){
-      return new NextResponse("Store id is required", { status: 400 });
+      return new NextResponse("Store ID is required", { status: 400 });
     }
 
     // Find and Delete store
@@ -7087,7 +7087,7 @@ export async function POST(
 
     // Check if storeId exists
     if (!params.storeId) {
-      return new NextResponse("Store id is required", { status: 400 });
+      return new NextResponse("Store ID is required", { status: 400 });
     }
 
     // Check database if store exists for current user
@@ -7136,7 +7136,7 @@ export async function GET(
   try {
     // Check if storeId exists
     if (!params.storeId) {
-      return new NextResponse("Store id is required", { status: 400 });
+      return new NextResponse("Store ID is required", { status: 400 });
     }
 
     // Find all billboards available in that store in the database
@@ -7183,11 +7183,11 @@ export async function PATCH (
   try {
     // Check parameters
     if (!params.storeId){
-      return new NextResponse("Store id is required", { status: 400 });
+      return new NextResponse("Store ID is required", { status: 400 });
     }
 
     if (!params.billboardId){
-      return new NextResponse("Billboard id is required", { status: 400 });
+      return new NextResponse("Billboard ID is required", { status: 400 });
     }
 
     // Authenticate userId with Clerk to check if user is logged-in
@@ -7258,11 +7258,11 @@ export async function DELETE (
   try {
     // Check parameters
     if (!params.storeId){
-      return new NextResponse("Store id is required", { status: 400 });
+      return new NextResponse("Store ID is required", { status: 400 });
     }
 
     if (!params.billboardId){
-      return new NextResponse("Billboard id is required", { status: 400 });
+      return new NextResponse("Billboard ID is required", { status: 400 });
     }
 
     // Authenticate userId with Clerk to check if user is logged-in
@@ -7314,7 +7314,7 @@ export async function GET (
   try {
     // Check parameters
     if (!params.billboardId){
-      return new NextResponse("Billboard id is required", { status: 400 });
+      return new NextResponse("Billboard ID is required", { status: 400 });
     }
 
     // Find the specific Billboard in database
@@ -8635,3 +8635,16 @@ Now link up the copy event handler to the `DropdownMenuItem` for "Copy Id".
 </DropdownMenuItem>
 ```
 
+###### Aside: Id vs ID? 
+
+- "ID" means "identification"
+- "Id" means "the set of uncoordinated instinctual desires" [Freudian id](https://en.wikipedia.org/wiki/Id,_ego_and_super-ego#Id)
+
+Here we refer to "identification" in our app. The mistake occurs when we apply *camelCase*, a style method to programming, to the word *id*. The correct abbreviation for "identification" is ID, so this one will be used. 
+
+There is a difference between the accepted abbreviation of identication of [ID](https://www.britannica.com/dictionary/ID[2]) and [Id](https://www.britannica.com/dictionary/Id) (as it represents the idea of id) which is a part of a person's unconscious mind that relates to basic needs and desires.
+
+Also for user experience, "Id" can look a lot like "ld" the one with an lowercased "L" which may cause confusion.
+
+- "ID" for any output: text for user, logging, outputting a string, etc.
+- "Id" for code, as it follows camel-case convention
