@@ -8670,7 +8670,7 @@ export const CellAction: React.FC<CellActionProps> = ({
 }) => {
   const router = useRouter();
   const params = useParams();
-  
+
   return (
     <DropdownMenu>
     // ...
@@ -8683,3 +8683,63 @@ export const CellAction: React.FC<CellActionProps> = ({
 ```
 
 ###### Cell Action: **Delete**
+
+Now the delete cell action would require a delete event handler.
+
+1. Create the delete event handler
+
+- `async`
+- `try..catch..finally`
+- Needs `loading` and `open` state variables
+  - To disable the component during `loading`
+  - `open` for confirmation modal
+- Needs `axios`
+- The logic is just like the delete event handler of `BillboardForm`
+
+```tsx
+import axios from 'axios';
+import React, { useState } from 'react';
+
+export const CellAction: React.FC<CellActionProps> = ({
+  data
+}) => {
+  // Create router object to perform client-side navigation (pushing to new URL)
+  const router = useRouter();
+  
+  // Hook returns an object containing current route's filled in dynamic parameters
+  const params = useParams();
+
+  // Create open state to control the Alert modal
+  const [open, setOpen] = useState(false);
+
+  // Create loading state to disable interactive elements
+  const [loading, setLoading] = useState(false);
+
+  // Define a delete handler
+  const onDelete = async () => {
+    try {
+      setLoading(true);
+      // Call an API with dynamic route to delete the store
+      await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
+      // Re-synchronize server component to update data
+      router.refresh();
+      // Push user back to root layout where we check if there is another existing store
+      router.push("/");
+      toast.success("Billboard deleted.");
+    } catch (error) {
+      // Safety mechanism will prompt a warning to delete any related records to the Billboard
+      toast.error("Make sure you removed all categories using this billboard first.");
+    } finally {
+      setLoading(false);
+      // Close the Modal
+      setOpen(false);
+    }
+  };
+```
+
+2. Assign delete event handler
+
+Now assign the delete event handler (because it is triggered by an click event on an element `DropdownMenuItem`).
+
+Before that we need to wrap the entire output by a React fragment, so we can safely encapsulate the `AlertModal`.
+
