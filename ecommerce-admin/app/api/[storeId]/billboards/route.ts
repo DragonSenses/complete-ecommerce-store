@@ -34,7 +34,7 @@ export async function POST(
 
     // Check if storeId exists
     if (!params.storeId) {
-      return new NextResponse("Store id is required", { status: 400 });
+      return new NextResponse("Store ID is required", { status: 400 });
     }
 
     // Check database if store exists for current user
@@ -75,7 +75,7 @@ export async function GET(
   try {
     // Check if storeId exists
     if (!params.storeId) {
-      return new NextResponse("Store id is required", { status: 400 });
+      return new NextResponse("Store ID is required", { status: 400 });
     }
 
     // Find all billboards available in that store in the database
