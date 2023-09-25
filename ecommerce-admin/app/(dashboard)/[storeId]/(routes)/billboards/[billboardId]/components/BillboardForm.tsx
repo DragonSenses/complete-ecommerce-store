@@ -101,12 +101,12 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true);
-      // Call an API with dynamic route to delete the store
+      // Call an API with dynamic route to delete the Billboard
       await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
       // Re-synchronize server component to update data
       router.refresh();
-      // Push user back to root layout where we check if there is another existing store
-      router.push("/");
+      // Navigate back to the specific store's billboards page after deletion
+      router.push(`${params.storeId}/billboards`);
       toast.success("Billboard deleted.");
     } catch (error) {
       // Safety mechanism will prompt a warning to delete any related records to the Billboard
@@ -183,7 +183,6 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
           </Button>
         </form>
       </Form>
-      <Separator />
     </>
   )
 }
