@@ -8603,6 +8603,8 @@ export const CellAction: React.FC<CellActionProps> = ({
 
 Now that we have the actions for our `<DropdownMenu />`, we need to create the functionality for them to operate properly.
 
+###### Cell Action: **Copy**
+
 The first one we can implement is the **Copy** action. We've done something similar to `ApiAlert` component.
 
 ```tsx
@@ -8648,3 +8650,36 @@ Also for user experience, "Id" can look a lot like "ld" the one with an lowercas
 
 - "ID" for any output: text for user, logging, outputting a string, etc.
 - "Id" for code, as it follows camel-case convention
+
+###### Cell Action: **Update**
+
+This action should let our user edit the cell's specific Billboard. How they can edit is through the `BillboardForm`. 
+
+This means that we can just redirect the user to the route for the `BillboardForm` but instead of the id set to "/new" it should be "/[billboardId]".
+
+- `import { useParams, useRouter } from 'next/navigation';`
+  - Initialize `router` and `params`
+- Assign `DropdownMenuItem` for Edit the `router.push()` function to its `onClick`
+  - route is `/${params.storeId}/billboards/${data.id}`
+
+```tsx
+import { useParams, useRouter } from 'next/navigation';
+// ...
+export const CellAction: React.FC<CellActionProps> = ({
+  data
+}) => {
+  const router = useRouter();
+  const params = useParams();
+  
+  return (
+    <DropdownMenu>
+    // ...
+        <DropdownMenuItem 
+          onClick={() => router.push(`/${params.storeId}/billboards/${data.id}`)}
+        >
+          <Edit className="mr-2 h-4 w-4" />
+          Update
+        </DropdownMenuItem>
+```
+
+###### Cell Action: **Delete**
