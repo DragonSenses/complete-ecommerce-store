@@ -9,7 +9,7 @@ export async function GET (
   try {
     // Check parameters
     if (!params.billboardId){
-      return new NextResponse("Billboard id is required", { status: 400 });
+      return new NextResponse("Billboard ID is required", { status: 400 });
     }
 
     // Find the specific Billboard in database
@@ -33,11 +33,11 @@ export async function PATCH (
   try {
     // Check parameters
     if (!params.storeId){
-      return new NextResponse("Store id is required", { status: 400 });
+      return new NextResponse("Store ID is required", { status: 400 });
     }
 
     if (!params.billboardId){
-      return new NextResponse("Billboard id is required", { status: 400 });
+      return new NextResponse("Billboard ID is required", { status: 400 });
     }
 
     // Authenticate userId with Clerk to check if user is logged-in
@@ -102,11 +102,11 @@ export async function DELETE (
   try {
     // Check parameters
     if (!params.storeId){
-      return new NextResponse("Store id is required", { status: 400 });
+      return new NextResponse("Store ID is required", { status: 400 });
     }
 
     if (!params.billboardId){
-      return new NextResponse("Billboard id is required", { status: 400 });
+      return new NextResponse("Billboard ID is required", { status: 400 });
     }
 
     // Authenticate userId with Clerk to check if user is logged-in
