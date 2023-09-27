@@ -8,7 +8,6 @@ import { useParams } from 'next/navigation';
 import { useOrigin } from '@/hooks/use-origin';
 import { ApiAlert } from '@/components/ui/ApiAlert';
 
-
 interface ApiListProps {
   entityName: string;
   entityIdName: string;
@@ -29,6 +28,11 @@ export const ApiList: React.FC<ApiListProps> = ({
 
   return (
     <>
+      <ApiAlert 
+        title="GET" 
+        variant="public"
+        description={`${baseUrl}/${entityName}`}
+      />
 
     </>
   )
