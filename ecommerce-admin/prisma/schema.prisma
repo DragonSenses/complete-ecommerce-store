@@ -13,22 +13,32 @@ datasource db {
 
 // Create simplified model of our Store
 model Store {
-  id        String    @id @default(uuid())
-  name      String
-  userId    String
-  billboards Billboard[] @relation("StoreToBillboard")
-  createdAt  DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id         String       @id @default(uuid())
+  name       String
+  userId     String
+  billboards Billboard[]  @relation("StoreToBillboard")
+  categories Category[]   @relation("StoreToCategory")
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
 }
 
 model Billboard {
-  id        String @id @default(uuid())
-  store     Store @relation("StoreToBillboard", fields: [storeId], references: [id])
-  storeId   String // relation scalar field (used in the `@relation` attribute)
+  id        String    @id @default(uuid())
+  store     Store     @relation("StoreToBillboard", fields: [storeId], references: [id])
+  storeId   String    // relation scalar field (used in the `@relation` attribute)
   label     String
   imageUrl  String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  // Manually add index on relation scalar field
+  @@index([storeId])
+}
+
+model Category {
+  id        String  @id @default(uuid())
+  store     Store   @relation("StoreToCategory", fields: [storeId], references: [id])
+  storeId   String  // relation scalar field (used in the `@relation` attribute)
 
   // Manually add index on relation scalar field
   @@index([storeId])
