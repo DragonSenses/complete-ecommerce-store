@@ -9213,3 +9213,55 @@ For additional information about middleware, please visit https://clerk.com/docs
 (This log only appears in development mode, or if `debug: true` is passed to authMiddleware)
 ```
 
+##### **Fix:** make route accessible to both signed-in & signed-out users by **updating the middleware**
+
+As we can see in the terminal message, we can pass `publicRoutes` to `authMiddleware`.
+
+For more information, we can see the docs in [Clerk - NextJS - authMiddleware](https://clerk.com/docs/references/nextjs/auth-middleware).
+
+[Making pages public using publicRoutes](https://clerk.com/docs/references/nextjs/auth-middleware#making-pages-public-using-public-routes), within the docs we have a way to make all routes accessible to all users. This is not the behavior we want exactly, but it's a start.
+
+```tsx
+import { authMiddleware } from "@clerk/nextjs";
+export default authMiddleware({
+  // "/" will be accessible to all users
+  publicRoutes: ["/"]
+});
+ 
+export const config = {
+      matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+};
+```
+
+Under the [Clerk - NextJS - auth-middleware#Options](https://clerk.com/docs/references/nextjs/auth-middleware#options) we can see that the `publicRoutes?` takes in an array of strings `string[]` which contain:
+
+A list of routes that should be accessible without authentication. You can use glob patterns to match multiple routes or a function to match against the request object. For example: `['/foo', '/bar(.*)']` or `[/^\/foo\/.*$/]`.
+
+The sign in and sign up URLs are included by default, unless a function is provided.
+
+Let's look at our `middleware.ts`,
+
+`ecommerce-admin\middleware.ts`
+```ts
+import { authMiddleware } from "@clerk/nextjs";
+
+export default authMiddleware({});
+
+export const config = {
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+};
+```
+
+To the object we pass into `authMiddleware` give it a key of `publicRoutes`. The value to that key is an array containing the string: "/api/:path*".
+
+```ts
+import { authMiddleware } from "@clerk/nextjs";
+
+export default authMiddleware({
+  publicRoutes: ["/api/:path*"]
+});
+
+export const config = {
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+};
+```
