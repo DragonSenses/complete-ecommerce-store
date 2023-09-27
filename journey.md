@@ -9139,3 +9139,55 @@ export const ApiList: React.FC<ApiListProps> = ({
 
 With this we reduced code duplication and increased modularity. We can now just add `<ApiList />` to our client and re-use it in other places such as `products` or `categories`.
 
+#### Testing `<ApiList />`
+
+Go ahead and copy the `GET` request for all billboards and paste it to as the URL in the browser.
+
+```sh
+http://localhost:3000/api/*YOUR-STORE-ID-HERE*/billboards
+```
+
+We should see the response that should contain all our billboards for that specific store.
+
+```json
+[
+  {
+    "id": "5297187f-d293-45dc-9c72-e60fe2e29ca9",
+    "storeId": "2ff28da4-0440-48b8-aad1-255159fed78a",
+    "label": "fruit-billboard",
+    "imageUrl": "https://res.cloudinary.com/dkepcyjuy/image/upload/v1695186366/dt6pwixkibdvr0vk6nsw.jpg",
+    "createdAt": "2023-09-20T05:06:30.229Z",
+    "updatedAt": "2023-09-27T21:27:20.865Z"
+  },
+  {
+    "id": "f2bb3c25-1e24-4909-868d-b5606f64435b",
+    "storeId": "2ff28da4-0440-48b8-aad1-255159fed78a",
+    "label": "fruit-board-2",
+    "imageUrl": "https://res.cloudinary.com/dkepcyjuy/image/upload/v1695850027/zh5yha1dxw1lytpemzq6.jpg",
+    "createdAt": "2023-09-27T21:27:11.830Z",
+    "updatedAt": "2023-09-27T21:27:11.830Z"
+  }
+]
+```
+
+We can see that we an array of our billboards. We can copy an individual id , append it to our URL request 
+
+```sh
+http://localhost:3000/api/*YOUR-STORE-ID-HERE*/billboards/*individual-id*
+```
+
+And get the specific billboard data we need. This is very useful for the front-end when we want to load all billboards or a single billboard just copy the API call.
+
+As for the `admin` routes, we need to add authentication cookies or JWT, or what Clerk needs.
+
+##### Issue: What happens if we are unauthenticated?
+
+Test the scenarios where we call these routes but do not have the authentication to do so.
+
+- Incognito
+- Postman
+- 
+
+Public routes need to actually be public so others can see them.
+
+
