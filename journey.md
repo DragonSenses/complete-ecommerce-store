@@ -9379,7 +9379,54 @@ We are going to re-use a lot of the logic. So a checkbox of features for assuran
 
 # Category Entity
 
-The next thing we want to add is the *Category*.
+The next thing we want to add is the *Category* entity.
 
-Let's add the model to our database.
+## Category Model
+
+Let's add the model to our database. Similar to Billboard model, it should have an unique `id`. A relation to the Store as `store`. `storeId`
+
+`ecommerce-admin\prisma\schema.prisma`
+```prisma
+model Category {
+  id        String  @id @default(uuid())
+  store     Store   @relation("StoreToCategory", fields: [storeId], references: [id])
+  storeId   String  // relation scalar field (used in the `@relation` attribute)
+
+}
+```
+
+We have an error with our `@relation` because we don't have it in the `Store` model. Add `categories` relation to the Store.
+
+```prisma
+model Store {
+  id         String       @id @default(uuid())
+  name       String
+  userId     String
+  billboards Billboard[]  @relation("StoreToBillboard")
+  categories Category[]   @relation("StoreToCategory")
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+```
+
+Then a warning shows:
+
+```sh
+With `relationMode = "prisma"`, no foreign keys are used, so relation fields will not benefit from the index usually created by the relational database under the hood. This can lead to poor performance when querying these fields. We recommend adding an index manually. Learn more at https://pris.ly/d/relation-mode-prisma-indexes" 
+```
+
+Same fix as `Billboard`, by adding index manually in Category.
+
+```prisma
+model Category {
+  id        String  @id @default(uuid())
+  store     Store   @relation("StoreToCategory", fields: [storeId], references: [id])
+  storeId   String  // relation scalar field (used in the `@relation` attribute)
+
+  // Manually add index on relation scalar field
+  @@index([storeId])
+}
+```
+
+Let's continue development of Category.
 
