@@ -9043,3 +9043,33 @@ const BillboardClient: React.FC<BillboardClientProps> = ({
 
 export default BillboardClient;
 ```
+
+6. Add more `ApiAlert` components for other routes
+
+- Add another `GET` but this time for an individual entity
+  - Make sure to surround `entityIdName` with a curly brackets to show the user that they need to substitute that text
+- Add admin `POST` route, because only admins can POST new routes through the `API`
+  - description is the same as `GET` all billboards
+
+`ecommerce-admin\components\ui\ApiList.tsx`
+```tsx
+  return (
+    <>
+      <ApiAlert 
+        title="GET" 
+        variant="public"
+        description={`${baseUrl}/${entityName}`}
+      />
+      <ApiAlert 
+        title="GET" 
+        variant="public"
+        description={`${baseUrl}/${entityName}/{${entityIdName}}`}
+      />
+      <ApiAlert 
+        title="POST" 
+        variant="admin"
+        description={`${baseUrl}/${entityName}`}
+      />
+    </>
+  )
+```
