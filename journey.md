@@ -8934,4 +8934,31 @@ Let's update the delete handler for `BillboardForm`.
 
 Let's also remove the last `Separator` in the output to tidy up our form.
 
-### Data Table TODO 
+### API List
+
+Next thing we want after Data Table is a list of API calls for our Billboards.
+
+1. `<ApiList />`
+
+Create client component `ApiList` inside `ecommerce-admin\components\ui` folder.
+
+```tsx
+"use client";
+
+import React from 'react';
+
+export const ApiList = () => {
+  return (
+    <div>ApiList</div>
+  )
+}
+```
+
+2. Render `<ApiList />`
+
+Now back inside our `BillboardClient`, in the output:
+
+- Append `<Heading />`
+- Append `<Separator />` 
+- Append `<ApiList />`
+
