@@ -8998,3 +8998,20 @@ export const ApiList: React.FC<ApiListProps> = ({
   // Create base URL for the API call
   const baseUrl = `${origin}/api/${params.storeId}`;
 ```
+
+
+4. Return an `<ApiAlert />` in the output
+
+Let's try adding an `ApiAlert` that contains our API call. This will be a public `GET`.
+
+```tsx
+  return (
+    <>
+      <ApiAlert 
+        title="GET" 
+        variant="public"
+        description={`${baseUrl}/${entityName}`}
+      />
+    </>
+  )
+```
