@@ -9015,3 +9015,31 @@ Let's try adding an `ApiAlert` that contains our API call. This will be a public
     </>
   )
 ```
+
+5. Pass in data to `<ApiList />` props inside `BillboardClient`
+
+- Pass in `billboards` and its id as data to `ApiList` inside `BillboardClient`
+
+```tsx
+// Client component that loads all our Billboards
+const BillboardClient: React.FC<BillboardClientProps> = ({
+  data
+}) => {
+  // ...
+  return (
+    <>
+      // ...
+      <Separator />
+      <DataTable columns={columns} data={data} searchKey={"label"}/>
+      <Heading title="API" description="API calls for Billboards" />
+      <Separator />
+      <ApiList 
+        entityName="billboards"
+        entityIdName="billboardId"
+      />
+    </>
+  )
+}
+
+export default BillboardClient;
+```
