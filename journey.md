@@ -9258,10 +9258,128 @@ To the object we pass into `authMiddleware` give it a key of `publicRoutes`. The
 import { authMiddleware } from "@clerk/nextjs";
 
 export default authMiddleware({
-  publicRoutes: ["/api/:path*"]
+  publicRoutes: ["/api/:path*"],
 });
 
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };
 ```
+
+Now when we try to access the public `GET` route for all billboards of a specific store
+
+```sh
+http://localhost:3000/api/2ff28da4-0440-48b8-aad1-255159fed78a/billboards
+```
+
+We now get the output we want. A status of 200 OK with our response
+
+```json
+[
+    {
+        "id": "5297187f-d293-45dc-9c72-e60fe2e29ca9",
+        "storeId": "2ff28da4-0440-48b8-aad1-255159fed78a",
+        "label": "fruit-billboard",
+        "imageUrl": "https://res.cloudinary.com/dkepcyjuy/image/upload/v1695186366/dt6pwixkibdvr0vk6nsw.jpg",
+        "createdAt": "2023-09-20T05:06:30.229Z",
+        "updatedAt": "2023-09-27T21:27:20.865Z"
+    },
+    {
+        "id": "f2bb3c25-1e24-4909-868d-b5606f64435b",
+        "storeId": "2ff28da4-0440-48b8-aad1-255159fed78a",
+        "label": "fruit-board-2",
+        "imageUrl": "https://res.cloudinary.com/dkepcyjuy/image/upload/v1695850027/zh5yha1dxw1lytpemzq6.jpg",
+        "createdAt": "2023-09-27T21:27:11.830Z",
+        "updatedAt": "2023-09-27T21:27:11.830Z"
+    }
+]
+```
+
+Does that mean every single route is available to the public?
+
+Remember when we built our routes, in our `PATCH` or `DELETE` routes we manually use Clerk to authenticate:
+
+`app\api\stores\[storeId]\route.ts`
+```ts
+export async function PATCH (
+  req: Request,
+  { params }: { params: { storeId: string }}
+){
+  try {
+    // Authenticate userId with Clerk to check if user is logged-in
+    const { userId } = auth();
+    
+    // If userId does not exist send back 401 response
+    if (!userId) {
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
+```
+
+And in some places, we not only handled authentication but also authorization
+
+`app\api\[storeId]\billboards\route.ts`
+```ts
+export async function POST(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  try {
+    // Use Clerk to authenticate POST route
+    const { userId } = auth();
+
+    // Send back 401, unauthenticated if user is not logged-in
+    if (!userId) {
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
+
+    // ... more checks here
+
+    // Check database if store exists for current user
+    const storeByUserId = await prismadb.store.findFirst({
+      where: {
+        id: params.storeId,
+        userId
+      }
+    });
+
+    // User is logged-in but does not have permission to modify the store
+    if (!storeByUserId) {
+      // Respond with 403 Forbidden, current user is unauthorized to modify
+      return new NextResponse("Unauthorized", { status: 403 });
+    }
+```
+
+The only routes that are public are the `GET` routes, which is what we need for this project.
+
+Another Postman test: go ahead create a `GET` request for a specific billboard. So copy the id of a billboard and append it to the request.
+
+```sh
+http://localhost:3000/api/2ff28da4-0440-48b8-aad1-255159fed78a/billboards/5297187f-d293-45dc-9c72-e60fe2e29ca9
+```
+
+We should now see the response of 200 OK and the data inside showing that it also works as well.
+
+## Admin Dashboard Recap
+
+With the final test on our Billboard API calls, we have completed the first *entity* (billboards) for our dashboard. 
+
+### Quality Assurance checks for *Entity*
+
+*quality assurance*: the maintenance of a desired level of quality in a service or product, especially by means of attention to every stage of the process of delivery or production.
+
+Ensure that all things within Billboard are in working order, before we move on to make the next entity (categories).
+
+We are going to re-use a lot of the logic. So a checkbox of features for assurance checks:
+
+- DataTable
+- CellAction
+  - Update, Delete, Copy events
+- Form
+- ImgUpload
+
+# Category Entity
+
+The next thing we want to add is the *Category*.
+
+Let's add the model to our database.
+
