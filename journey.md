@@ -9428,5 +9428,76 @@ model Category {
 }
 ```
 
-Let's continue development of Category.
+Let's continue development of Category. It should also have:
 
+- billboardId
+- billboard relation
+
+```prisma
+model Category {
+  id          String    @id @default(uuid())
+  storeId     String    // relation scalar field (used in the `@relation` attribute)
+  store       Store     @relation("StoreToCategory", fields: [storeId], references: [id])
+  billboardId String
+  billboard   Billboard @relation(fields: [billboardId], references: [id])
+
+  // Manually add index on relation scalar field
+  @@index([storeId])
+}
+```
+
+The error:
+
+```
+Error validating field `billboard` in model `Category`: The relation field `billboard` on model `Category` is missing an opposite relation field on the model `Billboard`. Either run `prisma format` or add it manually.
+```
+
+The fix: add an array of `Category` named `categories` inside `Billboard` model
+
+```prisma
+model Billboard {
+  id        String    @id @default(uuid())
+  storeId   String    // relation scalar field (used in the `@relation` attribute)
+  store     Store     @relation("StoreToBillboard", fields: [storeId], references: [id])
+  label     String
+  imageUrl  String
+  categories  Category[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Manually add index on relation scalar field
+  @@index([storeId])
+}
+```
+
+Then using the [Prisma VS Code extension](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma) the warning is augmented with a Quick Fix that adds the required index for you. According to the [prisma docs](https://www.prisma.io/docs/concepts/components/prisma-schema/relations/relation-mode#indexes).
+
+After the quick-fix, add the following to Category model:
+- String `name`
+- `createdAt`
+- `updatedAt` which uses decorator `@updatedAt`
+
+```prisma
+model Category {
+  id          String    @id @default(uuid())
+  storeId     String    // relation scalar field (used in the `@relation` attribute)
+  store       Store     @relation("StoreToCategory", fields: [storeId], references: [id])
+  billboardId String
+  billboard   Billboard @relation(fields: [billboardId], references: [id])
+  name        String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Manually add index on relation scalar field
+  @@index([storeId])
+  @@index([billboardId])
+}
+```
+
+### TODO Regenerate `prisma` and push to DB
+
+```sh
+npx prisma generate
+
+npx prisma db push
+```
