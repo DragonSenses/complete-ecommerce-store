@@ -9494,10 +9494,66 @@ model Category {
 }
 ```
 
-### TODO Regenerate `prisma` and push to DB
+### Regenerate `prisma` and push to DB
 
 ```sh
 npx prisma generate
 
 npx prisma db push
 ```
+
+Database is now in sync with your Prisma schema.
+
+### Add Categories to navigation
+
+Add "categories" within the array of `routes` in the `MainNav`.
+
+`ecommerce-admin\components\MainNav.tsx`
+```tsx
+  const routes = [
+    {
+      href: `/${params.storeId}`,
+      label: 'Overview',
+      active: pathname === `/${params.storeId}`,
+    },
+    {
+      href: `/${params.storeId}/billboards`,
+      label: 'Billboards',
+      active: pathname === `/${params.storeId}/billboards`,
+    },    
+    {
+      href: `/${params.storeId}/categories`,
+      label: 'Categories',
+      active: pathname === `/${params.storeId}/categories`,
+    },
+    {
+      href: `/${params.storeId}/settings`,
+      label: 'Settings',
+      active: pathname === `/${params.storeId}/settings`,
+    },
+  ];
+```
+
+## Category project structure
+
+Because they share a similar structure, we can copy the `billboards` folder and paste it into `(routes)` while renaming each instance to category.
+
+```sh
+- app
+  |- (dashboard)
+    |-  [storeId]
+      |-  (routes)
+        |- billboards
+        |- categories
+          |- [categoryId]
+            |- components
+              |- CategoryForm.tsx
+            |- page.tsx
+          |- components
+            |- cell-action.tsx
+            |- client.tsx
+            |- columns.tsx
+          |- page.tsx
+```
+
+Let's modify `categories/page.tsx` 
