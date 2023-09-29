@@ -18,6 +18,9 @@ const CategoriesPage = async ({
     where: {
       storeId: params.storeId
     },
+    include: {
+      billboard: true
+    },
     orderBy: {
       createdAt: 'desc'
     }
