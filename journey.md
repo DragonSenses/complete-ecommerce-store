@@ -9636,3 +9636,46 @@ When we create our category, we are going to select which billboard we want to u
 ```
 
 This is how we read related data from multiple tabes in the database, in this case a `Category` and that `Category`'s `Billboard`. We do this with the `include` API to include related records in the query response. More about this in the docs here: [Nested reads - prismadb](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#nested-reads).
+
+### `CategoryColumn`
+
+- Rename to CategoryColumn
+- `type` contains: `{ id, name, billboardLabel, createdAt}`
+- Add proper objects in `columns`, for billboardLabel access the cell with `row.original`
+
+`app\(dashboard)\[storeId]\(routes)\categories\components\columns.tsx`
+```tsx
+"use client"
+
+import { ColumnDef } from "@tanstack/react-table"
+
+import { CellAction } from "./cell-action"
+
+// This type is used to define the shape of our data.
+export type CategoryColumn = {
+  id: string
+  name: string
+  billboardLabel: string
+  createdAt: string
+}
+
+export const columns: ColumnDef<CategoryColumn>[] = [
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "billboard",
+    header: "Billboard",
+    cell: ({ row }) => row.original.billboardLabel,
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Date",
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <CellAction data={row.original} />
+  },
+]
+```
