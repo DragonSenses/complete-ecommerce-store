@@ -29,8 +29,8 @@ import ImageUpload from '@/components/ui/ImageUpload';
 
 // Create zod object schema
 const formSchema = z.object({
-  label: z.string().min(1),
-  imageUrl: z.string().min(1),
+  name: z.string().min(1),
+  billboardId: z.string().min(1),
 });
 
 // extract the inferred type
@@ -66,8 +66,8 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   const form = useForm<CategoryFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
-      label: '',
-      imageUrl: ''
+      name: '',
+      billboardId: ''
     }
   });
 
