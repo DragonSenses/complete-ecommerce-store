@@ -9679,3 +9679,58 @@ export const columns: ColumnDef<CategoryColumn>[] = [
   },
 ]
 ```
+
+### `CategoryClient`
+
+Let's change our client component.
+
+- Rename all instances of Billboard to Category and billboards to categories
+- Change the `searchKey`
+
+
+#### Question: Why not create an `Entity` component that can handle both Billboards and Categories?
+
+Its possible to ensure modularity and avoid code reduplication. But the entities may seem similar but they have a few differences. 
+
+We are still in the development stage such that creating a smart, specialized component that handles all entities now may prove to be an *inflexible* approach. There may be subtle or drastic differences to our entities that may require a more specialized component. Plus the benefit of readability and understanding right now is great. 
+
+We can always refactor the code later.
+
+### `Category` routes
+
+In our dynamic route `[categoryId]`, let's edit our `page.tsx`.
+
+- Rename to Category
+
+```tsx
+// Global Imports
+import prismadb from '@/lib/prismadb';
+import React from 'react';
+
+// Local Imports
+import CategoryForm from './components/CategoryForm';
+
+const CategoryPage =  async ({
+  params
+}:{
+  params: { categoryId: string }
+}) => {
+
+  // Fetch an existing category
+  const category = await prismadb.category.findUnique({
+    where: {
+      id: params.categoryId
+    }
+  });
+
+  return (
+    <div className="flex-col">
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <CategoryForm initialData={category}/>
+      </div>
+    </div>
+  )
+}
+
+export default CategoryPage;
+```
