@@ -9556,4 +9556,83 @@ Because they share a similar structure, we can copy the `billboards` folder and 
           |- page.tsx
 ```
 
-Let's modify `categories/page.tsx` 
+## Categories Page
+
+Let's modify `categories/page.tsx`, after renaming we get
+
+```tsx
+// Global Imports
+import React from 'react';
+import prismadb from '@/lib/prismadb';
+import { format } from 'date-fns';
+
+// Local Imports
+import CategoryClient from './components/client';
+import { CategoryColumn } from './components/columns';
+
+const CategoriesPage = async ({
+  params
+}: {
+  params: { storeId: string }
+}) => {
+  
+  // Fetch all Categories specific to the active store
+  const categories = await prismadb.category.findMany({
+    where: {
+      storeId: params.storeId
+    },
+    orderBy: {
+      createdAt: 'desc'
+    }
+  });
+
+  // Format each Category into a CategoryColumn
+  const formattedCategories: CategoryColumn[] = categories.map((item) => ({
+    id: item.id,
+    name: item.name,
+    billboardLabel: item.billboard.label,
+    createdAt: format(item.createdAt, "MMMM do, yyyy"),
+  }))
+
+  return (
+    <div className='flex-col'>
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <CategoryClient data={formattedCategories}/>
+      </div>
+    </div>
+  );
+}
+
+export default CategoriesPage;
+```
+
+### Nested reads with Category
+
+[prismadb - relation queries - nested reads](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries).
+
+Notice for our `CategoryColumn`, we changed `label` to `name` but also search for `billboardLabel`. But we get an error:
+
+```sh
+Property 'billboard' does not exist on type '{ id: string; storeId: string; billboardId: string; name: string; createdAt: Date; updatedAt: Date; }'. Did you mean 'billboardId'?ts(2551)
+```
+
+The fix: we have to include the billboard in the `prismadb` fetch. We have to populate the relation that categories has with the billboard.
+
+When we create our category, we are going to select which billboard we want to use. So we need the object inside
+
+```tsx
+  // Fetch all Categories specific to the active store
+  const categories = await prismadb.category.findMany({
+    where: {
+      storeId: params.storeId
+    },
+    include: {
+      billboard: true
+    },
+    orderBy: {
+      createdAt: 'desc'
+    }
+  });
+```
+
+This is how we read related data from multiple tabes in the database, in this case a `Category` and that `Category`'s `Billboard`. We do this with the `include` API to include related records in the query response. More about this in the docs here: [Nested reads - prismadb](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#nested-reads).
