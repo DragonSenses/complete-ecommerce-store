@@ -10023,6 +10023,8 @@ Quite similar to the `app\api\[storeId]\billboards`, so we can copy it and paste
 
 Let's work on the `route.ts` inside `categories` folder.
 
+#### Categories `POST`
+
 The `POST` route, the body will need `name` and `billboardId`.
 
 `api\[storeId]\categories\route.ts`
@@ -10092,6 +10094,37 @@ export async function POST(
     return NextResponse.json(category);
   } catch (error){
     console.log('[CATEGORIES_POST]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}
+```
+
+#### Categories `GET`
+
+- GET route checks `storeId`, fetches all categories using `storeId`, send back response
+
+```ts
+export async function GET(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  try {
+    // Check if storeId exists
+    if (!params.storeId) {
+      return new NextResponse("Store ID is required", { status: 400 });
+    }
+
+    // Find all categories available in that store in the database
+    const categories = await prismadb.category.findMany({
+      where: {
+        storeId: params.storeId
+      }
+    });
+
+    // Send back response with all categories
+    return NextResponse.json(categories);
+  } catch (error){
+    console.log('[CATEGORIES_GET]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
