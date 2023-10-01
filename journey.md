@@ -9857,3 +9857,48 @@ This `FormField` will control the `billboardId` value from form values. We want 
   )}
 />
 ```
+
+Let's import it all the `Select` modules at once and refactor later.
+
+```tsx
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+```
+Now we want to open up a `FormControl`, a `SelectTrigger` and `SelectValue` each inside the next. The `SelectValue` has props of `defaultValue` and `placeholder`
+
+```tsx
+<FormField
+  control={form.control}
+  name="billboardId"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Billboard ID</FormLabel>
+      <Select 
+        disabled={loading} 
+        onValueChange={field.onChange} 
+        value={field.value}
+        defaultValue={field.value}
+      >
+        <FormControl>
+          <SelectTrigger>
+            <SelectValue
+            defaultValue={field.value}
+            placeholder="Select a billboard"
+            >
+              
+            </SelectValue>
+          </SelectTrigger>
+        </FormControl>
+      </Select>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+```
+
+Now outside of `</FormControl>` but still inside `</Select>` add the `SelectContent`.
