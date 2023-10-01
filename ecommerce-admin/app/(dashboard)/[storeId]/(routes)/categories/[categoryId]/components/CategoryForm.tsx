@@ -4,7 +4,7 @@
 import * as z from 'zod';
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Category } from '@prisma/client';
+import { Billboard, Category } from '@prisma/client';
 import { toast } from 'react-hot-toast';
 import { Trash } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -45,10 +45,12 @@ type CategoryFormValues = z.infer<typeof formSchema>;
 
 // Define type and shape of props
 interface CategoryFormProps {
-  initialData: Category | null
+  billboards: Billboard[];
+  initialData: Category | null;
 }
 
 const CategoryForm: React.FC<CategoryFormProps> = ({
+  billboards,
   initialData
 }) => {
   // Create router object to perform client-side navigation
@@ -93,7 +95,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
       // Re-fetch data requests & re-render server components
       // Re-initializes initialData
       router.refresh();
-      // Re-route the user to the Categorys page
+      // Re-route the user to the Categories page
       router.push(`/${params.storeId}/categories`)
       // Success notification with dynamic message
       toast.success(toastMessage);
@@ -117,7 +119,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
       toast.success("Category deleted.");
     } catch (error) {
       // Safety mechanism will prompt a warning to delete any related records to the Category
-      toast.error("Make sure you removed all categories using this category first.");
+      toast.error("Make sure you removed all products using this category first.");
     } finally {
       setLoading(false);
       // Close the Modal
@@ -188,6 +190,16 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
                         </SelectValue>
                       </SelectTrigger>
                     </FormControl>
+                    <SelectContent>
+                      {billboards.map((billboard) => (
+                        <SelectItem
+                          key={billboard.id}
+                          value={billboard.id}
+                        >
+                          {billboard.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
                   </Select>
                   <FormMessage />
                 </FormItem>
