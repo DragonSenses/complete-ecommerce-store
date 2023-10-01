@@ -19,7 +19,7 @@ const CategoryPage =  async ({
   });
 
   // Fetch all billboards we can select from
-  const billboards = await.prismadb.billboard.findMany({
+  const billboards = await prismadb.billboard.findMany({
     where: {
       storeId: params.storeId
     }
