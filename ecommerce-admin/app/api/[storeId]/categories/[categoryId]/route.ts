@@ -4,24 +4,24 @@ import { NextResponse } from "next/server";
 
 export async function GET (
   req: Request,
-  { params }: { params: { billboardId: string }}
+  { params }: { params: { categoryId: string }}
 ){
   try {
     // Check parameters
-    if (!params.billboardId){
-      return new NextResponse("Billboard ID is required", { status: 400 });
+    if (!params.categoryId){
+      return new NextResponse("Category ID is required", { status: 400 });
     }
 
-    // Find the specific Billboard in database
-    const billboard = await prismadb.billboard.findUnique({
+    // Find the specific Category in the database
+    const category = await prismadb.category.findUnique({
       where: {
-        id: params.billboardId,
+        id: params.categoryId,
       }
     });
 
-    return NextResponse.json(billboard);
+    return NextResponse.json(category);
   } catch (error) {
-    console.log('[BILLBOARD_GET]', error);
+    console.log('[CATEGORY_GET]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
