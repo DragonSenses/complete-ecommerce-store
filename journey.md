@@ -10129,3 +10129,46 @@ export async function GET(
   }
 }
 ```
+
+### Specific Category routes
+
+Using the Dynamic Segment `[categoryId]` we can create routes from dynamic data. The Dynamic Segments are filled in at request time. [Dynamic Routes](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes).
+
+#### Category `GET`
+
+- Using specific `categoryId` from the parameters, fetch the Category and make the proper response
+
+```ts
+export async function GET (
+  req: Request,
+  { params }: { params: { categoryId: string }}
+){
+  try {
+    // Check parameters
+    if (!params.categoryId){
+      return new NextResponse("Category ID is required", { status: 400 });
+    }
+
+    // Find the specific Category in the database
+    const category = await prismadb.category.findUnique({
+      where: {
+        id: params.categoryId,
+      }
+    });
+
+    return NextResponse.json(category);
+  } catch (error) {
+    console.log('[CATEGORY_GET]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+};
+```
+
+TODO:
+#### Category `PATCH`
+
+- PATCH route shows how we update our category
+
+#### Category `DELETE`
+
+- 
