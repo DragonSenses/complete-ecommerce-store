@@ -9696,7 +9696,7 @@ We are still in the development stage such that creating a smart, specialized co
 
 We can always refactor the code later.
 
-### `Category` routes
+### `CategoryPage`
 
 In our dynamic route `[categoryId]`, let's edit our `page.tsx`.
 
@@ -9734,3 +9734,89 @@ const CategoryPage =  async ({
 
 export default CategoryPage;
 ```
+
+### `CategoryForm`
+
+-`app\(dashboard)\[storeId]\(routes)\categories\[categoryId]\components\CategoryForm.tsx`
+- Rename to Category
+- Update interface `initialData` and import `Category`
+
+Next we modify `formSchema`.
+
+```tsx
+// Create zod object schema
+const formSchema = z.object({
+  name: z.string().min(1),
+  billboardId: z.string().min(1),
+});
+```
+
+Then change `defaultValues` to reflect this:
+
+```tsx
+  // 1. Define form with useForm hook & zodResolver for validation
+  const form = useForm<CategoryFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: initialData || {
+      name: '',
+      billboardId: ''
+    }
+  });
+```
+
+- Remove the `FormField` that contains image upload / `imgUrl`
+- Also remove the import for `ImageUpload` 
+
+```tsx
+import ImageUpload from '@/components/ui/ImageUpload';
+// ...
+          <FormField
+            control={form.control}
+            name="imageUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Background image</FormLabel>
+                <FormControl>
+                  <ImageUpload 
+                    value={field.value ? [field.value] : []}
+                    disabled={loading}
+                    onChange={(url) => field.onChange(url)}
+                    onRemove={() => field.onChange("")}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+```
+
+- Inside the form output, where we have our first `FormField`
+  - rename `"label"` to `"name"`
+  - rename the contents of `FormLabel` to `Name`
+
+```tsx
+          <div className="grid grid-cols-3 gap-8">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Category name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+```
+
+With the `CategoryForm` cleaned up and ready, we can work on development.
+
+1. Select field
+
+We are going to add a select field that provides us the options of existing `billboards` where we can attach the `Category`.
+
+TODO 
+https://ui.shadcn.com/docs/components/select
