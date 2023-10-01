@@ -20,16 +20,16 @@ export async function POST(
     const body = await req.json();
 
     // Destructure fields out of body
-    const { label, imageUrl } = body;
+    const { name, billboardId } = body;
 
-    // Check label field
-    if (!label){
-      return new NextResponse("Label is required", { status: 400 });
+    // Check name field
+    if (!name){
+      return new NextResponse("Name is required", { status: 400 });
     }
 
-    // Check imageUrl field
-    if (!imageUrl){
-      return new NextResponse("Image URL is required", { status: 400 });
+    // Check billboardId field
+    if (!billboardId){
+      return new NextResponse("Billboard ID is required", { status: 400 });
     }
 
     // Check if storeId exists
@@ -51,19 +51,19 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
-    // Create billboard for user's specific store in the database
-    const billboard = await prismadb.billboard.create({
+    // Create category for user's specific store in the database
+    const category = await prismadb.category.create({
       data: {
-        label,
-        imageUrl,
+        name,
+        billboardId,
         storeId: params.storeId
       }
     });
 
-    // Send back response with the billboard
-    return NextResponse.json(billboard);
+    // Send back response with the category
+    return NextResponse.json(category);
   } catch (error){
-    console.log('[BILLBOARDS_POST]', error);
+    console.log('[CATEGORIES_POST]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
