@@ -9814,9 +9814,46 @@ import ImageUpload from '@/components/ui/ImageUpload';
 
 With the `CategoryForm` cleaned up and ready, we can work on development.
 
-1. Select field
+#### `Select` component
 
 We are going to add a select field that provides us the options of existing `billboards` where we can attach the `Category`.
 
-TODO 
-https://ui.shadcn.com/docs/components/select
+
+[shadcn/ui - Select](https://ui.shadcn.com/docs/components/select)
+
+- Displays a list of options for the user to pick from—triggered by a button.
+
+
+1. Install
+
+```sh
+npx shadcn-ui@latest add select
+```
+
+2. Render `Select` component in `CategoryForm`
+
+- Copy the FormField below the `Name`
+- Rename name to billboard id
+
+This `FormField` will control the `billboardId` value from form values. We want to replace the `FormControl` that contains the `Input` and replace this with `Select`.
+
+```tsx
+<FormField
+  control={form.control}
+  name="billboardId"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Billboard ID</FormLabel>
+      <Select 
+        disabled={loading} 
+        onValueChange={field.onChange} 
+        value={field.value}
+        defaultValue={field.value}
+      >
+        
+      </Select>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+```
