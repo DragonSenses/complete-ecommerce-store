@@ -25,6 +25,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Select } from '@/components/ui/select';
 
 // Create zod object schema
 const formSchema = z.object({
@@ -154,6 +155,24 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
                   <FormControl>
                     <Input disabled={loading} placeholder="Category name" {...field} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="billboardId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Billboard ID</FormLabel>
+                  <Select 
+                    disabled={loading} 
+                    onValueChange={field.onChange} 
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
