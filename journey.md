@@ -9901,4 +9901,72 @@ Now we want to open up a `FormControl`, a `SelectTrigger` and `SelectValue` each
 />
 ```
 
+##### Iterating over billboards that can be selected
+
 Now outside of `</FormControl>` but still inside `</Select>` add the `SelectContent`.
+
+```tsx
+  <FormControl>
+    <SelectTrigger>
+      <SelectValue
+      defaultValue={field.value}
+      placeholder="Select a billboard"
+      >
+        
+      </SelectValue>
+    </SelectTrigger>
+  </FormControl>
+  <SelectContent>
+    <SelectItem value="light">Light</SelectItem>
+    <SelectItem value="dark">Dark</SelectItem>
+    <SelectItem value="system">System</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+- Inside of `SelectContent` we want to iterate over our billboards that we can select. This will be the `SelectItem`
+
+But how do we do that? **We need to pass in the billboards data.** Before that we need to fetch that data.
+
+Navigate back to the page for `[categoryId]`, and in here we need to fetch our billboards. 
+
+- Extract `storeId` from the parameters
+- Use `storeId` to fetch the billboards
+- Pass the billboards data as a prop to `CategoryForm`
+
+`app\(dashboard)\[storeId]\(routes)\categories\[categoryId]\page.tsx`
+```tsx
+const CategoryPage =  async ({
+  params
+}:{
+  params: { categoryId: string, storeId: string }
+}) => {
+
+  // Fetch an existing category
+  const category = await prismadb.category.findUnique({
+    where: {
+      id: params.categoryId
+    }
+  });
+
+  // Fetch all billboards we can select from
+  const billboards = await.prismadb.billboard.findMany({
+    where: {
+      storeId: params.storeId
+    }
+  });
+
+  return (
+    <div className="flex-col">
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <CategoryForm 
+          billboards={billboards}
+          initialData={category}
+        />
+      </div>
+    </div>
+  )
+}
+```
+
+So then we need to change the props in `CategoryForm` to match.
