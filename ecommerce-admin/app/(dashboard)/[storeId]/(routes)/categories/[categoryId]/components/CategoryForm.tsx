@@ -25,7 +25,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 
 // Create zod object schema
 const formSchema = z.object({
@@ -171,7 +178,16 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
                     value={field.value}
                     defaultValue={field.value}
                   >
-                    
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                        defaultValue={field.value}
+                        placeholder="Select a billboard"
+                        >
+                          
+                        </SelectValue>
+                      </SelectTrigger>
+                    </FormControl>
                   </Select>
                   <FormMessage />
                 </FormItem>
