@@ -78,17 +78,17 @@ export async function GET(
       return new NextResponse("Store ID is required", { status: 400 });
     }
 
-    // Find all billboards available in that store in the database
-    const billboards = await prismadb.billboard.findMany({
+    // Find all categories available in that store in the database
+    const categories = await prismadb.category.findMany({
       where: {
         storeId: params.storeId
       }
     });
 
-    // Send back response with all billboards
-    return NextResponse.json(billboards);
+    // Send back response with all categories
+    return NextResponse.json(categories);
   } catch (error){
-    console.log('[BILLBOARDS_GET]', error);
+    console.log('[CATEGORIES_GET]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
