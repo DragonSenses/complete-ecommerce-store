@@ -9906,6 +9906,7 @@ Now we want to open up a `FormControl`, a `SelectTrigger` and `SelectValue` each
 Now outside of `</FormControl>` but still inside `</Select>` add the `SelectContent`.
 
 ```tsx
+// ...
   <FormControl>
     <SelectTrigger>
       <SelectValue
@@ -9928,7 +9929,7 @@ Now outside of `</FormControl>` but still inside `</Select>` add the `SelectCont
 
 But how do we do that? **We need to pass in the billboards data.** Before that we need to fetch that data.
 
-Navigate back to the page for `[categoryId]`, and in here we need to fetch our billboards. 
+1. Navigate back to the page for `[categoryId]`, and in here we need to fetch our billboards. 
 
 - Extract `storeId` from the parameters
 - Use `storeId` to fetch the billboards
@@ -9936,6 +9937,13 @@ Navigate back to the page for `[categoryId]`, and in here we need to fetch our b
 
 `app\(dashboard)\[storeId]\(routes)\categories\[categoryId]\page.tsx`
 ```tsx
+// Global Imports
+import prismadb from '@/lib/prismadb';
+import React from 'react';
+
+// Local Imports
+import CategoryForm from './components/CategoryForm';
+
 const CategoryPage =  async ({
   params
 }:{
@@ -9950,7 +9958,7 @@ const CategoryPage =  async ({
   });
 
   // Fetch all billboards we can select from
-  const billboards = await.prismadb.billboard.findMany({
+  const billboards = await prismadb.billboard.findMany({
     where: {
       storeId: params.storeId
     }
@@ -9967,6 +9975,44 @@ const CategoryPage =  async ({
     </div>
   )
 }
+
+export default CategoryPage;
 ```
 
-So then we need to change the props in `CategoryForm` to match.
+2. Modify `CategoryForm` prop interface to match the data
+
+So then we need to change the props in `CategoryForm` to match the shape of the data.
+
+```tsx
+// Define type and shape of props
+interface CategoryFormProps {
+  billboards: Billboard[];
+  initialData: Category | null;
+}
+```
+
+3. Extract the props alongside `initialData`
+
+```tsx
+const CategoryForm: React.FC<CategoryFormProps> = ({
+  billboards,
+  initialData
+}) => {
+```
+
+Now we can map out each billboard as a `SelectItem` within `SelectContent`.
+
+```tsx
+// ...
+  <SelectContent>
+    {billboards.map((billboard) => (
+      <SelectItem
+        key={billboard.id}
+        value={billboard.id}
+      >
+        {billboard.label}
+      </SelectItem>
+    ))}
+  </SelectContent>
+</Select>
+```
