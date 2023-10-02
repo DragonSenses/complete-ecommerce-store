@@ -9534,7 +9534,7 @@ Add "categories" within the array of `routes` in the `MainNav`.
   ];
 ```
 
-## Category project structure
+## Category - project structure
 
 Because they share a similar structure, we can copy the `billboards` folder and paste it into `(routes)` while renaming each instance to category.
 
@@ -10423,4 +10423,71 @@ model Size {
   // Manually add index on relation scalar field
   @@index([storeId])
 }
+```
+
+### Push Size model to database
+
+```sh
+npx prisma generate
+
+npx prisma db push
+```
+
+After generating prisma client and syncing database with prisma schema we can start creating the same project structure we did for previous entities.
+
+## Size - Project structure
+
+Because entities share a similar structure, we can copy the `app\(dashboard)\[storeId]\(routes)\billboards` folder and paste it into `(routes)` while renaming them.
+
+```sh
+- app
+  |- (dashboard)
+    |-  [storeId]
+      |-  (routes)
+        |- billboards
+        |- categories
+        |- sizes
+          |- [sizeId]
+            |- components
+              |- SizeForm.tsx
+            |- page.tsx
+          |- components
+            |- cell-action.tsx
+            |- client.tsx
+            |- columns.tsx
+          |- page.tsx
+```
+
+### Size - add route to Navigation
+
+In `MainNav` add sizes route after categories
+
+```tsx
+  const routes = [
+    {
+      href: `/${params.storeId}`,
+      label: 'Overview',
+      active: pathname === `/${params.storeId}`,
+    },
+    {
+      href: `/${params.storeId}/billboards`,
+      label: 'Billboards',
+      active: pathname === `/${params.storeId}/billboards`,
+    },    
+    {
+      href: `/${params.storeId}/categories`,
+      label: 'Categories',
+      active: pathname === `/${params.storeId}/categories`,
+    },
+    {
+      href: `/${params.storeId}/sizes`,
+      label: 'Sizes',
+      active: pathname === `/${params.storeId}/sizes`,
+    },
+    {
+      href: `/${params.storeId}/settings`,
+      label: 'Settings',
+      active: pathname === `/${params.storeId}/settings`,
+    },
+  ];
 ```
