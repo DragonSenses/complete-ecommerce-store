@@ -97,7 +97,7 @@ export async function PATCH (
 
 export async function DELETE (
   req: Request,
-  { params }: { params: { storeId: string, billboardId: string }}
+  { params }: { params: { storeId: string, categoryId: string }}
 ){
   try {
     // Check parameters
@@ -105,8 +105,8 @@ export async function DELETE (
       return new NextResponse("Store ID is required", { status: 400 });
     }
 
-    if (!params.billboardId){
-      return new NextResponse("Billboard ID is required", { status: 400 });
+    if (!params.categoryId){
+      return new NextResponse("Category ID is required", { status: 400 });
     }
 
     // Authenticate userId with Clerk to check if user is logged-in
@@ -131,16 +131,16 @@ export async function DELETE (
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
-    // Find and Delete Billboard
-    const billboard = await prismadb.billboard.deleteMany({
+    // Find and delete a specifc category
+    const category = await prismadb.category.deleteMany({
       where: {
-        id: params.billboardId
+        id: params.categoryId
       }
     });
 
-    return NextResponse.json(billboard);
+    return NextResponse.json(category);
   } catch (error) {
-    console.log('[BILLBOARD_DELETE]', error);
+    console.log('[CATEGORY_DELETE]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
