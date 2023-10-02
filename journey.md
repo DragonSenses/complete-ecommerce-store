@@ -10295,3 +10295,74 @@ export async function DELETE (
   }
 };
 ```
+
+### Testing Category Routes
+
+Go ahead and click on the Categories page on the `MainNav`.
+
+Open up the **Network** tab in developer tools, then create a category by linking it up with a billboard.
+
+We should see a Response that contains the data for the category : `{ id, storeId, billboardId, name, etc...}`.
+
+Let's test the route from the API List of calls. Let's try the GET route, so click the copy icon and paste it into the browser.
+
+- We need to fix the `cell-action` for update and delete for the category data table.
+
+### Update Category's Cell Actions
+
+Navigate to `app\(dashboard)\[storeId]\(routes)\categories\components\cell-action.tsx`
+
+- Update the props with `CategoryColumn`
+
+```tsx
+import { CategoryColumn } from './columns';
+
+interface CellActionProps {
+  data: CategoryColumn
+}
+```
+
+- Update the copy handler message
+
+```tsx
+  // Copy Event Handler
+  const onCopy = (id: string) => {
+    navigator.clipboard.writeText(id);
+    toast.success("Category ID copied to clipboard.");
+  }
+```
+
+- Update the route and messages in delete handler
+
+```tsx
+  // Define a delete handler
+  const onDelete = async () => {
+    try {
+      setLoading(true);
+      // Call an API with dynamic route to delete the specific category
+      await axios.delete(`/api/${params.storeId}/categories/${data.id}`);
+      // Refresh current route to make new request to server
+      // Re-fetch data requests & re-render server components
+      router.refresh();
+      toast.success("Category deleted.");
+    } catch (error) {
+      // Safety mechanism will prompt a warning to delete any related records
+      toast.error("Make sure you removed all products using this category first.");
+    } finally {
+      setLoading(false);
+      // Close the Modal
+      setOpen(false);
+    }
+  };
+```
+
+- In the Dropdown's Edit button, lets change the route to categories
+
+```tsx
+<DropdownMenuItem
+  onClick={() => router.push(`/${params.storeId}/categories/${data.id}`)}
+>
+  <Edit className="mr-2 h-4 w-4" />
+  Update
+</DropdownMenuItem>
+```
