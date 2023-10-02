@@ -10366,3 +10366,61 @@ interface CellActionProps {
   Update
 </DropdownMenuItem>
 ```
+
+#### Testing Category - cell actions
+
+- Create a Category
+- Filter categories by name in Data Table
+- Update a Category with a cell action
+- Delete a Category with a cell action
+- Delete a Cateogry through the form
+  - Click the update category cell action to arrive at the form
+  - Click on the Trash icon to delete the selected category
+
+With this check list, we can move on to create the next entity.
+
+# Size entity
+
+## Size model
+
+In `prisma.schema`, create the `Size` model which contains id, storeId, store relation
+
+```prisma
+model Size {
+  id          String    @id @default(uuid())
+  storeId     String    // relation scalar field (used in the `@relation` attribute)
+  store       Store     @relation("StoreToSize", fields: [storeId], references: [id])
+}
+```
+
+Add `Size` relation  in `Store` model
+
+```prisma
+model Store {
+  id         String       @id @default(uuid())
+  name       String
+  userId     String
+  billboards Billboard[]  @relation("StoreToBillboard")
+  categories Category[]   @relation("StoreToCategory")
+  sizes      Size[]       @relation("StoreToSize")
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+```
+
+- Fix to the warning for the `storeId` relation inside `Size` model.
+- Add `name`, `createdAt` and `updatedAt` fields as well
+
+```prisma
+model Size {
+  id          String    @id @default(uuid())
+  storeId     String    // relation scalar field (used in the `@relation` attribute)
+  store       Store     @relation("StoreToSize", fields: [storeId], references: [id])
+  name        String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Manually add index on relation scalar field
+  @@index([storeId])
+}
+```
