@@ -57,6 +57,7 @@ model Size {
   storeId     String    // relation scalar field (used in the `@relation` attribute)
   store       Store     @relation("StoreToSize", fields: [storeId], references: [id])
   name        String
+  value       String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   
