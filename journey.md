@@ -10491,3 +10491,65 @@ In `MainNav` add sizes route after categories
     },
   ];
 ```
+
+### `SizesPage`
+
+- Like previous entity pages, we have our imports and take `storeId` out of `params`
+
+```tsx
+// Global Imports
+import React from 'react';
+import prismadb from '@/lib/prismadb';
+import { format } from 'date-fns';
+
+// Local Imports
+import BillboardClient from './components/client';
+import { SizeColumn } from './components/columns';
+
+const SizesPage = async ({
+  params
+}: {
+  params: { storeId: string }
+}) => {
+```
+
+- Fetch all size entities specific to the active store
+
+```tsx
+  // Fetch all sizes specific to the active store
+  const sizes = await prismadb.size.findMany({
+    where: {
+      storeId: params.storeId
+    },
+    orderBy: {
+      createdAt: 'desc'
+    }
+  });
+```
+
+- Format each entity into a column
+
+```tsx
+  // Format each Size into a SizeColumn
+  const formattedSizes: SizeColumn[] = sizes.map((item) => ({
+    id: item.id,
+    name: item.name,
+    value: item.value,
+    createdAt: format(item.createdAt, "MMMM do, yyyy"),
+  }))
+```
+
+Finally, pass in formatted data as a prop to the client in the return
+
+```tsx
+  return (
+    <div className='flex-col'>
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <SizeClient data={formattedSizes}/>
+      </div>
+    </div>
+  );
+}
+
+export default SizesPage;
+```
