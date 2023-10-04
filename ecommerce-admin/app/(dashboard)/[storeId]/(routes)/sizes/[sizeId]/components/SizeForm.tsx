@@ -4,7 +4,7 @@
 import * as z from 'zod';
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Billboard } from '@prisma/client';
+import { Size } from '@prisma/client';
 import { toast } from 'react-hot-toast';
 import { Trash } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -29,19 +29,19 @@ import ImageUpload from '@/components/ui/ImageUpload';
 
 // Create zod object schema
 const formSchema = z.object({
-  label: z.string().min(1),
-  imageUrl: z.string().min(1),
+  name: z.string().min(1),
+  value: z.string().min(1),
 });
 
 // extract the inferred type
-type BillboardFormValues = z.infer<typeof formSchema>;
+type SizeFormValues = z.infer<typeof formSchema>;
 
 // Define type and shape of props
-interface BillboardFormProps {
-  initialData: Billboard | null
+interface SizeFormProps {
+  initialData: Size | null
 }
 
-const BillboardForm: React.FC<BillboardFormProps> = ({
+const SizeForm: React.FC<SizeFormProps> = ({
   initialData
 }) => {
   // Create router object to perform client-side navigation
@@ -57,22 +57,22 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
   const [loading, setLoading] = useState(false);
 
   // Create dynamic data to pass into output
-  const title = initialData ? "Edit billboard" : "Create billboard";
-  const description = initialData ? "Edit a billboard" : "Add a new billboard";
-  const toastMessage = initialData ? "Billboard updated." : "Billboard created.";
+  const title = initialData ? "Edit size" : "Create size";
+  const description = initialData ? "Edit a size" : "Add a new size";
+  const toastMessage = initialData ? "Size updated." : "Size created.";
   const action = initialData ? "Save changes" : "Create";
 
   // 1. Define form with useForm hook & zodResolver for validation
-  const form = useForm<BillboardFormValues>({
+  const form = useForm<SizeFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
-      label: '',
-      imageUrl: ''
+      name: '',
+      value: ''
     }
   });
 
   // 2. Define a submit handler
-  const onSubmit = async (data: BillboardFormValues) => {
+  const onSubmit = async (data: SizeFormValues) => {
     try {
       setLoading(true);
       if (initialData) {
@@ -187,4 +187,4 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
   )
 }
 
-export default BillboardForm
+export default SizeForm
