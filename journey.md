@@ -10597,3 +10597,77 @@ export const columns: ColumnDef<SizeColumn>[] = [
 ]
 ```
 
+## Size - Client
+
+- Similar imports, interface and data parameter as previous entities
+
+```tsx
+"use client";
+
+// Global Imports
+import { Plus } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
+
+// Local Imports
+import { SizeColumn, columns } from "./columns";
+import { ApiList } from "@/components/ui/ApiList";
+import { Button } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
+import { Separator } from "@/components/ui/separator";
+import { DataTable } from "@/components/ui/data-table";
+
+interface SizesClientProps {
+  data: SizeColumn[]
+}
+
+// Client component that loads all our Sizes
+const SizesClient: React.FC<SizesClientProps> = ({
+  data
+}) => {
+```
+
+- invoke `useRouter()` and `useParams()`
+
+```tsx
+  // Create router object to perform client-side navigation
+  const router = useRouter();
+
+  // Hook returns an object containing current route's filled in dynamic parameters
+  const params = useParams();
+```
+
+- Output is similar to previous entities, with heading, button, DataTable, ApiList
+
+```tsx
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        <Heading
+          title={`Sizes (${data.length})`}
+          description="Manage sizes for your store"
+        />
+        <Button
+          onClick={() => router.push(`/${params.storeId}/sizes/new`)}
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Add New
+        </Button>
+      </div>
+      <Separator />
+      <DataTable columns={columns} data={data} searchKey={"name"}/>
+      <Heading title="API" description="API calls for Sizes" />
+      <Separator />
+      <ApiList 
+        entityName="sizes"
+        entityIdName="sizeId"
+      />
+    </>
+  )
+}
+
+export default SizesClient;
+```
+
+- Notice the `searchKey` inside `DataTable` is set to `name`
+  - We can also set the `searchKey` to `value` depending how we want to filter our DataTable
+
