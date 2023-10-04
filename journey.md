@@ -10409,7 +10409,7 @@ model Store {
 ```
 
 - Fix to the warning for the `storeId` relation inside `Size` model.
-- Add `name`, `createdAt` and `updatedAt` fields as well
+- Add `name`, `value`, `createdAt` and `updatedAt` fields as well
 
 ```prisma
 model Size {
@@ -10417,6 +10417,7 @@ model Size {
   storeId     String    // relation scalar field (used in the `@relation` attribute)
   store       Store     @relation("StoreToSize", fields: [storeId], references: [id])
   name        String
+  value       String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   
@@ -10435,7 +10436,7 @@ npx prisma db push
 
 After generating prisma client and syncing database with prisma schema we can start creating the same project structure we did for previous entities.
 
-## Size - Project structure
+### Size - Project structure
 
 Because entities share a similar structure, we can copy the `app\(dashboard)\[storeId]\(routes)\billboards` folder and paste it into `(routes)` while renaming them.
 
@@ -10492,10 +10493,12 @@ In `MainNav` add sizes route after categories
   ];
 ```
 
-### `SizesPage`
+## Sizes - Page
 
+- The page for all sizes
 - Like previous entity pages, we have our imports and take `storeId` out of `params`
 
+`app\(dashboard)\[storeId]\(routes)\sizes\page.tsx`
 ```tsx
 // Global Imports
 import React from 'react';
@@ -10553,3 +10556,44 @@ Finally, pass in formatted data as a prop to the client in the return
 
 export default SizesPage;
 ```
+
+## Size - Column
+
+- The Size column will have `{ id, name, value, createdAt}`
+
+`app\(dashboard)\[storeId]\(routes)\sizes\components\columns.tsx`
+```tsx
+"use client"
+
+import { ColumnDef } from "@tanstack/react-table"
+
+import { CellAction } from "./cell-action"
+
+// This type is used to define the shape of our data.
+export type SizeColumn = {
+  id: string
+  name: string
+  value: string
+  createdAt: string
+}
+
+export const columns: ColumnDef<SizeColumn>[] = [
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "value",
+    header: "Value",
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Date",
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <CellAction data={row.original} />
+  },
+]
+```
+
