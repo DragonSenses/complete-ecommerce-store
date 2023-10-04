@@ -10708,3 +10708,65 @@ const SizePage =  async ({
 
 export default SizePage;
 ```
+
+## Size - Form
+
+- Make the Size Form schema
+
+```tsx
+// Create zod object schema
+const formSchema = z.object({
+  name: z.string().min(1),
+  value: z.string().min(1),
+});
+
+// extract the inferred type
+type SizeFormValues = z.infer<typeof formSchema>;
+```
+
+- Let's set the props
+
+```tsx
+// Define type and shape of props
+interface SizeFormProps {
+  initialData: Size | null
+}
+```
+
+Checklist
+  - `initialData` in parameter
+  - `params`, `router`, state variables `open` and `loading`
+  - dynamic messages for `title`, `description`, `toastMessage` and `action`
+  - Define a form with `useForm` hook
+
+```tsx
+const SizeForm: React.FC<SizeFormProps> = ({
+  initialData
+}) => {
+  // Create router object to perform client-side navigation
+  const router = useRouter();
+
+  // Hook returns an object containing current route's filled in dynamic parameters
+  const params = useParams();
+
+  // Create open state to control the Alert modal
+  const [open, setOpen] = useState(false);
+
+  // Create loading state to disable interactive elements
+  const [loading, setLoading] = useState(false);
+
+  // Create dynamic data to pass into output
+  const title = initialData ? "Edit size" : "Create size";
+  const description = initialData ? "Edit a size" : "Add a new size";
+  const toastMessage = initialData ? "Size updated." : "Size created.";
+  const action = initialData ? "Save changes" : "Create";
+
+  // 1. Define form with useForm hook & zodResolver for validation
+  const form = useForm<SizeFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: initialData || {
+      name: '',
+      value: ''
+    }
+  });
+```
