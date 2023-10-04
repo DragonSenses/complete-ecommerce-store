@@ -10671,3 +10671,40 @@ export default SizesClient;
 - Notice the `searchKey` inside `DataTable` is set to `name`
   - We can also set the `searchKey` to `value` depending how we want to filter our DataTable
 
+## Specific Size - page
+
+This will be the page that shows for a specific size.
+
+`app\(dashboard)\[storeId]\(routes)\sizes\[sizeId]\page.tsx`
+```tsx
+// Global Imports
+import prismadb from '@/lib/prismadb';
+import React from 'react';
+
+// Local Imports
+import SizeForm from './components/SizeForm';
+
+const SizePage =  async ({
+  params
+}:{
+  params: { sizeId: string }
+}) => {
+
+  // Fetch an existing size
+  const size = await prismadb.size.findUnique({
+    where: {
+      id: params.sizeId
+    }
+  });
+
+  return (
+    <div className="flex-col">
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <SizeForm initialData={size}/>
+      </div>
+    </div>
+  )
+}
+
+export default SizePage;
+```
