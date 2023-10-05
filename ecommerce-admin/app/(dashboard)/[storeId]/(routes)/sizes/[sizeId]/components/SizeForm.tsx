@@ -76,18 +76,18 @@ const SizeForm: React.FC<SizeFormProps> = ({
     try {
       setLoading(true);
       if (initialData) {
-        // Update specific Billboard
-        await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data);
+        // Update specific Size
+        await axios.patch(`/api/${params.storeId}/sizes/${params.sizeId}`, data);
       } else {
-        // Create new Billboard
-        await axios.post(`/api/${params.storeId}/billboards`, data);
+        // Create new Size
+        await axios.post(`/api/${params.storeId}/sizes`, data);
       }
       // Refresh current route to make new request to server
       // Re-fetch data requests & re-render server components
       // Re-initializes initialData
       router.refresh();
-      // Re-route the user to the Billboards page
-      router.push(`/${params.storeId}/billboards`)
+      // Re-route the user to the sizes page
+      router.push(`/${params.storeId}/sizes`)
       // Success notification with dynamic message
       toast.success(toastMessage);
     } catch (error) {
@@ -101,16 +101,16 @@ const SizeForm: React.FC<SizeFormProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true);
-      // Call an API with dynamic route to delete the Billboard
-      await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
+      // Call an API with dynamic route to delete the Size
+      await axios.delete(`/api/${params.storeId}/sizes/${params.sizeId}`);
       // Re-synchronize server component to update data
       router.refresh();
-      // Navigate back to the specific store's billboards page after deletion
-      router.push(`${params.storeId}/billboards`);
-      toast.success("Billboard deleted.");
+      // Navigate back to the specific store's sizes page after deletion
+      router.push(`${params.storeId}/sizes`);
+      toast.success("Size deleted.");
     } catch (error) {
-      // Safety mechanism will prompt a warning to delete any related records to the Billboard
-      toast.error("Make sure you removed all categories using this billboard first.");
+      // Safety mechanism will prompt a warning to delete any related records to the Size
+      toast.error("Make sure you removed all products using this size first.");
     } finally {
       setLoading(false);
       // Close the Modal
