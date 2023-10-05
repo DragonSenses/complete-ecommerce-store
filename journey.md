@@ -10905,6 +10905,7 @@ Create `app\api\[storeId]\sizes`, inside a `route.ts`.
 
 It will have a `POST` and `GET` route. Same with previous entities, the `POST` will do the checks and create a `size` with `{ name, value }` from the body.
 
+`POST` sizes route:
 ```ts
 export async function POST(
   req: Request,
@@ -10972,3 +10973,30 @@ export async function POST(
 }
 ```
 
+`GET` sizes route:
+```ts
+export async function GET(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  try {
+    // Check if storeId exists
+    if (!params.storeId) {
+      return new NextResponse("Store ID is required", { status: 400 });
+    }
+
+    // Find all sizes available in that store in the database
+    const sizes = await prismadb.size.findMany({
+      where: {
+        storeId: params.storeId
+      }
+    });
+
+    // Send back response with all sizes
+    return NextResponse.json(sizes);
+  } catch (error){
+    console.log('[SIZES_GET]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}
+```
