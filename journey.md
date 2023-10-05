@@ -11000,3 +11000,35 @@ export async function GET(
   }
 }
 ```
+
+### sizeId route
+
+Create `app\api\[storeId]\sizes\[sizeId]\route.ts`.
+
+`GET` size route
+```ts
+export async function GET (
+  req: Request,
+  { params }: { params: { sizeId: string }}
+){
+  try {
+    // Check parameters
+    if (!params.sizeId){
+      return new NextResponse("Size ID is required", { status: 400 });
+    }
+
+    // Find the specific Size in database
+    const size = await prismadb.size.findUnique({
+      where: {
+        id: params.sizeId,
+      }
+    });
+
+    return NextResponse.json(size);
+  } catch (error) {
+    console.log('[SIZE_GET]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+};
+```
+
