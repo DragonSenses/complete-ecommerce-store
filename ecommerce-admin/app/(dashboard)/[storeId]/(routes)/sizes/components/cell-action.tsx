@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 
 // Local Imports
 import { AlertModal } from '@/components/modals/AlertModal';
-import { BillboardColumn } from './columns';
+import { SizeColumn } from './columns';
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 interface CellActionProps {
-  data: BillboardColumn
+  data: SizeColumn
 }
 
 export const CellAction: React.FC<CellActionProps> = ({
@@ -42,22 +42,22 @@ export const CellAction: React.FC<CellActionProps> = ({
   // Copy Event Handler
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
-    toast.success("Billboard ID copied to clipboard.");
+    toast.success("Size ID copied to clipboard.");
   }
 
   // Define a delete handler
   const onDelete = async () => {
     try {
       setLoading(true);
-      // Call an API with dynamic route to delete the Billboard
-      await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
+      // Call an API with dynamic route to delete the Size
+      await axios.delete(`/api/${params.storeId}/sizes/${data.id}`);
       // Refresh current route to make new request to server
       // Re-fetch data requests & re-render server components
       router.refresh();
-      toast.success("Billboard deleted.");
+      toast.success("Size deleted.");
     } catch (error) {
-      // Safety mechanism will prompt a warning to delete any related records to the Billboard
-      toast.error("Make sure you removed all categories using this billboard first.");
+      // Safety mechanism will prompt a warning to delete any related records
+      toast.error("Make sure you removed all products using this size first.");
     } finally {
       setLoading(false);
       // Close the Modal
@@ -89,7 +89,7 @@ export const CellAction: React.FC<CellActionProps> = ({
             Copy ID
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => router.push(`/${params.storeId}/billboards/${data.id}`)}
+            onClick={() => router.push(`/${params.storeId}/sizes/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" />
             Update
