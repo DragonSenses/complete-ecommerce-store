@@ -11320,6 +11320,58 @@ In `MainNav` add sizes route after categories
 
 ## Colors - Page
 
+Just like Size entity, this page under `/colors` will cover all colors.
+
+1. Fetch all the colors in the active store
+2. Format each color to a color column
+3. Pass formatted data to color client
+
+```tsx
+// Global Imports
+import React from 'react';
+import prismadb from '@/lib/prismadb';
+import { format } from 'date-fns';
+
+// Local Imports
+import ColorsClient from './components/client';
+import { ColorColumn } from './components/columns';
+
+const ColorsPage = async ({
+  params
+}: {
+  params: { storeId: string }
+}) => {
+  
+  // Fetch all colors specific to the active store
+  const colors = await prismadb.color.findMany({
+    where: {
+      storeId: params.storeId
+    },
+    orderBy: {
+      createdAt: 'desc'
+    }
+  });
+
+  // Format each Color into a ColorColumn
+  const formattedColors: ColorColumn[] = colors.map((item) => ({
+    id: item.id,
+    name: item.name,
+    value: item.value,
+    createdAt: format(item.createdAt, "MMMM do, yyyy"),
+  }))
+
+  return (
+    <div className='flex-col'>
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <ColorsClient data={formattedColors}/>
+      </div>
+    </div>
+  );
+}
+
+export default ColorsPage;
+```
+
 ## Colors - Column
 
 ## Colors - Client
