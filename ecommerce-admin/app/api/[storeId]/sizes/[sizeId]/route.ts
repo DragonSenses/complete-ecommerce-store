@@ -56,11 +56,11 @@ export async function PATCH (
 
     // Check data
     if (!name) {
-      return new NextResponse("Label is required", { status: 400 });
+      return new NextResponse("Name is required", { status: 400 });
     }
 
     if (!value) {
-      return new NextResponse("Image URL is required", { status: 400 });
+      return new NextResponse("Value is required", { status: 400 });
     }
 
     // Check database if store exists for current user
