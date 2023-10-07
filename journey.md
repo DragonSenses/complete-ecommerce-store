@@ -11326,6 +11326,7 @@ Just like Size entity, this page under `/colors` will cover all colors.
 2. Format each color to a color column
 3. Pass formatted data to color client
 
+`app\(dashboard)\[storeId]\(routes)\colors\page.tsx`
 ```tsx
 // Global Imports
 import React from 'react';
@@ -11372,7 +11373,88 @@ const ColorsPage = async ({
 export default ColorsPage;
 ```
 
-## Colors - Column
+## Color - Column
+
+The color column will be used within the `DataTable`. Similar to `SizeColumn`, but with one key difference: a special cell inside the value.
+
+`ecommerce-admin\app\(dashboard)\[storeId]\(routes)\colors\components\columns.tsx`
+```tsx
+"use client"
+
+import { ColumnDef } from "@tanstack/react-table"
+
+import { CellAction } from "./cell-action"
+
+// This type is used to define the shape of our data.
+export type ColorColumn = {
+  id: string
+  name: string
+  value: string
+  createdAt: string
+}
+
+export const columns: ColumnDef<ColorColumn>[] = [
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "value",
+    header: "Value",
+    cell: ({ row }) => {
+      <div className="flex items-center gap-x-2">
+        {row.original.value}
+        <div 
+          className="h-6 w-6 rounded-full border"
+          style={{ backgroundColor: row.original.value }}
+        >
+        </div>
+      </div>
+    }
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Date",
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <CellAction data={row.original} />
+  },
+]
+```
+
+A closer look:
+```tsx
+  {
+    accessorKey: "value",
+    header: "Value",
+    cell: ({ row }) => {
+      <div className="flex items-center gap-x-2">
+        {row.original.value}
+        <div 
+          className="h-6 w-6 rounded-full border"
+          style={{ backgroundColor: row.original.value }}
+        >
+        </div>
+      </div>
+    }
+  },
+```
+
+- We take the `row.original.value` and render it inside a `div`. 
+- We have another `div` inside that will display the color.
+  - This will be a self-closing element
+  - We also use `style` property
+
+Why not use dynamic classes? TailwindCSS only works with predefined fully written classes. A just-in-time compiler, so if there is dynamic classes there is a chance Tailwind is not going to compile that css and styles are not going to work.
+
+Its safer to use `style` with dynamic classes, instead of using dynamic classes through TailwindCSS. For example,
+
+```tsx
+<div 
+  className="h-6 w-6 rounded-full border bg-[${dynamicClass}]"
+>
+```
 
 ## Colors - Client
 
