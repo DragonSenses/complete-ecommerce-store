@@ -1484,7 +1484,7 @@ Create the `onSubmit` function, which is going to be triggered in our form. For 
   // Define a submit handler
   function onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
-    // TODO: Create Store
+    // ... Create Store here
   }
 ```
 
@@ -1744,7 +1744,7 @@ To test we can add "test" text inside the input field box of the Modal. We shoul
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
-    // TODO: Create Store
+    // ... Create Store here
   }
 ```
 
@@ -10164,7 +10164,6 @@ export async function GET (
 };
 ```
 
-TODO:
 #### Category `PATCH`
 
 - PATCH route shows how we update our category
@@ -10381,7 +10380,20 @@ With this check list, we can move on to create the next entity.
 
 # Size entity
 
-## Size model
+The size entity allows another way to filter our records of products through sizes. It will have a `name` mapped to a `value`.
+
+For example, we can create a size entity where we map a name "Large" to its value of "L" for easier filtering of products. 
+
+```json
+{
+  name: "Large",
+  value: "L"
+}
+```
+
+A user can filter or search for a superset of a product such as a shirt. Then we allow the user to narrow down the set of "shirts" to a subset through the *size entity*. The user can click on an option that allows for the shirt to be filtered by size. Later on we will have a color entity to further narrow down the subset of products.
+
+## Size - Model
 
 In `prisma.schema`, create the `Size` model which contains id, storeId, store relation
 
@@ -11064,11 +11076,11 @@ export async function PATCH (
 
     // Check data
     if (!name) {
-      return new NextResponse("Label is required", { status: 400 });
+      return new NextResponse("Name is required", { status: 400 });
     }
 
     if (!value) {
-      return new NextResponse("Image URL is required", { status: 400 });
+      return new NextResponse("Value is required", { status: 400 });
     }
 
     // Check database if store exists for current user
@@ -11156,3 +11168,90 @@ export async function DELETE (
   }
 };
 ```
+
+### Testing Size Routes
+
+Go ahead and click on the Categories page on the `MainNav`.
+
+Open up the **Network** tab in developer tools, then create a category by linking it up with a billboard.
+
+We should see a Response that contains the data for the category : `{ id, storeId, sizeId, name, etc...}`.
+
+Let's test the route from the API List of calls. Let's try the GET route, so click the copy icon and paste it into the browser.
+
+- We need to fix the `cell-action` for update and delete for the category data table.
+
+### Update Size's Cell Actions
+
+Navigate to `app\(dashboard)\[storeId]\(routes)\sizes\components\cell-action.tsx`.
+
+Update:
+
+- Copy Event Handler
+- Delete Event Handler, and its routes
+- `DropdownMenuItem` in charge of pushing to a new route
+
+Now continue with the testing of the Size, SizeForm and each cell action.
+
+# Colors entity
+
+The color entity allows another way to filter our records of products through colors. It will have a `name` mapped to a `value`.
+
+For example, we can create a color entity where we map a name "Red" to its value of "R" for easier filtering of products. 
+
+```json
+{
+  name: "Red",
+  value: "R"
+}
+```
+
+A user can filter or search for a superset of a product such as a shirt. Then we allow the user to narrow down the set of "shirts" to a subset through the *color entity*. The user can click on an option that allows for the shirt to be filtered by color.
+
+## Colors - Model
+
+Back in `prisma.schema`, it is just like `Size` model. 
+
+- It has `{ id, storeId, store relation, name, value, createdAt, updatedAt }`.
+
+```prisma
+model Color {
+  id          String    @id @default(uuid())
+  storeId     String    // relation scalar field (used in the `@relation` attribute)
+  store       Store     @relation("StoreToColor", fields: [storeId], references: [id])
+  name        String
+  value       String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Manually add index on relation scalar field
+  @@index([storeId])
+}
+``
+- Add relation to `Store` model
+
+```prisma
+model Store {
+  id         String       @id @default(uuid())
+  name       String
+  userId     String
+  billboards Billboard[]  @relation("StoreToBillboard")
+  categories Category[]   @relation("StoreToCategory")
+  colors     Color[]       @relation("StoreToColor")
+  sizes      Size[]       @relation("StoreToSize")
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+```
+
+## Colors - Page
+
+## Colors - Column
+
+## Colors - Client
+
+## Color - Page
+
+## Colors - Form
+
+## Colors - API routes
