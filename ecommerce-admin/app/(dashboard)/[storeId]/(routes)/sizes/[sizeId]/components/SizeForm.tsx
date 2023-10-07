@@ -25,7 +25,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import ImageUpload from '@/components/ui/ImageUpload';
 
 // Create zod object schema
 const formSchema = z.object({
