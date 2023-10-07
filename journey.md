@@ -11237,11 +11237,85 @@ model Store {
   userId     String
   billboards Billboard[]  @relation("StoreToBillboard")
   categories Category[]   @relation("StoreToCategory")
-  colors     Color[]       @relation("StoreToColor")
+  colors     Color[]      @relation("StoreToColor")
   sizes      Size[]       @relation("StoreToSize")
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
 }
+```
+
+Then generate prisma client and push to database to sync the changes.
+
+```sh
+npx prisma generate
+```
+
+```sh
+npx prisma db push
+```
+
+### Colors - Project structure
+
+Because the size entity is most similar to colors, we can copy the `app\(dashboard)\[storeId]\(routes)\sizes` folder and paste it into `(routes)` while renaming it to `colors`.
+
+```sh
+- app
+  |- (dashboard)
+    |-  [storeId]
+      |-  (routes)
+        |- billboards
+        |- categories
+        |- sizes
+        |- colors
+          |- [colorId]
+            |- components
+              |- ColorForm.tsx
+            |- page.tsx
+          |- components
+            |- cell-action.tsx
+            |- client.tsx
+            |- columns.tsx
+          |- page.tsx
+```
+
+### Colors - add route to Navigation
+
+In `MainNav` add sizes route after categories
+
+`ecommerce-admin\components\MainNav.tsx`
+```tsx
+  const routes = [
+    {
+      href: `/${params.storeId}`,
+      label: 'Overview',
+      active: pathname === `/${params.storeId}`,
+    },
+    {
+      href: `/${params.storeId}/billboards`,
+      label: 'Billboards',
+      active: pathname === `/${params.storeId}/billboards`,
+    },    
+    {
+      href: `/${params.storeId}/categories`,
+      label: 'Categories',
+      active: pathname === `/${params.storeId}/categories`,
+    },
+    {
+      href: `/${params.storeId}/colors`,
+      label: 'Colors',
+      active: pathname === `/${params.storeId}/colors`,
+    },
+    {
+      href: `/${params.storeId}/sizes`,
+      label: 'Sizes',
+      active: pathname === `/${params.storeId}/sizes`,
+    },
+    {
+      href: `/${params.storeId}/settings`,
+      label: 'Settings',
+      active: pathname === `/${params.storeId}/settings`,
+    },
+  ];
 ```
 
 ## Colors - Page
