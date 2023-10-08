@@ -11723,6 +11723,36 @@ We create a `div` that wraps around both the `Input` and another div that dynami
 />
 ```
 
-    
+### ColorForm - handlers
+
+Now let's modify the submit handler
+
+```tsx
+ // 2. Define a submit handler
+  const onSubmit = async (data: ColorFormValues) => {
+    try {
+      setLoading(true);
+      if (initialData) {
+        // Update specific Color
+        await axios.patch(`/api/${params.storeId}/colors/${params.colorId}`, data);
+      } else {
+        // Create new Color
+        await axios.post(`/api/${params.storeId}/colors`, data);
+      }
+      // Refresh current route to make new request to server
+      // Re-fetch data requests & re-render server components
+      // Re-initializes initialData
+      router.refresh();
+      // Re-route the user to the colors page
+      router.push(`/${params.storeId}/colors`)
+      // Success notification with dynamic message
+      toast.success(toastMessage);
+    } catch (error) {
+      toast.error("Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+```
 
 ## Colors - API routes
