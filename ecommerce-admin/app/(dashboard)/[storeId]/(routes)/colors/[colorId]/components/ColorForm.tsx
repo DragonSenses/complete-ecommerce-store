@@ -4,7 +4,7 @@
 import * as z from 'zod';
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Size } from '@prisma/client';
+import { Color } from '@prisma/client';
 import { toast } from 'react-hot-toast';
 import { Trash } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -33,14 +33,14 @@ const formSchema = z.object({
 });
 
 // extract the inferred type
-type SizeFormValues = z.infer<typeof formSchema>;
+type ColorFormValues = z.infer<typeof formSchema>;
 
 // Define type and shape of props
-interface SizeFormProps {
-  initialData: Size | null
+interface ColorFormProps {
+  initialData: Color | null
 }
 
-const SizeForm: React.FC<SizeFormProps> = ({
+const ColorForm: React.FC<ColorFormProps> = ({
   initialData
 }) => {
   // Create router object to perform client-side navigation
@@ -56,13 +56,13 @@ const SizeForm: React.FC<SizeFormProps> = ({
   const [loading, setLoading] = useState(false);
 
   // Create dynamic data to pass into output
-  const title = initialData ? "Edit size" : "Create size";
-  const description = initialData ? "Edit a size" : "Add a new size";
-  const toastMessage = initialData ? "Size updated." : "Size created.";
+  const title = initialData ? "Edit color" : "Create color";
+  const description = initialData ? "Edit a color" : "Add a new color";
+  const toastMessage = initialData ? "Color updated." : "Color created.";
   const action = initialData ? "Save changes" : "Create";
 
   // 1. Define form with useForm hook & zodResolver for validation
-  const form = useForm<SizeFormValues>({
+  const form = useForm<ColorFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
       name: '',
@@ -71,7 +71,7 @@ const SizeForm: React.FC<SizeFormProps> = ({
   });
 
   // 2. Define a submit handler
-  const onSubmit = async (data: SizeFormValues) => {
+  const onSubmit = async (data: ColorFormValues) => {
     try {
       setLoading(true);
       if (initialData) {
@@ -181,4 +181,4 @@ const SizeForm: React.FC<SizeFormProps> = ({
   )
 }
 
-export default SizeForm
+export default ColorForm
