@@ -102,16 +102,16 @@ const ColorForm: React.FC<ColorFormProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true);
-      // Call an API with dynamic route to delete the Size
-      await axios.delete(`/api/${params.storeId}/sizes/${params.sizeId}`);
+      // Call an API with dynamic route to delete the Color
+      await axios.delete(`/api/${params.storeId}/colors/${params.colorId}`);
       // Re-synchronize server component to update data
       router.refresh();
-      // Navigate back to the specific store's sizes page after deletion
-      router.push(`${params.storeId}/sizes`);
-      toast.success("Size deleted.");
+      // Navigate back to the specific store's colors page after deletion
+      router.push(`${params.storeId}/colors`);
+      toast.success("Color deleted.");
     } catch (error) {
-      // Safety mechanism will prompt a warning to delete any related records to the Size
-      toast.error("Make sure you removed all products using this size first.");
+      // Safety mechanism will prompt a warning to delete any related records to the Color
+      toast.error("Make sure you removed all products using this color first.");
     } finally {
       setLoading(false);
       // Close the Modal
