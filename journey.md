@@ -11589,4 +11589,36 @@ const ColorForm: React.FC<ColorFormProps> = ({
 }) => {
 ```
 
+Now recall in the column we had the `value` of the color set to the `style` prop
+
+```tsx
+  {
+    accessorKey: "value",
+    header: "Value",
+    cell: ({ row }) => {
+      <div className="flex items-center gap-x-2">
+        {row.original.value}
+        <div 
+          className="h-6 w-6 rounded-full border"
+          style={{ backgroundColor: row.original.value }}
+        >
+        </div>
+      </div>
+    }
+  },
+```
+
+We want the `value` to be a HEX code that defines the proper color. That is how it will be turned into a CSS color.
+
+To do this, we need to modify our zod object schema, by validating whether the value is a minimum of 4 characters and follows a certain regex pattern. We also pass in a message if the string is not a valid hex code.
+
+```tsx
+const formSchema = z.object({
+  name: z.string().min(1),
+  value: z.string().min(4).regex(/^#/, {
+    message: 'String must be a valid hex code',
+  }),
+});
+```
+
 ## Colors - API routes
