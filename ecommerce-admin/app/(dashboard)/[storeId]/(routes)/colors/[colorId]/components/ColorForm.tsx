@@ -77,18 +77,18 @@ const ColorForm: React.FC<ColorFormProps> = ({
     try {
       setLoading(true);
       if (initialData) {
-        // Update specific Size
-        await axios.patch(`/api/${params.storeId}/sizes/${params.sizeId}`, data);
+        // Update specific Color
+        await axios.patch(`/api/${params.storeId}/colors/${params.colorId}`, data);
       } else {
-        // Create new Size
-        await axios.post(`/api/${params.storeId}/sizes`, data);
+        // Create new Color
+        await axios.post(`/api/${params.storeId}/colors`, data);
       }
       // Refresh current route to make new request to server
       // Re-fetch data requests & re-render server components
       // Re-initializes initialData
       router.refresh();
-      // Re-route the user to the sizes page
-      router.push(`/${params.storeId}/sizes`)
+      // Re-route the user to the colors page
+      router.push(`/${params.storeId}/colors`)
       // Success notification with dynamic message
       toast.success(toastMessage);
     } catch (error) {
