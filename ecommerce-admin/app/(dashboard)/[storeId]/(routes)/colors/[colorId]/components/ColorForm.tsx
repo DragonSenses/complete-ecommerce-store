@@ -29,7 +29,9 @@ import { Input } from "@/components/ui/input";
 // Create zod object schema
 const formSchema = z.object({
   name: z.string().min(1),
-  value: z.string().min(1),
+  value: z.string().min(4).regex(/^#/, {
+    message: 'String must be a valid hex code',
+  }),
 });
 
 // extract the inferred type
