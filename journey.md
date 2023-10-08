@@ -11621,4 +11621,108 @@ const formSchema = z.object({
 });
 ```
 
+Next create the state variables, use the hooks, make dynamic data to pass to output and define the form.
+
+```tsx
+const ColorForm: React.FC<ColorFormProps> = ({
+  initialData
+}) => {
+  // Create router object to perform client-side navigation
+  const router = useRouter();
+
+  // Hook returns an object containing current route's filled in dynamic parameters
+  const params = useParams();
+
+  // Create open state to control the Alert modal
+  const [open, setOpen] = useState(false);
+
+  // Create loading state to disable interactive elements
+  const [loading, setLoading] = useState(false);
+
+  // Create dynamic data to pass into output
+  const title = initialData ? "Edit color" : "Create color";
+  const description = initialData ? "Edit a color" : "Add a new color";
+  const toastMessage = initialData ? "Color updated." : "Color created.";
+  const action = initialData ? "Save changes" : "Create";
+
+  // 1. Define form with useForm hook & zodResolver for validation
+  const form = useForm<ColorFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: initialData || {
+      name: '',
+      value: ''
+    }
+  });
+```
+
+Let's look into the output for ColorForm. The first part is the conditional render of AlertModal, Heading and destructive Button.
+
+Next is the `Form`. It contains two `FormField`s with name and value.
+
+```tsx
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+          <div className="grid grid-cols-3 gap-8">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Color name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="value"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Value</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Color value" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <Button disabled={loading} className="ml-auto" type="submit">
+            {action}
+          </Button>
+        </form>
+      </Form>
+```
+
+The major change however, is that the "value" `FormField` will also render the color.
+
+We create a `div` that wraps around both the `Input` and another div that dynamically renders the background color to that of the `value` of the field.
+
+```tsx
+<FormField
+  control={form.control}
+  name="value"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Value</FormLabel>
+      <FormControl>
+        <div className="flex items-center gap-x-4">
+          <Input disabled={loading} placeholder="Color value" {...field} />
+          <div
+            className="border p-4 rounded-full"
+            style={{ backgroundColor: field.value }}
+          />
+        </div>
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+```
+
+    
+
 ## Colors - API routes
