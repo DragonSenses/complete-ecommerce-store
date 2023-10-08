@@ -11564,4 +11564,29 @@ export default ColorPage;
 
 ## Colors - Form
 
+- Create zod form object schema
+- Extract inferred type
+- Color form props
+- ColorForm function
+
+```tsx
+// Create zod object schema
+const formSchema = z.object({
+  name: z.string().min(1),
+  value: z.string().min(1),
+});
+
+// extract the inferred type
+type ColorFormValues = z.infer<typeof formSchema>;
+
+// Define type and shape of props
+interface ColorFormProps {
+  initialData: Color | null
+}
+
+const ColorForm: React.FC<ColorFormProps> = ({
+  initialData
+}) => {
+```
+
 ## Colors - API routes
