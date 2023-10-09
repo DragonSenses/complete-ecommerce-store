@@ -51,8 +51,8 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
-    // Create size for user's specific store in the database
-    const size = await prismadb.size.create({
+    // Create color for user's specific store in the database
+    const color = await prismadb.color.create({
       data: {
         name,
         value,
@@ -60,10 +60,10 @@ export async function POST(
       }
     });
 
-    // Send back response with the size
-    return NextResponse.json(size);
+    // Send back response with the color
+    return NextResponse.json(color);
   } catch (error){
-    console.log('[SIZES_POST]', error);
+    console.log('[COLORS_POST]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
@@ -78,17 +78,17 @@ export async function GET(
       return new NextResponse("Store ID is required", { status: 400 });
     }
 
-    // Find all sizes available in that store in the database
-    const sizes = await prismadb.size.findMany({
+    // Find all colors available in that store in the database
+    const colors = await prismadb.color.findMany({
       where: {
         storeId: params.storeId
       }
     });
 
-    // Send back response with all sizes
-    return NextResponse.json(sizes);
+    // Send back response with all colors
+    return NextResponse.json(colors);
   } catch (error){
-    console.log('[SIZES_GET]', error);
+    console.log('[COLORS_GET]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
