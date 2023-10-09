@@ -4,31 +4,31 @@ import { NextResponse } from "next/server";
 
 export async function GET (
   req: Request,
-  { params }: { params: { sizeId: string }}
+  { params }: { params: { colorId: string }}
 ){
   try {
     // Check parameters
-    if (!params.sizeId){
-      return new NextResponse("Size ID is required", { status: 400 });
+    if (!params.colorId){
+      return new NextResponse("Color ID is required", { status: 400 });
     }
 
-    // Find the specific Size in database
-    const size = await prismadb.size.findUnique({
+    // Find the specific color in database
+    const color = await prismadb.color.findUnique({
       where: {
-        id: params.sizeId,
+        id: params.colorId,
       }
     });
 
-    return NextResponse.json(size);
+    return NextResponse.json(color);
   } catch (error) {
-    console.log('[SIZE_GET]', error);
+    console.log('[COLOR_GET]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
 
 export async function PATCH (
   req: Request,
-  { params }: { params: { storeId: string, sizeId: string }}
+  { params }: { params: { storeId: string, colorId: string }}
 ){
   try {
     // Check parameters
@@ -36,8 +36,8 @@ export async function PATCH (
       return new NextResponse("Store ID is required", { status: 400 });
     }
 
-    if (!params.sizeId){
-      return new NextResponse("Size ID is required", { status: 400 });
+    if (!params.colorId){
+      return new NextResponse("Color ID is required", { status: 400 });
     }
 
     // Authenticate userId with Clerk to check if user is logged-in
@@ -77,10 +77,10 @@ export async function PATCH (
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
-    // Find and Update a specific Size
-    const size = await prismadb.size.updateMany({
+    // Find and Update a specific color
+    const color = await prismadb.color.updateMany({
       where: {
-        id: params.sizeId
+        id: params.colorId
       },
       data: {
         name,
@@ -88,16 +88,16 @@ export async function PATCH (
       }
     });
 
-    return NextResponse.json(size);
+    return NextResponse.json(color);
   } catch (error) {
-    console.log('[SIZE_PATCH]', error);
+    console.log('[COLOR_PATCH]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
 
 export async function DELETE (
   req: Request,
-  { params }: { params: { storeId: string, sizeId: string }}
+  { params }: { params: { storeId: string, colorId: string }}
 ){
   try {
     // Check parameters
@@ -105,8 +105,8 @@ export async function DELETE (
       return new NextResponse("Store ID is required", { status: 400 });
     }
 
-    if (!params.sizeId){
-      return new NextResponse("Size ID is required", { status: 400 });
+    if (!params.colorId){
+      return new NextResponse("Color ID is required", { status: 400 });
     }
 
     // Authenticate userId with Clerk to check if user is logged-in
@@ -131,16 +131,16 @@ export async function DELETE (
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
-    // Find and Delete Size
-    const size = await prismadb.size.deleteMany({
+    // Find and Delete color
+    const color = await prismadb.color.deleteMany({
       where: {
-        id: params.sizeId
+        id: params.colorId
       }
     });
 
-    return NextResponse.json(size);
+    return NextResponse.json(color);
   } catch (error) {
-    console.log('[SIZE_DELETE]', error);
+    console.log('[COLOR_DELETE]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
