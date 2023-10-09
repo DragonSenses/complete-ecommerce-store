@@ -9,7 +9,6 @@ import toast from 'react-hot-toast';
 
 // Local Imports
 import { AlertModal } from '@/components/modals/AlertModal';
-import { SizeColumn } from './columns';
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -20,8 +19,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+import { ColorColumn } from './columns';
+
 interface CellActionProps {
-  data: SizeColumn
+  data: ColorColumn
 }
 
 export const CellAction: React.FC<CellActionProps> = ({
@@ -42,22 +43,22 @@ export const CellAction: React.FC<CellActionProps> = ({
   // Copy Event Handler
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
-    toast.success("Size ID copied to clipboard.");
+    toast.success("Color ID copied to clipboard.");
   }
 
   // Define a delete handler
   const onDelete = async () => {
     try {
       setLoading(true);
-      // Call an API with dynamic route to delete the Size
-      await axios.delete(`/api/${params.storeId}/sizes/${data.id}`);
+      // Call an API with dynamic route to delete the color
+      await axios.delete(`/api/${params.storeId}/colors/${data.id}`);
       // Refresh current route to make new request to server
       // Re-fetch data requests & re-render server components
       router.refresh();
-      toast.success("Size deleted.");
+      toast.success("Color deleted.");
     } catch (error) {
       // Safety mechanism will prompt a warning to delete any related records
-      toast.error("Make sure you removed all products using this size first.");
+      toast.error("Make sure you removed all products using this color first.");
     } finally {
       setLoading(false);
       // Close the Modal
@@ -89,7 +90,7 @@ export const CellAction: React.FC<CellActionProps> = ({
             Copy ID
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => router.push(`/${params.storeId}/sizes/${data.id}`)}
+            onClick={() => router.push(`/${params.storeId}/colors/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" />
             Update
