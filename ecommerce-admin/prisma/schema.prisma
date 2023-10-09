@@ -78,3 +78,23 @@ model Color {
   // Manually add index on relation scalar field
   @@index([storeId])
 }
+
+model Product {
+  id          String    @id @default(uuid())
+  storeId     String    // relation scalar field (used in the `@relation` attribute)
+  store       Store     @relation("StoreToProduct", fields: [storeId], references: [id])
+  categoryId  String
+  category    Category  @relation("CategoryToProduct", fields: [categoryId], references: [id])
+  name        String
+  price       Decimal
+  isFeatured  Boolean   @default(false)
+  isArchived  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  // Filter relations
+  sizeId      String
+  size        Size      @relation(fields: [sizeId], references: [id])
+  colorId     String
+  color       Color     @relation(fields: [colorId], references: [id])
+
+}
