@@ -11991,4 +11991,63 @@ export async function DELETE (
   - Test route url
   - Test route url with individual `colorId`
 
+# Product entity
 
+Now we create the entity that serves as a cornerstone of our ecommerce store: the *product*.
+
+Column
+Client
+Page
+Form
+API routes
+Cell Action
+Testing
+
+
+## Product - Model
+
+The Product model should contain the following:
+  - `id` of product
+  - relation to `Store`
+    - `storeId` with relation with store with decorator `@relation`, fields and references
+    - equivalent relation in `Store` model
+  - relation to `Category`
+    - `categoryId` with `@relation` to category
+    - equivalent relation in `Category` model
+  - `name`
+  - `price` a type of decimal
+  - `isFeatured` boolean
+  - `isArchived` boolean
+  - filter relations:
+    - relation to `Size`
+      - equivalent relation in `Size` model
+    - relation to `Color`
+      - equivalent relation in `Color` model
+
+Resolve warnings regarding indexing and relations.
+
+`ecommerce-admin\prisma\schema.prisma`
+```prisma
+```
+
+### Image - Model
+
+Now unlike `Billboard`, our `Product` model will have many images. So we cannot simply add an `imageUrl`. We need to create a way to store and display many images for a particular product. 
+
+We will create a `Image` model which will store our Images. Then add a relation to Image and Product.
+
+...
+
+### Update the prisma schema
+
+Then generate prisma client and push to database to sync the changes.
+
+```sh
+npx prisma generate
+```
+
+```sh
+npx prisma db push
+```
+
+## Product - Page
