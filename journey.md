@@ -11195,14 +11195,14 @@ Now continue with the testing of the Size, SizeForm and each cell action.
 
 # Colors entity
 
-The color entity allows another way to filter our records of products through colors. It will have a `name` mapped to a `value`.
+The color entity allows another way to filter our records of products through colors. It will have a `name` mapped to a `value`. The name is the name of the color and the value is the HEX code for that particular color.
 
-For example, we can create a color entity where we map a name "Red" to its value of "R" for easier filtering of products. 
+For example, we can create a color entity where we map a name "Red" to its value of "#FF0000" for easier filtering of products. 
 
 ```json
 {
   name: "Red",
-  value: "R"
+  value: "#FF0000"
 }
 ```
 
@@ -11970,4 +11970,25 @@ export async function DELETE (
   }
 };
 ```
+
+## Color - Cell Action
+
+- `app\(dashboard)\[storeId]\(routes)\colors\components\cell-action.tsx`
+- Similar to previous entity cell action
+- List of changes:
+  - import column
+  - copy handler
+  - delete handler
+  - DropdownMenuItem that pushes route
+
+## Colors testing
+
+- Create a Color
+- Test the cell actions:
+  - Copy, Update and Delete
+- Filter/Search color by name
+- Copy an API route
+  - Test route url
+  - Test route url with individual `colorId`
+
 
