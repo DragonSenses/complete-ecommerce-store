@@ -11781,3 +11781,34 @@ And delete handler
 ```
 
 ## Colors - API routes
+
+Create `colors` folder inside `/api/[storeId]`. Then create a `route.ts` and a `[colorId]` folder in the same directory.
+
+The route here will be for all colors.
+
+Almost the entire route is exactly the same as size route except for the fetch. We have to fetch the color or create a color in the database.
+
+```ts
+export async function POST(
+// ...
+){
+  // Create color for user's specific store in the database
+    const color = await prismadb.color.create({
+      data: {
+        name,
+        value,
+        storeId: params.storeId
+      }
+    });
+}
+
+export async function GET(
+// ...
+    // Find all colors available in that store in the database
+    const colors = await prismadb.color.findMany({
+      where: {
+        storeId: params.storeId
+      }
+    });
+}
+```
