@@ -12078,7 +12078,57 @@ Now unlike `Billboard`, our `Product` model will have many images. So we cannot 
 
 We will create a `Image` model which will store our Images. Then add a relation to Image and Product.
 
-...
+Has the properties:
+- `id` 
+- `productId`
+- `product` relation
+- Special rule for what happens to `Image` model when `Product` has been deleted
+
+`onDelete: Cascade` will delete the **child** records when the **Parent** record is deleted.
+
+```prisma
+model Image {
+  id  String @id @default(uuid())
+  productId String
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+```
+
+#### Prisma `onDelete` cascade delete and **Referential Actions**
+
+*Important:* we have a specific case where we should be able to delete our product even if we have an existing `Image` model that uses that product. This case needs to be handled, otherwise we cannot delete a product without deleting the related record `Image` from the database.
+
+[Prisma schema - @relation](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#relation), in the docs we can see that one of the arguments is `onDelete`. We can pass in a [referential action](https://www.prisma.io/docs/concepts/components/prisma-schema/relations/referential-actions), actions that determines what happens to a record when your app deletes/updates a related record.
+
+In the following example, adding `onDelete: Cascade` to the `author` field on the `Post` model means that deleting the `User` record will also delete all related `Post` records
+
+```prisma
+model Post {
+  id       Int    @id @default(autoincrement())
+  title    String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId Int
+}
+
+model User {
+  id    Int    @id @default(autoincrement())
+  posts Post[]
+}
+```
+In our case, adding `onDelete: Cascade` to the `product` field on the `Image` model means that deleting the `Product` record will also delete all related `Image` records.
+
+```prisma
+model Product {
+  // ...
+  images Image[]
+}
+
+model Image {
+  id  String @id @default(uuid())
+  productId String
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+```
 
 ### Update the prisma schema
 
