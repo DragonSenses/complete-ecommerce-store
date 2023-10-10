@@ -12173,6 +12173,21 @@ model Image {
 }
 ```
 
+#### Prisma Schema `@@index`
+
+[Prisma Schema - index](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#index) defines an index in the database.
+
+In Prisma, you can add an index to a field in the Prisma schema using the `@@index()` attribute function. The `@@index()` attribute function accepts multiple arguments such as fields and map. The `fields` argument is the only required argument that allows you to list the table columns that are being indexed inside your data models. 
+
+An index is a database structure that improves the speed of data retrieval operations on a database table at the cost of additional writes and storage space to maintain the index data structure. In other words, an index is a way to optimize queries for faster execution by creating a copy of a subset of data from a table sorted in a specific order. 
+
+In Prisma, you can configure indexes, unique constraints, and primary key constraints with the following attribute arguments:
+
+- The `length` argument allows you to specify a maximum length for the subpart of the value to be indexed on String and Bytes types.
+- The `sort` argument allows you to specify the order that the entries of the constraint or index are stored in the database.
+- The `type` argument allows you to support index access methods other than PostgreSQL's default BTree access method.
+- The `clustered` argument allows you to configure whether a constraint or index is clustered or non-clustered.
+
 ### Update the prisma schema
 
 Then generate prisma client and push to database to sync the changes.
@@ -12183,6 +12198,21 @@ npx prisma generate
 
 ```sh
 npx prisma db push
+```
+
+## Product - add route to main navigation
+
+Add products to main navigation
+
+`ecommerce-admin\components\MainNav.tsx`
+```tsx
+  const routes = [
+    // ...
+    {
+      href: `/${params.storeId}/products`,
+      label: 'Products',
+      active: pathname === `/${params.storeId}/products`,
+    },
 ```
 
 ## Product - Page
