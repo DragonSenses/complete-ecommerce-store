@@ -12019,16 +12019,58 @@ The Product model should contain the following:
   - `isFeatured` boolean
   - `isArchived` boolean
   - filter relations:
-    - relation to `Size`
+    - relation to `Size`. No name just `field` and `references`
       - equivalent relation in `Size` model
     - relation to `Color`
       - equivalent relation in `Color` model
 
-Resolve warnings regarding indexing and relations.
+Our schema so far:
 
 `ecommerce-admin\prisma\schema.prisma`
 ```prisma
+model Store {
+  // ...
+  products   Product[]    @relation("StoreToProduct")
+}
+
+model Category {
+  // ...
+  products    Product[] @relation("CategoryToProduct")
+}
+
+model Size {
+  // ...
+  products    Product[]
+}
+
+model Color {
+  // ...
+  products    Product[]
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  storeId     String    // relation scalar field (used in the `@relation` attribute)
+  store       Store     @relation("StoreToProduct", fields: [storeId], references: [id])
+  categoryId  String
+  category    Category  @relation("CategoryToProduct", fields: [categoryId], references: [id])
+  name        String
+  price       Decimal
+  isFeatured  Boolean   @default(false)
+  isArchived  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  // Filter relations
+  sizeId      String
+  size        Size      @relation(fields: [sizeId], references: [id])
+  colorId     String
+  color       Color     @relation(fields: [colorId], references: [id])
+
+}
 ```
+
+Resolve warnings regarding indexing and relations.
+
 
 ### Image - Model
 
