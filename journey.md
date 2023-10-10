@@ -12069,9 +12069,6 @@ model Product {
 }
 ```
 
-Resolve warnings regarding indexing and relations.
-
-
 ### Image - Model
 
 Now unlike `Billboard`, our `Product` model will have many images. So we cannot simply add an `imageUrl`. We need to create a way to store and display many images for a particular product. 
@@ -12082,6 +12079,7 @@ Has the properties:
 - `id` 
 - `productId`
 - `product` relation
+- `url` String
 - Special rule for what happens to `Image` model when `Product` has been deleted
 
 `onDelete: Cascade` will delete the **child** records when the **Parent** record is deleted.
@@ -12127,6 +12125,51 @@ model Image {
   id  String @id @default(uuid())
   productId String
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+```
+
+### Product & Image Model complete
+
+Now resolve the warnings regarding indexing and relations for `Product` & `Image` models.
+
+```prisma
+model Product {
+  id          String    @id @default(uuid())
+  storeId     String    // relation scalar field (used in the `@relation` attribute)
+  store       Store     @relation("StoreToProduct", fields: [storeId], references: [id])
+  categoryId  String
+  category    Category  @relation("CategoryToProduct", fields: [categoryId], references: [id])
+  name        String
+  price       Decimal
+  isFeatured  Boolean   @default(false)
+  isArchived  Boolean   @default(false)
+  images      Image[]
+  // Filter relations
+  sizeId      String
+  size        Size      @relation(fields: [sizeId], references: [id])
+  colorId     String
+  color       Color     @relation(fields: [colorId], references: [id])
+  // Time 
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Manually add index on relation scalar fields
+  @@index([storeId])
+  @@index([categoryId])
+  @@index([sizeId])
+  @@index([colorId])
+}
+
+model Image {
+  id        String @id @default(uuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Manually add index on relation scalar fields
+  @@index([productId])
 }
 ```
 
