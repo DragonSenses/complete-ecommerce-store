@@ -12215,4 +12215,29 @@ Add products to main navigation
     },
 ```
 
+### Products - Project structure
+
+Because the billboards entity is most similar to colors, we can copy the `app\(dashboard)\[storeId]\(routes)\billboards` folder and paste it into `(routes)` while renaming it to `products`.
+
+```sh
+- app
+  |- (dashboard)
+    |-  [storeId]
+      |-  (routes)
+        |- billboards
+        |- categories
+        |- sizes
+        |- colors
+        |- products
+          |- [productId]
+            |- components
+              |- ProductForm.tsx
+            |- page.tsx
+          |- components
+            |- cell-action.tsx
+            |- client.tsx
+            |- columns.tsx
+          |- page.tsx
+```
+
 ## Product - Page
