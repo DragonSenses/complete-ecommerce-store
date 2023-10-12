@@ -11995,15 +11995,6 @@ export async function DELETE (
 
 Now we create the entity that serves as a cornerstone of our ecommerce store: the *product*.
 
-Column
-Client
-Page
-Form
-API routes
-Cell Action
-Testing
-
-
 ## Product - Model
 
 The Product model should contain the following:
@@ -12373,3 +12364,36 @@ So we have to turn it into a number using `toNumber()`.
     createdAt: format(item.createdAt, "MMMM do, yyyy"),
   }))
 ```
+
+### ProductColumn
+
+Let's continue adding more data to our `formattedProducts`.
+
+- Add `category`, `size` and `color`
+
+```tsx
+ // Format each product into a ProductColumn
+  const formattedProducts: ProductColumn[] = products.map((item) => ({
+    id: item.id,
+    name: item.name,
+    isArchived: item.isArchived,
+    isFeatured: item.isFeatured,
+    price: priceFormatter.format(item.price.toNumber()),
+    category: item.category.name,
+    size: item.size.name,
+    color: item.color.value,
+    createdAt: format(item.createdAt, "MMMM do, yyyy"),
+  }));
+```
+
+## Product - Column
+
+
+
+
+Client
+Page
+Form
+API routes
+Cell Action
+Testing
