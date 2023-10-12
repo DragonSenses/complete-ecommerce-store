@@ -28,7 +28,7 @@ const ProductsPage = async ({
     }
   });
 
-  // Format each Billboard into a ProductColumn
+  // Format each product into a ProductColumn
   const formattedProducts: ProductColumn[] = products.map((item) => ({
     id: item.id,
     name: item.name,
