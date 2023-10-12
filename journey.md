@@ -12311,3 +12311,65 @@ const ProductsPage = async ({
 
 export default ProductsPage;
 ```
+
+### Formatting data better
+
+Currently when we format the products into a column, the `price` is simply passed as `item.price`. 
+
+```tsx
+  // Format each product into a ProductColumn
+  const formattedProducts: ProductColumn[] = products.map((item) => ({
+    id: item.id,
+    name: item.name,
+    isArchived: item.isArchived,
+    isFeatured: item.isFeatured,
+    price: item.price,
+    createdAt: format(item.createdAt, "MMMM do, yyyy"),
+  }))
+```
+
+We would like to format the `price` in a nicer way.
+
+Let's create a formatting utility.
+
+Navigate to `ecommerce-admin\lib\utils.ts` and add the function
+
+```tsx
+export const priceFormatter = new Intl.NumberFormat("en-US", {
+  style: 'currency',
+  currency: 'USD'
+});
+```
+
+Now we can wrap the price with this formatter using the `format()` method.
+
+```tsx
+  // Format each product into a ProductColumn
+  const formattedProducts: ProductColumn[] = products.map((item) => ({
+    // ...
+    price: priceFormatter.format(item.price),
+  }))
+```
+
+But `item.price` is of type `Decimal` as we define in our schema:
+
+```prisma
+model Product {
+  // ...
+  price       Decimal
+}
+```
+
+So we have to turn it into a number using `toNumber()`.
+
+```tsx
+  // Format each product into a ProductColumn
+  const formattedProducts: ProductColumn[] = products.map((item) => ({
+    id: item.id,
+    name: item.name,
+    isArchived: item.isArchived,
+    isFeatured: item.isFeatured,
+    price: priceFormatter.format(item.price.toNumber()),
+    createdAt: format(item.createdAt, "MMMM do, yyyy"),
+  }))
+```
