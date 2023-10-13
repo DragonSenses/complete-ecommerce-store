@@ -73,7 +73,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
   // 1. Define form with useForm hook & zodResolver for validation
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData || {
+    defaultValues: initialData ? {
+      ...initialData,
+      price: parseFloat(String(initialData?.price)),
+    } : {
       name: '',
       images: [],
       price: 0,
