@@ -12584,7 +12584,7 @@ In the fetch, we also want to include the array of images which is a separate mo
 
 ## Product Form
 
-- Let's start with imports, form schema and inferred type
+- Let's start with imports
 
 ```tsx
 "use client"
@@ -12615,15 +12615,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import ImageUpload from '@/components/ui/ImageUpload';
-
-// Create zod object schema
-const formSchema = z.object({
-  label: z.string().min(1),
-  imageUrl: z.string().min(1),
-});
-
-// extract the inferred type
-type ProductFormValues = z.infer<typeof formSchema>;
 ```
 
 - Product form props are not just a simple Product, unlike previous entities.
@@ -12665,7 +12656,52 @@ const ProductForm: React.FC<ProductFormProps> = ({
   const action = initialData ? "Save changes" : "Create";
 ```
 
-- Next we resolve the default values
+- Next we define form with useForm hook & zodResolver for validation
+  - Resolve `defaultValues` to empty counterparts
+
+```tsx
+  const form = useForm<ProductFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: initialData || {
+      name: '',
+      images: [],
+      price: 0,
+      categoryId: '',
+      colorId: '',
+      sizeId: '',
+      isFeatured: false,
+      isArchived: false,
+    }
+  });
+```
+
+When we defined our form this way, we also need to reflect this inside zod.
+
+[zod docs](https://zod.dev/).
+
+- Create the zod object schema, then infer the type
+  - `images` will be an array that contains a object with a url string
+  - `price` is of type Decimal so we have to use the [coerce()](https://zod.dev/?id=coercion-for-primitives) method to coerce primitive values.
+
+```tsx
+// Create zod object schema
+const formSchema = z.object({
+  name: z.string().min(1),
+  images: z.object({ url: z.string() }).array(),
+  price: z.coerce.number().min(1),
+  categoryId: z.string().min(1),
+  colorId: z.string().min(1),
+  sizeId: z.string().min(1),
+  isFeatured: z.boolean().default(false).optional(),
+  isArchived: z.boolean().default(false).optional(),
+});
+
+// extract the inferred type
+type ProductFormValues = z.infer<typeof formSchema>;
+```
+
+
+
 
 API routes
 Cell Action
