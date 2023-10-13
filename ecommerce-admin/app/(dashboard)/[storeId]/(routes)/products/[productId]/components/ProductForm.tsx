@@ -57,9 +57,9 @@ const ProductForm: React.FC<ProductFormProps> = ({
   const [loading, setLoading] = useState(false);
 
   // Create dynamic data to pass into output
-  const title = initialData ? "Edit billboard" : "Create billboard";
-  const description = initialData ? "Edit a billboard" : "Add a new billboard";
-  const toastMessage = initialData ? "Billboard updated." : "Billboard created.";
+  const title = initialData ? "Edit product" : "Create product";
+  const description = initialData ? "Edit a product" : "Add a new product";
+  const toastMessage = initialData ? "Product updated." : "Product created.";
   const action = initialData ? "Save changes" : "Create";
 
   // 1. Define form with useForm hook & zodResolver for validation
@@ -76,18 +76,18 @@ const ProductForm: React.FC<ProductFormProps> = ({
     try {
       setLoading(true);
       if (initialData) {
-        // Update specific Billboard
-        await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data);
+        // Update specific product
+        await axios.patch(`/api/${params.storeId}/products/${params.productId}`, data);
       } else {
-        // Create new Billboard
-        await axios.post(`/api/${params.storeId}/billboards`, data);
+        // Create new product
+        await axios.post(`/api/${params.storeId}/products`, data);
       }
       // Refresh current route to make new request to server
       // Re-fetch data requests & re-render server components
       // Re-initializes initialData
       router.refresh();
-      // Re-route the user to the Billboards page
-      router.push(`/${params.storeId}/billboards`)
+      // Re-route the user to the products page
+      router.push(`/${params.storeId}/products`)
       // Success notification with dynamic message
       toast.success(toastMessage);
     } catch (error) {
@@ -101,16 +101,16 @@ const ProductForm: React.FC<ProductFormProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true);
-      // Call an API with dynamic route to delete the Billboard
-      await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
+      // Call an API with dynamic route to delete the product
+      await axios.delete(`/api/${params.storeId}/products/${params.productId}`);
       // Re-synchronize server component to update data
       router.refresh();
-      // Navigate back to the specific store's billboards page after deletion
-      router.push(`${params.storeId}/billboards`);
-      toast.success("Billboard deleted.");
+      // Navigate back to the specific store's products page after deletion
+      router.push(`${params.storeId}/products`);
+      toast.success("Product deleted.");
     } catch (error) {
-      // Safety mechanism will prompt a warning to delete any related records to the Billboard
-      toast.error("Make sure you removed all categories using this billboard first.");
+      // Safety mechanism will prompt a warning to delete any related records to the product
+      toast.error("Make sure you removed all categories using this product first.");
     } finally {
       setLoading(false);
       // Close the Modal
@@ -153,7 +153,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                 <FormItem>
                   <FormLabel>Label</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} placeholder="Billboard label" {...field} />
+                    <Input disabled={loading} placeholder="Product label" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
