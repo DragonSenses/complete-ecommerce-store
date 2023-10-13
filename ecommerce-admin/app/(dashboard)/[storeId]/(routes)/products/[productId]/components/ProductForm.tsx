@@ -4,7 +4,7 @@
 import * as z from 'zod';
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Product } from '@prisma/client';
+import { Image, Product } from '@prisma/client';
 import { toast } from 'react-hot-toast';
 import { Trash } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -38,7 +38,9 @@ type ProductFormValues = z.infer<typeof formSchema>;
 
 // Define type and shape of props
 interface ProductFormProps {
-  initialData: Product | null
+  initialData: Product & {
+    images: Image[]
+  } | null
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({
