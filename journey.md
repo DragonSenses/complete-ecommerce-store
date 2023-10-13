@@ -12584,7 +12584,88 @@ In the fetch, we also want to include the array of images which is a separate mo
 
 ## Product Form
 
+- Let's start with imports, form schema and inferred type
 
+```tsx
+"use client"
+
+// Global Imports
+import * as z from 'zod';
+import axios from 'axios';
+import React, { useState } from 'react';
+import { Product } from '@prisma/client';
+import { toast } from 'react-hot-toast';
+import { Trash } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { useParams, useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+// Local Imports
+import { AlertModal } from '@/components/modals/AlertModal';
+import { Button } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
+import { Separator } from '@/components/ui/separator';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import ImageUpload from '@/components/ui/ImageUpload';
+
+// Create zod object schema
+const formSchema = z.object({
+  label: z.string().min(1),
+  imageUrl: z.string().min(1),
+});
+
+// extract the inferred type
+type ProductFormValues = z.infer<typeof formSchema>;
+```
+
+- Product form props are not just a simple Product, unlike previous entities.
+  - Product Form props and an object that contains images which is an array of `Image`s
+
+```tsx
+import { Image, Product } from '@prisma/client';
+
+// Define type and shape of props
+interface ProductFormProps {
+  initialData: Product & {
+    images: Image[]
+  } | null
+}
+```
+
+- Then the `ProductForm` component, router/params, state variables `open` & `loading`, and dynamic data.
+
+```tsx
+const ProductForm: React.FC<ProductFormProps> = ({
+  initialData
+}) => {
+  // Create router object to perform client-side navigation
+  const router = useRouter();
+
+  // Hook returns an object containing current route's filled in dynamic parameters
+  const params = useParams();
+
+  // Create open state to control the Alert modal
+  const [open, setOpen] = useState(false);
+
+  // Create loading state to disable interactive elements
+  const [loading, setLoading] = useState(false);
+
+  // Create dynamic data to pass into output
+  const title = initialData ? "Edit product" : "Create product";
+  const description = initialData ? "Edit a product" : "Add a new product";
+  const toastMessage = initialData ? "Product updated." : "Product created.";
+  const action = initialData ? "Save changes" : "Create";
+```
+
+- Next we resolve the default values
 
 API routes
 Cell Action
