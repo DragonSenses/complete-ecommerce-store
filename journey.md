@@ -12795,6 +12795,134 @@ So in the code, for the 1st case we have to spread out the `initialData` values 
   });
 ```
 
+### Product Form Output
+
+- Start with a fragment that contains the `AlertModal`, `Heading` and delete `Button`
+
+```tsx
+  return (
+    <>
+      <AlertModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={onDelete}
+        loading={loading}
+      />
+      <div className="flex items-center justify-between">
+        <Heading
+          title={title}
+          description={description}
+        />
+        {initialData && (
+          <Button
+            disabled={loading}
+            variant="destructive"
+            size="icon"
+            onClick={() => setOpen(true)}
+          >
+            <Trash className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
+      <Separator />
+```
+
+- Create the `Form`, `form` and the `FormField` that contains our images
+- The name/label of the `FormField` will be is images, with an `ImageUpload` component which contains the props:
+
+  1. `value` - each value inside the `field` is mapped from an `image` to `image.url`
+  2. `disabled` set to `loading`
+  3. `onChange` is set to a function that takes `url` as parameter, and add that `url` to the existing collection of values. We spread out `field.value` and add an object containing `url`
+  4. `onRemove` will iterate over the values of `field.value` but filter it out by the current image. 
+    - The first function takes the parameter `url` and pass it to `field.onChange()`. The first parameter inside `onChange()` will spread out the values of `field.value` and use `filter` on it
+    - The function inside the filter will have a parameter named `current`, which is the current image, and check if the `url` is equal to the passed in `url`.
+
+```tsx
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+          <FormField
+            control={form.control}
+            name="images"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Images</FormLabel>
+                <FormControl>
+                  <ImageUpload
+                    value={field.value.map((image) => image.url )}
+                    disabled={loading}
+                    onChange={
+                      (url) => field.onChange([...field.value, { url }])
+                    }
+                    onRemove={
+                      (url) => field.onChange([...field.value.filter((current) => current.url !== url)])
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+```
+
+- Another `FormField` will render the name and product name to enter by. Finally a submit button to create the product.
+
+```tsx
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+          <FormField
+            control={form.control}
+            name="images"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Images</FormLabel>
+                <FormControl>
+                  <ImageUpload
+                    value={field.value.map((image) => image.url )}
+                    disabled={loading}
+                    onChange={
+                      (url) => field.onChange([...field.value, { url }])
+                    }
+                    onRemove={
+                      (url) => field.onChange([...field.value.filter((current) => current.url !== url)])
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="grid grid-cols-3 gap-8">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Product name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <Button disabled={loading} className="ml-auto" type="submit">
+            {action}
+          </Button>
+        </form>
+      </Form>
+    </>
+  )
+}
+
+export default ProductForm
+```
+
+TODO: Add select options for categories, etc. More form fields.
+
+
+
+
 
 
 API routes
