@@ -12564,7 +12564,28 @@ const ProductPage =  async ({
 export default ProductPage;
 ```
 
-Form
+### Include image to product page
+
+In the fetch, we also want to include the array of images which is a separate model. If we want to load the URL of all those images and not just the image ids then we need to add an `include`.
+
+[Prisma Client API - include](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#include)
+
+```tsx
+  // Fetch an existing product
+  const product = await prismadb.product.findUnique({
+    where: {
+      id: params.productId,
+    },
+    include: {
+      images: true
+    }
+  });
+```
+
+## Product Form
+
+
+
 API routes
 Cell Action
 Testing
