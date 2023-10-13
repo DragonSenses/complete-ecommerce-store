@@ -12617,6 +12617,8 @@ import { Input } from "@/components/ui/input";
 import ImageUpload from '@/components/ui/ImageUpload';
 ```
 
+#### `ProductFormProps`
+
 - Product form props are not just a simple Product, unlike previous entities.
   - Product Form props and an object that contains images which is an array of `Image`s
 
@@ -12630,6 +12632,8 @@ interface ProductFormProps {
   } | null
 }
 ```
+
+#### `ProductForm`
 
 - Then the `ProductForm` component, router/params, state variables `open` & `loading`, and dynamic data.
 
@@ -12656,6 +12660,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
   const action = initialData ? "Save changes" : "Create";
 ```
 
+#### Defining the Product Form
+
 - Next we define form with useForm hook & zodResolver for validation
   - Resolve `defaultValues` to empty counterparts
 
@@ -12674,6 +12680,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
     }
   });
 ```
+
+#### zod object schema for Product Form
 
 When we defined our form this way, we also need to reflect this inside zod.
 
@@ -12700,6 +12708,92 @@ const formSchema = z.object({
 type ProductFormValues = z.infer<typeof formSchema>;
 ```
 
+#### Issue: type error with `defaultValues`. Type of property price are incompatible.
+
+The errors:
+```sh
+      Types of property 'price' are incompatible.
+        Type 'Decimal' is not assignable to type 'number'.ts(2322)
+```
+
+Type errors occurs here:
+
+```tsx
+  const form = useForm<ProductFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: initialData || {
+      name: '',
+      images: [],
+      price: 0,
+      categoryId: '',
+      colorId: '',
+      sizeId: '',
+      isFeatured: false,
+      isArchived: false,
+    }
+  });
+```
+
+First we need to understand that here `defaultValues` is assigned to either `initialData` **OR** the object with all default values set.
+
+Currently, `initialData` is this type (when hovered over in VSCode)
+
+```sh
+(parameter) initialData: ({
+    id: string;
+    storeId: string;
+    categoryId: string;
+    name: string;
+    price: Decimal;
+    isFeatured: boolean;
+    isArchived: boolean;
+    sizeId: string;
+    colorId: string;
+    createdAt: Date;
+    updatedAt: Date;
+} & {
+    ...;
+}) | null
+```
+
+So in essence, when `initialData` is present as a prop then it is set to it OR it is set to a default object. Again let's breakdown the steps
+
+If `initialData` exists:
+
+1. True => Set `defaultValues` to `initialData`
+2. False => Set `defaultValues` to default object
+
+*Solution:* modify the `initialData`'s `price` to match the type. Change the condition where `initialData` does exist.
+
+We have to open up a ternary operator to modify case #1. To break it down,
+
+If `initialData` exists:
+
+1. True => Set `defaultValues` to all values in `initialData` **AND** `price` property is formatted properly as a Float.
+2. False => Set `defaultValues` to default object
+
+***Note***: in prisma and MySQL, the price is of type Decimal. But in this case, we need it to be a Float. We may have to come back to this later.
+
+So in the code, for the 1st case we have to spread out the `initialData` values and format `price`. The 2nd case stays the same, just the second part of the ternary operator.
+
+```tsx
+  const form = useForm<ProductFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: initialData ? {
+      ...initialData,
+      price: parseFloat(String(initialData?.price)),
+    } : {
+      name: '',
+      images: [],
+      price: 0,
+      categoryId: '',
+      colorId: '',
+      sizeId: '',
+      isFeatured: false,
+      isArchived: false,
+    }
+  });
+```
 
 
 
