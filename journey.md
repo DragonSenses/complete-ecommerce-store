@@ -12231,7 +12231,7 @@ Because the billboards entity is most similar to colors, we can copy the `app\(d
           |- page.tsx
 ```
 
-## Product - Page
+## Products - Page
 
 - imports and `ProductPage` with params
 
@@ -12526,8 +12526,44 @@ const ProductClient: React.FC<ProductClientProps> = ({
 export default ProductClient;
 ```
 
+## Product Page
 
-Page
+- A page to fetch an existing product, then render the `ProductForm` as `initialData`.
+
+`app\(dashboard)\[storeId]\(routes)\products\[productId]\page.tsx`
+```tsx
+// Global Imports
+import prismadb from '@/lib/prismadb';
+import React from 'react';
+
+// Local Imports
+import ProductForm from './components/ProductForm';
+
+const ProductPage =  async ({
+  params
+}:{
+  params: { productId: string }
+}) => {
+
+  // Fetch an existing product
+  const product = await prismadb.product.findUnique({
+    where: {
+      id: params.productId
+    }
+  });
+
+  return (
+    <div className="flex-col">
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <ProductForm initialData={product}/>
+      </div>
+    </div>
+  )
+}
+
+export default ProductPage;
+```
+
 Form
 API routes
 Cell Action
