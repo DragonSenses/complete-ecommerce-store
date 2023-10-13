@@ -4,7 +4,7 @@
 import * as z from 'zod';
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Billboard } from '@prisma/client';
+import { Product } from '@prisma/client';
 import { toast } from 'react-hot-toast';
 import { Trash } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -34,14 +34,14 @@ const formSchema = z.object({
 });
 
 // extract the inferred type
-type BillboardFormValues = z.infer<typeof formSchema>;
+type ProductFormValues = z.infer<typeof formSchema>;
 
 // Define type and shape of props
-interface BillboardFormProps {
-  initialData: Billboard | null
+interface ProductFormProps {
+  initialData: Product | null
 }
 
-const BillboardForm: React.FC<BillboardFormProps> = ({
+const ProductForm: React.FC<ProductFormProps> = ({
   initialData
 }) => {
   // Create router object to perform client-side navigation
@@ -63,7 +63,7 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
   const action = initialData ? "Save changes" : "Create";
 
   // 1. Define form with useForm hook & zodResolver for validation
-  const form = useForm<BillboardFormValues>({
+  const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
       label: '',
@@ -72,7 +72,7 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
   });
 
   // 2. Define a submit handler
-  const onSubmit = async (data: BillboardFormValues) => {
+  const onSubmit = async (data: ProductFormValues) => {
     try {
       setLoading(true);
       if (initialData) {
@@ -187,4 +187,4 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
   )
 }
 
-export default BillboardForm
+export default ProductForm
