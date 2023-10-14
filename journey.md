@@ -13058,7 +13058,38 @@ const ProductPage = async ({
 export default ProductPage;
 ```
 
-Fix types
+Next we,
+
+1. fix the typings in `ProductFormProps` then 
+2. destructure them in the props of `ProductForm`
+
+`ProductForm.tsx`
+```tsx
+import { Category, Color, Image, Product, Size } from '@prisma/client';
+// ...
+
+// Define type and shape of props
+interface ProductFormProps {
+  initialData: Product & {
+    images: Image[]
+  } | null;
+  categories: Category[];
+  colors: Color[];
+  sizes: Size[];
+}
+
+const ProductForm: React.FC<ProductFormProps> = ({
+  initialData,
+  categories,
+  colors,
+  sizes
+}) => {
+  // ...
+```
+
+
+```tsx
+```
 
 
 TODO: Add select options for categories, etc. More form fields.
