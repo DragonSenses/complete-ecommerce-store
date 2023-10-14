@@ -12997,6 +12997,69 @@ Right after the price FormField, we will add the category select FormField.
 />
 ```
 
+To make this work we have to navigate back to the page that holds this form (the server component) where we load our initial product. We fetch the `categories` inside this store. While we are at it, we can also fetch `sizes` and `colors`
+
+- Add `storeId` in the params
+- fetch `colors` found in the store
+- fetch `categories` found in the store
+- fetch `sizes`
+- pass in all this data into the client
+
+`app\(dashboard)\[storeId]\(routes)\products\[productId]\page.tsx`
+```tsx
+// imports...
+const ProductPage = async ({
+  params
+}: {
+  params: { productId: string, storeId: string }
+}) => {
+
+  const product = await prismadb.product.findUnique({
+    where: {
+      id: params.productId,
+    },
+    include: {
+      images: true
+    }
+  });
+
+  const categories = await prismadb.category.findMany({
+    where: {
+      storeId: params.storeId,
+    }
+  });
+
+  const colors = await prismadb.color.findMany({
+    where: {
+      storeId: params.storeId,
+    }
+  });
+
+  const sizes = await prismadb.size.findMany({
+    where: {
+      storeId: params.storeId,
+    }
+  });
+
+  return (
+    <div className="flex-col">
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <ProductForm 
+          categories={categories}
+          colors={colors}
+          sizes={sizes}
+          initialData={product} 
+        />
+      </div>
+    </div>
+  )
+}
+
+export default ProductPage;
+```
+
+Fix types
+
 
 TODO: Add select options for categories, etc. More form fields.
 
