@@ -4,7 +4,7 @@
 import * as z from 'zod';
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Image, Product } from '@prisma/client';
+import { Category, Color, Image, Product, Size } from '@prisma/client';
 import { toast } from 'react-hot-toast';
 import { Trash } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -53,11 +53,17 @@ type ProductFormValues = z.infer<typeof formSchema>;
 interface ProductFormProps {
   initialData: Product & {
     images: Image[]
-  } | null
+  } | null;
+  categories: Category[];
+  colors: Color[];
+  sizes: Size[];
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({
-  initialData
+  initialData,
+  categories,
+  colors,
+  sizes
 }) => {
   // Create router object to perform client-side navigation
   const router = useRouter();
