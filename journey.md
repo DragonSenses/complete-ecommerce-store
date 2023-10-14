@@ -12951,6 +12951,51 @@ export default ProductForm
           </div>
 ```
 
+#### Product Form Select
+
+In categories, we created a `FormField` that contains the `Select` component. We will create the same thing that allows us to select a category for a product.
+
+[shadcn/ui - Select](https://ui.shadcn.com/docs/components/select)
+
+Right after the price FormField, we will add the category select FormField.
+
+```tsx
+<FormField
+  control={form.control}
+  name="categoryId"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Category ID</FormLabel>
+      <Select 
+        disabled={loading} 
+        onValueChange={field.onChange} 
+        value={field.value}
+        defaultValue={field.value}
+      >
+        <FormControl>
+          <SelectTrigger>
+            <SelectValue
+            defaultValue={field.value}
+            placeholder="Select a category"
+            />
+          </SelectTrigger>
+        </FormControl>
+        <SelectContent>
+          {categories.map((category) => (
+            <SelectItem
+              key={category.id}
+              value={category.id}
+            >
+              {category.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+```
 
 
 TODO: Add select options for categories, etc. More form fields.
