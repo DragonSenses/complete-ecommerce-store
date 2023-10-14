@@ -15,6 +15,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertModal } from '@/components/modals/AlertModal';
 import { Button } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
+import { Input } from "@/components/ui/input";
+import ImageUpload from '@/components/ui/ImageUpload';
 import { Separator } from '@/components/ui/separator';
 import {
   Form,
@@ -24,8 +26,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import ImageUpload from '@/components/ui/ImageUpload';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 // Create zod object schema
 const formSchema = z.object({
@@ -207,6 +214,41 @@ const ProductForm: React.FC<ProductFormProps> = ({
                   <FormControl>
                     <Input type="number" disabled={loading} placeholder="9.99" {...field} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="categoryId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Category ID</FormLabel>
+                  <Select 
+                    disabled={loading} 
+                    onValueChange={field.onChange} 
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                        defaultValue={field.value}
+                        placeholder="Select a category"
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem
+                          key={category.id}
+                          value={category.id}
+                        >
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
