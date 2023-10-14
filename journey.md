@@ -13087,9 +13087,87 @@ const ProductForm: React.FC<ProductFormProps> = ({
   // ...
 ```
 
+Now with that we can also add a `FormField` `Select` for both `sizes` and `colors` in the output.
 
 ```tsx
+<FormField
+  control={form.control}
+  name="sizeId"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Size ID</FormLabel>
+      <Select 
+        disabled={loading} 
+        onValueChange={field.onChange} 
+        value={field.value}
+        defaultValue={field.value}
+      >
+        <FormControl>
+          <SelectTrigger>
+            <SelectValue
+            defaultValue={field.value}
+            placeholder="Select a size"
+            />
+          </SelectTrigger>
+        </FormControl>
+        <SelectContent>
+          {sizes.map((size) => (
+            <SelectItem
+              key={size.id}
+              value={size.id}
+            >
+              {size.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+<FormField
+  control={form.control}
+  name="colorId"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Color ID</FormLabel>
+      <Select 
+        disabled={loading} 
+        onValueChange={field.onChange} 
+        value={field.value}
+        defaultValue={field.value}
+      >
+        <FormControl>
+          <SelectTrigger>
+            <SelectValue
+            defaultValue={field.value}
+            placeholder="Select a color"
+            />
+          </SelectTrigger>
+        </FormControl>
+        <SelectContent>
+          {colors.map((color) => (
+            <SelectItem
+              key={color.id}
+              value={color.id}
+            >
+              {color.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
 ```
+
+#### Checkbox component for `isFeatured` and `isArchived`
+
+The next thing to add to our output is the `isFeatured` and `isArchived` for our `ProductForm`.
+
+
+
 
 
 TODO: Add select options for categories, etc. More form fields.
