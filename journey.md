@@ -13330,7 +13330,60 @@ Now to wrap up our product form, we create the submit and delete handlers with t
   };
 ```
 
+## Product API routes
 
-API routes
+Under `api/[storeId]` folder, create `products` folder with a `route.ts` inside.
+
+- Inside the `api/[storeId]/products`, create a `[productId]` folder with a route.ts inside.
+
+### Routes for all products
+
+Starting with `app\api\[storeId]\products\route.ts`, which will be our route for all products.
+
+1. `POST` route
+
+- Create a `POST` route that authenticates the user, 401 if unauthenticated.
+- Extract the body of the request and destructure the fields
+  - Fields are { name, price, categoryId, colorId, sizeId, images, isFeatured, isArchived}
+  - Check for each field
+
+```tsx
+// Global Imports
+import prismadb from "@/lib/prismadb";
+import { auth } from "@clerk/nextjs";
+import { NextResponse } from "next/server";
+
+export async function POST(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  try {
+    // Use Clerk to authenticate POST route
+    const { userId } = auth();
+
+    // Send back 401, unauthenticated if user is not logged-in
+    if (!userId) {
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
+
+    // Extract the body
+    const body = await req.json();
+
+    // Destructure fields out of body
+    const { 
+      name, 
+      price,
+      categoryId,
+      colorId,
+      sizeId,
+      images,
+      isFeatured,
+      isArchived
+     } = body;
+```
+
+
+TODO: Check fields in body
+
 Cell Action
 Testing
