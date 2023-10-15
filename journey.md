@@ -361,6 +361,14 @@ This is great for our projects in that we have all the components we are using i
 
 This completes our setup for the Next.js 13 project for the admin dashboard. Next let's implement our authentication.
 
+## Updating shadcn/ui component
+
+We will need to manually update the project to get the latest changes.
+
+[shadcn/ui - Updating your project](https://ui.shadcn.com/docs/changelog#updating-your-project)
+
+To update our components one needs to run the `add` command again followed by the `--overwrite` argument.
+
 # Authentication
 
 For now we start with the planning of our authentication for admin dashboard.
@@ -13166,11 +13174,53 @@ Now with that we can also add a `FormField` `Select` for both `sizes` and `color
 
 The next thing to add to our output is the `isFeatured` and `isArchived` for our `ProductForm`.
 
+We are going to use the `Checkbox` component.
+
+[shadcn/ui - Checkbox](https://ui.shadcn.com/docs/components/checkbox)
+
+```sh
+npx shadcn-ui@latest add checkbox
+```
+
+Now create a `FormField` right after the price form field. Now inside this `FormField` for `isFeatured` is the following props: `control`, `name` and `render`. Then a `FormItem`, followed by a `FormControl` and a `Checkbox` within that. The checkbox will have the props `checked` set to `field.value` and `onCheckChange` set to `field.onChange`.
+
+```tsx
+<FormField
+  control={form.control}
+  name="isFeatured"
+  render={({ field }) => (
+    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+      <FormControl >
+        <Checkbox 
+          checked={field.value}
+          onCheckedChange={field.onChange}
+        />
+      </FormControl>
+    </FormItem>
+  )}
+/>
+```
+
+##### Issue to note: type error event under `onCheckedChange`
+
+Now in certain cases, you may get a type error within the `Checkbox` prop of `onCheckChange`. Now in may work in development as intended but in production this type error may prevent deployment.
+
+The issue revolves around React Hook Form, `onChange` values and mismatch with `FormValues`. Here is a related GitHub issue regarding this [react-hook-form issue with onChange](https://github.com/react-hook-form/react-hook-form/pull/10342).
+
+The workaround is to either get the compiler to ignore the type error with a comment `@ts-ignore` to suppress ts errors in the next line.
+
+```tsx
+<Checkbox 
+  checked={field.value}
+  // @ts-ignore
+  onCheckedChange={field.onChange}
+/>
+```
+
+If you have no error, then we can move on.
 
 
 
-
-TODO: Add select options for categories, etc. More form fields.
 
 API routes
 Cell Action
