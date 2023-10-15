@@ -13277,6 +13277,59 @@ We can copy the `isFeatured` `FormField` and just change the `name`, `FormLabel`
 />
 ```
 
+### Product Form - function handlers
+
+Now to wrap up our product form, we create the submit and delete handlers with the correct routes.
+
+```tsx
+  // 2. Define a submit handler
+  const onSubmit = async (data: ProductFormValues) => {
+    try {
+      setLoading(true);
+      if (initialData) {
+        // Update specific product
+        await axios.patch(`/api/${params.storeId}/products/${params.productId}`, data);
+      } else {
+        // Create new product
+        await axios.post(`/api/${params.storeId}/products`, data);
+      }
+      // Refresh current route to make new request to server
+      // Re-fetch data requests & re-render server components
+      // Re-initializes initialData
+      router.refresh();
+      // Re-route the user to the products page
+      router.push(`/${params.storeId}/products`)
+      // Success notification with dynamic message
+      toast.success(toastMessage);
+    } catch (error) {
+      toast.error("Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 3. Define a delete handler
+  const onDelete = async () => {
+    try {
+      setLoading(true);
+      // Call an API with dynamic route to delete the product
+      await axios.delete(`/api/${params.storeId}/products/${params.productId}`);
+      // Re-synchronize server component to update data
+      router.refresh();
+      // Navigate back to the specific store's products page after deletion
+      router.push(`${params.storeId}/products`);
+      toast.success("Product deleted.");
+    } catch (error) {
+      // Safety mechanism will prompt a warning to delete any related records to the product
+      toast.error("Something went wrong.");
+    } finally {
+      setLoading(false);
+      // Close the Modal
+      setOpen(false);
+    }
+  };
+```
+
 
 API routes
 Cell Action
