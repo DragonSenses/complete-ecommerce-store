@@ -142,7 +142,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
       toast.success("Product deleted.");
     } catch (error) {
       // Safety mechanism will prompt a warning to delete any related records to the product
-      toast.error("Make sure you removed all categories using this product first.");
+      toast.error("Something went wrong.");
     } finally {
       setLoading(false);
       // Close the Modal
