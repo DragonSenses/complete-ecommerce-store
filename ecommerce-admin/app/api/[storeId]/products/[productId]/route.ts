@@ -9,19 +9,25 @@ export async function GET (
   try {
     // Check parameters
     if (!params.productId){
-      return new NextResponse("product ID is required", { status: 400 });
+      return new NextResponse("Product ID is required", { status: 400 });
     }
 
     // Find the specific product in database
     const product = await prismadb.product.findUnique({
       where: {
         id: params.productId,
+      },
+      include: {
+        images: true,
+        category: true,
+        color: true,
+        size: true,
       }
     });
 
     return NextResponse.json(product);
   } catch (error) {
-    console.log('[product_GET]', error);
+    console.log('[PRODUCT_GET]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
