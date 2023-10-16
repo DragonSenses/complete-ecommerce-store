@@ -13384,6 +13384,7 @@ export async function POST(
 
 Next we check every *required* field in the body. Recall that `isFeatured` and `isArchived` are optional properties.
 
+- Since images is an array we have to check for both if `images` is empty and if `images.length` is non-positive 
 - Also check store exists for current user
 
 `app\api\[storeId]\products\route.ts`
@@ -13432,7 +13433,53 @@ Next we check every *required* field in the body. Recall that `isFeatured` and `
       return new NextResponse("Unauthorized", { status: 403 });
     }
 ```
-  
+
+- Create the product passing in all the data. Then send back the response.
+  - Note that we can't just pass in `images` as it is a separate model
+
+We need to open up an object for `images`, and use `createMany` to pass in an object with `data`. Open up an array for `data` and spread out the `images` while mapping each image that is of type string url and return that image.
+
+
+```tsx
+export async function POST(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  try {
+    // ...
+
+    // Create product for user's specific store in the database
+    const product = await prismadb.product.create({
+      data: {
+        name,
+        price,
+        isFeatured,
+        isArchived,
+        categoryId,
+        colorId,
+        sizeId,
+        storeId: params.storeId,
+        images: {
+          createMany: {
+            data: [
+              ...images.map((image: { url: string }) => image )
+            ]
+          }
+        }
+      }
+    });
+
+    // Send back response with the product
+    return NextResponse.json(product);
+  } catch (error){
+    console.log('[PRODUCTS_POST]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}
+```
+
+
+
 
 Cell Action
 Testing
