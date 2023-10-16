@@ -13569,5 +13569,42 @@ Next we have to `include` the related records to properly display it in the fron
     });
 ```
 
+### Product - GET route
+
+Navigate to `app\api\[storeId]\products\[productId]\route.ts`, and create a `GET` function. This will fetch the individual product given a `productId`. When fetching the `product` make sure to include the related records.
+
+```tsx
+export async function GET (
+  req: Request,
+  { params }: { params: { productId: string }}
+){
+  try {
+    // Check parameters
+    if (!params.productId){
+      return new NextResponse("Product ID is required", { status: 400 });
+    }
+
+    // Find the specific product in database
+    const product = await prismadb.product.findUnique({
+      where: {
+        id: params.productId,
+      },
+      include: {
+        images: true,
+        category: true,
+        color: true,
+        size: true,
+      }
+    });
+
+    return NextResponse.json(product);
+  } catch (error) {
+    console.log('[PRODUCT_GET]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+};
+```
+
+
 Cell Action
 Testing
