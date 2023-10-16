@@ -43,7 +43,7 @@ export async function PATCH (
     }
 
     if (!params.productId){
-      return new NextResponse("product ID is required", { status: 400 });
+      return new NextResponse("Product ID is required", { status: 400 });
     }
 
     // Authenticate userId with Clerk to check if user is logged-in
@@ -57,16 +57,41 @@ export async function PATCH (
     // Extract body from the request
     const body = await req.json();
     
-    // Destructure data from body
-    const { name, value } = body;
+    // Destructure fields out of body
+    const { 
+      name, 
+      price,
+      categoryId,
+      colorId,
+      sizeId,
+      images,
+      isFeatured,
+      isArchived
+     } = body;
 
-    // Check data
-    if (!name) {
+    // Check every required field
+    if (!name){
       return new NextResponse("Name is required", { status: 400 });
     }
 
-    if (!value) {
-      return new NextResponse("Value is required", { status: 400 });
+    if (!price){
+      return new NextResponse("Price is required", { status: 400 });
+    }
+
+    if (!categoryId){
+      return new NextResponse("Category ID is required", { status: 400 });
+    }
+
+    if (!colorId){
+      return new NextResponse("Color ID is required", { status: 400 });
+    }
+
+    if (!sizeId){
+      return new NextResponse("Size ID is required", { status: 400 });
+    }
+
+    if (!images || !images.length){
+      return new NextResponse("Images are required", { status: 400 });
     }
 
     // Check database if store exists for current user
@@ -90,13 +115,21 @@ export async function PATCH (
       },
       data: {
         name,
-        value
+        price,
+        categoryId,
+        colorId,
+        sizeId,
+        images: {
+          deleteMany: {}
+        },
+        isFeatured,
+        isArchived,
       }
     });
 
     return NextResponse.json(product);
   } catch (error) {
-    console.log('[product_PATCH]', error);
+    console.log('[PRODUCT_PATCH]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
