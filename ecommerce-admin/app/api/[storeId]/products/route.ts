@@ -79,8 +79,20 @@ export async function POST(
     const product = await prismadb.product.create({
       data: {
         name,
-        value,
-        storeId: params.storeId
+        price,
+        isFeatured,
+        isArchived,
+        categoryId,
+        colorId,
+        sizeId,
+        storeId: params.storeId,
+        images: {
+          createMany: {
+            data: [
+              ...images.map((image: { url: string }) => image )
+            ]
+          }
+        }
       }
     });
 
