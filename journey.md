@@ -13340,7 +13340,7 @@ Under `api/[storeId]` folder, create `products` folder with a `route.ts` inside.
 
 Starting with `app\api\[storeId]\products\route.ts`, which will be our route for all products.
 
-1. `POST` route
+### Products - `POST` route
 
 - Create a `POST` route that authenticates the user, 401 if unauthenticated.
 - Extract the body of the request and destructure the fields
@@ -13478,8 +13478,96 @@ export async function POST(
 }
 ```
 
+### Products - GET route
 
+The `GET` route will be used heavily on the front-end side, as it will retrieve all products related to that store.
 
+Because it will be used extensively, we want to give it filters to the products we retrieve.
+
+We want to get the subset of products for a specific `categoryId` or a specific `colorId` and so on.
+
+To do this we have to use the [URL interface](https://developer.mozilla.org/en-US/docs/Web/API/URL).
+
+In the given code, `searchParams` is a property of the `URL` interface in JavaScript. It returns a `URLSearchParams` object that allows access to the GET decoded query arguments contained in the URL. In this code, `searchParams` is used to extract the value of the `categoryId` parameter from the URL query string. If `categoryId` is not present in the query string, it is set to `undefined`. 
+
+The `URLSearchParams` object provides utility methods to work with the query string of a URL. It can be used to parse out the parameters from the query string. 
+
+In this code, `searchParams.get("categoryId")` returns the value of the `categoryId` parameter from the URL query string. If it is not present, it returns `undefined`. The value of `categoryId` is then assigned to a constant variable named `categoryId`.
+
+```tsx
+export async function GET(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  try {
+    const { searchParams } = new URL(req.url);
+    
+    const categoryId = searchParams.get("categoryId") || undefined;
+
+    // ...
+}
+```
+
+Now we do the same for the other filters: `colorId`, `sizeId`. We'll also have `isFeatured` but since its optional, we don't need to set it to undefined.
+
+```tsx
+export async function GET(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  try {
+    const { searchParams } = new URL(req.url);
+
+    const categoryId = searchParams.get("categoryId") || undefined;
+    const colorId = searchParams.get("colorId") || undefined;
+    const sizeId = searchParams.get("sizeId") || undefined;
+    const isFeatured = searchParams.get("isFeatured");
+```
+
+Now when we load all the products using `prismadb.product.findMany` we pass in these arguments to the `where`.
+
+- Pass in the IDs to `where`
+- If `isFeatured` is passed in, then `true` otherwise `undefined` to ignore it
+- `isArchived` will *always* be `false` because we never want to load back products that are archived from our store
+
+```tsx
+    const products = await prismadb.product.findMany({
+      where: {
+        storeId: params.storeId,
+        categoryId,
+        colorId,
+        sizeId,
+        isFeatured: isFeatured ? true : undefined,
+        isArchived: false
+      }
+    });
+```
+
+Next we have to `include` the related records to properly display it in the front-end. Also `orderBy` descending so we can load the newest products.
+
+```tsx
+    // Find all products in the store filtered by query arguments
+    // Never load archived products
+    const products = await prismadb.product.findMany({
+      where: {
+        storeId: params.storeId,
+        categoryId,
+        colorId,
+        sizeId,
+        isFeatured: isFeatured ? true : undefined,
+        isArchived: false
+      },
+      include: {
+        images: true,
+        category: true,
+        color: true,
+        size: true,
+      },
+      orderBy: {
+        createdAt: `desc`
+      }
+    });
+```
 
 Cell Action
 Testing
