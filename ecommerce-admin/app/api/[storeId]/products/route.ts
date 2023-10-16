@@ -31,14 +31,29 @@ export async function POST(
       isArchived
      } = body;
 
-    // Check name field
+    // Check every required field
     if (!name){
       return new NextResponse("Name is required", { status: 400 });
     }
 
-    // Check value field
-    if (!value){
-      return new NextResponse("Image URL is required", { status: 400 });
+    if (!price){
+      return new NextResponse("Price is required", { status: 400 });
+    }
+
+    if (!categoryId){
+      return new NextResponse("Category ID is required", { status: 400 });
+    }
+
+    if (!colorId){
+      return new NextResponse("Color ID is required", { status: 400 });
+    }
+
+    if (!sizeId){
+      return new NextResponse("Size ID is required", { status: 400 });
+    }
+
+    if (!images || !images.length){
+      return new NextResponse("Images are required", { status: 400 });
     }
 
     // Check if storeId exists
