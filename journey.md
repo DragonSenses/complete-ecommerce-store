@@ -13382,8 +13382,57 @@ export async function POST(
      } = body;
 ```
 
+Next we check every *required* field in the body. Recall that `isFeatured` and `isArchived` are optional properties.
 
-TODO: Check fields in body
+- Also check store exists for current user
+
+`app\api\[storeId]\products\route.ts`
+```tsx
+    // Check every required field
+    if (!name){
+      return new NextResponse("Name is required", { status: 400 });
+    }
+
+    if (!price){
+      return new NextResponse("Price is required", { status: 400 });
+    }
+
+    if (!categoryId){
+      return new NextResponse("Category ID is required", { status: 400 });
+    }
+
+    if (!colorId){
+      return new NextResponse("Color ID is required", { status: 400 });
+    }
+
+    if (!sizeId){
+      return new NextResponse("Size ID is required", { status: 400 });
+    }
+
+    if (!images || !images.length){
+      return new NextResponse("Images are required", { status: 400 });
+    }
+
+    // Check if storeId exists
+    if (!params.storeId) {
+      return new NextResponse("Store ID is required", { status: 400 });
+    }
+
+    // Check database if store exists for current user
+    const storeByUserId = await prismadb.store.findFirst({
+      where: {
+        id: params.storeId,
+        userId
+      }
+    });
+
+    // User is logged-in but does not have permission to modify the store
+    if (!storeByUserId) {
+      // Respond with 403 Forbidden, current user is unauthorized to modify
+      return new NextResponse("Unauthorized", { status: 403 });
+    }
+```
+  
 
 Cell Action
 Testing
