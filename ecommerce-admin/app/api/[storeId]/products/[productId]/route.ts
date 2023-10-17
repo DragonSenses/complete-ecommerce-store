@@ -162,7 +162,7 @@ export async function DELETE (
     }
 
     if (!params.productId){
-      return new NextResponse("product ID is required", { status: 400 });
+      return new NextResponse("Product ID is required", { status: 400 });
     }
 
     // Authenticate userId with Clerk to check if user is logged-in
@@ -196,7 +196,7 @@ export async function DELETE (
 
     return NextResponse.json(product);
   } catch (error) {
-    console.log('[product_DELETE]', error);
+    console.log('[PRODUCT_DELETE]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
