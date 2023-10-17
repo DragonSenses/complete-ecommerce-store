@@ -13605,6 +13605,162 @@ export async function GET (
 };
 ```
 
+### Product - PATCH route
+
+Similar to the products patch route, we have to 
+
+- check params
+- authenticate user
+- extract & check fields in the body
+- check if store exists for user
+- Find and update the specific product
+- Send response with product
+
+```tsx
+export async function PATCH (
+  req: Request,
+  { params }: { params: { storeId: string, productId: string }}
+){
+  try {
+    // Check parameters
+    if (!params.storeId){
+      return new NextResponse("Store ID is required", { status: 400 });
+    }
+
+    if (!params.productId){
+      return new NextResponse("Product ID is required", { status: 400 });
+    }
+
+    // Authenticate userId with Clerk to check if user is logged-in
+    const { userId } = auth();
+    
+    // If userId does not exist send back 401 response
+    if (!userId) {
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
+
+    // Extract body from the request
+    const body = await req.json();
+    
+    // Destructure fields out of body
+    const { 
+      name, 
+      price,
+      categoryId,
+      colorId,
+      sizeId,
+      images,
+      isFeatured,
+      isArchived
+     } = body;
+
+    // Check every required field
+    if (!name){
+      return new NextResponse("Name is required", { status: 400 });
+    }
+
+    if (!price){
+      return new NextResponse("Price is required", { status: 400 });
+    }
+
+    if (!categoryId){
+      return new NextResponse("Category ID is required", { status: 400 });
+    }
+
+    if (!colorId){
+      return new NextResponse("Color ID is required", { status: 400 });
+    }
+
+    if (!sizeId){
+      return new NextResponse("Size ID is required", { status: 400 });
+    }
+
+    if (!images || !images.length){
+      return new NextResponse("Images are required", { status: 400 });
+    }
+
+    // Check database if store exists for current user
+    const storeByUserId = await prismadb.store.findFirst({
+      where: {
+        id: params.storeId,
+        userId
+      }
+    });
+
+    // User is logged-in but does not have permission to modify the store
+    if (!storeByUserId) {
+      // Respond with 403 Forbidden, current user is unauthorized to modify
+      return new NextResponse("Unauthorized", { status: 403 });
+    }
+
+    // Find and Update a specific product
+    const product = await prismadb.product.updateMany({
+      where: {
+        id: params.productId
+      },
+      data: {
+        name,
+        price,
+        categoryId,
+        colorId,
+        sizeId,
+        images: {
+          deleteMany: {}
+        },
+        isFeatured,
+        isArchived,
+      }
+    });
+
+    return NextResponse.json(product);
+  } catch (error) {
+    console.log('[PRODUCT_PATCH]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+};
+```
+
+#### Issue with Product PATCH route
+
+The `images` in this code is what throws the error:
+```tsx
+    const product = await prismadb.product.updateMany({
+      where: {
+        id: params.productId
+      },
+      data: {
+        name,
+        price,
+        categoryId,
+        colorId,
+        sizeId,
+        images: {
+          deleteMany: {}
+        },
+        isFeatured,
+        isArchived,
+      }
+    });
+```
+
+The error msg:
+
+```sh
+Type '{ name: any; price: any; categoryId: any; colorId: any; sizeId: any; images: { deleteMany: {}; }; isFeatured: any; isArchived: any; }' is not assignable to type '(Without<ProductUpdateManyMutationInput, ProductUncheckedUpdateManyInput> & ProductUncheckedUpdateManyInput) | (Without<...> & ProductUpdateManyMutationInput)'.
+  Object literal may only specify known properties, and 'images' does not exist in type '(Without<ProductUpdateManyMutationInput, ProductUncheckedUpdateManyInput> & ProductUncheckedUpdateManyInput) | (Without<...> & ProductUpdateManyMutationInput)'.ts(2322)
+index.d.ts(7431, 5): The expected type comes from property 'data' which is declared here on type '{ data
+```
+
+*Solution:* Modify the query to update a bit. We are going to have to use `update` instead of `updateMany`. Next we also don't assign the result of the query yet to a constant. 
+
+The solution comes in two parts:
+
+1. Update the specific product with the latest data using a general (use `update()`). Here we delete images.
+2. Add const to specific product by creating it with new images.
+
+TODO: 
+Don't declare const yet, just patch the data. Delete images.
+
 
 Cell Action
 Testing
