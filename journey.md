@@ -13976,5 +13976,23 @@ export const CellAction: React.FC<CellActionProps> = ({
 }
 ```
 
+## Product - Testing
 
-Testing
+- Create a product
+  - Upload image, fill out form fields
+- Test the cell actions:
+  - Copy, Update and Delete
+- Filter/Search color by name
+- Copy an API route
+  - Test route url
+  - Test route url with individual `productId`
+
+- Test the filter query, load an API url filtered by `sizeId`
+  - Copy the `sizeId` property
+  - In the url, add in front of `products` the string `?sizeId=SIZE_ID_HERE`
+  - Test the API parameter query with the parameter of `sizeId`, should yield the same result
+- Test color filter query
+- Test `products?isFeatured=false` in the query URL
+
+- Test Archived. Set the product to archived in the form. Then load the API route to that product to see if we retrieve anything from the response.
+  - Should see product doesn't load any data because `isArchived` is `true`
