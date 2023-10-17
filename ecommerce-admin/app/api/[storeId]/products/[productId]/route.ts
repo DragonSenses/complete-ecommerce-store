@@ -108,8 +108,9 @@ export async function PATCH (
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
-    // Find and Update a specific product
-    const product = await prismadb.product.updateMany({
+    // General query to find and update a specific product
+    // Also deletes the images
+    await prismadb.product.update({
       where: {
         id: params.productId
       },
@@ -124,6 +125,22 @@ export async function PATCH (
         },
         isFeatured,
         isArchived,
+      }
+    });
+
+    // Update the product by creating new images
+    const product = await prismadb.product.update({
+      where: {
+        id: params.productId
+      },
+      data: {
+        images: {
+          createMany: {
+            data: [
+              ...images.map((image: { url: string }) => image),
+            ]
+          }
+        }
       }
     });
 
