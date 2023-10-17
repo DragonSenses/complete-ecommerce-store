@@ -12216,7 +12216,7 @@ Add products to main navigation
 
 ### Products - Project structure
 
-Because the billboards entity is most similar to colors, we can copy the `app\(dashboard)\[storeId]\(routes)\billboards` folder and paste it into `(routes)` while renaming it to `products`.
+Because the billboards entity is most similar to billboards, we can copy the `app\(dashboard)\[storeId]\(routes)\billboards` folder and paste it into `(routes)` while renaming it to `products`.
 
 ```sh
 - app
@@ -13996,3 +13996,57 @@ export const CellAction: React.FC<CellActionProps> = ({
 
 - Test Archived. Set the product to archived in the form. Then load the API route to that product to see if we retrieve anything from the response.
   - Should see product doesn't load any data because `isArchived` is `true`
+
+# Order entity
+
+We build the next entity for orders in our ecommerce store.
+
+## Order Model
+
+
+## Orders - Main Nav
+
+Let's add `orders` to the `routes` in `MainNav`. I put it below `products`.
+
+`ecommerce-admin\components\MainNav.tsx`
+```tsx
+export default function MainNav({
+// ...
+  const routes = [
+    // ...
+    {
+      href: `/${params.storeId}/orders`,
+      label: 'Orders',
+      active: pathname === `/${params.storeId}/orders`,
+    },
+  ];
+```
+
+### Orders - Project structure
+
+Because the orders entity is most similar to colors, we can copy the `app\(dashboard)\[storeId]\(routes)\colors` folder and paste it into `(routes)` while renaming it to `orders`.
+
+```sh
+- app
+  |- (dashboard)
+    |-  [storeId]
+      |-  (routes)
+        |- orders
+          |- [orderId]
+            |- components
+              |- ProductForm.tsx
+            |- page.tsx
+          |- components
+            |- cell-action.tsx
+            |- client.tsx
+            |- columns.tsx
+          |- page.tsx
+```
+Page
+Column
+Client
+Page
+Form
+API Routes
+Cell Action
+Testing
