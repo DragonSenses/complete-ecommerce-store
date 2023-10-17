@@ -13718,6 +13718,7 @@ export async function PATCH (
     return new NextResponse("Internal error", { status: 500 });
   }
 };
+
 ```
 
 #### Issue with Product PATCH route
@@ -13756,10 +13757,52 @@ index.d.ts(7431, 5): The expected type comes from property 'data' which is decla
 The solution comes in two parts:
 
 1. Update the specific product with the latest data using a general (use `update()`). Here we delete images.
-2. Add const to specific product by creating it with new images.
+2. Add `const` to specific product by creating it with new images.
 
-TODO: 
-Don't declare const yet, just patch the data. Delete images.
+```tsx
+    // General query to find and update a specific product
+    // Also deletes the images
+    await prismadb.product.update({
+      where: {
+        id: params.productId
+      },
+      data: {
+        name,
+        price,
+        categoryId,
+        colorId,
+        sizeId,
+        images: {
+          deleteMany: {}
+        },
+        isFeatured,
+        isArchived,
+      }
+    });
+
+    // Update the product by creating new images
+    const product = await prismadb.product.update({
+      where: {
+        id: params.productId
+      },
+      data: {
+        images: {
+          createMany: {
+            data: [
+              ...images.map((image: { url: string }) => image),
+            ]
+          }
+        }
+      }
+    });
+
+    return NextResponse.json(product);
+  } catch (error) {
+    console.log('[PRODUCT_PATCH]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+};
+```
 
 
 Cell Action
