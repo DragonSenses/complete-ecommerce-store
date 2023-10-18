@@ -14003,6 +14003,36 @@ We build the next entity for orders in our ecommerce store.
 
 ## Order Model
 
+The order entity will represent our orders, a request for something to be made, supplied, or served. It contains the following properties `{ id, storeId, store relation, orderItems, isPaid, phone, address, createdAt, updatedAt }`.
+
+- Both `phone` and `address` is initialized to an empty string, and will be set when an order has been made.
+
+```prisma
+model Order {
+  id         String    @id @default(uuid())
+  storeId    String
+  store      Store @relation("StoreToOrder", fields: [storeId], references: [id])
+  orderItems OrderItem[]
+  isPaid     Boolean
+  phone      String    @default("")
+  address    String    @default("")
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  // Manually add index on relation scalar fields
+  @@index([storeId])
+}
+```
+
+At to `Store` model
+
+```prisma
+model Store {
+  // ...
+  orders     Order[]      @relation("StoreToOrder")
+}
+```
+
 
 ## Orders - Main Nav
 
