@@ -14033,6 +14033,46 @@ model Store {
 }
 ```
 
+### OrderItem model
+
+The `OrderItem` will be an intermediary for many relationships between `OrderItems` and `products`.
+
+It will have `{ id, orderId, order relation, productId, product relation }`
+
+```prisma
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  // Manually add index on relation scalar fields
+  @@index([orderId])
+  @@index([productId])
+}
+```
+
+Add the OrderItem to `Product` model.
+
+```prisma
+model Product {
+  // ...
+  orderItems  OrderItem[]
+}
+```
+
+### Update the prisma schema
+
+Then generate prisma client and push to database to sync the changes.
+
+```sh
+npx prisma generate
+```
+
+```sh
+npx prisma db push
+```
 
 ## Orders - Main Nav
 
