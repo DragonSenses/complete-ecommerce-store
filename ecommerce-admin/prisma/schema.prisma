@@ -19,6 +19,7 @@ model Store {
   billboards Billboard[]  @relation("StoreToBillboard")
   categories Category[]   @relation("StoreToCategory")
   colors     Color[]      @relation("StoreToColor")
+  orders     Order[]      @relation("StoreToOrder")
   products   Product[]    @relation("StoreToProduct")
   sizes      Size[]       @relation("StoreToSize")
   createdAt  DateTime     @default(now())
@@ -120,4 +121,19 @@ model Image {
 
   // Manually add index on relation scalar fields
   @@index([productId])
+}
+
+model Order {
+  id         String    @id @default(uuid())
+  storeId    String
+  store      Store @relation("StoreToOrder", fields: [storeId], references: [id])
+  orderItems OrderItem[]
+  isPaid     Boolean
+  phone      String    @default("")
+  address    String    @default("")
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  // Manually add index on relation scalar fields
+  @@index([storeId])
 }
