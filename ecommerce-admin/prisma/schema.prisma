@@ -95,6 +95,7 @@ model Product {
   isFeatured  Boolean   @default(false)
   isArchived  Boolean   @default(false)
   images      Image[]
+  orderItems  OrderItem[]
   // Filter relations
   sizeId      String
   size        Size      @relation(fields: [sizeId], references: [id])
@@ -136,4 +137,16 @@ model Order {
 
   // Manually add index on relation scalar fields
   @@index([storeId])
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  // Manually add index on relation scalar fields
+  @@index([orderId])
+  @@index([productId])
 }
