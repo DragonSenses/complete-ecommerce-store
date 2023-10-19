@@ -14175,6 +14175,7 @@ To repeat, we run a `reduce` function over all our `orderItems` and we combine t
     totalPrice: priceFormatter.format(item.orderItems.reduce((total, item) => {
       return total + Number(item.product.price)
     }, 0)),
+    isPaid: item.isPaid,
     createdAt: format(item.createdAt, "MMMM do, yyyy")
   }));
 ```
@@ -14243,7 +14244,43 @@ export const columns: ColumnDef<OrderColumn>[] = [
 ]
 ```
 
-Client
+## Order Client
+
+The `OrderClient` will simply present all the orders data in the `DataTable`. The output is simply a `Heading`, `Separator` and `DataTable`.
+
+```tsx
+"use client";
+
+// Local Imports
+import { Heading } from "@/components/ui/heading";
+import { Separator } from "@/components/ui/separator";
+import { DataTable } from "@/components/ui/data-table";
+
+import { OrderColumn, columns } from "./columns";
+
+interface OrderClientProps {
+  data: OrderColumn[]
+}
+
+// Client component that loads all our Orders
+const OrderClient: React.FC<OrderClientProps> = ({
+  data
+}) => {
+
+  return (
+    <>
+      <Heading
+        title={`Orders (${data.length})`}
+        description="Manage orders for your store"
+      />
+      <Separator />
+      <DataTable columns={columns} data={data} searchKey={"products"} />
+    </>
+  )
+}
+
+export default OrderClient;
+```
 
 API Routes
 Cell Action
