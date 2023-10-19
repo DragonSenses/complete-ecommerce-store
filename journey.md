@@ -14102,17 +14102,101 @@ Because the orders entity is most similar to colors, we can copy the `app\(dashb
     |-  [storeId]
       |-  (routes)
         |- orders
-          |- [orderId]
-            |- components
-              |- ProductForm.tsx
-            |- page.tsx
           |- components
             |- cell-action.tsx
             |- client.tsx
             |- columns.tsx
           |- page.tsx
 ```
-Page
+
+Orders will be more simpler as it will *not* have a Form and API List.
+
+We can delete the `[orderId]` folder as it won't need a specific order page.
+
+## Orders Page
+
+Navigate to `app\(dashboard)\[storeId]\(routes)\orders\page.tsx`
+
+- The `imports` and `OrdersPage`
+
+```tsx
+// Global Imports
+import React from 'react';
+import prismadb from '@/lib/prismadb';
+import { format } from 'date-fns';
+
+// Local Imports
+import OrdersClient from './components/client';
+import { OrderColumn } from './components/columns';
+import { priceFormatter } from '@/lib/utils';
+
+const OrdersPage = async ({
+  params
+}: {
+  params: { storeId: string }
+}) => {
+```
+
+- Fetch all orders, make sure to include `orderItems` which includes `product`. 
+  - Our order can have many items inside which individual products, that way we can combine the prices
+
+```tsx
+  // Fetch all orders specific to the active store
+  const orders = await prismadb.order.findMany({
+    where: {
+      storeId: params.storeId
+    },
+    include: {
+      orderItems: {
+        include: {
+          product: true
+        }
+      }
+    },
+    orderBy: {
+      createdAt: 'desc'
+    }
+  });
+```
+
+- Format the orders to an `OrderColumn`
+  - it will follow the format: `{ id, phone, adress, products, totalPrice, createdAt }`
+  - `products` will map `orderItems` to the `products` name joined by a comma
+  -`totalPrice` will use our `priceFormatter` to reduce our array to a total price
+
+To repeat, we run a `reduce` function over all our `orderItems` and we combine the previous item's price with the next item's price. We accumulate this value starting from 0. We finally format the result of this reduction with our `priceFormatter`.
+
+```tsx
+  const formattedOrders: OrderColumn[] = orders.map((item) => ({
+    id: item.id,
+    phone: item.phone,
+    address: item.address,
+    products: item.orderItems.map((orderItem) => orderItem.product.name).join(', '),
+    totalPrice: priceFormatter.format(item.orderItems.reduce((total, item) => {
+      return total + Number(item.product.price)
+    }, 0)),
+    createdAt: format(item.createdAt, "MMMM do, yyyy")
+  }));
+```
+
+- Finally the output of the page is pass in the formatted data to the client
+
+```tsx
+  return (
+    <div className='flex-col'>
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <OrdersClient data={formattedOrders}/>
+      </div>
+    </div>
+  );
+}
+
+export default OrdersPage;
+```
+
+
+
+
 Column
 Client
 Page
