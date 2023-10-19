@@ -4,7 +4,7 @@ import prismadb from '@/lib/prismadb';
 import { format } from 'date-fns';
 
 // Local Imports
-import OrdersClient from './components/client';
+import OrderClient from './components/client';
 import { OrderColumn } from './components/columns';
 import { priceFormatter } from '@/lib/utils';
 
