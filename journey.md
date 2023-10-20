@@ -14282,6 +14282,68 @@ const OrderClient: React.FC<OrderClientProps> = ({
 export default OrderClient;
 ```
 
-API Routes
-Cell Action
-Testing
+# Front-End Store
+
+Now we need to implement the actual Dashboard page for the Overview tab, which will contain the API calls for the Web hooks and Stripe API.
+
+We cannot manually create orders because it can only be done through Stripe which needs to be connected to the front-end store.
+
+So this marks the second half of the major project, to create the front-end ecommerce store.
+
+We will need to create a new next project. The admin project needs to run concurrently with the store, on the port 3000.
+
+I have the entire repo inside a folder named `complete-ecommerce-store`, which has a folder named `ecommerce-admin`. We are going to create a new next project named `ecommerce-store`.
+
+Project structure overview:
+```sh
+- complete-ecommerce-store
+  |- ecommerce-admin
+    |- app
+    |- ...
+  |- ecommerce-store
+    |- app
+    |- ...
+```
+
+*This project will run on port 3001*.
+
+1. Navigate to the base directory of the project `complete-ecommerce-store`.
+
+2. Create a new Next 13 project
+
+```sh
+npx create-next-app@latest ecommerce-store --typescript --tailwind --eslint
+```
+
+- No for `/src`
+- Yes for app router
+- No for import alias
+
+3. Clean up Next project
+
+Going to modify and remove some files that comes with create a next project.
+
+- Modify global css
+
+Navigate inside the project and go inside the `app` folder and find the `global.css`.
+
+The only styles should be `height: 100%`. You can remove the rest of the boilerplate.
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ 
+html,
+body,
+:root {
+  height: 100%;
+}
+```
+
+- Remove the `ecommerce-store/app/page.tsx`
+
+4. Create folder named `(routes)` inside `app` folder
+
+Inside `(routes)`, create a `page.tsx` file. This will contain the `HomePage`.
+
