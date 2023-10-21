@@ -14294,7 +14294,8 @@ We will need to create a new next project. The admin project needs to run concur
 
 I have the entire repo inside a folder named `complete-ecommerce-store`, which has a folder named `ecommerce-admin`. We are going to create a new next project named `ecommerce-store`.
 
-Project structure overview:
+### Project structure overview:
+
 ```sh
 - complete-ecommerce-store
   |- ecommerce-admin
@@ -14306,6 +14307,25 @@ Project structure overview:
 ```
 
 *This project will run on port 3001*.
+
+To run the next.js project on a different port, we can run the command
+
+```sh
+npm run dev -p 3001
+```
+
+OR, modify the specify the port in the scripts inside `package.json`
+
+```json
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "lint": "next lint"
+  },
+```
+
+### Setting up the Next.js project for the store
 
 1. Navigate to the base directory of the project `complete-ecommerce-store`.
 
@@ -14383,6 +14403,45 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>{children}</body>
+    </html>
+  )
+}
+```
+
+## Creating Components
+
+Create a `folder` named `components` inside `ecommerce-store`.
+
+Create a `Footer` component.
+
+`ecommerce-store\components\Footer.tsx`
+```tsx
+import React from 'react';
+
+export default function Footer() {
+  return (
+    <div>Footer</div>
+  )
+}
+```
+
+Now let's import `Footer` and add it to the output of our layout
+
+```tsx
+// ...
+import Footer from '@/components/Footer';
+// ...
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body className={font.className}>
+        {children}
+        <Footer />
+      </body>
     </html>
   )
 }
