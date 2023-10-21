@@ -14446,3 +14446,86 @@ export default function RootLayout({
   )
 }
 ```
+
+### Footer
+
+Let's style the footer a bit.
+
+Going to take the `Date` object and take its year to render. We are going to make it client-side component. Also do the mounting trick to ensure that `Date` object is properly loaded in.
+
+```tsx
+"use client";
+
+// global imports
+import React, { useEffect, useState } from "react";
+
+export default function Footer() {
+  // Declare isMounted state variable and initialize it to false
+  const [isMounted, setIsMounted] = useState(false);
+
+  // useEffect hook to set isMounted variable to true
+  // Delays the execution of client-side-only code until after hydration
+  useEffect(() => {
+    setIsMounted(true);
+  }, []); // Only run once after the initial render
+
+  // Prevent rendering of the component before the effect has run
+  // To protect from hydration errors or unwanted flashes of content
+  if (!isMounted) {
+    return null;
+  }
+
+  // Create Date object with current date & time
+  const date = new Date();
+
+  return (
+    <footer className="bg-white border-t">
+      <div className="mx-auto py-10">
+        <p className="text-center text-xs text-black">
+          &copy; {date.getFullYear()} StoreName. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  )
+}
+```
+
+### Navbar component
+
+- Create `Navbar` component in `/app/components`
+
+`ecommerce-store\components\Navbar.tsx`
+```tsx
+import React from 'react';
+
+export default function Navbar() {
+  return (
+    <nav className="border-b">
+      Navbar
+    </nav>
+  )
+}
+```
+
+- Render the Navbar in the root layout
+
+```tsx
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body className={font.className}>
+        <Navbar />
+        {children}
+        <Footer />
+      </body>
+    </html>
+  )
+}
+```
+
+### UI components
+
