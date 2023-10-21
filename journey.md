@@ -14347,3 +14347,43 @@ body,
 
 Inside `(routes)`, create a `page.tsx` file. This will contain the `HomePage`.
 
+`ecommerce-store\app\(routes)\page.tsx`
+```tsx
+export default function HomePage() {
+  return(
+    <div>
+      Store
+    </div>
+  )
+}
+```
+
+5. Use a different font
+
+We are not going to use `Inter`, instead we use `Urbanist` font. While we are here, also update the `metadata`.
+
+`ecommerce-store\app\layout.tsx`
+```tsx
+import type { Metadata } from 'next'
+import { Urbanist } from 'next/font/google'
+import './globals.css'
+
+const font = Urbanist({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'Store',
+  description: 'Ecommerce store',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body className={font.className}>{children}</body>
+    </html>
+  )
+}
+```
