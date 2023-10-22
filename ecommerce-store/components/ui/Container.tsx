@@ -1,9 +1,13 @@
 import React from 'react';
 
-export default function Container() {
+interface ContainerProps {
+  children: React.ReactNode;
+}
+
+export default function Container({ children }: ContainerProps) {
   return (
     <div className="mx-auto max-w-7xl">
-      Container
+      {children}
     </div>
   )
 }
