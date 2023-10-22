@@ -14500,9 +14500,9 @@ import React from 'react';
 
 export default function Navbar() {
   return (
-    <nav className="border-b">
+    <div className="border-b">
       Navbar
-    </nav>
+    </div>
   )
 }
 ```
@@ -14681,3 +14681,37 @@ Some code improvements for above:
 export default function Container({ children }: ContainerProps): JSX.Element {
 ```
 
+### Further develop `Navbar`
+
+- Create a `MainNav` component under `/ui`
+- Wrap `Navbar` with `Container`
+- Inside `Container` add a `div` that contains the Links. Create the first `Link` with a text of "Store"
+- After the `Link`, add a `MainNav` component (which will contain our routes)
+
+```tsx
+import React from 'react';
+import Link from 'next/link';
+
+import Container from '@/components/ui/Container';
+import MainNav from '@/components/ui/MainNav';
+
+export default function Navbar() {
+  return (
+    <div className="border-b">
+      <Container>
+        <div className="relative px-4 sm:px-6 lg:px-8 flex h-16 items-center">
+        <Link
+          className="ml-4 flex lg:ml-0 gap-x-2"
+          href="/"
+        >
+          <p className="font-bold text-xl">STORE</p>
+        </Link>
+        <MainNav />
+        </div>
+      </Container>
+    </div>
+  )
+}
+```
+
+### `MainNav` component
