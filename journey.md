@@ -14684,9 +14684,10 @@ export default function Container({ children }: ContainerProps): JSX.Element {
 ### Further develop `Navbar`
 
 - Create a `MainNav` component under `/ui`
+  - React arrow functional component export (rafce)
 - Wrap `Navbar` with `Container`
 - Inside `Container` add a `div` that contains the Links. Create the first `Link` with a text of "Store"
-- After the `Link`, add a `MainNav` component (which will contain our routes)
+- After the `Link`, add a `MainNav` component
 
 ```tsx
 import React from 'react';
@@ -14715,3 +14716,57 @@ export default function Navbar() {
 ```
 
 ### `MainNav` component
+
+This component contains our `routes`.
+
+- Add prop interface with `data` inside. For now it's of type `any` but we will fix this later.
+
+```tsx
+import React from 'react';
+
+interface MainNavProps {
+  data: any
+}
+
+const MainNav: React.FC<MainNavProps> = ({
+  data
+}) => {
+  return (
+    <nav>
+      MainNav
+    </nav>
+  )
+}
+
+export default MainNav
+```
+
+- Now use the `data`, an array of our `routes`, and map it to a more usable route object
+  - Get the pathname
+
+```tsx
+import { usePathname } from 'next/navigation';
+
+const MainNav: React.FC<MainNavProps> = ({
+  data
+}) => {
+  // Hook that reads current URL pathname from a client component
+  // URL pathname comes after domain name and before query string
+  const pathname = usePathname();
+```
+
+- Map each `route` in `data` to an object that contains `href`, `label` and `active`.
+  - `href` is a template string with "/.../${route.id}"
+  - `label` is set to `route.name`
+  - `active` is set to pathname equal to href's template string, like this "pathname === /.../${route.id}"
+- Create the first routes object with `category`
+
+```tsx
+  const routes = data.map((route) => ({
+    href: `/category/${route.id}`,
+    label: route.name,
+    active: pathname === `/category/${route.id}`
+  }));
+```
+
+- In the output, map each route to a Link
