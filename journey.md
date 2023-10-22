@@ -14529,6 +14529,8 @@ export default function RootLayout({
 
 ### UI components
 
+#### `Container` component 
+
 Create inside `components` a file `ui/Container.tsx`.
 
 Now create a react functional component for `Container`. Give it a margin auto. Given a large screen (1280px), limit the width that our `Container` can extend.
@@ -14537,77 +14539,56 @@ Now create a react functional component for `Container`. Give it a margin auto. 
 ```tsx
 import React from 'react';
 
-export default function Container() {
+const Container = () => {
   return (
     <div className="mx-auto max-w-7xl">
       Container
     </div>
   )
 }
+
+export default Container;
 ```
 
 We will also have props for our `Container`, so we need to create an interface for the props.
 
-##### Adding React type & props to Component
-
-Let's start with the interface first, it should contain the `children`.
-
 ```tsx
 interface ContainerProps {
   children: React.ReactNode;
 }
 ```
 
-Given our code there are two things we need to do to add the react type and props to the component in Typescript.
-
-1. First, specify the type of the props parameter in the function declaration. In our case, we use the interface `ContainerProps` that we have defined. In other cases, we can use any other type that describes the shape of the props object.
+Then add the typings
 
 ```tsx
+import React from 'react';
+
 interface ContainerProps {
   children: React.ReactNode;
 }
 
-export default function Container(props: ContainerProps) {
-  // ...
-}
-```
-
-2. Second, you need to use the props object to access the children prop inside the function body. You can use the dot notation `(props.children)` or the destructuring syntax `({ children })`. For example:
-
-```tsx
-export default function Container(props: ContainerProps) {
-  return (
-    <div className="mx-auto max-w-7xl">
-      {props.children}
-    </div>
-  )
-}
-```
-
-or
-
-```tsx
-export default function Container({ children }: ContainerProps) {
+const Container: React.FC<ContainerProps> = ({ children }) => {
   return (
     <div className="mx-auto max-w-7xl">
       {children}
     </div>
   )
 }
+
+
+export default Container;
 ```
 
-We'll go with the latter.
-
-If you are using React Arrow Functional Component
+Alternatively, we can avoid using `React.FC` and use `JSX.Element`.
 
 ```tsx
+import React from 'react';
+
 interface ContainerProps {
   children: React.ReactNode;
 }
 
-const Container: React.FC<ContainerProps> = ({
-  children
-}) => {
+const Container = ({ children }: ContainerProps): JSX.Element => {
   return (
     <div className="mx-auto max-w-7xl">
       {children}
@@ -14617,3 +14598,86 @@ const Container: React.FC<ContainerProps> = ({
 
 export default Container;
 ```
+
+Be aware that `JSX.Element` is an alias for `React.ReactElement<any, any>` which means it can accept any type and props. However, this also means it loses some type safety and can allow invalid values to be passed as props.
+
+```tsx
+// This is valid TypeScript, but invalid JSX
+const element: JSX.Element = <div>{42}</div>;
+```
+
+`React.ReactElement` is a TypeScript type that represents the return type of `React.createElement`. It is defined as an interface with generic parameters for the type and props. It also has a `key` and a `ref` property. **This means it can enforce more type safety and prevent invalid values to be passed as props**. e.g.,
+
+```tsx
+// This is invalid TypeScript, because 42 is not a valid prop for div
+const element: React.ReactElement = <div>{42}</div>;
+```
+
+The main difference between `JSX.Element` and `React.ReactElement` is that `JSX.Element` is more flexible and can represent any JSX expression, while `React.ReactElement` is more specific and can only represent an object with a type and props. 
+
+Therefore, when typing the return value of a component, it is usually better to use `React.ReactElement`, as it provides more type safety and avoids errors when passing props. 
+
+However, when typing the children prop of a component, it might be better to use `React.ReactNode`, which is a more general type that includes any possible value that can be rendered by a component.
+
+##### Note on `React.FC`
+
+AS of Typescript 5.1 and React 18, `React.FC` is now officially "fine" because
+
+1. It no longer implicitly includes `children` in the props type
+2. It no longer breaks if you return `undefined`, `string` or `number`
+
+The better alternative is to simply annotate props instead of using `React.FC`.
+
+Here is a blog post on the topic, [stop hating react fc](https://www.totaltypescript.com/you-can-stop-hating-react-fc).
+
+##### Back to `Container`
+
+Again using arrow functional component with props to create `Container`
+
+```tsx
+import React from 'react';
+
+interface ContainerProps {
+  children: React.ReactNode;
+}
+
+const Container: React.FC<ContainerProps> = ({ children }) => {
+  return (
+    <div className="mx-auto max-w-7xl">
+      {children}
+    </div>
+  )
+}
+
+
+export default Container;
+```
+
+But you know what? Even in times of arrow functions and transpilation, I still want to write a simple named function with props.
+
+```tsx
+import React from 'react';
+
+interface ContainerProps {
+  children: React.ReactNode;
+}
+
+export default function Container({ children }: ContainerProps) {
+  return (
+    <div className="mx-auto max-w-7xl">
+      {children}
+    </div>
+  )
+}
+```
+
+Some code improvements for above:
+
+- Specify `return` type of function component as `JSX.Element`
+- Use more specific type for `children` prop such as `React.ReactElement`
+
+```tsx
+// ...
+export default function Container({ children }: ContainerProps): JSX.Element {
+```
+
