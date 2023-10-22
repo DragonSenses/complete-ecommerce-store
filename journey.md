@@ -14529,3 +14529,21 @@ export default function RootLayout({
 
 ### UI components
 
+Create inside `components` a file `ui/Container.tsx`.
+
+Now create a react functional component for `Container`. Give it a margin auto. Given a large screen (1280px), limit the width that our `Container` can extend.
+
+`ecommerce-store\components\ui\Container.tsx`
+```tsx
+import React from 'react';
+
+export default function Container() {
+  return (
+    <div className="mx-auto max-w-7xl">
+      Container
+    </div>
+  )
+}
+```
+
+We will also have props for our `Container`, so we need to create an interface for the props.
