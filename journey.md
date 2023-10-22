@@ -14547,3 +14547,73 @@ export default function Container() {
 ```
 
 We will also have props for our `Container`, so we need to create an interface for the props.
+
+##### Adding React type & props to Component
+
+Let's start with the interface first, it should contain the `children`.
+
+```tsx
+interface ContainerProps {
+  children: React.ReactNode;
+}
+```
+
+Given our code there are two things we need to do to add the react type and props to the component in Typescript.
+
+1. First, specify the type of the props parameter in the function declaration. In our case, we use the interface `ContainerProps` that we have defined. In other cases, we can use any other type that describes the shape of the props object.
+
+```tsx
+interface ContainerProps {
+  children: React.ReactNode;
+}
+
+export default function Container(props: ContainerProps) {
+  // ...
+}
+```
+
+2. Second, you need to use the props object to access the children prop inside the function body. You can use the dot notation `(props.children)` or the destructuring syntax `({ children })`. For example:
+
+```tsx
+export default function Container(props: ContainerProps) {
+  return (
+    <div className="mx-auto max-w-7xl">
+      {props.children}
+    </div>
+  )
+}
+```
+
+or
+
+```tsx
+export default function Container({ children }: ContainerProps) {
+  return (
+    <div className="mx-auto max-w-7xl">
+      {children}
+    </div>
+  )
+}
+```
+
+We'll go with the latter.
+
+If you are using React Arrow Functional Component
+
+```tsx
+interface ContainerProps {
+  children: React.ReactNode;
+}
+
+const Container: React.FC<ContainerProps> = ({
+  children
+}) => {
+  return (
+    <div className="mx-auto max-w-7xl">
+      {children}
+    </div>
+  )
+}
+
+export default Container;
+```
