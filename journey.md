@@ -14769,4 +14769,41 @@ const MainNav: React.FC<MainNavProps> = ({
   }));
 ```
 
-- In the output, map each route to a Link
+- In the output, map each route to a Link filling in the props
+
+```tsx
+  return (
+    <nav
+      className="mx-6 flex items-center space-x-4 lg:space-x-6"
+    >
+      {routes.map((route) => {
+        <Link
+          key={route.href}
+          href={route.href}
+          className={}
+        >
+          {route.label}
+        </Link>
+      })}
+    </nav>
+  )
+```
+
+#### Issue: need to merge class names for Link
+
+We have to create a `ecommerce-store\lib\utils.ts`, to hold our function that merges class name utilities for Tailwind. Similar to our previous project with the admin.
+
+```ts
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+ 
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+```
+
+The two packages to install to make this work:
+
+```sh
+npm i clsx tailwind-merge
+```
