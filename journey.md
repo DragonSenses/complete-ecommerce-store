@@ -14804,6 +14804,52 @@ export function cn(...inputs: ClassValue[]) {
 
 The two packages to install to make this work:
 
+- [clsx](https://www.npmjs.com/package/clsx) is a utility for constructing `className` strings conditionally.
+- [tailwind-merge](https://www.npmjs.com/package/tailwind-merge) is a utility function to efficiently merge Tailwind CSS classes in JS without style conflicts.
+
 ```sh
 npm i clsx tailwind-merge
 ```
+
+#### Style active `Link` with Tailwind classes
+
+Now we can import the function `cn` to merge classnames. We want this so that we can render tailwind class names on the condition of which route is active.
+
+We add the conditional as the second parameter to `cn` allowing us to style the link based on which route is the active one.
+
+```tsx
+import { cn } from "@/lib/utils";
+
+// ...
+  return (
+    <nav
+      className="mx-6 flex items-center space-x-4 lg:space-x-6"
+    >
+      {routes.map((route) => {
+        <Link
+          key={route.href}
+          href={route.href}
+          className={cn(
+            "text-sm font-medium transition-medium transition-colors hover:text-black",
+            route.active ? "text-black" : "text-neutral-500"
+          )}
+        >
+          {route.label}
+        </Link>
+      })}
+    </nav>
+  )
+}
+```
+
+#### Fix `MainNavProp` typings
+
+Currently we have `data: any`
+
+```tsx
+interface MainNavProps {
+  data: any
+}
+```
+
+Let's fix that.
