@@ -14927,3 +14927,52 @@ export interface Category {
 
 Now we can navigate back to our `MainNav` and change our `data` to of type `Category[]`. Make sure to import `Category` from `types.ts`
 
+
+
+
+##### Issue: Type `void[]` is not assignable to type `ReactNode`
+
+```sh
+Type 'void[]' is not assignable to type 'ReactNode'.
+  Type 'void[]' is not assignable to type 'Iterable<ReactNode>'.
+    The types returned by '[Symbol.iterator]().next(...)' are incompatible between these types.
+      Type 'IteratorResult<void, any>' is not assignable to type 'IteratorResult<ReactNode, any>'.
+        Type 'IteratorYieldResult<void>' is not assignable to type 'IteratorResult<ReactNode, any>'.
+          Type 'IteratorYieldResult<void>' is not assignable to type 'IteratorYieldResult<ReactNode>'.
+            Type 'void' is not assignable to type 'ReactNode'.ts(2322)
+index.d.ts(1434, 9): The expected type comes from property 'children' which is declared here on type 'DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>'
+```
+
+The code that engenders the error:
+
+```tsx
+      {routes.map((route) => {
+        <Link
+          key={route.href}
+          href={route.href}
+          className={cn(
+            "text-sm font-medium transition-medium transition-colors hover:text-black",
+            route.active ? "text-black" : "text-neutral-500"
+          )}
+        >
+          {route.label}
+        </Link>
+      })}
+```
+
+Solution: The callback function should be returning a `ReactNode` rather than a type `void[]`. We are using a `{}` curly bracket when we should be using a `()` parenthesis in the callback function when returning the `Link element`.
+
+```tsx
+      {routes.map((route) => (
+        <Link
+          key={route.href}
+          href={route.href}
+          className={cn(
+            "text-sm font-medium transition-medium transition-colors hover:text-black",
+            route.active ? "text-black" : "text-neutral-500"
+          )}
+        >
+          {route.label}
+        </Link>
+      ))}
+```
