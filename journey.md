@@ -14842,9 +14842,9 @@ import { cn } from "@/lib/utils";
 }
 ```
 
-#### Fix `MainNavProp` typings
+#### Adding types to data
 
-Currently we have `data: any`
+Let's fix `MainNavProp` typings. Currently we have `data: any`
 
 ```tsx
 interface MainNavProps {
@@ -14852,4 +14852,78 @@ interface MainNavProps {
 }
 ```
 
-Let's fix that.
+##### Primer: interface in Typescript
+
+Before we start defining the shape of our data, we should step back and talk about interfaces.
+
+- An interface in TypeScript is an abstract type that defines the shape of an object, specifying the names and types of its properties. 
+
+- Interfaces are used to enforce contracts within your code, as well as with external code. 
+
+- Interfaces are not converted to JavaScript, but only used for type checking by the TypeScript compiler. 
+
+- You can declare an interface using the `interface` keyword, followed by the interface name and a set of curly braces containing the property definitions.
+
+- You can use interfaces to define the types of function parameters, return values, class members, and more. 
+
+- Interfaces can also have optional properties, readonly properties, index signatures, function types, etc.
+
+For example:
+
+```ts
+interface Person {
+  name: string;
+  age: number;
+  greet(): void;
+}
+```
+
+This interface defines a `Person` type that has three properties: `name`, `age`, and `greet`. The `name` and `age` properties are of type `string` and `number`, respectively, while the `greet` property is a method that returns nothing (`void`). Any object that implements this interface must have these three properties with the same types. 
+
+For example:
+
+```ts
+let luna: Person = {
+  name: "Luna",
+  age: 20,
+  greet() {
+    console.log("Hello, I am " + this.name);
+  }
+};
+```
+
+This object `luna` is of type `Person`, and it has all the properties required by the interface. 
+
+##### Defining our data
+
+To create the actual types for `data`, navigate to root of the project and create `types.ts`.
+
+As of now, we have one route that contains our `Category`. We need to define the interface for a `Category`. To define the basic shape of our `Category`, we should give it a `{ id, name, billboard }`.
+
+`types.ts`
+```ts
+export interface Category {
+  id: string;
+  name: string;
+  billboard: Billboard;
+}
+```
+
+However, there is an error: `Billboard` is unresolved. We have to also define the `Billboard`, which should have `{ id, name, imageUrl }`.
+
+```ts
+export interface Billboard {
+  id: string;
+  name: string;
+  imageUrl: string;
+};
+
+export interface Category {
+  id: string;
+  name: string;
+  billboard: Billboard;
+};
+```
+
+Now we can navigate back to our `MainNav` and change our `data` to of type `Category[]`. Make sure to import `Category` from `types.ts`
+
