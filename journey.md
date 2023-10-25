@@ -15093,3 +15093,70 @@ With the `MainNav` implemented, we can now see the categories of the store rende
 
 - Let's try editing a category name to see if it reflects in the store.
 - Delete a category that does not have a product
+
+#### `NavbarActions` component
+
+Create client component 
+  - Should be on the right side of the navbar
+
+`ecommerce-store\components\NavbarActions.tsx`
+```tsx
+"use client";
+
+import React from 'react';
+
+export default function NavbarActions() {
+  return (
+    <div className="ml-auto flex items-center gap-x-4">
+      NavbarActions
+    </div>
+  )
+}
+```
+
+Now render `NavbarActions` right after `MainNav`
+
+```tsx
+// ...
+export default async function Navbar() {
+  const categories = await getCategories();
+
+  return (
+    <div className="border-b">
+      <Container>
+        <div className="relative px-4 sm:px-6 lg:px-8 flex h-16 items-center">
+        <Link
+          className="ml-4 flex lg:ml-0 gap-x-2"
+          href="/"
+        >
+          <p className="font-bold text-xl">STORE</p>
+        </Link>
+        <MainNav data={categories}/>
+        <NavbarActions />
+        </div>
+      </Container>
+    </div>
+  )
+}
+```
+
+#### `Button` component
+
+We will need to give it a `Button`, so create a `Button` component under `/components/ui`.
+
+```tsx
+import React from 'react';
+
+const Button = () => {
+  return (
+    <div>Button</div>
+  )
+}
+
+export default Button
+```
+
+[Manipulating the DOM with Refs](https://react.dev/learn/manipulating-the-dom-with-refs)
+
+[forwardRef in React](https://react.dev/reference/react/forwardRef) lets your component expose a DOM node to parent component with `ref`.
+
