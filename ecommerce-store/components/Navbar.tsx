@@ -15,7 +15,7 @@ export default function Navbar() {
         >
           <p className="font-bold text-xl">STORE</p>
         </Link>
-        <MainNav />
+        <MainNav data={[]}/>
         </div>
       </Container>
     </div>
