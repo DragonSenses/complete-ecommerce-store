@@ -15068,3 +15068,28 @@ const getCategories = async (): Promise<Category[]> => {
 
 export default getCategories;
 ```
+
+With this we can navigate back to our `Navbar.tsx`, mark it `async`, and use the get function to create a variable for `categories.` Then pass in that data as the prop to `MainNav`.
+
+```tsx
+import getCategories from '@/actions/getCategories';
+
+export default async function Navbar() {
+
+  const categories = await getCategories();
+
+  return (
+    <div className="border-b">
+      // ...
+        <MainNav data={categories}/>
+    </div>
+  )
+}
+```
+
+### Rendering the Navigation
+
+With the `MainNav` implemented, we can now see the categories of the store rendered in the navigation.
+
+- Let's try editing a category name to see if it reflects in the store.
+- Delete a category that does not have a product
