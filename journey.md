@@ -14925,10 +14925,17 @@ export interface Category {
 };
 ```
 
-Now we can navigate back to our `MainNav` and change our `data` to of type `Category[]`. Make sure to import `Category` from `types.ts`
+Now we can navigate back to our `MainNav` and change our `data` to type `Category[]`. Make sure to import `Category` from `types.ts`
 
+`MainNav.tsx`
+```tsx
+import { Category } from '@/types';
 
-
+// Define type and shape of props
+interface MainNavProps {
+  data: Category[];
+}
+```
 
 ##### Issue: Type `void[]` is not assignable to type `ReactNode`
 
@@ -14975,4 +14982,89 @@ Solution: The callback function should be returning a `ReactNode` rather than a 
           {route.label}
         </Link>
       ))}
+```
+
+## Setup the Environment
+
+Now we can attempt to fetch and load our data. 
+
+Let's try to fetch our categories.
+
+However, before we can do that we need to create a `.env` file in `/ecommerce-store`.
+
+### Ignore .env file to protect sensitive data
+
+**Important:** Ignore `.env` file in git.
+
+Navigate to `ecommerce-store\.gitignore` and add the line `.env`
+
+`ecommerce-store\.gitignore`
+```s
+# local env files
+.env*.local
+.env
+```
+
+Now we can commit the `.gitignore` file with the message: 
+
+Ignore .env file to protect sensitive data
+
+This commit message is concise, imperative and informative. Explains what the change does and why it is important. 
+
+A `.env` file contains environment variables that store sensitive or dynamic information, such as API keys, database credentials, or mode settings. Adding it to .gitignore prevents it from being tracked by Git and uploaded to source control, which could expose your data to unauthorized access or modification.
+
+### Configuring the Environment
+
+Now we can put our routes inside the `.env` file.
+
+We have to create the environment variable `NEXT_PUBLIC_API_URL`. When we create a variable they should be in key-value pairs, like this:
+
+```sh
+key_name=value_name
+```
+
+Run the `ecommerce-admin` project, click on `Settings` and look for `NEXT_PUBLIC_API_URL` which will be the key in our environment. The value will the API route.
+
+Copy the API route and paste it inside the `.env` file as the key to `NEXT_PUBLIC_API_URL`.
+
+`.env`
+```sh
+NEXT_PUBLIC_API_URL=http://localhost:3000/api/YOUR_API_ROUTE_HERE
+```
+
+Now we can finally connect our front-end store to the admin dashboard.
+
+### Attempt to load data for the store
+
+Navigate to `ecommerce-store\components\Navbar.tsx`, and in here we will use *actions* that will load our categories.
+
+At the root of the project, create the folder named `actions` with a file named `getCategories.tsx`
+
+Inside we
+
+1. import type Category
+2. Build a URL using `NEXT_PUBLIC_API_URL` and `categories` as the path
+3. Fetch the categories and return the response in JSON
+
+`ecommerce-store\actions\getCategories.tsx`
+```tsx
+import { Category } from "@/types";
+
+// Dynamically build address to fetch a resource on the web
+// The scheme/protocol & domain name are defined as an environment variable
+const URL = `${process.env.NEXT_PUBLIC_API_URL}/categories`;
+
+/**
+ * 
+ * @returns an array of Categories
+ */
+const getCategories = async (): Promise<Category[]> => {
+  // Send network request to the URL and save the response
+  const res = await fetch(URL);
+
+  // Return the response in JSON format
+  return res.json();
+}
+
+export default getCategories;
 ```
