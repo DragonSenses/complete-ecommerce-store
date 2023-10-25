@@ -2,7 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 
 import Container from '@/components/ui/Container';
-import MainNav from '@/components/ui/MainNav';
+import MainNav from '@/components/MainNav';
+import NavbarActions from '@/components/NavbarActions';
+
 import getCategories from '@/actions/getCategories';
 
 export default async function Navbar() {
@@ -19,6 +21,7 @@ export default async function Navbar() {
           <p className="font-bold text-xl">STORE</p>
         </Link>
         <MainNav data={categories}/>
+        <NavbarActions />
         </div>
       </Container>
     </div>
