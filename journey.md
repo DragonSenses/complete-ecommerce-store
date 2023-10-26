@@ -15140,7 +15140,7 @@ export default async function Navbar() {
 }
 ```
 
-#### `Button` component
+#### Custom `Button` component
 
 We will need to give it a `Button`, so create a `Button` component under `/components/ui`.
 
@@ -15156,6 +15156,8 @@ const Button = () => {
 export default Button
 ```
 
+I'm going to opt for a custom made button over shadcn.
+
 [Manipulating the DOM with Refs](https://react.dev/learn/manipulating-the-dom-with-refs)
 
 [forwardRef in React](https://react.dev/reference/react/forwardRef) lets your component expose a DOM node to parent component with `ref`.
@@ -15165,9 +15167,9 @@ export default Button
 import React, { forwardRef } from "react";
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonELement> {}
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 
-const Button = forwardRef<HTMLButtonELement, ButtonProps>(({
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   className,
   children,
   disabled,
