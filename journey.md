@@ -15160,3 +15160,25 @@ export default Button
 
 [forwardRef in React](https://react.dev/reference/react/forwardRef) lets your component expose a DOM node to parent component with `ref`.
 
+`ecommerce-store\components\ui\Button.tsx`
+```tsx
+import React, { forwardRef } from "react";
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonELement> {}
+
+const Button = forwardRef<HTMLButtonELement, ButtonProps>(({
+  className,
+  children,
+  disabled,
+  type = "button",
+  ...props
+}, ref) => {
+  return (
+    <button>
+    </button>
+  )
+})
+
+Button.displayName = "Button";
+```
