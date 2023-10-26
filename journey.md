@@ -15177,10 +15177,33 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   ...props
 }, ref) => {
   return (
-    <button>
+    <button
+      ref={ref}
+    >
+      {children}
     </button>
   )
 })
 
 Button.displayName = "Button";
+
+export default Button;
+```
+
+##### Styling the Button
+
+To see our changes, render the `Button` in `NavbarActions.tsx`
+
+```tsx
+import Button from '@/components/ui/Button';
+
+export default function NavbarActions() {
+  return (
+    <div className="ml-auto flex items-center gap-x-4">
+      <Button>
+        
+      </Button>
+    </div>
+  )
+}
 ```
