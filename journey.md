@@ -15192,7 +15192,7 @@ export default Button;
 
 ##### Styling the Button
 
-To see our changes, render the `Button` in `NavbarActions.tsx`
+To see changes, render the `Button` in `NavbarActions.tsx`
 
 ```tsx
 import Button from '@/components/ui/Button';
@@ -15206,4 +15206,82 @@ export default function NavbarActions() {
     </div>
   )
 }
+```
+
+Style the Button, center the items inside with rounding and padding.
+
+```tsx
+<Button className="flex items-center rounded-full bg-black px-4 py-2">
+```
+
+Next we want an icon and text inside the Button.
+
+Let's install [lucide-react](https://www.npmjs.com/package/lucide-react).
+
+```sh
+npm i lucide-react
+```
+
+Now we can render an icon, let's use `ShoppingBag` with a size of 20.
+
+```tsx
+      <Button className="flex items-center rounded-full bg-black px-4 py-2">
+        <ShoppingBag 
+          size={20}
+          color="white"
+        />
+      </Button>
+```
+
+In our `Button` component, let's use `cn` to merge default classnames. Then we can pass it a `className` to the `cn` function that enables us to overwrite any default classes.
+
+e.g., in `NavBarActions` the `padding` and `rounded-full` will overwrite the default classes for a Button.
+
+Let's add those default styles:
+
+`ecommerce-store\components\ui\Button.tsx`
+```tsx
+import React, { forwardRef } from "react";
+
+import { cn } from "@/lib/utils";
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
+  className,
+  children,
+  disabled,
+  type = "button",
+  ...props
+}, ref) => {
+  return (
+    <button
+      className={cn(
+        `
+        w-auto
+        rounded-full
+        bg-black
+        border-transparent
+        px-5
+        py-3
+        disabled:cursor-not-allowed
+        disabled:opacity-50
+        text-white
+        font-semibold
+        hover:opacity-75
+        transition
+        `,
+        className
+      )}
+      ref={ref}
+    >
+      {children}
+    </button>
+  )
+})
+
+Button.displayName = "Button";
+
+export default Button;
 ```
