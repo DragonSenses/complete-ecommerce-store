@@ -15334,3 +15334,67 @@ export default function NavbarActions() {
   }
   // ...
 ```
+
+## HomePage
+
+Our homepage will contain a `Billboard` component. 
+
+### Billboard component
+
+Navigate to `ecommerce-store\components`,
+
+- Create `Billboard` component
+- import `Billboard` as `BillboardType` from types
+- Create `BillboardProps`
+- Arrow functional component with `data` as parameter
+- Output contains a `div`
+
+```tsx
+import React from 'react';
+
+import { Billboard as BillboardType } from "@/types";
+
+interface BillboardProps {
+  data: BillboardType
+}
+
+const Billboard: React.FC<BillboardProps> = ({
+  data
+}) => {
+  return (
+    <div>
+
+    </div>
+  );
+}
+
+export default Billboard;
+```
+
+Now inside the output, we will have a child `div` that has style of `backgroundImage` set to that of the `imageUrl` from `data`. Then it will have two more divs inside, with the `data.label` variabled interpolated.
+
+```tsx
+
+const Billboard: React.FC<BillboardProps> = ({
+  data
+}) => {
+  return (
+    <div>
+      <div style={{ backgroundImage: `url(${data?.imageUrl})` }}>
+        <div>
+          <div>
+            {data.label}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+
+
+
+- Render a `Container` with a `div`
+
+`ecommerce-store\app\(routes)\page.tsx`
