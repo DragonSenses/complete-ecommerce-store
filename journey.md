@@ -15286,6 +15286,8 @@ Button.displayName = "Button";
 export default Button;
 ```
 
+#### NavbarActions continued
+
 Now lets add some text next to the icon.
 
 - Use `span` to represent the amount of cart items, which is 0 for now
@@ -15306,4 +15308,29 @@ export default function NavbarActions() {
     </div>
   )
 }
+```
+
+Here we'll use `localStorage` to preserve the amount of items a user can hold in their cart. 
+
+So we have to do the mounting trick to protect against hydration errors.
+
+```tsx
+import React, { useEffect, useState } from 'react';
+
+export default function NavbarActions() {
+  // Declare isMounted state variable and initialize it to false
+  const [isMounted, setIsMounted] = useState(false);
+
+  // useEffect hook to set isMounted variable to true
+  // Delays the execution of client-side-only code until after hydration
+  useEffect(() => {
+    setIsMounted(true);
+  }, []); // Only run once after the initial render
+
+  // Prevent rendering of the component before the effect has run
+  // To protect from hydration errors or unwanted flashes of content
+  if (!isMounted) {
+    return null;
+  }
+  // ...
 ```
