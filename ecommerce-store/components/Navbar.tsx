@@ -7,6 +7,9 @@ import NavbarActions from '@/components/NavbarActions';
 
 import getCategories from '@/actions/getCategories';
 
+// Revalidate the page on every request, purge cache & fetch latest data
+export const revalidate = 0;
+
 export default async function Navbar() {
   const categories = await getCategories();
 
