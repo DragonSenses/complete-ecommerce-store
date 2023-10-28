@@ -15546,3 +15546,31 @@ export default async function HomePage() {
 ```
 
 We can pass in an individual billboard `id` we can get from admin dashboard.
+
+### Testing home page
+
+Now go ahead and upload a billboard to see it rendered on the page. 
+
+- Does UI reflect changes?
+- Add a billboard
+- Edit a billboard
+
+## Featured products
+
+Next we should add featured products to the home page. 
+
+We first need to add the types for it. Create a `Product` interface inside `types.ts`, which contains `{ id, category, name, price, isFeatured, size, color, images }`.
+
+`ecommerce-store\types.ts`
+```tsx
+export interface Product {
+  id: string;
+  category: Category;
+  name: string;
+  price: string;
+  isFeatured: boolean;
+  size: Size;
+  color: Color;
+  images: Image[]
+}
+```
