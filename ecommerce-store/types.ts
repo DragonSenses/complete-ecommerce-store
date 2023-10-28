@@ -20,3 +20,8 @@ export interface Product {
   color: Color;
   images: Image[]
 }
+
+export interface Image {
+  id: string;
+  url: string;
+}
