@@ -15559,10 +15559,12 @@ Now go ahead and upload a billboard to see it rendered on the page.
 
 Next we should add featured products to the home page. 
 
+### Product type
+
 We first need to add the types for it. Create a `Product` interface inside `types.ts`, which contains `{ id, category, name, price, isFeatured, size, color, images }`.
 
 `ecommerce-store\types.ts`
-```tsx
+```ts
 export interface Product {
   id: string;
   category: Category;
@@ -15572,5 +15574,26 @@ export interface Product {
   size: Size;
   color: Color;
   images: Image[]
+}
+```
+
+Similarly, make the interfaces for `Image`, `Size` and `Color`
+
+```ts
+export interface Color {
+  id: string;
+  name: string;
+  value: string;
+}
+
+export interface Image {
+  id: string;
+  url: string;
+}
+
+export interface Size {
+  id: string;
+  name: string;
+  value: string;
 }
 ```
