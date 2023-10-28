@@ -31,3 +31,9 @@ export interface Size {
   name: string;
   value: string;
 }
+
+export interface Color {
+  id: string;
+  name: string;
+  value: string;
+}
