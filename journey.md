@@ -15448,16 +15448,47 @@ The `revalidate` **property in Next.js is used to specify the amount of time (in
 For now we will set `Navbar` to revalidate the page on every request.
 
 ```tsx
-// Revalidate the page on every request
+// Revalidate the page on every request, purge cache & fetch latest data
 export const revalidate = 0;
 
 export default async function Navbar() {
   // ...
 ```
 
-
-TODO
-
-- Render a `Container` with a `div`
+Similarly, let's revalidate for `HomePage`.
 
 `ecommerce-store\app\(routes)\page.tsx`
+```tsx
+// Revalidate the page on every request, purge cache & fetch latest data
+export const revalidate = 0;
+
+export default function HomePage() {
+```
+
+## HomePage output
+
+Now for the HomePage output, render a container with a div
+
+- Render a `Container` with a `div`
+- Fetch individual Billboard
+
+```tsx
+// Revalidate the page on every request, purge cache & fetch latest data
+export const revalidate = 0;
+
+export default function HomePage() {
+
+  return (
+    <Container>
+      <div className="space-y-10 pb-10">
+        <Billboard data={ } />
+      </div>
+    </Container>
+  )
+}
+```
+
+We need to make the action to fetch a Billboard. 
+
+Create `ecommerce-store\actions\getBillboard.tsx`, 
+
