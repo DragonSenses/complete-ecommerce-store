@@ -15394,6 +15394,10 @@ const Billboard: React.FC<BillboardProps> = ({
 
 Now let's add some styles to each `div`.
 
+- Our outermost `div` will have styles that contain the elements within with responsive padding
+- The next div contains our image so styles for the image using `aspect-square`, on medium screens an aspect of 2.4/1 seems to be best
+- The next div has special alignment for the text, while the innermost div has styles for the text with responsive design
+
 ```tsx
 const Billboard: React.FC<BillboardProps> = ({
   data
@@ -15415,6 +15419,44 @@ const Billboard: React.FC<BillboardProps> = ({
 }
 ```
 
+## Revalidating Data
+
+*Issue:* when we make changes in the admin dashboard, the store needs to be able to reflect the change in the UI. We can do this with a hard refresh. 
+
+WE CAN set the `revalidate` property to 0 so that *it won't be cached*.
+
+[Nextjs - revalidating data](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating)
+
+> Revalidation is the process of purging the Data Cache and re-fetching the latest data. This is useful when your data changes and you want to ensure you show the latest information.
+
+Cached data can be revalidated in two ways:
+
+1. **Time-based revalidation:** Automatically revalidate data after a certain amount of time has passed. This is useful for data that changes infrequently and freshness is not as critical.
+
+2. **On-demand revalidation:** Manually revalidate data based on an event (e.g. form submission). On-demand revalidation can use a tag-based or path-based approach to revalidate groups of data at once. This is useful when you want to ensure the latest data is shown as soon as possible (e.g. when content from your headless CMS is updated).
+
+The `revalidate` **property in Next.js is used to specify the amount of time (in seconds) that a page should be revalidated after being built.** This means that the page will be regenerated with the latest data at most every `revalidate` seconds, if there is a new request. This is useful for pages that have frequently changing data and need to be updated without rebuilding the entire site.
+
+`export const revalidate = 0;` means that the page will be revalidated on every request, as soon as possible. This is equivalent to setting `revalidate` to `1`. 
+
+- However, this is not recommended for pages that have high traffic or complex data fetching, as it may cause performance issues or rate limits. 
+
+- A better approach is to use a higher value for `revalidate`, such as `60` (one minute) or `3600` (one hour), depending on how often your data changes and how fresh you want your page to be. You can also use the `revalidateTag` or `revalidatePath` functions from `next/cache` to manually trigger revalidation for a specific tag or path.
+
+### Revalidate our components
+
+For now we will set `Navbar` to revalidate the page on every request.
+
+```tsx
+// Revalidate the page on every request
+export const revalidate = 0;
+
+export default async function Navbar() {
+  // ...
+```
+
+
+TODO
 
 - Render a `Container` with a `div`
 
