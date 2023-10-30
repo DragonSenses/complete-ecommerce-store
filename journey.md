@@ -15730,7 +15730,7 @@ Now let's develop the ProductList component.
 
 It will have props of `{ title, items }` where items is a `Product[]`.
 
-Destructure those props in the parameters, and return a `div` that contains an `h3` with the `title`.
+Destructure those props in the parameters, and return a `div` with `space-y-4` that contains an `h3` with the `title` interpolated.
 
 ```tsx
 import React from 'react';
@@ -15755,3 +15755,28 @@ const ProductList: React.FC<ProductListProps> = ({
 
 export default ProductList;
 ```
+
+Style the `h3` text bold and size of 3xl.
+
+```tsx
+<h3 className="font-bold text-3xl">{title}</h3>
+```
+
+### `NoResults` component
+
+Now the next thing to do is to create a re-usable component that will represent when fetching any data results to empty.
+
+Create the `NoResults.tsx` inside `components/ui`,
+
+```tsx
+import React from 'react';
+
+const NoResults = () => {
+  return (
+    <div>NoResults</div>
+  )
+}
+
+export default NoResults
+```
+
