@@ -1,7 +1,21 @@
 import React from 'react';
 
-export default function ProductList() {
+import { Product } from '@/types';
+
+interface ProductListProps {
+  title: string;
+  items: Product[];
+};
+
+const ProductList: React.FC<ProductListProps> = ({
+  title,
+  items
+}) => {
   return (
-    <div>ProductList</div>
+    <div className="space-y-4">
+      <h3>{title}</h3>
+    </div>
   )
 }
+
+export default ProductList;
