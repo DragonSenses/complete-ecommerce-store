@@ -15549,7 +15549,18 @@ We can pass in an individual billboard `id` we can get from admin dashboard.
 
 ### Testing home page
 
-Now go ahead and upload a billboard to see it rendered on the page. 
+Now go ahead and upload a billboard to see it rendered on the page.
+
+We can see the billboard by passing in the `id` that we get from admin project. We can click on `Billboards` in the main navigation then click the 3 dots in the data table to trigger cell action. We can then copy the Billboard id and paste it inside the `getBillboard` function as a string.
+
+`ecommerce-store\app\(routes)\page.tsx`
+```tsx
+export default async function HomePage() {
+  // Fetch billboard
+  const billboard = await getBillboard("5129787f-d293-45dc-9c72-e6fe2e290ca9");
+```
+
+Now that the billboard is rendered, we can now see it in the front page store. 
 
 - Does UI reflect changes?
 - Add a billboard
@@ -15659,4 +15670,16 @@ const getProducts = async (query: Query): Promise<Product[]> => {
 export default getProducts;
 ```
 
-TODO: Fetch products
+Now let's fetch those featured products in the home page
+
+`ecommerce-store\app\(routes)\page.tsx`
+```tsx
+import getProducts from "@/actions/getProducts";
+
+export default async function HomePage() {
+
+  // Fetch featured products
+  const products = await getProducts({isFeatured: true});
+```
+
+Let's add a new div inside the container
