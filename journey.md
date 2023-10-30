@@ -15684,7 +15684,9 @@ export default async function HomePage() {
 
 ### `ProductList` componenet
 
-We want to be able to show the products we fetched so we will create a `ProductList` component.
+We want to be able to show the products we fetched so we will create a `ProductList` component. We should put it inside the `components` folder.
+
+Note: `compenents/ui` is where we put components that are re-usable. Whereas everything else will fall inside `components`.
 
 `ecommerce-store\components\ProductList.tsx`
 ```tsx
@@ -15702,6 +15704,8 @@ Let's add a new div inside the container. It will contain our `ProductList` comp
 
 `ecommerce-store\app\(routes)\page.tsx`
 ```tsx
+import ProductList from "@/components/ProductList";
+
 export default async function HomePage() {
   // Fetch featured products
   const products = await getProducts({isFeatured: true});
@@ -15722,3 +15726,32 @@ export default async function HomePage() {
 }
 ```
 
+Now let's develop the ProductList component.
+
+It will have props of `{ title, items }` where items is a `Product[]`.
+
+Destructure those props in the parameters, and return a `div` that contains an `h3` with the `title`.
+
+```tsx
+import React from 'react';
+
+import { Product } from '@/types';
+
+interface ProductListProps {
+  title: string;
+  items: Product[];
+};
+
+const ProductList: React.FC<ProductListProps> = ({
+  title,
+  items
+}) => {
+  return (
+    <div className="space-y-4">
+      <h3>{title}</h3>
+    </div>
+  )
+}
+
+export default ProductList;
+```
