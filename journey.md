@@ -15798,3 +15798,57 @@ const ProductList: React.FC<ProductListProps> = ({
   )
 }
 ```
+
+Now in the home page we can pass the data to the props to `ProductList`,
+
+```tsx
+export default async function HomePage() {
+// ... fetch items
+  return (
+    <Container>
+      <div className="space-y-10 pb-10">
+        <Billboard data={billboard} />
+      </div>
+      <div className="flex flex-col gap-y-8 px-4 sm:px-6 lg:px-8">
+        <ProductList title="Featured Products" items={products}/>
+      </div>
+    </Container>
+  )
+}
+```
+
+### Render featured products
+
+Now if we had products from the admin dashboard then we won't see the `NoResults`. But if we had products then we should not see anything as of now.
+
+Navigate back to `ProductList` so we can render our products. 
+
+Let's use `grid`, following mobile-first responsive design. Create a `div` right after `NoResults` With a gap of 4, for each device we have:
+
+- Mobile: 1 column
+- Small: 2 columns
+- Medium: 3 cols
+- Large: 4 cols
+
+Inside this map out each item, for now just map out a `div` with a key of `item.id` and inside interpolate `item.name`.
+
+```tsx
+const ProductList: React.FC<ProductListProps> = ({
+  title,
+  items
+}) => {
+  return (
+    <div className="space-y-4">
+      <h3 className="font-bold text-3xl">{title}</h3>
+      {items.length === 0 && <NoResults />}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {items.map((item) => (
+          <div key={item.id}>
+            {item.name}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+```
