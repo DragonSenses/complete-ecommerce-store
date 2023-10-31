@@ -15766,17 +15766,35 @@ Style the `h3` text bold and size of 3xl.
 
 Now the next thing to do is to create a re-usable component that will represent when fetching any data results to empty.
 
-Create the `NoResults.tsx` inside `components/ui`,
+Create the `NoResults.tsx` inside `components/ui`, and create a div that centers the text with height and width to full and with text-neutral-500.
 
+`ecommerce-store\components\ui\NoResults.tsx`
 ```tsx
 import React from 'react';
 
 const NoResults = () => {
   return (
-    <div>NoResults</div>
+    <div className="flex items-center justify-center h-full w-full text-neutral-500">
+      No results found.
+    </div>
   )
 }
 
 export default NoResults
 ```
 
+No go back to `ProductList` and check if the length of `items` is 0. Then we render a `NoResults` component.
+
+```tsx
+const ProductList: React.FC<ProductListProps> = ({
+  title,
+  items
+}) => {
+  return (
+    <div className="space-y-4">
+      <h3 className="font-bold text-3xl">{title}</h3>
+      {items.length === 0 && <NoResults />}
+    </div>
+  )
+}
+```
