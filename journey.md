@@ -15852,3 +15852,46 @@ const ProductList: React.FC<ProductListProps> = ({
   )
 }
 ```
+
+### Product Card
+
+Let's create a client component in the UI named `ProductCard`.
+
+```tsx
+"use client";
+
+import React from 'react';
+
+const ProductCard = () => {
+  return (
+    <div>
+      Product Card
+    </div>
+  )
+}
+
+export default ProductCard
+```
+
+Instead of a generic `div` that we map out, instead we can pass in the product `item` to our `ProductCard` component.
+
+```tsx
+const ProductList: React.FC<ProductListProps> = ({
+  title,
+  items
+}) => {
+  return (
+    <div className="space-y-4">
+      <h3 className="font-bold text-3xl">{title}</h3>
+      {items.length === 0 && <NoResults />}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {items.map((item) => (
+          <ProductCard key={item.id} data={item}/>
+        ))}
+      </div>
+    </div>
+  )
+}
+```
+
+Let's create the `interface` of ProductCard.
