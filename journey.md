@@ -15992,3 +15992,30 @@ const nextConfig = {
 
 module.exports = nextConfig
 ```
+
+##### Parsing error: Cannot find module 'next/babel'
+
+In the `next.config.js` we may have another error that looks like this:
+
+```sh
+Parsing error: Cannot find module 'next/babel'
+Require stack:
+- C:\Users\...
+- ...
+```
+
+*Fix:* Navigate to `.eslintrc.json` that contains:
+
+```json
+{
+  "extends": "next/core-web-vitals"
+}
+```
+
+Replace it with:
+
+```json
+{
+  "extends": ["next/babel","next/core-web-vitals"]
+}
+```
