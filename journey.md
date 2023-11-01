@@ -15919,7 +15919,7 @@ const ProductCard: React.FC<ProductCard> = ({
 
 Now we can work on the output of the Product Card.
 
-First we create a container with some styles. This will serve as the container and backdrop to the entire card. Now we will create our images and actions for the product card.
+First we create a container with some styles. This will serve as the container and backdrop to the entire card. It will contain the images and actions for the product card. Make sure to give this parent container the `group` style. I'll come back to explain this later.
 
 Next is another `div` that should have a gray background, this will contain our product's image. Inside we can use `Image` from `next/image` and fill out the props.
 
@@ -15944,7 +15944,11 @@ const ProductCard: React.FC<ProductCard> = ({
 
 - Note that we have the `fill` prop because we got an Unhandled Runtime Error, "Error: Image with src "...." is missing required "width" property.
 
-#### Issue is "Error: Invalid `src` prop
+#### Environment setup to fix some issues
+
+While making the ProductCard, came across some issues which will be addressed.
+
+##### Issue: "Error: Invalid `src` prop
 
 We've had this issue before, back in the `BillboardForm` when we were testing the `ImageUpload`.
 
@@ -16019,3 +16023,99 @@ Replace it with:
   "extends": ["next/babel","next/core-web-vitals"]
 }
 ```
+
+#### ProductCard output continued
+
+With the host configured and issues out of the way we can continue by adding styles to the `Image`, which we can now see on our store's front page.
+
+For now we'd want the image to be square, have the image maintain its aspect ratio while filling the element's entire content box. We can use the [object-fit](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit)'s `cover` property for that. Let's also make it a rounded.
+
+```tsx
+<Image 
+  src={data?.images?.[0]?.url}
+  fill
+  alt="Product Image"
+  className='aspect-square object-cover rounded-md'
+/>
+```
+
+##### ProductCard styling based on parent state (group-{modifier})
+
+Next, we should create a space where icons can show when we hover over an individual product.
+But first, let's look at our `ProductCard` again.
+
+```tsx
+const ProductCard: React.FC<ProductCard> = ({
+  data
+}) => {
+  return (
+    <div className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
+      {/* Images & Actions */}
+      <div className="aspect-square rounded-xl bg-gray-100 relative">
+        <Image />
+      </div>
+    </div>
+  )
+}
+```
+
+Remember that we put `group` in the parent container in the output. Our goal is to have one of the child components trigger and show itself when our parent is hovered over. To do this we have a default opacity of 0 for a `div` and when the group is hovered over we give it a opacity of 100. Add this `div` below `Image`.
+
+```tsx
+const ProductCard: React.FC<ProductCard> = ({
+  data
+}) => {
+  return (
+    <div className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
+      {/* Images & Actions */}
+      <div className="aspect-square rounded-xl bg-gray-100 relative">
+        <Image 
+          src={data?.images?.[0]?.url}
+          fill
+          alt="Product Image"
+          className='aspect-square object-cover rounded-md'
+        />
+        <div className='opacity-0 group-hover:opacity-100'>
+          
+        </div>
+      </div>
+    </div>
+  )
+}
+```
+
+See: [TailwindCSS - Styling based on parent state (group-{modifier})](https://tailwindcss.com/docs/hover-focus-and-other-states#styling-based-on-parent-state).
+
+#### `IconButton` component
+
+Now we should have the icons inside this `div`. We want the following icons:
+
+1. Add to Cart
+2. Quick Preview
+
+Before we do that, we need to create the `IconButton` inside `components/ui`
+
+`ecommerce-store\components\ui\IconButton.tsx`
+```tsx
+import React from 'react';
+
+const IconButton = () => {
+  return (
+    <div>IconButton</div>
+  )
+}
+
+export default IconButton
+```
+
+Then make the icon container and render an `IconButton` inside.
+
+```tsx
+<div className='opacity-0 group-hover:opacity-100'>
+  <div className='flex gap-x-6 justify-center'>
+    
+  </div>
+</div>
+```
+
+TODO: Implement IconButton handlers onclick etc.
