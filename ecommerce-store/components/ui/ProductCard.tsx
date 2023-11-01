@@ -2,7 +2,15 @@
 
 import React from 'react';
 
-const ProductCard = () => {
+import { Product } from '@/types';
+
+interface ProductCard {
+  data: Product;
+}
+
+const ProductCard: React.FC<ProductCard> = ({
+  data
+}) => {
   return (
     <div>
       Product Card
