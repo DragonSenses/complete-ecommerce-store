@@ -15916,3 +15916,33 @@ const ProductCard: React.FC<ProductCard> = ({
   )
 }
 ```
+
+Now we can work on the output of the Product Card.
+
+First we create a container with some styles. This will serve as the container and backdrop to the entire card. Now we will create our images and actions for the product card.
+
+Next is another `div` that should have a gray background, this will contain our product's image. Inside we can use `Image` from `next/image` and fill out the props.
+
+```tsx
+const ProductCard: React.FC<ProductCard> = ({
+  data
+}) => {
+  return (
+    <div className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
+      {/* Images & Actions */}
+      <div className="aspect-square rounded-xl bg-gray-100 relative">
+        <Image 
+          src={data?.images?.[0]?.url}
+          fill
+          alt="Product Image"
+        />
+      </div>
+    </div>
+  )
+}
+```
+
+- Note that we have the `fill` prop because we got an Unhandled Runtime Error, "Error: Image with src "...." is missing required "width" property.
+
+- Next issue is "Error: Invalid `src` prop
+
