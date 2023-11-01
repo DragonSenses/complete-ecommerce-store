@@ -15894,4 +15894,25 @@ const ProductList: React.FC<ProductListProps> = ({
 }
 ```
 
-Let's create the `interface` of ProductCard.
+Let's create the `interface` of ProductCard, which will take `data` which is a type of `Product` we import from `types.ts`.
+
+Then we assign the interface, and extract the data inside.
+
+`ecommerce-store\components\ui\ProductCard.tsx`
+```tsx
+import { Product } from '@/types';
+
+interface ProductCard {
+  data: Product;
+}
+
+const ProductCard: React.FC<ProductCard> = ({
+  data
+}) => {
+  return (
+    <div>
+      Product Card
+    </div>
+  )
+}
+```
