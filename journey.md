@@ -16111,11 +16111,59 @@ export default IconButton
 Then make the icon container and render an `IconButton` inside.
 
 ```tsx
-<div className='opacity-0 group-hover:opacity-100'>
-  <div className='flex gap-x-6 justify-center'>
-    
-  </div>
-</div>
+const ProductCard: React.FC<ProductCard> = ({
+  data
+}) => {
+  return (
+    <div className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
+      {/* Images & Actions */}
+      <div className="aspect-square rounded-xl bg-gray-100 relative">
+        <Image 
+          src={data?.images?.[0]?.url}
+          fill
+          alt="Product Image"
+          className='aspect-square object-cover rounded-md'
+        />
+        
+        <div className='opacity-0 group-hover:opacity-100'>
+          <div className='flex gap-x-6 justify-center'>
+            <IconButton />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 ```
+
+Let's develop the `IconButton`
+
+- Output is a native HTML `button`
+- Add an `onClick` function to its `onClick` prop
+- for `className` use `cn()` utility
+- rounded button, center all the items inside, white background, box shadow,  padding of 8 px all around, on hover scale it to 1.1x size, add transition
+
+```tsx
+import React from 'react';
+
+import { cn } from '@/lib/utils';
+
+const IconButton = () => {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "rounded-full flex items-center justify-center bg-white border shadow-md p-2 hover:scale-110 transition",
+        className
+      )}
+    >
+
+    </button>
+  )
+}
+
+export default IconButton
+```
+
 
 TODO: Implement IconButton handlers onclick etc.
