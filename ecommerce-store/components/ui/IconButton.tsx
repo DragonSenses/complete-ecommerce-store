@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 
 import { cn } from '@/lib/utils';
 
-const IconButton = () => {
+interface IconButtonProps {
+  onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
+  icon: React.ReactElement;
+  className?: string;
+}
+
+const IconButton: React.FC<IconButtonProps> = ({
+  onClick,
+  icon,
+  className
+}) => {
   return (
     <button
       onClick={onClick}
@@ -11,7 +21,7 @@ const IconButton = () => {
         className
       )}
     >
-
+      {icon}
     </button>
   )
 }
