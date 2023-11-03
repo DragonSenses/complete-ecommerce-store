@@ -16277,3 +16277,40 @@ const ProductCard: React.FC<ProductCard> = ({
   )
 }
 ```
+
+#### ProductCard description
+
+The next part to add to the card is the description. We'll create a container for our description and later price. We are going to render the we got to add more information to the product card.
+
+```tsx
+
+const ProductCard: React.FC<ProductCard> = ({
+  data
+}) => {
+  return (
+    <div className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
+      {/* Images & Actions */}
+      <div className="aspect-square rounded-xl bg-gray-100 relative">
+        // ...
+      </div>
+      {/* Description */}
+      <div>
+        <p className='font-semibold text-lg'>
+          {data.name}
+        </p>
+        <p className='text-sm text-gray-500'>
+          {data.category?.name}
+        </p>
+      </div>
+      {/* Price */}
+      <div className='flex items-center justify-between'>
+
+      </div>
+    </div>
+  )
+}
+```
+
+#### `Currency` component
+
+Inside `components/ui` create `Currency.tsx`, a react arrow function export component.
