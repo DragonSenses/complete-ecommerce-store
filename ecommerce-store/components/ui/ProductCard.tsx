@@ -5,6 +5,7 @@ import React from 'react';
 import { Expand, ShoppingCart } from 'lucide-react';
 
 import { Product } from '@/types';
+import Currency from '@/components/ui/Currency';
 import IconButton from '@/components/ui/IconButton';
 
 interface ProductCard {
@@ -48,8 +49,8 @@ const ProductCard: React.FC<ProductCard> = ({
       </div>
       {/* Price */}
       <div className='flex items-center justify-between'>
-
-      </div>
+        <Currency value={data?.price} />
+       </div>
     </div>
   )
 }
