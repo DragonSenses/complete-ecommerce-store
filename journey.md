@@ -16314,3 +16314,27 @@ const ProductCard: React.FC<ProductCard> = ({
 #### `Currency` component
 
 Inside `components/ui` create `Currency.tsx`, a react arrow function export component.
+
+We need a formatter function for the price, so create a `priceFormatter` just like what we did for the admin project.
+
+Next give `Currency`'s output a semibold font style.
+
+```tsx
+import React from 'react';
+
+const priceFormatter = new Intl.NumberFormat("en-US", {
+  style: 'currency',
+  currency: 'USD'
+});
+
+const Currency = () => {
+  return (
+    <div className="font-semibold">
+      Currency
+    </div>
+  )
+}
+
+export default Currency
+```
+
