@@ -16207,3 +16207,39 @@ const IconButton: React.FC<IconButtonProps> = ({
 
 export default IconButton
 ```
+
+#### Quick preview - actions in `ProductCard`
+
+Let's finish the implementation of the quick preview.
+
+Navigate back to `ProductCard`, and before we pass in the props to `IconButton` we have to finish our styling for its container.
+
+Add `transition absolute w-full px-6 bottom-5` to the `div` className. Next, we pass an empty function to the `onClick` prop of `IconButton`. Pass in an `Expand` icon from lucide react to the `icon` prop.
+
+```tsx
+const ProductCard: React.FC<ProductCard> = ({
+  data
+}) => {
+  return (
+    <div className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
+      {/* Images & Actions */}
+      <div className="aspect-square rounded-xl bg-gray-100 relative">
+        <Image 
+          // ...
+        />
+        <div className='opacity-0 group-hover:opacity-100 transition absolute w-full px-6 bottom-5'>
+          <div className='flex gap-x-6 justify-center'>
+            <IconButton 
+              onClick={() => {}}
+              icon={<Expand size={20} className="text-gray-600" />}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+```
+
+Now when we hover over the product card in the front page of the store, we can see the expand icon appear.
+
