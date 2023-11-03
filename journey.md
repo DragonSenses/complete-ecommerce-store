@@ -16317,7 +16317,7 @@ Inside `components/ui` create `Currency.tsx`, a react arrow function export comp
 
 We need a formatter function for the price, so create a `priceFormatter` just like what we did for the admin project.
 
-Next give `Currency`'s output a semibold font style.
+Next give `Currency`'s output a semibold font style. Then create the prop interface that contains an optional `value` that may either be string or number. Finally, use thhe formatter to format the value to a Number.
 
 ```tsx
 import React from 'react';
@@ -16327,10 +16327,16 @@ const priceFormatter = new Intl.NumberFormat("en-US", {
   currency: 'USD'
 });
 
-const Currency = () => {
+interface CurrencyProps {
+  value?: string | number;
+}
+
+const Currency: React.FC<CurrencyProps> = ({
+  value
+}) => {
   return (
     <div className="font-semibold">
-      Currency
+      {priceFormatter.format(Number(value))}
     </div>
   )
 }
