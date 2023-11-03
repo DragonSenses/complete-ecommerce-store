@@ -2,10 +2,10 @@
 
 import Image from 'next/image';
 import React from 'react';
+import { Expand, ShoppingCart } from 'lucide-react';
 
 import { Product } from '@/types';
 import IconButton from '@/components/ui/IconButton';
-import { Expand } from 'lucide-react';
 
 interface ProductCard {
   data: Product;
@@ -29,6 +29,10 @@ const ProductCard: React.FC<ProductCard> = ({
             <IconButton 
               onClick={() => {}}
               icon={<Expand size={20} className="text-gray-600" />}
+            />
+            <IconButton 
+              onClick={() => {}}
+              icon={<ShoppingCart size={20} className="text-gray-600" />}
             />
           </div>
         </div>
