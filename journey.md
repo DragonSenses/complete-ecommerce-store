@@ -16142,6 +16142,8 @@ Let's develop the `IconButton`
 - Add an `onClick` function to its `onClick` prop
 - for `className` use `cn()` utility
 - rounded button, center all the items inside, white background, box shadow,  padding of 8 px all around, on hover scale it to 1.1x size, add transition
+- Also pass in `className` prop as 2nd parameter to `cn`
+- Interpolate `icon` prop inside the `button`
 
 ```tsx
 import React from 'react';
@@ -16157,7 +16159,7 @@ const IconButton = () => {
         className
       )}
     >
-
+      {icon}
     </button>
   )
 }
@@ -16165,5 +16167,43 @@ const IconButton = () => {
 export default IconButton
 ```
 
+Now let's add those props through an interface. We have the following for the `IconButtonProps`:
 
-TODO: Implement IconButton handlers onclick etc.
+- `onClick` (optional), type `MouseEventHandler<HTMLButtonElement>` or `undefined`. 
+  - Import `MouseEventHandler` from react
+- `icon` an `ReactElement`
+- `className` (optional), a string containing our tailwind utility classnames
+
+Finally, assign those props to `IconButton`
+
+```tsx
+import React, { MouseEventHandler } from 'react';
+
+import { cn } from '@/lib/utils';
+
+interface IconButtonProps {
+  onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
+  icon: React.ReactElement;
+  className?: string;
+}
+
+const IconButton: React.FC<IconButtonProps> = ({
+  onClick,
+  icon,
+  className
+}) => {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "rounded-full flex items-center justify-center bg-white border shadow-md p-2 hover:scale-110 transition",
+        className
+      )}
+    >
+      {icon}
+    </button>
+  )
+}
+
+export default IconButton
+```
