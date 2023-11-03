@@ -16317,7 +16317,7 @@ Inside `components/ui` create `Currency.tsx`, a react arrow function export comp
 
 We need a formatter function for the price, so create a `priceFormatter` just like what we did for the admin project.
 
-Next give `Currency`'s output a semibold font style. Then create the prop interface that contains an optional `value` that may either be string or number. Finally, use thhe formatter to format the value to a Number.
+Next give `Currency`'s output a semibold font style. Now define the type of props passed to function component. To do that, create a prop interface that contains an optional `value` that may either be string or number. Finally, use thhe formatter to format the value to a Number.
 
 ```tsx
 import React from 'react';
@@ -16344,3 +16344,27 @@ const Currency: React.FC<CurrencyProps> = ({
 export default Currency
 ```
 
+Back to the `ProductCard`, we can now use the `Currency` component to handle displaying the product's price
+
+```tsx
+const ProductCard: React.FC<ProductCard> = ({
+  data
+}) => {
+  return (
+    <div className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
+      {/* Images & Actions */}
+      <div className="aspect-square rounded-xl bg-gray-100 relative">
+        // ...
+      </div>
+      {/* Description */}
+      <div>
+        // ...
+      </div>
+      {/* Price */}
+      <div className='flex items-center justify-between'>
+        <Currency value={data?.price} />
+       </div>
+    </div>
+  )
+}
+```
