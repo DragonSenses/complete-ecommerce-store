@@ -21,7 +21,7 @@ const ProductCard: React.FC<ProductCard> = ({
 
   // On click navigate to individual product page
   const handleClick = () => {
-    router.push(`/products/${data?.id}`);
+    router.push(`/product/${data?.id}`);
   }
 
   return (
