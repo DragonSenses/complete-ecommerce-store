@@ -16419,7 +16419,7 @@ export default Currency
 
 ## Individual product page
 
-Let's fix the home page a bit by putting the `Billboard` and `ProductList` inside the same container:
+Let's fix the home page a bit. We want to add a space between the footer, and close the space between the billboard and featured products. We do so by putting the `Billboard` and `ProductList` inside the same container:
 
 `ecommerce-store\app\(routes)\page.tsx`
 ```tsx
@@ -16440,3 +16440,27 @@ export default async function HomePage() {
 }
 ```
 
+### ProductCard - Click Handler
+
+Before we add a redirect to individual page we need to do the following.
+
+- Create router with `useRouter` from `next/navigation`
+- Create a click handler function that pushes router to the route of the product id
+- Assign the click handler function to `onClick` of the entire `ProductCard`
+
+```tsx
+import { useRouter } from 'next/navigation';
+
+const ProductCard: React.FC<ProductCard> = ({
+  data
+}) => {
+  // Create router object to perform client-side navigation
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/products/${data?.id}`);
+  }
+
+  return (
+    <div onClick={handleClick} className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
+```
