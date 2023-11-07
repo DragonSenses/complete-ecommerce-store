@@ -16417,7 +16417,7 @@ const Currency: React.FC<CurrencyProps> = ({
 export default Currency
 ```
 
-## Individual product page
+## Update the home page
 
 Let's fix the home page a bit. We want to add a space between the footer, and close the space between the billboard and featured products. We do so by putting the `Billboard` and `ProductList` inside the same container:
 
@@ -16439,6 +16439,10 @@ export default async function HomePage() {
   )
 }
 ```
+
+## Individual product page
+
+Now what we want is for the `ProductCard` to lead to the individual product page. Let's start with the setup.
 
 ### ProductCard - Click Handler
 
@@ -16463,4 +16467,21 @@ const ProductCard: React.FC<ProductCard> = ({
 
   return (
     <div onClick={handleClick} className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
+```
+
+### Individual Product Page route
+
+Create `product/productId/page.tsx` inside `(routes)`, then create a `ProductPage`.
+
+ecommerce-store\app\(routes)\product\[productId]\page.tsx
+```tsx
+import React from 'react';
+
+const ProductPage = () => {
+  return (
+    <div>Individual Product Page</div>
+  )
+}
+
+export default ProductPage
 ```
