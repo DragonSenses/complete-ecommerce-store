@@ -16485,3 +16485,23 @@ const ProductPage = () => {
 
 export default ProductPage
 ```
+
+Lets add an interface that contains the `params` with `productId` within. Then extract those `params` in the component.
+
+```tsx
+interface ProductPageProps {
+  params: {
+    productId: string;
+  }
+}
+
+const ProductPage: React.FC<ProductPageProps> = ({
+  params
+}) => {
+  return (
+    <div>Individual Product Page</div>
+  )
+}
+```
+
+Next let's fetch the suggested products for the individual product. Let's extract the products based on category, using the action `getProduct()`.
