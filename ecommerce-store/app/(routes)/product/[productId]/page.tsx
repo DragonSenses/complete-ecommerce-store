@@ -1,6 +1,14 @@
 import React from 'react';
 
-const ProductPage = () => {
+interface ProductPageProps {
+  params: {
+    productId: string;
+  }
+}
+
+const ProductPage: React.FC<ProductPageProps> = ({
+  params
+}) => {
   return (
     <div>Individual Product Page</div>
   )
