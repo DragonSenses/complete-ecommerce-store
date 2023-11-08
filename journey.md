@@ -16504,4 +16504,41 @@ const ProductPage: React.FC<ProductPageProps> = ({
 }
 ```
 
-Next let's fetch the suggested products for the individual product. Let's extract the products based on category, using the action `getProduct()`.
+### Action to fetch the individual product
+
+Next we need to create an action that fetches the individual product.
+
+Similar to `getBillboard.tsx`, create a file named `getProduct.tsx` where we
+
+- Build the `URL` with the route to `${process.env.NEXT_PUBLIC_API_URL}/products`
+- Create a function `getProduct`
+- Extract `id` in the params
+- For the response, fetch with the `URL` and `id` combined
+- Return the response in JSON format
+
+`ecommerce-store\actions\getProduct.tsx`
+```tsx
+import { Product } from "@/types";
+
+// Dynamically build address to fetch a resource on the web
+// The scheme/protocol & domain name are defined as an environment variable
+const URL = `${process.env.NEXT_PUBLIC_API_URL}/products`;
+
+/**
+ * 
+ * @returns an individual Product
+ */
+const getProduct = async (id: string): Promise<Product> => {
+  // Send network request to the URL and save the response
+  const res = await fetch(`${URL}/${id}`);
+
+  // Return the response in JSON format
+  return res.json();
+}
+
+export default getProduct;
+```
+
+Next let's fetch the suggested products for the individual product. The suggested products are products that are within the same category of the individual product. It has some relation to the individual product and the customer may take interest in the suggested products.
+
+Let's extract the products based on category, using the action `getProducts()`.
