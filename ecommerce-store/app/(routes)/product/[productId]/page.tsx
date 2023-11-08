@@ -3,6 +3,7 @@ import React from 'react';
 import getProduct from '@/actions/getProduct';
 import getProducts from '@/actions/getProducts';
 import Container from '@/components/ui/Container';
+import ProductList from '@/components/ProductList';
 
 interface ProductPageProps {
   params: {
@@ -33,6 +34,8 @@ const ProductPage: React.FC<ProductPageProps> = async ({
               Product Info
             </div>
           </div>
+          <hr className='my-10' />
+          <ProductList title="Suggested Items" items={suggestedProducts} />
         </div>
       </Container>
     </div>
