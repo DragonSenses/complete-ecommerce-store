@@ -16663,3 +16663,86 @@ const ProductPage: React.FC<ProductPageProps> = async ({
   )
 }
 ```
+
+#### Issue: suggested products does not fetch properly
+
+After testing the product page, when we add or remove products to a particular category it should reflect in the suggested product list. The issue is that it does not change.
+
+The issue was found inside `ecommerce-store\actions\getProducts.tsx`, when we send the network request to fetch at the specific url, we pass in `URL` and not `url` that we built with `queryString`. 
+
+We generated a `url` constant given a set of parameters, whereas the `URL` that we currently use was simply a general route to products.
+
+`ecommerce-store\actions\getProducts.tsx`
+```tsx
+import queryString from "query-string"
+
+import { Product } from "@/types";
+
+// Dynamically build address to fetch a resource on the web
+// The scheme/protocol & domain name are defined as an environment variable
+const URL = `${process.env.NEXT_PUBLIC_API_URL}/products`;
+
+interface Query {
+  categoryId?: string;
+  colorId?: string;
+  sizeId?: string;
+  isFeatured?: boolean;
+}
+
+const getProducts = async (query: Query): Promise<Product[]> => {
+  // Stringify an object into a URL with a query string and sorting the keys
+  const url = queryString.stringifyUrl({
+    url: URL,
+    query: {
+      colorId: query.colorId,
+      sizeId: query.sizeId,
+      categoryId: query.categoryId,
+      isFeatured: query.isFeatured,
+    },
+  })
+
+  // Send network request to the URL and save the response
+  const res = await fetch(URL);
+
+  // Return the response in JSON format
+  return res.json();
+}
+
+export default getProducts;
+```
+
+The fix is passing in `url` instead of `URL` to the `fetch()` when saving the response.
+
+`const res = await fetch(url);` 
+
+`ecommerce-store\actions\getProducts.tsx`
+```tsx
+/**
+ * 
+ * @returns an array of products
+ */
+const getProducts = async (query: Query): Promise<Product[]> => {
+  // Generate a url constant where we add parameters via queryString
+  // Stringify an object into a URL with a query string and sorting the keys
+  const url = queryString.stringifyUrl({
+    url: URL,
+    query: {
+      colorId: query.colorId,
+      sizeId: query.sizeId,
+      categoryId: query.categoryId,
+      isFeatured: query.isFeatured,
+    },
+  })
+
+  // Send network request to the URL and save the response
+  const res = await fetch(url);
+
+  // Return the response in JSON format
+  return res.json();
+}
+```
+
+With that fixed the individual product page should only load the items related to its own category.
+
+### Gallery component
+
