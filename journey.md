@@ -16539,6 +16539,43 @@ const getProduct = async (id: string): Promise<Product> => {
 export default getProduct;
 ```
 
+First let's fetch the product using the `productId` with the action `getProduct()`.
+
 Next let's fetch the suggested products for the individual product. The suggested products are products that are within the same category of the individual product. It has some relation to the individual product and the customer may take interest in the suggested products.
 
-Let's extract the products based on category, using the action `getProducts()`.
+Let's extract the suggested products based on the same category as the individual product, using the action `getProducts()`.
+
+```tsx
+import React from 'react';
+
+import getProduct from '@/actions/getProduct';
+import getProducts from '@/actions/getProducts';
+
+interface ProductPageProps {
+  params: {
+    productId: string;
+  }
+}
+
+const ProductPage: React.FC<ProductPageProps> = async ({
+  params
+}) => {
+  // Fetch the individual product
+  const product = await getProduct(params.productId);
+
+  // Fetch suggested products using the same category
+  const suggestedProducts = await getProducts({
+    categoryId: product?.category?.id
+  })
+
+  return (
+    <div>Individual Product Page</div>
+  )
+}
+
+export default ProductPage
+```
+
+### Individual Product Page output
+
+Now let's style the product page.
