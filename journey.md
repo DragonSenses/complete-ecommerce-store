@@ -16578,4 +16578,54 @@ export default ProductPage
 
 ### Individual Product Page output
 
-Now let's style the product page.
+Now let's style the product page. 
+
+- Individual product page will be a `div` with a white background
+- Inside is a `Container`, with a `div` within that contains our padding
+- Inside the padding `div` we have a `div` that sets a grid and gap on large screens
+
+```tsx
+const ProductPage: React.FC<ProductPageProps> = async ({
+  params
+}) => {
+  // ...
+  return (
+    <div className='bg-white'>
+      <Container>
+        <div className="px-4 py-10 sm:px-6 lg:px-8">
+          <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
+            
+          </div>
+        </div>
+      </Container>
+    </div>
+  )
+}
+```
+
+Next, what we want is a section for the Gallery. So just create a `div` with Gallery text within. 
+
+Then a `div` below the gallery, which contains our product info. It will contain some responsive styles that controls the top margin. What we want is that on large screens we have the product gallery and info side-by-side, but on smaller screens we have them in vertical order.
+
+```tsx
+const ProductPage: React.FC<ProductPageProps> = async ({
+  params
+}) => {
+  // ...
+  return (
+    <div className='bg-white'>
+      <Container>
+        <div className="px-4 py-10 sm:px-6 lg:px-8">
+          <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
+            {/* Gallery */}
+            <div>Gallery</div>
+            <div className='mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0'>
+              {/* Info */}
+              Product Info
+            </div>
+          </div>
+        </div>
+      </Container>
+    </div>
+  )
+}```
