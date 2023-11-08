@@ -18,6 +18,7 @@ interface Query {
  * @returns an array of products
  */
 const getProducts = async (query: Query): Promise<Product[]> => {
+  // Generate a url constant where we add parameters via queryString
   // Stringify an object into a URL with a query string and sorting the keys
   const url = queryString.stringifyUrl({
     url: URL,
@@ -30,7 +31,7 @@ const getProducts = async (query: Query): Promise<Product[]> => {
   })
 
   // Send network request to the URL and save the response
-  const res = await fetch(URL);
+  const res = await fetch(url);
 
   // Return the response in JSON format
   return res.json();
