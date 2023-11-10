@@ -16956,3 +16956,52 @@ const Gallery: React.FC<GalleryProps> = ({
   )
 }
 ```
+
+#### GalleryTab component
+
+Because the headless UI `Tab` component does not contain the prop for `image`, we have to make a custom-component that does.
+
+Inside `components/gallery` create `GalleryTab.tsx`, a react functional component.
+
+```tsx
+import React from 'react';
+
+const GalleryTab = () => {
+  return (
+    <div>
+      GalleryTab
+    </div>
+  )
+}
+
+export default GalleryTab
+```
+
+Then we import and use it inside Gallery. Since they are within the same directory we can import 
+
+```tsx
+import GalleryTab from './GalleryTab';
+
+interface GalleryProps {
+  images: ImageType[];
+};
+
+const Gallery: React.FC<GalleryProps> = ({
+  images
+}) => {
+  return (
+    <Tab.Group as='div' className='flex flex-col-reverse'>
+      <div className='mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none'>
+        <Tab.List className='grid grid-cols-4 gap-6'>
+          {images.map((image) => (
+            <GalleryTabTab key={image.id} image={image}/>
+          ))}
+        </Tab.List>
+      </div>
+    </Tab.Group>
+  )
+}
+
+export default Gallery
+```
+
