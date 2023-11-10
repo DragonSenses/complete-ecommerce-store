@@ -16795,3 +16795,14 @@ const ProductPage: React.FC<ProductPageProps> = async ({
 
 export default ProductPage
 ```
+
+
+## HeadlessUI
+
+Going to use [HeadlessUI](https://headlessui.com/react/menu), instead of radix, for more exposure to another component librarry.
+
+[HeadlessUI/React](https://www.npmjs.com/package/@headlessui/react) is where we install.
+
+```sh
+npm i @headlessui/react
+```
