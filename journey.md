@@ -17005,3 +17005,37 @@ const Gallery: React.FC<GalleryProps> = ({
 export default Gallery
 ```
 
+Now let's develop the `GalleryTab`.
+
+The imports:
+- `React`
+- `Image` from next
+- `cn` from utils
+- `Image` as `ImageType` from types
+
+Next the prop interface which takes `image` a type of `ImageType`. Then extract `image` in the parameters of `GalleryTab`.
+
+```tsx
+import React from 'react';
+import Image from 'next/image';
+import { Tab } from '@headlessui/react';
+
+import { cn } from '@/lib/utils';
+import { Image as ImageType } from '@/types';
+
+interface GalleryTabProps {
+  image: ImageType
+}
+
+const GalleryTab: React.FC<GalleryTabProps> = ({
+  image
+}) => {
+  return (
+    <div>
+      GalleryTab
+    </div>
+  )
+}
+
+export default GalleryTab
+```
