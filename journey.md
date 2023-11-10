@@ -20,6 +20,8 @@ Front-End
 - [shadcn/ui](https://ui.shadcn.com/)
 - zustand (global state management)
 
+Headless UI
+
 Database
 - MySQL
 - PlanetScale
@@ -16746,3 +16748,50 @@ With that fixed the individual product page should only load the items related t
 
 ### Gallery component
 
+Create `ecommerce-store\components\gallery\index.tsx`. We will have a `gallery` folder within components because it will be made up of multiple components.
+
+```tsx
+import React from 'react'
+
+const Gallery = () => {
+  return (
+    <div>Gallery</div>
+  )
+}
+
+export default Gallery
+```
+
+Now interpolate the `Gallery` inside the individual product page.
+
+```tsx
+import Gallery from '@/components/gallery';
+
+// ...
+const ProductPage: React.FC<ProductPageProps> = async ({
+  params
+}) => {
+  // ...
+  return (
+    <div className='bg-white'>
+      <Container>
+        <div className="px-4 py-10 sm:px-6 lg:px-8">
+          <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
+
+            <Gallery />
+
+            <div className='mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0'>
+              {/* Info */}
+              Product Info
+            </div>
+          </div>
+          <hr className='my-10' />
+          <ProductList title="Suggested Items" items={suggestedProducts} />
+        </div>
+      </Container>
+    </div>
+  )
+}
+
+export default ProductPage
+```
