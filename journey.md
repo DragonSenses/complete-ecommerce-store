@@ -16762,7 +16762,7 @@ const Gallery = () => {
 export default Gallery
 ```
 
-Now interpolate the `Gallery` inside the individual product page.
+Now interpolate the `Gallery` inside the individual product page. Let's also pass in a prop `images={product.images}` to the `Gallery`.
 
 ```tsx
 import Gallery from '@/components/gallery';
@@ -16778,7 +16778,7 @@ const ProductPage: React.FC<ProductPageProps> = async ({
         <div className="px-4 py-10 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
 
-            <Gallery />
+            <Gallery images={product.images}/>
 
             <div className='mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0'>
               {/* Info */}
@@ -16805,4 +16805,37 @@ Going to use [HeadlessUI](https://headlessui.com/react/menu), instead of radix, 
 
 ```sh
 npm i @headlessui/react
+```
+
+### Developing the Gallery component
+
+Now let's mark Gallery as a client component and import `Tab` from `headlessui/react`. Next import `Image` from next. Also import `Image` as `ImageType` from our types.
+
+Then we create an interface for `GalleryProps` that has an array of images.
+
+Finally, assign that interface as the type to `Gallery` component and extract the data inside which is `images`.
+
+`ecommerce-store\components\gallery\index.tsx`
+```tsx
+"use client"
+
+import React from 'react';
+import Image from "next/image";
+import { Tab } from "@headlessui/react";
+
+import { Image as ImageType } from "@/types";
+
+interface GalleryProps {
+  images: ImageType[];
+};
+
+const Gallery: React.FC<GalleryProps> = ({
+  images
+}) => {
+  return (
+    <div>Gallery</div>
+  )
+}
+
+export default Gallery
 ```
