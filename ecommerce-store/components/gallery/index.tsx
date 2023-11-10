@@ -14,7 +14,9 @@ const Gallery: React.FC<GalleryProps> = ({
   images
 }) => {
   return (
-    <div>Gallery</div>
+    <Tab.Group as='div' className='flex flex-col-reverse'>
+
+    </Tab.Group>
   )
 }
 
