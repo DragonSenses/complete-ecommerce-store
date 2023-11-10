@@ -16916,3 +16916,43 @@ const Gallery: React.FC<GalleryProps> = ({
   )
 }
 ```
+
+Now we can give it tailwind styles, like `flex-col-reverse`. Next create a `div` that will contain our `Tab.List` with styles `mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none`. 
+
+Then create our `Tabb.List` with `grid-cols-4` with a `gap-6` in between.
+
+```tsx
+const Gallery: React.FC<GalleryProps> = ({
+  images
+}) => {
+  return (
+    <Tab.Group as='div' className='flex flex-col-reverse'>
+      <div className='mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none'>
+        <Tab.List className='grid grid-cols-4 gap-6'>
+
+        </Tab.List>
+      </div>
+    </Tab.Group>
+  )
+}
+```
+
+Inside our `Tab.List` let's map outt each of our images into a `Tab` with `image.id` for the `key` prop and `image` for `image prop`.
+
+```tsx
+const Gallery: React.FC<GalleryProps> = ({
+  images
+}) => {
+  return (
+    <Tab.Group as='div' className='flex flex-col-reverse'>
+      <div className='mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none'>
+        <Tab.List className='grid grid-cols-4 gap-6'>
+          {images.map((image) => (
+            <Tab key={image.id} image={image}/>
+          ))}
+        </Tab.List>
+      </div>
+    </Tab.Group>
+  )
+}
+```
