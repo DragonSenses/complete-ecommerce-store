@@ -16839,3 +16839,80 @@ const Gallery: React.FC<GalleryProps> = ({
 
 export default Gallery
 ```
+
+Now let's work on the gallery output. Instead of a `div`, render a `Tab`.
+
+[Headless UI - Tabs](https://headlessui.com/react/tabs).
+
+Tabs
+Easily create accessible, fully customizable tab interfaces, with robust focus management and keyboard navigation support.
+
+Basic example
+Tabs are built using the `Tab.Group`, `Tab.List`, `Tab`, `Tab.Panels`, and `Tab.Panel` components. By default the first tab is selected, and clicking on any tab or selecting it with the keyboard will activate the corresponding panel.
+
+```tsx
+import { Tab } from '@headlessui/react'
+
+function MyTabs() {
+  return (
+    <Tab.Group>
+      <Tab.List>
+        <Tab>Tab 1</Tab>
+        <Tab>Tab 2</Tab>
+        <Tab>Tab 3</Tab>
+      </Tab.List>
+      <Tab.Panels>
+        <Tab.Panel>Content 1</Tab.Panel>
+        <Tab.Panel>Content 2</Tab.Panel>
+        <Tab.Panel>Content 3</Tab.Panel>
+      </Tab.Panels>
+    </Tab.Group>
+  )
+}
+```
+
+Styling different states
+Headless UI keeps track of a lot of state about each component, like which tab option is currently checked, whether a popover is open or closed, or which item in a menu is currently active via the keyboard.
+
+But because the components are headless and completely unstyled out of the box, you can't see this information in your UI until you provide the styles you want for each state yourself.
+
+[Headless UI/React Tabs Component API](https://headlessui.com/react/tabs#component-api).
+
+### Adding Tabs to Gallery component
+
+Let's start by making a `Tap.Group` as a `div`.
+
+Notice that if we just render the `Tab` as is with a `className` it will give us an error:
+
+```tsx
+const Gallery: React.FC<GalleryProps> = ({
+  images
+}) => {
+  return (
+    <Tab.Group className=''>Gallery</Tab.Group>
+  )
+}
+```
+
+Error: 
+
+```sh
+Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & CleanProps<ExoticComponent<{ children?: ReactNode; }>, "defaultIndex" | "onChange" | "selectedIndex" | "vertical" | "manual"> & OurProps<...> & { ...; } & { ...; }'.
+  Property 'className' does not exist on type 'IntrinsicAttributes & CleanProps<ExoticComponent<{ children?: ReactNode; }>, "defaultIndex" | "onChange" | "selectedIndex" | "vertical" | "manual"> & OurProps<...> & { ...; } & { ...; }'.ts(2322)
+```
+
+We need to use the prop `as` to determine the element or component the `Tabs` should render as [See headlessui/react - tab component API](https://headlessui.com/react/tabs#component-api).
+
+So to fix this we set the `Tab` as a `div`, like so:
+
+```tsx
+const Gallery: React.FC<GalleryProps> = ({
+  images
+}) => {
+  return (
+    <Tab.Group as='div' className=''>
+      Gallery
+    </Tab.Group>
+  )
+}
+```
