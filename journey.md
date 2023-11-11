@@ -16796,7 +16796,6 @@ const ProductPage: React.FC<ProductPageProps> = async ({
 export default ProductPage
 ```
 
-
 ## HeadlessUI
 
 Going to use [HeadlessUI](https://headlessui.com/react/menu), instead of radix, for more exposure to another component librarry.
@@ -17161,6 +17160,42 @@ const GalleryTab: React.FC<GalleryTabProps> = ({
         </div>
       )}
     </Tab>
+  )
+}
+```
+
+## Gallery component continued
+
+[Headless UI - Tabs](https://headlessui.com/react/tabs).
+
+Let's continue developing the `Gallery`. We want to use `Tab.Panels` next, give it `aspect-square w-full`.
+
+Inside the `Tab.Panels` group we want to iterate over each `image` and map them to a `Tab.Panel` with a key of `image.id`.
+
+`ecommerce-store\components\gallery\index.tsx`
+```tsx
+const Gallery: React.FC<GalleryProps> = ({
+  images
+}) => {
+  return (
+    <Tab.Group as='div' className='flex flex-col-reverse'>
+      <div className='mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none'>
+        <Tab.List className='grid grid-cols-4 gap-6'>
+          {images.map((image) => (
+            <GalleryTab key={image.id} image={image}/>
+          ))}
+        </Tab.List>
+      </div>
+
+      <Tab.Panels className='aspect-square w-full'>
+        {images.map((image) => (
+          <Tab.Panel key={image.id}>
+            
+          </Tab.Panel>
+        ))}
+      </Tab.Panels>
+
+    </Tab.Group>
   )
 }
 ```
