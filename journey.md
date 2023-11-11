@@ -17084,8 +17084,7 @@ const GalleryTab: React.FC<GalleryTabProps> = ({
 }
 
 ```
-
-
+Next inside the `div` is a span with the className of `'absolute h-full w-full aspect-square inset-0 overflow-hidden rounded-md'`. Finally, inside the `span` we have an `Image` with all its props. Give it a classname of `object-cover object-center`. 
 
 ```tsx
 const GalleryTab: React.FC<GalleryTabProps> = ({
@@ -17112,3 +17111,31 @@ const GalleryTab: React.FC<GalleryTabProps> = ({
 }
 ```
 
+Make a sibling `span` that is a self-closing tag, or [void element](https://developer.mozilla.org/en-US/docs/Glossary/Void_element). We will use it to create a border around the single `Tab`.
+
+```tsx
+
+const GalleryTab: React.FC<GalleryTabProps> = ({
+  image
+}) => {
+  return (
+    <Tab className='relative flex aspect-square cursor-pointer items-center justify-center rounded-md bg-white'>
+      {({ selected }) => (
+        <div>
+          <span className='absolute h-full w-full aspect-square inset-0 overflow-hidden rounded-md'>
+            <Image
+              fill
+              src={image.url}
+              alt=""
+              className="object-cover object-center"
+            >
+
+            </Image>
+          </span>
+          <span />
+        </div>
+      )}
+    </Tab>
+  )
+}
+```
