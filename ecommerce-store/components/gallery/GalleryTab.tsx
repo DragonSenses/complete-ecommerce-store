@@ -26,6 +26,7 @@ const GalleryTab: React.FC<GalleryTabProps> = ({
 
             </Image>
           </span>
+          <span />
         </div>
       )}
     </Tab>
