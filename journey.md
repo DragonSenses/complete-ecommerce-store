@@ -17040,15 +17040,52 @@ const GalleryTab: React.FC<GalleryTabProps> = ({
 export default GalleryTab
 ```
 
-##### GallerryTab output
+##### GalleryTab output
+
+For the entire output we are going to render a `Tab`, and based on the selected state we will render a `div` containing an `Image` inside a `span`. We will go step-by-step.
+
+First render a `Tab` with the following classNames: `relative flex aspect-square cursor-pointer items-center justify-center rounded-md bg-white`
+
+```tsx
+const GalleryTab: React.FC<GalleryTabProps> = ({
+  image
+}) => {
+  return (
+    <Tab className='relative flex aspect-square cursor-pointer items-center justify-center rounded-md bg-white'>
+
+    </Tab>
+  )
+}
+```
+
+Next, look into the docs on how each component exposes information about its current state via render props.
 
 [HeadlessUI/react - Tabs - Using render props](https://headlessui.com/react/tabs#using-render-props)
 
 Each component exposes information about its current state via [render props](https://reactjs.org/docs/render-props.html) that you can use to conditionally apply different styles or render different content.
 
-For example, the Tab component exposes a selected state, which tells you if the tab is currently selected.
+For example, the `Tab` component exposes a `selected` state, which tells you if the tab is currently selected.
 
-Next we are going to render a `Tab`, and based on the selected statte we will render a `div` containing an `Image` inside a `span`.
+Let's extract the `selected` state for the `Tab` and render a`div`.
+
+```tsx
+const GalleryTab: React.FC<GalleryTabProps> = ({
+  image
+}) => {
+  return (
+    <Tab className='relative flex aspect-square cursor-pointer items-center justify-center rounded-md bg-white'>
+      {({ selected }) => (
+        <div>
+
+        </div>
+      )}
+    </Tab>
+  )
+}
+
+```
+
+
 
 ```tsx
 const GalleryTab: React.FC<GalleryTabProps> = ({
