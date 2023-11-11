@@ -17100,9 +17100,7 @@ const GalleryTab: React.FC<GalleryTabProps> = ({
               src={image.url}
               alt=""
               className="object-cover object-center"
-            >
-
-            </Image>
+            />
           </span>
         </div>
       )}
@@ -17114,7 +17112,32 @@ const GalleryTab: React.FC<GalleryTabProps> = ({
 Make a sibling `span` that is a self-closing tag, or [void element](https://developer.mozilla.org/en-US/docs/Glossary/Void_element). We will use it to create a border around the single `Tab`.
 
 ```tsx
+const GalleryTab: React.FC<GalleryTabProps> = ({
+  image
+}) => {
+  return (
+    <Tab className='relative flex aspect-square cursor-pointer items-center justify-center rounded-md bg-white'>
+      {({ selected }) => (
+        <div>
+          <span className='absolute h-full w-full aspect-square inset-0 overflow-hidden rounded-md'>
+            <Image
+              fill
+              src={image.url}
+              alt=""
+              className="object-cover object-center"
+            />
+          </span>
+          <span />
+        </div>
+      )}
+    </Tab>
+  )
+}
+```
 
+Now we want this span to be the border but should be highlighted when `selected` is `true`. In this case we will use `cn()` function to conditionally render styles based on the current state of `Tab` component.
+
+```tsx
 const GalleryTab: React.FC<GalleryTabProps> = ({
   image
 }) => {
@@ -17129,10 +17152,12 @@ const GalleryTab: React.FC<GalleryTabProps> = ({
               alt=""
               className="object-cover object-center"
             >
-
             </Image>
           </span>
-          <span />
+          <span className={cn(
+            "absolute inset-0 rounded-md ring-2 ring-offset-2",
+            selected ? "ring-black" : "ring-transparent"
+          )}/>
         </div>
       )}
     </Tab>
