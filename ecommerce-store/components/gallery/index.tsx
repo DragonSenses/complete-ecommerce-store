@@ -23,6 +23,13 @@ const Gallery: React.FC<GalleryProps> = ({
           ))}
         </Tab.List>
       </div>
+      <Tab.Panels className='aspect-square w-full'>
+        {images.map((image) => (
+          <Tab.Panel key={image.id}>
+            
+          </Tab.Panel>
+        ))}
+      </Tab.Panels>
     </Tab.Group>
   )
 }
