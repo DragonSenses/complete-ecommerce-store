@@ -17265,3 +17265,33 @@ const Info = () => {
 
 export default Info
 ```
+
+### Developing the Info component
+
+- Create the interface that takes the `product` as `data`
+- render a `div` in the output
+- Inside the `div` create an `h1` that interpolates `data.name`
+
+```tsx
+import React from 'react';
+
+import { Product } from '@/types';
+
+interface InfoProps {
+  data: Product;
+}
+
+const Info: React.FC<InfoProps> = ({
+  data
+}) => {
+  return (
+    <div>
+      <h1 className=''>
+        {data.name}
+      </h1>
+    </div>
+  )
+}
+
+export default Info
+```
