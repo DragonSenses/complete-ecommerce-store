@@ -17295,3 +17295,19 @@ const Info: React.FC<InfoProps> = ({
 
 export default Info
 ```
+
+Let's style the output
+
+```tsx
+const Info: React.FC<InfoProps> = ({
+  data
+}) => {
+  return (
+    <div>
+      <h1 className='text-3xl font-bold text-gray-900'>
+        {data.name}
+      </h1>
+    </div>
+  )
+}
+```
