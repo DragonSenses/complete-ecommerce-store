@@ -17237,3 +17237,31 @@ const Gallery: React.FC<GalleryProps> = ({
   )
 }
 ```
+
+### Gallery expectations
+
+With that the `Gallery` is implemented. It should be able to hover over a product images and the selected one should have a black outline. The selected image would show up in a bigger picture next to he product description/info. The other images would be in a tabbed format below it which can be clicked on.
+
+Now we can re-use `Gallery` for the modal as well.
+
+Things to test:
+- Responsive design
+- Images load
+- Images proper size
+
+## Product Info
+
+Create a component named `Info.tsx` in `/components`.
+
+`ecommerce-store\components\Info.tsx`
+```tsx
+import React from 'react';
+
+const Info = () => {
+  return (
+    <div>Info</div>
+  )
+}
+
+export default Info
+```
