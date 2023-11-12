@@ -17343,3 +17343,34 @@ const ProductPage: React.FC<ProductPageProps> = async ({
   )
 }
 ```
+
+Let's continue developing the `Info` component.
+
+- Create a division from the `h1` header, a `div` that will contain our product description. 
+- Inside that `div` will be a `p` containing the price. We will re-use the `Currency` component to render this properly.
+- Next is an `hr` right below that `div` to separate the product title and price from the description
+
+```tsx
+const Info: React.FC<InfoProps> = ({
+  data
+}) => {
+  return (
+    <div>
+      <h1 className='text-3xl font-bold text-gray-900'>
+        {data.name}
+      </h1>
+
+      <div className='mt-3 flex items-end justify-between'>
+        <p className='text-2xl text-gray-900'>
+          <Currency value={data?.price} />
+        </p>
+      </div>
+      <hr className='my-4'/>
+      
+      <div>
+
+      </div>
+    </div>
+  )
+}
+```
