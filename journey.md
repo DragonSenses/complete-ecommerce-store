@@ -17498,3 +17498,36 @@ const Info: React.FC<InfoProps> = ({
 }
 ```
 
+Now after our product attributes container, let's add a `Button` that will have the add to cart functionality later. While we do so, let's mark `Info` as "use client".
+
+```tsx
+"use client";
+
+import React from 'react';
+
+import { Product } from '@/types';
+import Currency from '@/components/ui/Currency';
+import Button from '@/components/ui/Button';
+import { ShoppingCart } from 'lucide-react';
+
+const Info: React.FC<InfoProps> = ({
+  data
+}) => {
+  return (
+    <div>
+      {/* Product name & price... */}
+      <hr className='my-4' />
+      {/* Product Attributes*/}
+      {/* ... */}
+
+      <div className='mt-10 flex items-center gap-x-3'>
+        <Button className='flex items-center gap-x-2'>
+          Add To Cart
+          <ShoppingCart />
+        </Button>
+      </div>
+
+    </div>
+  )
+}
+```
