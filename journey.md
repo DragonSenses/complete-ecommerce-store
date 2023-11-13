@@ -17531,3 +17531,39 @@ const Info: React.FC<InfoProps> = ({
   )
 }
 ```
+
+## Individual Category Page
+
+Now when we click on a category at the top navbar we get a 404 page. Let's create the route, make a file named `app\(routes)\category\[categoryId]\page.tsx` and create a react functional component named `CategoryPage`.
+
+```tsx
+import React from 'react';
+
+const CategoryPage = () => {
+  return (
+    <div>
+      CategoryPage
+    </div>
+  )
+}
+
+export default CategoryPage
+```
+
+Now when we click on a category it should render `CategoryPage`.
+
+This will resolve the 404 error because as we can see in the `MainNav`, the `href` has the following path of `/category/${route.id}`:
+
+```tsx
+const MainNav: React.FC<MainNavProps> = ({
+  data
+}) => {
+  const pathname = usePathname();
+
+  // Map the data to usable route objects
+  const routes = data.map((route) => ({
+    href: `/category/${route.id}`,
+    label: route.name,
+    active: pathname === `/category/${route.id}`
+  }));
+```
