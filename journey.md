@@ -17567,3 +17567,35 @@ const MainNav: React.FC<MainNavProps> = ({
     active: pathname === `/category/${route.id}`
   }));
 ```
+
+Let's add the `CategoryPageProps`, which contains `params` that contains `categoryId`. We will also be able to filter/search by size and color, so we are going to have `searchParams` that contain `colorId` and `sizeId`.
+
+1. Create prop interface that contains `params` and `searchParams`
+2. Assign the interface to type of `CategoryPage` and extract parameters
+
+```tsx
+import React from 'react';
+
+interface CategoryPageProps {
+  params: {
+    categoryId: string;
+  },
+  searchParams: {
+    colorId: string;
+    sizeId: string;
+  }
+}
+
+const CategoryPage:React.FC<CategoryPageProps> = ({
+  params,
+  searchParams
+}) => {
+  return (
+    <div>
+      CategoryPage
+    </div>
+  )
+}
+
+export default CategoryPage
+```
