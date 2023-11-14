@@ -17641,4 +17641,47 @@ export default getSizes;
 Similarly for colors, create file `ecommerce-store\actions\getColors.tsx`
 
 ```tsx
+import { Color } from "@/types";
+
+// Dynamically build address to fetch a resource on the web
+// The scheme/protocol & domain name are defined as an environment variable
+const URL = `${process.env.NEXT_PUBLIC_API_URL}/colors`;
+
+/**
+ * 
+ * @returns an array of colors
+ */
+const getColors = async (): Promise<Color[]> => {
+  // Send network request to the URL and save the response
+  const res = await fetch(URL);
+
+  // Return the response in JSON format
+  return res.json();
+}
+
+export default getColors;
+```
+
+Finally, for the action to fetch an individual category create the file `ecommerce-store\actions\getCategory.tsx`
+
+```tsx
+import { Category } from "@/types";
+
+// Dynamically build address to fetch a resource on the web
+// The scheme/protocol & domain name are defined as an environment variable
+const URL = `${process.env.NEXT_PUBLIC_API_URL}/categories`;
+
+/**
+ * 
+ * @returns an individual Category
+ */
+const getCategory = async (id: string): Promise<Category> => {
+  // Send network request to the URL and save the response
+  const res = await fetch(`${URL}/${id}`);
+
+  // Return the response in JSON format
+  return res.json();
+}
+
+export default getCategory;
 ```
