@@ -17637,3 +17637,8 @@ const getSizes = async (): Promise<Size[]> => {
 
 export default getSizes;
 ```
+
+Similarly for colors, create file `ecommerce-store\actions\getColors.tsx`
+
+```tsx
+```
