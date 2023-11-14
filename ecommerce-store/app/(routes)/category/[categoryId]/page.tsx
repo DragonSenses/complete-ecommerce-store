@@ -1,6 +1,19 @@
 import React from 'react';
 
-const CategoryPage = () => {
+interface CategoryPageProps {
+  params: {
+    categoryId: string;
+  },
+  searchParams: {
+    colorId: string;
+    sizeId: string;
+  }
+}
+
+const CategoryPage:React.FC<CategoryPageProps> = ({
+  params,
+  searchParams
+}) => {
   return (
     <div>
       CategoryPage
