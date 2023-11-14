@@ -17599,3 +17599,13 @@ const CategoryPage:React.FC<CategoryPageProps> = ({
 
 export default CategoryPage
 ```
+
+Also set the revalidation option for the page to zero seconds. The page will be revalidated on every request, purging the cache and fetching the latest data from the data source. 
+
+We also need to convert it to `async` so that we can fetch our products by `categoryId` while including the `searchParams`.
+
+`ecommerce-store\app\(routes)\category\[categoryId]\page.tsx`
+```tsx
+// Revalidate the page on every request, purge cache & fetch latest data
+export const revalidate = 0;
+```
