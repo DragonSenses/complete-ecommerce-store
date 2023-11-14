@@ -17609,3 +17609,31 @@ We also need to convert it to `async` so that we can fetch our products by `cate
 // Revalidate the page on every request, purge cache & fetch latest data
 export const revalidate = 0;
 ```
+
+### Actions for sizes, colors & individual category
+
+Create the actions to fetch each of the product attributes.
+
+For sizes, create the file `ecommerce-store\actions\getSizes.tsx`
+
+```tsx
+import { Size } from "@/types";
+
+// Dynamically build address to fetch a resource on the web
+// The scheme/protocol & domain name are defined as an environment variable
+const URL = `${process.env.NEXT_PUBLIC_API_URL}/sizes`;
+
+/**
+ * 
+ * @returns an array of sizes
+ */
+const getSizes = async (): Promise<Size[]> => {
+  // Send network request to the URL and save the response
+  const res = await fetch(URL);
+
+  // Return the response in JSON format
+  return res.json();
+}
+
+export default getSizes;
+```
