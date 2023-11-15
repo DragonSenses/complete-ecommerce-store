@@ -17824,3 +17824,28 @@ const getCategory = async (id: string): Promise<Category> => {
 
 export default getCategory;
 ```
+
+With the actions created, we can now fetch all the things we need to build our Category page. Fetch `products`, `sizes`, `colors` and `category` in `CategoryPage`.
+
+```tsx
+const CategoryPage:React.FC<CategoryPageProps> = async ({
+  params,
+  searchParams
+}) => {
+  
+  const products = await getProducts({
+    categoryId: params.categoryId,
+    colorId: searchParams.colorId,
+    sizeId: searchParams.sizeId,
+  });
+  const sizes = await getSizes();
+  const colors = await getColors();
+  const category = await getCategory(params.categoryId);
+
+  return (
+    <div>
+      CategoryPage
+    </div>
+  )
+}
+```
