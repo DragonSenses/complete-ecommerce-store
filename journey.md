@@ -17878,3 +17878,37 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
   )
 }
 ```
+
+### Issue: Unhandled runtime error, cannot read properties reading 'label'
+
+Diagnosing the issue shows that we are not including the individual billboard in the GET route for the individual category. Let's add the billboard data in category GET response.
+
+`ecommerce-admin\app\api\[storeId]\categories\[categoryId]\route.ts`
+```tsx
+export async function GET (
+  req: Request,
+  { params }: { params: { categoryId: string }}
+){
+  try {
+    // Check parameters
+    if (!params.categoryId){
+      return new NextResponse("Category ID is required", { status: 400 });
+    }
+
+    // Find the specific Category in the database
+    const category = await prismadb.category.findUnique({
+      where: {
+        id: params.categoryId,
+      },
+      include: {
+        billboard: true,
+      }
+    });
+
+    return NextResponse.json(category);
+  } catch (error) {
+    console.log('[CATEGORY_GET]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+};
+```
