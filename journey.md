@@ -17849,3 +17849,32 @@ const CategoryPage:React.FC<CategoryPageProps> = async ({
   )
 }
 ```
+
+Now we can work on the output of CategoryPage, recall that each category has its own billboard. We render a `Container` with a `Billbaord` passing in the data.
+
+```tsx
+const CategoryPage: React.FC<CategoryPageProps> = async ({
+  params,
+  searchParams
+}) => {
+
+  const products = await getProducts({
+    categoryId: params.categoryId,
+    colorId: searchParams.colorId,
+    sizeId: searchParams.sizeId,
+  });
+  const sizes = await getSizes();
+  const colors = await getColors();
+  const category = await getCategory(params.categoryId);
+
+  return (
+    <div className='bg-white'>
+      <Container>
+        <Billboard
+          data={category.billboard}
+        />
+      </Container>
+    </div>
+  )
+}
+```
