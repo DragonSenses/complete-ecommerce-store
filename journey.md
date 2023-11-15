@@ -14284,6 +14284,145 @@ const OrderClient: React.FC<OrderClientProps> = ({
 export default OrderClient;
 ```
 
+# Important: Updating projects with NextJS 14
+
+[Next.js 14](https://nextjs.org/blog/next-14) was officially released on October 26, 2023, at the Next.js Conf, where Vercel announced the new features and improvements of the latest version of the React framework. Some of the highlights of Next.js 14 are:
+
+- Turbopack: A Rust-based compiler that boosts the performance and reliability of local development, with faster server startup and code updates.
+- Server Actions: A way to perform mutations and handle forms with progressive enhancement, integrated caching, and revalidation.
+- Partial Prerendering: A new rendering mode that combines static and dynamic content, with fast initial response and streaming data.
+- Next.js Learn: A free course that teaches the basics of Next.js, such as the App Router, authentication, databases, and more.
+
+[Upgrading from NextJS 13 to 14](https://nextjs.org/docs/pages/building-your-application/upgrading/version-14)
+
+We are going to update our core packages with the following command
+
+```sh
+npm i next@latest react@latest react-dom@latest eslint-config-next@latest
+```
+
+Then we get an error in the terminal
+
+```sh
+npm ERR! code ERESOLVE
+npm ERR! ERESOLVE could not resolve
+npm ERR! 
+npm ERR! While resolving: next-cloudinary@4.22.0
+npm ERR! Found: next@14.0.2
+npm ERR! node_modules/next
+npm ERR!   next@"^14.0.2" from the root project
+npm ERR!   peer next@">=10" from @clerk/nextjs@4.27.1
+npm ERR!   node_modules/@clerk/nextjs
+npm ERR!     @clerk/nextjs@"^4.23.2" from the root project
+npm ERR!
+npm ERR! Could not resolve dependency:
+npm ERR! peer next@"^12 || ^13" from next-cloudinary@4.22.0
+npm ERR! node_modules/next-cloudinary
+npm ERR!   next-cloudinary@"^4.22.0" from the root project
+npm ERR!
+npm ERR! Conflicting peer dependency: next@13.5.6
+npm ERR! node_modules/next
+npm ERR!   peer next@"^12 || ^13" from next-cloudinary@4.22.0
+npm ERR!   node_modules/next-cloudinary
+npm ERR!     next-cloudinary@"^4.22.0" from the root project
+npm ERR!
+npm ERR! Fix the upstream dependency conflict, or retry
+npm ERR! this command with --force or --legacy-peer-deps
+npm ERR! to accept an incorrect (and potentially broken) dependency resolution.
+```
+
+To solve `ERESOLVE` error in 2 steps:
+
+1. Remove `node_modules` and `package_lock.json`
+2. Run the command to install packaages & dependencies using `--legacy-peer-deps` flag
+
+```sh
+npm install --legacy-peer-deps
+```
+
+#### What does `--legacy-peer-deps` dependency do?
+
+The command `npm install --legacy-peer-deps` is used to install packages and dependencies in a Node.js project, but with a specific purpose. This command is used to install dependencies that are specified in the `peerDependencies` section of a package's `package.json` file, but with a twist.
+
+Normally, npm v7+ will automatically install peer dependencies and check for any conflicts or incompatible versions. However, this can sometimes cause errors or breakages, especially if you are using older or unmaintained packages that have not updated their peer dependencies.
+
+The `--legacy-peer-deps` flag tells npm to ignore all peer dependencies when installing, in the style of npm version 4 through version 6. This means that npm will not try to install or resolve peer dependencies, and will not throw any errors if there are any mismatches or conflicts. Instead, it will just give you warnings and let you handle the peer dependencies manually.
+
+This can be useful if you want to avoid potential dependency issues, or if you want to have more control over the versions of your peer dependencies. However, it also comes with some risks, such as introducing breaking changes or missing features that depend on the peer dependencies. Therefore, you should use this flag with caution and only when necessary.
+
+#### Upgrade NodeJS version
+
+Got another error:
+
+```sh
+npm WARN EBADENGINE Unsupported engine {
+npm WARN EBADENGINE   package: 'next@14.0.2',
+npm WARN EBADENGINE   required: { node: '>=18.17.0' },
+npm WARN EBADENGINE   current: { node: 'v18.15.0', npm: '9.1.3' }
+npm WARN EBADENGINE }
+```
+
+This means that the package `next@14.0.2` requires a specific version of Node.js which is `18.17.0` or higher, but I am still using Node.js version `18.15.0`.
+
+Install the latest version of Node.js here: [Nodejs download](https://nodejs.org/en/download).
+
+Then after installing check the version of Nodejs by running the command:
+
+```sh
+node -v
+```
+
+#### Updating Clerk & Cloudinary
+
+We still have the following issues
+
+```sh
+npm WARN ERESOLVE overriding peer dependency
+npm WARN While resolving: ecommerce-admin@0.1.0
+npm WARN Found: next@14.0.2
+npm WARN node_modules/next
+npm WARN   peer next@">=10" from @clerk/nextjs@4.27.1
+npm WARN   node_modules/@clerk/nextjs
+npm WARN     @clerk/nextjs@"^4.23.2" from the root project
+npm WARN   1 more (the root project)
+npm WARN
+npm WARN Could not resolve dependency:
+npm WARN peer next@"^12 || ^13" from next-cloudinary@4.28.0
+npm WARN node_modules/next-cloudinary
+npm WARN   next-cloudinary@"^4.22.0" from the root project
+```
+
+Error means that there is a conflict between the peer dependencies of some of the packages used in the project. A peer dependency is a requirement that a package has on another package, usually to ensure compatibility or functionality. 
+
+For example, `next-cloudinary` requires `next` version 12 or 13 as a peer dependency, meaning that it expects your project to have that version of `next` installed.
+
+However, in this case, we have `next` version 14.0.2 installed, which is not compatible with `next-cloudinary`'s peer dependency. This causes npm to warn you that it is overriding the peer dependency and installing the version of `next` that you specified in your package.json file. This can lead to potential issues or unexpected behavior when using the packages together.
+
+To fix this error, we can either:
+
+- Upgrade or downgrade your `next` version to match the peer dependency of `next-cloudinary`. For example, you can run `npm install next@13` to install the latest version of `next` 13.x.
+
+- Use the `--force` or `--legacy-peer-deps` flags when installing your packages to ignore the peer dependency conflicts. For example, you can run `npm install --force` or `npm install --legacy-peer-deps` to install all your packages without checking for peer dependencies. However, this can also cause problems or breakages, so use it with caution.
+
+- Find an alternative package that does not have a conflicting peer dependency with `next`. For example, you can look for other packages that provide cloudinary integration for next.js, such as `next-cms-cloudinary`⁴ or `next-optimized-images`.
+
+
+Let's re-install Clerk
+
+```sh
+npm install @clerk/nextjs
+```
+
+Next re-install cloudinary
+
+```sh
+npm install next-cloudinary
+```
+
+Why use cloudinary instead of Next.js Image? In short, `Image` from Next.js does not actually resize images resulting in larger file sizes. Cloudinary's `CldImage` actually does resize images as specified, resulting in smaller file sizes. See this [blog post on nextjs image optimization with cloudinary](https://filiptrivan.com/nextjs-image-optimization-with-cloudinary).
+
+Although the issue still persists, after some testing both Clerk and Cloudinary still works on the admin dashboard.
+
 # Front-End Store
 
 Now we need to implement the actual Dashboard page for the Overview tab, which will contain the API calls for the Web hooks and Stripe API.
