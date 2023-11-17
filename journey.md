@@ -18123,6 +18123,7 @@ Create a `onClick` function that does these things:
 2. Generate a new `query` object that contains updated query parameters
 3. If a user clicks on an already active filter, then the user wants to remove it
 4. Generate a URL with the updated query parameters
+  - Using `query-string` pass in `skipNull: true` to the second parameter of `stringify()` to skil keys with `null` as the value
 5. Push to the new URL
 
 `ecommerce-store\app\(routes)\category\[categoryId]\components\Filter.tsx`
@@ -18159,3 +18160,43 @@ const onClick = (id: string) => {
 }
 ```
 
+#### Filter output
+
+Recall that in `Filter`, we have 3 props: `{ data, name, valueKey }`. 
+
+- `data` is an array of the data we want to filter
+- `name` of the filter
+- `valueKey` is the unique identifier for the filter
+
+Inside a parent `div` we have an `h3` and `hr` as siblings. After the `hr` we have another sibling `div` that is a flex container which maps out the `data` into a `div` element with the `key` being `filter.id` and styles that center the contents within. 
+
+- `Filter` will include an `h3` element and an `hr` element to provide context for the filtered data 
+- Component will `map()` out each item in `data` array to a new `div` element
+- This improves user experience by allowing users to filter data and update the URL query parameters without reloading the page
+
+```tsx
+const Filter: React.FC<FilterProps> = ({
+  data,
+  name,
+  valueKey
+}) => {
+  // ...
+  return (
+    <div className='mb-8'>
+      <h3 className='text-lg font-semibold'>
+        {name}
+      </h3>
+      <hr className='my-4'/>
+      <div className='flex flex-wrap gap-2'>
+        {data.map((filter) => (
+          <div
+            className='flex items-center'
+            key={filter.id}
+          >
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+```
