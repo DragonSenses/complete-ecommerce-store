@@ -18124,3 +18124,38 @@ Create a `onClick` function that does these things:
 3. If a user clicks on an already active filter, then the user wants to remove it
 4. Generate a URL with the updated query parameters
 5. Push to the new URL
+
+`ecommerce-store\app\(routes)\category\[categoryId]\components\Filter.tsx`
+```tsx
+/**
+ * Update the URL query parameters when a user clicks on a filter, and remove
+ * the filter if it is already active
+ * @param id a string that represents the unique identifier of the element
+ *           that triggered the event 
+ */
+const onClick = (id: string) => {
+  // Parse the current URL's query string into an object
+  const currentQuery = queryString.parse(searchParams.toString());
+
+  // Generate a new object that contains the updated query parameters
+  const query = {
+    ...currentQuery,
+    [valueKey]: id
+  };
+
+  // Remove filter from query parameters if it is already active
+  if (currentQuery[valueKey] == id) {
+    query[valueKey] = null;
+  }
+
+  // Generate a URL with updated query parameters
+  const url = queryString.stringifyUrl({
+    url: window.location.href,
+    query
+  }, { skipNull: true });
+
+  // Navigate to the specified URL
+  router.push(url);
+}
+```
+
