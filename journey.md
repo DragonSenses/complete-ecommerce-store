@@ -18206,16 +18206,24 @@ const Filter: React.FC<FilterProps> = ({
 - Render a `Button` with `filter.name` as the child inside the mapping
 
 ```tsx
-{data.map((filter) => (
-  <div
-    className='flex items-center'
-    key={filter.id}
-  >
-    <Button>
-      {filter.name}
-    </Button>
-  </div>
-))}
+import Button from '@/components/ui/Button';
+
+const Filter: React.FC<FilterProps> = ({
+  data,
+  name,
+  valueKey
+}) => {
+// ...
+  {data.map((filter) => (
+    <div
+      className='flex items-center'
+      key={filter.id}
+    >
+      <Button>
+        {filter.name}
+      </Button>
+    </div>
+  ))}
 ```
 
 - Now add the props `className` and `onClick` to the `Button`
@@ -18240,3 +18248,94 @@ const Filter: React.FC<FilterProps> = ({
   </div>
 ))}
 ```
+
+##### Issue: Filter `Button` not applying styles accordingly
+
+After debugging, the issue stems from the actual `Button` component 
+
+`ecommerce-store\components\ui\Button.tsx`
+```tsx
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
+  className,
+  children,
+  disabled,
+  type = "button",
+  ...props
+}, ref) => {
+  return (
+    <button
+      className={cn(
+        `
+        w-auto
+        rounded-full
+        bg-black
+        border-transparent
+        px-5
+        py-3
+        disabled:cursor-not-allowed
+        disabled:opacity-50
+        text-white
+        font-semibold
+        hover:opacity-75
+        transition
+        `,
+        className
+      )}
+      ref={ref}
+    >
+      {children}
+    </button>
+  )
+})
+```
+
+Notice that we spread out the `props` but we do not use it inside the return. So after the `ref`, let's spread the `props`.
+
+```tsx
+import React, { forwardRef } from "react";
+
+import { cn } from "@/lib/utils";
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
+  className,
+  children,
+  disabled,
+  type = "button",
+  ...props
+}, ref) => {
+  return (
+    <button
+      className={cn(
+        `
+        w-auto
+        rounded-full
+        bg-black
+        border-transparent
+        px-5
+        py-3
+        disabled:cursor-not-allowed
+        disabled:opacity-50
+        text-white
+        font-semibold
+        hover:opacity-75
+        transition
+        `,
+        className
+      )}
+      ref={ref}
+      {...props}
+    >
+      {children}
+    </button>
+  )
+})
+
+Button.displayName = "Button";
+
+export default Button;
+```
+
+With the addition of `{...props}` to the `button`'s props, this allows for additional props to be passed in.
