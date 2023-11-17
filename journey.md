@@ -18031,3 +18031,31 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
 Developing the `Filter` component.
 
 - Mark as "use client"
+- Create `FilterProps` which contains 
+  - `data` of type `Size[]` or `Color[]`
+  - `name: string`
+  - `valueKey: string`
+- Assign the props and extract the keys in the props
+
+```tsx
+import { Color, Size } from '@/types';
+import React from 'react';
+
+interface FilterProps {
+  data: (Size | Color)[];
+  name: string;
+  valueKey: string;
+}
+
+const Filter: React.FC<FilterProps> = ({
+  data,
+  name,
+  valueKey
+}) => {
+  return (
+    <div>Filter</div>
+  )
+}
+
+export default Filter
+```
