@@ -18009,3 +18009,25 @@ const Filter = () => {
 
 export default Filter
 ```
+
+Now we can import `Filter` in the individual category page. Since it is within a local `components` folder we can use the dot (.) in the import statement which means that the file/module to be imported is in the same directory as the current file. It is a way of specifying a *relative path* to the module or file.
+
+```tsx
+import Filter from './components/Filter';
+// ...
+const CategoryPage: React.FC<CategoryPageProps> = async ({
+  params,
+  searchParams
+}) => {
+  // ...
+    return (
+    <div className='bg-white'>
+      {/* Output with Filters */}
+    </div>
+  )
+}
+```
+
+Developing the `Filter` component.
+
+- Mark as "use client"
