@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import queryString from "query-string"
 
 import { Color, Size } from '@/types';
 
@@ -25,7 +26,36 @@ const Filter: React.FC<FilterProps> = ({
   // Get the currently selected value of the query parameter
   const selectedValue = searchParams.get(valueKey);
 
-  // onClick function that accepts id
+  /**
+   * Update the URL query parameters when a user clicks on a filter, and remove
+   * the filter if it is already active
+   * @param id a string that represents the unique identifier of the element
+   *           that triggered the event 
+   */
+  const onClick = (id: string) => {
+    // Parse the current URL's query string into an object
+    const currentQuery = queryString.parse(searchParams.toString());
+
+    // Generate a new object that contains the updated query parameters
+    const query = {
+      ...currentQuery,
+      [valueKey]: id
+    };
+
+    // Remove filter from query parameters if it is already active
+    if (currentQuery[valueKey] == id) {
+      query[valueKey] = null;
+    }
+
+    // Generate a URL with updated query parameters
+    const url = queryString.stringifyUrl({
+      url: window.location.href,
+      query
+    }, { skipNull: true });
+
+    // Navigate to the specified URL
+    router.push(url);
+  }
 
   return (
     <div>Filter</div>
