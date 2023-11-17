@@ -18109,3 +18109,18 @@ const Filter: React.FC<FilterProps> = ({
   const router = useRouter();
 ```
 
+#### Filter's click handler
+
+In the case that a user clicks on a `Filter` component, what is the expected behavior? When clicking on a filter the user expects the filters be applied. But when clicked on an active filter, the user expects to remove the filter. 
+
+This means that the query string of the URL should update accordingly. So the `onClick` function is responsible for updating the URL query parameters when a user clicks on a filter. It should also remove the filter if it is already active.
+
+We are going to use `queryString` from [query-string](https://www.npmjs.com/package/query-string) to handle parsing and stringifying our URL query strings.
+
+Create a `onClick` function that does these things:
+
+1. Parse the current query parameters from the URL
+2. Generate a new `query` object that contains updated query parameters
+3. If a user clicks on an already active filter, then the user wants to remove it
+4. Generate a URL with the updated query parameters
+5. Push to the new URL
