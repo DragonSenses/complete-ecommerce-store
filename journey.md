@@ -18200,3 +18200,43 @@ const Filter: React.FC<FilterProps> = ({
   )
 }
 ```
+
+##### Add interaction to `Filter` component
+
+- Render a `Button` with `filter.name` as the child inside the mapping
+
+```tsx
+{data.map((filter) => (
+  <div
+    className='flex items-center'
+    key={filter.id}
+  >
+    <Button>
+      {filter.name}
+    </Button>
+  </div>
+))}
+```
+
+- Now add the props `className` and `onClick` to the `Button`
+  - `className` use `cn` utility function to combine classNames so we can conditionally apply a style. In this case, we want to check for the condition that a `Filter` is selected, if so then we invert the background and text color
+  - For `onClick` pass in the click handler function with the `filter.id` parameter
+
+```tsx
+{data.map((filter) => (
+  <div
+    className='flex items-center'
+    key={filter.id}
+  >
+    <Button
+      className={cn(
+        "rounded-md text-sm text-gray-800 p-2 bg-white border border-gray-300",
+        selectedValue === filter.id && "bg-black text-white"
+      )}
+      onClick={() => onClick(filter.id)}
+    >
+      {filter.name}
+    </Button>
+  </div>
+))}
+```
