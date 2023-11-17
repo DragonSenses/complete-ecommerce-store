@@ -17913,6 +17913,8 @@ export async function GET (
 };
 ```
 
+### Adding filters to CategoryPage
+
 Next we want to add our filter components with responsive layout, first the set-up:
 
 ```tsx
@@ -17990,4 +17992,20 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
     </div>
   )
 }
+```
+
+### Filter component
+
+Let's create a local `/components` folder inside `ecommerce-store\app\(routes)\category\[categoryId]`. Then create a file `ecommerce-store\app\(routes)\category\[categoryId]\components\Filter.tsx`, a react functional component.
+
+```tsx
+import React from 'react';
+
+const Filter = () => {
+  return (
+    <div>Filter</div>
+  )
+}
+
+export default Filter
 ```
