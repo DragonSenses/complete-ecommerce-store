@@ -7,6 +7,8 @@ import getCategory from '@/actions/getCategory';
 import Billboard from '@/components/Billboard';
 import Container from '@/components/ui/Container';
 
+import Filter from './components/Filter';
+
 // Revalidate the page on every request, purge cache & fetch latest data
 export const revalidate = 0;
 
@@ -45,7 +47,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
             {/* Mobile Filters */}
             {/* Desktop Filters */}
             <div className='hidden lg:block'>
-              <Filter 
+              <Filter
                 valueKey="sizeId"
                 name="Sizes"
                 data={sizes}
