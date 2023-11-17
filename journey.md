@@ -15752,13 +15752,25 @@ export interface Size {
 
 ### Product action
 
+#### query-string
+
 Before we implement `getProducts`, we need to install [query string](https://www.npmjs.com/package/query-string).
 
 ```sh
 npm i query-string
 ```
 
-We are going to need `query-string` because we will have ssome filters. 
+Parse and stringify URL [query string](https://en.wikipedia.org/wiki/Query_string), a part of a uniform resource locator (URL) that assigns values to specified parameters. 
+
+A query string commonly includes fields added to a base URL by a Web browser or other client application, for example as part of an HTML document, choosing the appearance of a page, or jumping to positions in multimedia content.
+
+e.g., In the URL "https://en.wikipedia.org/w/index.php?title=Query_string&action=edit", the query string is `title=Query_string&action=edit`
+
+A web server can handle a Hypertext Transfer Protocol (HTTP) request either by reading a file from its file system based on the URL path or by handling the request using logic that is specific to the type of resource. In cases where special logic is invoked, the query string will be available to that logic for use in its processing, along with the path component of the URL.
+
+#### Using query-string
+
+We are going to need `query-string` because we will use filters for our products. This will aid us in generating a URL constant with parameters.
 
 `stringifyUrl()`: Stringify an object into a URL with a query string and sorting the keys.
 
@@ -15767,7 +15779,6 @@ We are going to need `query-string` because we will have ssome filters.
 - Create the interface `Query` that will be passed into parameters
 
 Next inside `getProducts`
-
 
 ```tsx
 import queryString from "query-string"
@@ -18097,3 +18108,4 @@ const Filter: React.FC<FilterProps> = ({
   // object that contains current route info & methods to manipulate app router
   const router = useRouter();
 ```
+
