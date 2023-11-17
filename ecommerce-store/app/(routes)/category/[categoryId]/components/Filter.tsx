@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import queryString from "query-string"
 
 import { Color, Size } from '@/types';
+import Button from '@/components/ui/Button';
+import { cn } from '@/lib/utils';
 
 interface FilterProps {
   data: (Size | Color)[];
@@ -69,6 +71,15 @@ const Filter: React.FC<FilterProps> = ({
             className='flex items-center'
             key={filter.id}
           >
+            <Button
+              className={cn(
+                "rounded-md text-sm text-gray-800 p-2 bg-white border border-gray-300",
+                selectedValue === filter.id && "bg-black text-white"
+              )}
+              onClick={() => onClick(filter.id)}
+            >
+              {filter.name}
+            </Button>
           </div>
         ))}
       </div>
