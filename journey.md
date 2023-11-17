@@ -18038,6 +18038,8 @@ Developing the `Filter` component.
 - Assign the props and extract the keys in the props
 
 ```tsx
+"use client";
+
 import { Color, Size } from '@/types';
 import React from 'react';
 
@@ -18058,4 +18060,40 @@ const Filter: React.FC<FilterProps> = ({
 }
 
 export default Filter
+```
+
+Next, we want to import two hooks from Next.js app router module.
+
+The statement `import { useRouter, useSearchParams } from 'next/navigation';` is used to import two hooks from the Next.js app router module. These hooks are:
+
+- `useRouter`: This hook returns an object that contains the current route information and methods to manipulate the app router. For example, you can use `useRouter` to access the route path, query, params, or push a new route programmatically.
+
+- `useSearchParams`: This hook returns a read-only version of the [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) interface, which provides utility methods for reading and updating the query string of the current URL. For example, you can use `useSearchParams` to get or set a query parameter, check if a parameter exists, or get the keys and values of all the parameters.
+
+These hooks are useful for creating dynamic and interactive app components that depend on the URL state.
+
+Now to get the currently selected value we want to use `searchParams.get()` which "returns the first value associated with the given search parameter (or null if it does not exist)". The query parameter is specified by the `valueKey` variable, which is a prop passed to the `Filter` component. 
+
+For example, earlier we passed in `sizeId` to the `valueKey` prop in `Filter`, then the `selectedValue` will be the value of the `sizeId` parameter in the URL.
+
+```tsx
+import React from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+interface FilterProps {
+  data: (Size | Color)[];
+  name: string;
+  valueKey: string;
+}
+
+const Filter: React.FC<FilterProps> = ({
+  data,
+  name,
+  valueKey
+}) => {
+  // URLSearchParams interface to read & update the query string of current URL
+  const searchParams = useSearchParams();
+
+  // object that contains current route info & methods to manipulate app router
+  const router = useRouter();
 ```
