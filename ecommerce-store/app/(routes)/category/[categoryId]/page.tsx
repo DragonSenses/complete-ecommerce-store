@@ -45,7 +45,11 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
             {/* Mobile Filters */}
             {/* Desktop Filters */}
             <div className='hidden lg:block'>
-              <Filter />
+              <Filter 
+                valueKey="sizeId"
+                name="Sizes"
+                data={sizes}
+              />
             </div>
           </div>
         </div>
