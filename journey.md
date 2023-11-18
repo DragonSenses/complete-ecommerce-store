@@ -18440,7 +18440,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
 }
 ```
 
-Now we can show our `products`, create another `div` with a responsive grid. And inside this `div` we map out each of the `products`,
+Now we can show our `products`, create another `div` with a responsive grid. And inside this `div` we map out each of the `products`.
 
 ```tsx
 <div className='mt-6 lg:col-span-4 lg:mt-0'>
@@ -18453,4 +18453,22 @@ Now we can show our `products`, create another `div` with a responsive grid. And
     ))}
   </div>
 </div>
+```
+
+We will map out each product to a `ProductCard` while passing in the necessary data to the props `key` and `data`.
+
+```tsx
+import ProductCard from '@/components/ui/ProductCard';
+// ...
+    <div className='mt-6 lg:col-span-4 lg:mt-0'>
+      {products.length == 0 && <NoResults />}
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
+        {products.map((item) => (
+          <ProductCard 
+            key={item.id}
+            data={item}
+          />
+        ))}
+      </div>
+    </div>
 ```
