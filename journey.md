@@ -18339,3 +18339,56 @@ export default Button;
 ```
 
 With the addition of `{...props}` to the `button`'s props, this allows for additional props to be passed in.
+
+#### Color Filter
+
+Let's add a `Filter` for color inside the individual `CategoryPage`.
+
+`ecommerce-store\app\(routes)\category\[categoryId]\page.tsx`
+```tsx
+// ... imports & interface
+const CategoryPage: React.FC<CategoryPageProps> = async ({
+  params,
+  searchParams
+}) => {
+
+  const products = await getProducts({
+    categoryId: params.categoryId,
+    colorId: searchParams.colorId,
+    sizeId: searchParams.sizeId,
+  });
+  const sizes = await getSizes();
+  const colors = await getColors();
+  const category = await getCategory(params.categoryId);
+
+  return (
+    <div className='bg-white'>
+      <Container>
+        <Billboard
+          data={category.billboard}
+        />
+        <div className='px-4 sm:px-6 lg:px-8 pb-24'>
+          <div className='lg:grid lg:grid-cols-5 lg:gap-x-8'>
+            {/* Mobile Filters */}
+            {/* Desktop Filters */}
+            <div className='hidden lg:block'>
+              <Filter
+                valueKey="sizeId"
+                name="Sizes"
+                data={sizes}
+              />
+              <Filter
+                valueKey="colorId"
+                name="Colors"
+                data={colors}
+              />
+            </div>
+          </div>
+        </div>
+      </Container>
+    </div>
+  )
+}
+
+export default CategoryPage
+```
