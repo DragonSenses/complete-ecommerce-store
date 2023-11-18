@@ -18393,9 +18393,15 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
 export default CategoryPage
 ```
 
-Next, going to add `NoResults` component when the filters applied yields no productts.
+### Products in Category Page
+
+Before adding our products, we need to add a `NoResults` component when the filters applied yields no products. 
+
+So create a products container in a `div` with the styles `mt-6 lg:col-span-4 lg:mt-0`, then conditionally render `NoResults` component when `products.length` is zero.
 
 ```tsx
+import NoResults from '@/components/ui/NoResults';
+
 const CategoryPage: React.FC<CategoryPageProps> = async ({
   params,
   searchParams
@@ -18432,4 +18438,19 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
     </div>
   )
 }
+```
+
+Now we can show our `products`, create another `div` with a responsive grid. And inside this `div` we map out each of the `products`,
+
+```tsx
+<div className='mt-6 lg:col-span-4 lg:mt-0'>
+  {products.length == 0 && <NoResults />}
+  <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
+    {products.map((item) => (
+      <div>
+
+      </div>
+    ))}
+  </div>
+</div>
 ```
