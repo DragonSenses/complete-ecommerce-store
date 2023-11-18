@@ -6,6 +6,7 @@ import getColors from '@/actions/getColors';
 import getCategory from '@/actions/getCategory';
 import Billboard from '@/components/Billboard';
 import Container from '@/components/ui/Container';
+import NoResults from '@/components/ui/NoResults';
 
 import Filter from './components/Filter';
 
@@ -57,6 +58,9 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
                 name="Colors"
                 data={colors}
               />
+            </div>
+            <div className='mt-6 lg:col-span-4 lg:mt-0'>
+              {products.length == 0 && <NoResults />}
             </div>
           </div>
         </div>
