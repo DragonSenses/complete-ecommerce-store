@@ -18472,3 +18472,42 @@ import ProductCard from '@/components/ui/ProductCard';
       </div>
     </div>
 ```
+
+### Mobile Filters
+
+Let's now create Mobile Filters for our individual category page. Create the react functional export component under `components` for `MobileFilters`. 
+
+`ecommerce-store\components\MobileFilters.tsx`
+```tsx
+import React from 'react';
+
+const MobileFilters = () => {
+  return (
+    <div>MobileFilters</div>
+  )
+}
+
+export default MobileFilters
+```
+
+Then import and render `MobileFilters` inside our individual category page.
+
+```tsx
+import MobileFilters from '@/components/MobileFilters';
+
+const CategoryPage: React.FC<CategoryPageProps> = async ({
+  params,
+  searchParams
+}) => {
+  // ...
+  return (
+    <div className='bg-white'>
+      <Container>
+        <Billboard
+          data={category.billboard}
+        />
+        <div className='px-4 sm:px-6 lg:px-8 pb-24'>
+          <div className='lg:grid lg:grid-cols-5 lg:gap-x-8'>
+            {/* Mobile Filters */}
+            <MobileFilters />
+```
