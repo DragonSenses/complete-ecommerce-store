@@ -7,6 +7,7 @@ import getCategory from '@/actions/getCategory';
 import Billboard from '@/components/Billboard';
 import Container from '@/components/ui/Container';
 import NoResults from '@/components/ui/NoResults';
+import ProductCard from '@/components/ui/ProductCard';
 
 import Filter from './components/Filter';
 
@@ -63,9 +64,10 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
               {products.length == 0 && <NoResults />}
               <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
                 {products.map((item) => (
-                  <div>
-
-                  </div>
+                  <ProductCard 
+                    key={item.id}
+                    data={item}
+                  />
                 ))}
               </div>
             </div>
