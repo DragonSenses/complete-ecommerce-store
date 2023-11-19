@@ -8,6 +8,7 @@ import Billboard from '@/components/Billboard';
 import Container from '@/components/ui/Container';
 import NoResults from '@/components/ui/NoResults';
 import ProductCard from '@/components/ui/ProductCard';
+import MobileFilters from '@/components/MobileFilters';
 
 import Filter from './components/Filter';
 
@@ -47,6 +48,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
         <div className='px-4 sm:px-6 lg:px-8 pb-24'>
           <div className='lg:grid lg:grid-cols-5 lg:gap-x-8'>
             {/* Mobile Filters */}
+            <MobileFilters />
             {/* Desktop Filters */}
             <div className='hidden lg:block'>
               <Filter
