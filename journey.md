@@ -18512,7 +18512,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
             <MobileFilters sizes={sizes} colors={colors}/>
 ```
 
-Then we can add the prop interface which contains the `sizes` and `colors`.
+Then we can add the prop interface which contains the `sizes` and `colors`. Also assign the type with the prop interface to `MobileFilters` and destructure the props.
 
 `ecommerce-store\components\MobileFilters.tsx`
 ```tsx
@@ -18525,12 +18525,55 @@ interface MobileFiltersProps {
   colors: Color[];
 }
 
-const MobileFilters = () => {
+const MobileFilters:React.FC<MobileFiltersProps> = ({
+  sizes,
+  colors
+}) => {
   return (
     <div>MobileFilters</div>
   )
 }
 
 export default MobileFilters
+```
+
+Let's add a state variable `open` which enables or disables `MobileFilters`. Let's also define functions `onOpen` and `onClose` that set the `open` state to `true` and `false` respectively.
+
+```tsx
+import React, { useState } from 'react';
+
+const MobileFilters:React.FC<MobileFiltersProps> = ({
+  sizes,
+  colors
+}) => {
+  const [open, setOpen] = useState(false);
+
+  const onOpen = () => setOpen(true);
+  const onClose = () => setOpen(false);
+```
+
+#### Important note: causing an error with `useState` hook
+
+The error message:
+```sh
+Argument of type 'true' is not assignable to parameter of type 'SetStateAction<undefined>'.ts(2345)
+```
+
+Is caused by the following code:
+
+```tsx 
+  const [open, setOpen] = useState();
+  // Error happens below
+  const onOpen = () => setOpen(true);
+  const onClose = () => setOpen(false);
+```
+
+That is because we are trying to assign a value of type `true` to a state variable that has been initialized with an `undefined` value. To fix this error you need to provide an initial value for the `open` state variable that is of the correct type. In this case, we want to initialize `open` to `false` by passing it as the initial value to `useState`
+
+```tsx
+  const [open, setOpen] = useState(false);
+  // Error fixed
+  const onOpen = () => setOpen(true);
+  const onClose = () => setOpen(false);
 ```
 
