@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Color, Size } from '@/types';
 
@@ -7,8 +7,17 @@ interface MobileFiltersProps {
   colors: Color[];
 }
 
-const MobileFilters = () => {
+const MobileFilters:React.FC<MobileFiltersProps> = ({
+  sizes,
+  colors
+}) => {
+  const [open, setOpen] = useState(false);
+
+  const onOpen = () => setOpen(true);
+  const onClose = () => setOpen(false);
+
   return (
+
     <div>MobileFilters</div>
   )
 }
