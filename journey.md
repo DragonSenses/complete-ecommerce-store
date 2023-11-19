@@ -18490,7 +18490,7 @@ const MobileFilters = () => {
 export default MobileFilters
 ```
 
-Then import and render `MobileFilters` inside our individual category page.
+Then import and render `MobileFilters` inside our individual category page. Let's also pass in `sizes` data and `colors` data as props.
 
 ```tsx
 import MobileFilters from '@/components/MobileFilters';
@@ -18509,5 +18509,28 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
         <div className='px-4 sm:px-6 lg:px-8 pb-24'>
           <div className='lg:grid lg:grid-cols-5 lg:gap-x-8'>
             {/* Mobile Filters */}
-            <MobileFilters />
+            <MobileFilters sizes={sizes} colors={colors}/>
 ```
+
+Then we can add the prop interface which contains the `sizes` and `colors`.
+
+`ecommerce-store\components\MobileFilters.tsx`
+```tsx
+import React from 'react';
+
+import { Color, Size } from '@/types';
+
+interface MobileFiltersProps {
+  sizes: Size[];
+  colors: Color[];
+}
+
+const MobileFilters = () => {
+  return (
+    <div>MobileFilters</div>
+  )
+}
+
+export default MobileFilters
+```
+
