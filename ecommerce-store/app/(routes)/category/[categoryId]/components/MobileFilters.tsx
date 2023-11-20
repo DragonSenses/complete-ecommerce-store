@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Plus, X } from 'lucide-react';
 import { Dialog } from '@headlessui/react';
 
+import Filter from './Filter';
 import { Color, Size } from '@/types';
 import Button from '@/components/ui/Button';
-import IconButton from '../../../../../components/ui/IconButton';
-import Filter from '@/app/(routes)/category/[categoryId]/components/Filter';
+import IconButton from '@/components/ui/IconButton';
 
 interface MobileFiltersProps {
   sizes: Size[];
@@ -37,13 +37,22 @@ const MobileFilters: React.FC<MobileFiltersProps> = ({
           <Dialog.Panel className='relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-6 shadow-xl'>
 
             {/* Close Button */}
-            <div className='flex items-cetner justify-end px-4'>
+            <div className='flex items-center justify-end px-4'>
               <IconButton icon={<X size={15} />} onClick={onClose} />
             </div>
 
             {/* Render the filters */}
             <div className='p-4'>
-              <Filter />
+              <Filter
+                valueKey="sizeId"
+                name="Sizes"
+                data={sizes}
+              />
+              <Filter
+                valueKey="colorId"
+                name="Colors"
+                data={colors}
+              />
             </div>
           </Dialog.Panel>
         </div>
