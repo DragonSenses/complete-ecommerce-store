@@ -18475,9 +18475,9 @@ import ProductCard from '@/components/ui/ProductCard';
 
 ### Mobile Filters
 
-Let's now create Mobile Filters for our individual category page. Create the react functional export component under `components` for `MobileFilters`. 
+Let's now create Mobile Filters for our individual category page. Create the react functional export component under the local `components` folder inside the category route named `MobileFilters`. 
 
-`ecommerce-store\components\MobileFilters.tsx`
+`ecommerce-store\app\(routes)\category\[categoryId]\components\MobileFilters.tsx`
 ```tsx
 import React from 'react';
 
@@ -18493,8 +18493,8 @@ export default MobileFilters
 Then import and render `MobileFilters` inside our individual category page. Let's also pass in `sizes` data and `colors` data as props.
 
 ```tsx
-import MobileFilters from '@/components/MobileFilters';
-
+import MobileFilters from './components/MobileFilters';
+// ...
 const CategoryPage: React.FC<CategoryPageProps> = async ({
   params,
   searchParams
@@ -18514,7 +18514,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
 
 Then we can add the prop interface which contains the `sizes` and `colors`. Also assign the type with the prop interface to `MobileFilters` and destructure the props.
 
-`ecommerce-store\components\MobileFilters.tsx`
+`ecommerce-store\app\(routes)\category\[categoryId]\components\MobileFilters.tsx`
 ```tsx
 import React from 'react';
 
