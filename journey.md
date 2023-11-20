@@ -18636,4 +18636,26 @@ const MobileFilters:React.FC<MobileFiltersProps> = ({
       </Dialog>
     </>
   )
-}```
+}
+```
+
+Add a `Dialog.Panel` which contains an `IconButton` using the "X" icon from lucide-react.
+
+```tsx
+      <Dialog open={open} onClose={onClose} as='div' className='relative z-40 lg:hidden'>
+        {/* Background */}
+        <div className='fixed inset-0 bg-black bg-opacity-25' />
+
+        {/* Dialog Position */}
+        <div className='fixed inset-0 z-40 flex'>
+          <Dialog.Panel className='relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-6 shadow-xl'>
+
+            {/* Close Button */}
+            <div className='flex items-cetner justify-end px-4'>
+              <IconButton icon={<X size={15} />} onClick={onClose} />
+            </div>
+
+          </Dialog.Panel>
+        </div>
+      </Dialog>
+```
