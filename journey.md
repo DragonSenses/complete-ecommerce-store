@@ -18577,3 +18577,28 @@ That is because we are trying to assign a value of type `true` to a state variab
   const onClose = () => setOpen(false);
 ```
 
+#### Output of MobileFilters
+
+We want `MobileFilters` to be a `Button` that only displays on mobile screens. First, the output should be wrapped in a [Fragment](https://react.dev/reference/react/Fragment) `(<>...</>)`. Then inside we should have a `Button` that is hidden on large screens. It should center its items. Also assign its `onClick` prop to function`onOpen`.
+
+Inside the `Button` we have the text "Filters" and a `Plus` icon from "lucide-react", with a size of 20.
+
+```tsx
+const MobileFilters:React.FC<MobileFiltersProps> = ({
+  sizes,
+  colors
+}) => {
+  const [open, setOpen] = useState(false);
+
+  const onOpen = () => setOpen(true);
+  const onClose = () => setOpen(false);
+
+  return (
+    <>
+      <Button onClick={onOpen} className='flex items-center gap-x-2 lg:hidden'>
+        Filters
+        <Plus size={20} />
+      </Button>
+    </>
+  )
+}```
