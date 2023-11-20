@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { Plus } from 'lucide-react';
+import { Dialog } from '@headlessui/react';
 
 import { Color, Size } from '@/types';
 import Button from '@/components/ui/Button';
-import { Plus } from 'lucide-react';
 
 interface MobileFiltersProps {
   sizes: Size[];
@@ -24,6 +25,11 @@ const MobileFilters:React.FC<MobileFiltersProps> = ({
         Filters
         <Plus size={20} />
       </Button>
+
+      <Dialog open={open} onClose={onClose} as='div' className='relative z-40 lg:hidden'>
+        {/* Background */}
+        {/* Dialog Poosition */}
+      </Dialog>
     </>
   )
 }
