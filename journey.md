@@ -18601,4 +18601,39 @@ const MobileFilters:React.FC<MobileFiltersProps> = ({
       </Button>
     </>
   )
+}
+```
+
+##### Dialog from `headlessui/react`
+
+Now we are going to render a [Dialog(Modal) from headlessui/react](https://headlessui.com/react/dialog), which is a fully-managed, renderless dialog component jam-packed with accessibility and keyboard features, perfect for building completely custom modal and dialog windows.
+
+A Dialog is a modal that will display additional content when the user clicks the "Filters" button.
+
+Now `import` and add `Dialog` right after the `Button` as a sibling. Make sure to include the props `{ open, onClose, as, className }`. Similar to `Button`, we want it to be `lg:hidden` but also add a z-index of 40 and `relative` styles.
+
+```tsx
+import { Dialog } from '@headlessui/react';
+// ...
+const MobileFilters:React.FC<MobileFiltersProps> = ({
+  sizes,
+  colors
+}) => {
+  const [open, setOpen] = useState(false);
+
+  const onOpen = () => setOpen(true);
+  const onClose = () => setOpen(false);
+
+  return (
+    <>
+      <Button onClick={onOpen} className='flex items-center gap-x-2 lg:hidden'>
+        Filters
+        <Plus size={20} />
+      </Button>
+
+      <Dialog open={open} onClose={onClose} as='div' className='relative z-40 lg:hidden'>
+
+      </Dialog>
+    </>
+  )
 }```
