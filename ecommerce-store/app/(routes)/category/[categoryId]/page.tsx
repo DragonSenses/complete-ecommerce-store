@@ -10,7 +10,7 @@ import NoResults from '@/components/ui/NoResults';
 import ProductCard from '@/components/ui/ProductCard';
 
 import Filter from './components/Filter';
-import MobileFilters from '@/components/MobileFilters';
+import MobileFilters from './components/MobileFilters';
 
 // Revalidate the page on every request, purge cache & fetch latest data
 export const revalidate = 0;
