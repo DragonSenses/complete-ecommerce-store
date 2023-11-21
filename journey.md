@@ -18752,3 +18752,27 @@ interface PreviewModalStore {
   onClose: () => void;
 };
 ```
+
+Let's finish up by using `create()` which uses the `set` function which merges state. In this case when we call `onOpen` we set the `data` and set `isOpen` to `true`.
+
+```tsx
+import { create } from 'zustand';
+
+import { Product } from '@/types';
+
+interface PreviewModalStore {
+  isOpen: boolean;
+  data?: Product;
+  onOpen: (data: Product) => void;
+  onClose: () => void;
+};
+
+const usePreviewModal = create<PreviewModalStore>((set) => ({
+  isOpen: false,
+  data: undefined,
+  onOpen: (data: Product) => set({ data: data, isOpen: true}),
+  onClose: () => set({ isOpen: false })
+}));
+
+export default usePreviewModal;
+```
