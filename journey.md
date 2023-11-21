@@ -18729,3 +18729,26 @@ Install zustand in the store directory.
 npm install zustand
 ```
 
+### Create the hook
+
+Create a folder named `hooks` wih a file named `use-preview-modal.ts`. Inside we import `create` from zustand, also import `Product`.
+
+Then we create the interface `PreviewModalStore` which contains the following:
+  - `isOpen` a boolean
+  - `data` an optional `Product`
+  - `onOpen` is a function which takes in the parameter `data`, an optional `Product` and returns a `void`
+  - `onClose` is a function which returns `void`
+
+`ecommerce-store\hooks\use-preview.modal.ts`
+```ts
+import { create } from 'zustand';
+
+import { Product } from '@/types';
+
+interface PreviewModalStore {
+  isOpen: boolean;
+  data?: Product;
+  onOpen: (data: Product) => void;
+  onClose: () => void;
+};
+```
