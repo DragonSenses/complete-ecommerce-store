@@ -18712,3 +18712,20 @@ const MobileFilters: React.FC<MobileFiltersProps> = ({
   )
 }
 ```
+
+## zustand: state management for the store
+
+The next thing we want is to create a popover for our product.
+
+"A popover is a transient view that appears above other content when people click or tap a control or interactive area." Use a popover to expose small amount of information or functionality.
+
+Before we can do that we need to create a store. We are going to use [zustand](https://github.com/pmndrs/zustand), a small and scalable state management solutioon for react.
+
+[zustand](https://docs.pmnd.rs/zustand/getting-started/introduction) uses hooks to create and consume state without the need for reducers, action creators, or context providers. It supports immutable state, action-based updates, multiple state slices, async actions and more. 
+
+Install zustand in the store directory.
+
+```sh
+npm install zustand
+```
+
