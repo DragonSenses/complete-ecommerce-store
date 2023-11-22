@@ -18776,3 +18776,23 @@ const usePreviewModal = create<PreviewModalStore>((set) => ({
 
 export default usePreviewModal;
 ```
+
+### Create the Preview Modal
+
+Create a client component `Modal.tsx` inside `ecommerce-store\components\ui`.
+
+```tsx
+"use client";
+
+import React from 'react';
+
+const Modal = () => {
+  return (
+    <div>Modal</div>
+  )
+}
+
+export default Modal
+```
+
+Next make the prop interface which includes the properties `{ open, onClose, children }`. Then assign the interface to the type of `Modal` and destructure out those properties.
