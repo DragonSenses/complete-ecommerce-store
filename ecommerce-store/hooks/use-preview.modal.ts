@@ -9,8 +9,11 @@ interface PreviewModalStore {
   onClose: () => void;
 };
 
-const useStore = create((set) => ({
-  bears: 0,
-  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-  removeAllBears: () => set({ bears: 0 }),
-}))
+const usePreviewModal = create<PreviewModalStore>((set) => ({
+  isOpen: false,
+  data: undefined,
+  onOpen: (data: Product) => set({ data: data, isOpen: true}),
+  onClose: () => set({ isOpen: false })
+}));
+
+export default usePreviewModal;
