@@ -18796,3 +18796,27 @@ export default Modal
 ```
 
 Next make the prop interface which includes the properties `{ open, onClose, children }`. Then assign the interface to the type of `Modal` and destructure out those properties.
+
+```tsx
+"use client";
+
+import React from 'react';
+
+interface ModalProps {
+  open: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}
+
+const Modal: React.FC<ModalProps> = ({
+  open,
+  onClose,
+  children,
+}) => {
+  return (
+    <div>Modal</div>
+  )
+}
+
+export default Modal
+```
