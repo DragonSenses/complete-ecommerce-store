@@ -31,12 +31,12 @@ const Modal: React.FC<ModalProps> = ({
               leaveTo="opacity-0 scale-95"
             > 
 
-              <Dialog.Panel className="w-full max-w-3xl overflow-hidden roounded-lg text-left align-middle">
+              <Dialog.Panel className="w-full max-w-3xl overflow-hidden rounded-lg text-left align-middle">
                 
-                <div className='relative flex w-full items-center'>
+                <div className='relative flex w-full items-center overflow-hidden bg-white shadow-2xl px-4 pb-8 pt-14 sm:px-6 sm:pt-8 md:p-6 lg:p-8'>
 
                 </div>
-                
+
               </Dialog.Panel>
 
             </Transition.Child>
