@@ -19037,38 +19037,6 @@ const Modal: React.FC<ModalProps> = ({
 Inside the `Transition.Child` we should create the `Dialog.Panel` that sets up the accessibility and focus management of a modal window.  
 
 ```tsx
-
-const Modal: React.FC<ModalProps> = ({
-  open,
-  onClose,
-  children,
-}) => {
-  return (
-    <Transition show={open} as={Fragment}>
-      <Dialog as="div" className='relative z-10' onClose={onClose}>
-        <div className="fixed inset-0 bg-black bg-opacity-50" />
-
-        <div className='fixed inset-0 overflow-y-auto'>
-          <div className='flex min-h-full items-center justify-center p-4 text-center'>
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            > 
-
-              <Dialog.Panel className={w-full max-w-3xl overflow-hidden roounded-lg text-left align-middle}>
-                <div></div>
-              </Dialog.Panel>
-
-            </Transition.Child>
-          </div>
-        </div>
-      </Dialog>
-    </Transition>
-  )
-}
+<Dialog.Panel className="w-full max-w-3xl overflow-hidden roounded-lg text-left align-middle">
+</Dialog.Panel>
 ```
