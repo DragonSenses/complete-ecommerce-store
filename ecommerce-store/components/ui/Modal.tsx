@@ -29,7 +29,11 @@ const Modal: React.FC<ModalProps> = ({
               leave="ease-in duration-200"
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
-            >
+            > 
+
+              <Dialog.Panel className={w-full max-w-3xl overflow-hidden roounded-lg text-left align-middle}>
+                <div></div>
+              </Dialog.Panel>
 
             </Transition.Child>
           </div>
