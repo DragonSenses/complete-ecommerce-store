@@ -18916,3 +18916,22 @@ Here are a list of the lifecycle props:
 
 And we can give it the proper css styles from tailwind such as changing the `opacity` or control the easing of CSS transitions such as `ease-out` which is the CSS properties regarding `transition-timing-function`.
 
+##### Animating transitions
+
+[Animating transitions (headlessui/react)](https://headlessui.com/react/transition#animating-transitions).
+
+By default, a `Transition` will enter and leave instantly, which is probably not what you're looking for if you're using this component.
+
+To animate your enter/leave transitions, add classes that provide the styling for each phase of the transitions using these props:
+
+- `enter`: Applied the entire time an element is entering. Usually you define your duration and what properties you want to transition here, for example `transition-opacity duration-75`.
+
+- `enterFrom`: The starting point to enter from, for example `opacity-0` if something should fade in.
+
+- `enterTo`: The ending point to enter to, for example `opacity-100` after fading in.
+
+- `leave`: Applied the entire time an element is leaving. Usually you define your duration and what properties you want to transition here, for example `transition-opacity duration-75`.
+
+- `leaveFrom`: The starting point to leave from, for example `opacity-100` if something should fade out.
+
+- `leaveTo`: The ending point to leave to, for example `opacity-0` after fading out.
