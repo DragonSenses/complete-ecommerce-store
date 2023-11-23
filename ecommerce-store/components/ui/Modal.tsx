@@ -32,7 +32,11 @@ const Modal: React.FC<ModalProps> = ({
             > 
 
               <Dialog.Panel className="w-full max-w-3xl overflow-hidden roounded-lg text-left align-middle">
-                <div></div>
+                
+                <div className='relative flex w-full items-center'>
+
+                </div>
+                
               </Dialog.Panel>
 
             </Transition.Child>
