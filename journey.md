@@ -18820,3 +18820,25 @@ const Modal: React.FC<ModalProps> = ({
 
 export default Modal
 ```
+
+We are going to use `Transition` from `headless/ui` and `Fragment from `React`.
+
+- [Transition](https://headlessui.com/react/transition) is a component that lets you add enter/leave transitions to conditionally rendered elements, using CSS classes to control the actual transition styles in the different stages of the transition.
+
+- [Fragment](https://react.dev/reference/react/Fragment), often used via `<>...</>` syntax, lets you group elements without a wrapper node.
+
+We want to use `Transition` as a `Fragment`, with the `show` prop (which controls whether the children should be shown or hidden) set to `open` state.
+
+```tsx
+const Modal: React.FC<ModalProps> = ({
+  open,
+  onClose,
+  children,
+}) => {
+  return (
+    <Transition show={open} as={Fragment}>
+
+    </Transition>
+  )
+}
+```
