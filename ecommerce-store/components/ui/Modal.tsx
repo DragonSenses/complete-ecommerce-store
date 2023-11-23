@@ -31,7 +31,7 @@ const Modal: React.FC<ModalProps> = ({
               leaveTo="opacity-0 scale-95"
             > 
 
-              <Dialog.Panel className={w-full max-w-3xl overflow-hidden roounded-lg text-left align-middle}>
+              <Dialog.Panel className="w-full max-w-3xl overflow-hidden roounded-lg text-left align-middle">
                 <div></div>
               </Dialog.Panel>
 
