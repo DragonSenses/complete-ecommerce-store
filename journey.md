@@ -18935,3 +18935,52 @@ To animate your enter/leave transitions, add classes that provide the styling fo
 - `leaveFrom`: The starting point to leave from, for example `opacity-100` if something should fade out.
 
 - `leaveTo`: The ending point to leave to, for example `opacity-0` after fading out.
+
+##### Coordinating multiple transitions
+
+Sometimes you need to transition multiple elements with different animations but all based on the same state. For example, say the user clicks a button to open a sidebar that slides over the screen, and you also need to fade-in a background overlay at the same time.
+
+You can do this by wrapping the related elements with a parent `Transition` component, and wrapping each child that needs its own transition styles with a `Transition.Child` component, which will automatically communicate with the parent `Transition` and inherit the parent's `show` state.
+
+e.g.,
+
+```tsx
+import { Transition } from '@headlessui/react'
+
+function Sidebar({ isShowing }) {
+  return (
+    /* The `show` prop controls all nested `Transition.Child` components. */
+    <Transition show={isShowing}>
+      {/* Background overlay */}
+      <Transition.Child
+        enter="transition-opacity ease-linear duration-300"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity ease-linear duration-300"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+        {/* ... */}
+      </Transition.Child>
+
+      {/* Sliding sidebar */}
+      <Transition.Child
+        enter="transition ease-in-out duration-300 transform"
+        enterFrom="-translate-x-full"
+        enterTo="translate-x-0"
+        leave="transition ease-in-out duration-300 transform"
+        leaveFrom="translate-x-0"
+        leaveTo="-translate-x-full"
+      >
+        {/* ... */}
+      </Transition.Child>
+    </Transition>
+  )
+}
+```
+
+The `Transition.Child` component has the exact same API as the `Transition` component, but with no `show` prop, since the `show` value is controlled by the parent.
+
+Parent `Transition` components will always automatically wait for all children to finish transitioning before unmounting, so you don't need to manage any of that timing yourself.
+
+
