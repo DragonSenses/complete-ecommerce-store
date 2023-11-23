@@ -19036,23 +19036,37 @@ const Modal: React.FC<ModalProps> = ({
 
 Inside the `Transition.Child` we should create the `Dialog.Panel` that sets up the accessibility and focus management of a modal window.
 
-Clicking outside the `Dialog.Panel` or pressing the `Escape` key willl fire the `close` event and close the dialog.
+Remember that a `Dialog` is a modal that pops up over the main content and blocks interaction with the rest of the page. The `Dialog.Panel` renders the modal content inside the `Dialog` component. Clicking outside the `Dialog.Panel` or pressing the `Escape` key willl fire the `close` event and close the dialog.
 
 Make the `Dialog.Panel` have the following styles: "w-full max-w-3xl overflow-hidden roounded-lg text-left align-middle".
 
 ```tsx
-<Dialog.Panel className="w-full max-w-3xl overflow-hidden roounded-lg text-left align-middle">
+<Dialog.Panel className="w-full max-w-3xl overflow-hidden rounded-lg text-left align-middle">
 </Dialog.Panel>
 ```
 
 Inside the `Dialog.Panel` is a flex `div` container that has items centered.
 
 ```tsx
-<Dialog.Panel className="w-full max-w-3xl overflow-hidden roounded-lg text-left align-middle">
+<Dialog.Panel className="w-full max-w-3xl overflow-hidden rounded-lg text-left align-middle">
   
   <div className='relative flex w-full items-center'>
 
   </div>
   
+</Dialog.Panel>
+```
+
+Let's style the relative container a bit more with `overflow-hidden` and `bg-white`.
+
+Then apply a `shadow-2xl`. Finally add responsive padding to make the `Dialog.Panel` more user-friendly.
+
+```tsx
+<Dialog.Panel className="w-full max-w-3xl overflow-hidden rounded-lg text-left align-middle">
+  
+  <div className='relative flex w-full items-center overflow-hidden bg-white shadow-2xl px-4 pb-8 pt-14 sm:px-6 sm:pt-8 md:p-6 lg:p-8'>
+
+  </div>
+
 </Dialog.Panel>
 ```
