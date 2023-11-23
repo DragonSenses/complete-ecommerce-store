@@ -18842,3 +18842,55 @@ const Modal: React.FC<ModalProps> = ({
   )
 }
 ```
+
+Inside the `Transition`, we render a `Dialog` as a `div` which is also from `headlessui/react`.
+
+```tsx
+const Modal: React.FC<ModalProps> = ({
+  open,
+  onClose,
+  children,
+}) => {
+  return (
+    <Transition show={open} as={Fragment}>
+      <Dialog as="div" className='relative z-10' onClose={onClose}>
+
+      </Dialog>
+    </Transition>
+  )
+}
+```
+
+We will add a background shadow `div` that is self-closing inside `Dialog`,
+
+```tsx
+<div className="fixed inset-0 bg-black bg-opacity-50" />
+```
+
+Next create a sibling `div` that encompasses another container `div` that centers the contents of the `Transition.Child` as a `Fragment`.
+
+```tsx
+const Modal: React.FC<ModalProps> = ({
+  open,
+  onClose,
+  children,
+}) => {
+  return (
+    <Transition show={open} as={Fragment}>
+      <Dialog as="div" className='relative z-10' onClose={onClose}>
+        <div className="fixed inset-0 bg-black bg-opacity-50" />
+
+        <div className='fixed inset-0 overflow-y-auto'>
+          <div className='flex min-h-full items-center justify-center p-4 text-center'>
+            <Transition.Child
+              as={Fragment}
+            >
+
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition>
+  )
+}
+```
