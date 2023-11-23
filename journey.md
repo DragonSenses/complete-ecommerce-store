@@ -18984,3 +18984,23 @@ The `Transition.Child` component has the exact same API as the `Transition` comp
 Parent `Transition` components will always automatically wait for all children to finish transitioning before unmounting, so you don't need to manage any of that timing yourself.
 
 
+#### Adding the transition 
+
+Use Dialog and Transition components to create a modal window.
+
+The `Dialog` component handles the accessibility and focus management of a modal window.
+
+The `Transition` component provides animations and transitions for the React element(s).
+
+We will use the `Transition` component to wrap the `Dialog` component and its children, and use the `Transition.Child` to coordinate multiple transitions with multiple elements but all based on the same state. It will apply a fade-in and fade-out effect to the modal window. The result should be a modal window that appears and disappears smoothly while being accessible and responsive.
+
+
+
+### `Dialog` Panel
+
+Inside the `Transition.Child` we should create the `Dialog.Panel` that sets up the accessibility and focus management of a modal window.  
+
+
+
+
+
