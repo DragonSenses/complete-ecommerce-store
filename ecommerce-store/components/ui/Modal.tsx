@@ -1,6 +1,7 @@
 "use client";
 
-import React from 'react';
+import React, { Fragment } from 'react';
+import { Transition } from '@headlessui/react';
 
 interface ModalProps {
   open: boolean;
@@ -14,7 +15,9 @@ const Modal: React.FC<ModalProps> = ({
   children,
 }) => {
   return (
-    <div>Modal</div>
+    <Transition show={open} as={Fragment}>
+
+    </Transition>
   )
 }
 
