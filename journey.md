@@ -18777,7 +18777,7 @@ const usePreviewModal = create<PreviewModalStore>((set) => ({
 export default usePreviewModal;
 ```
 
-### Create the Preview Modal
+## Create the Preview Modal
 
 Create a client component `Modal.tsx` inside `ecommerce-store\components\ui`.
 
@@ -18820,6 +18820,8 @@ const Modal: React.FC<ModalProps> = ({
 
 export default Modal
 ```
+
+### `Transition` component
 
 We are going to use `Transition` from `headless/ui` and `Fragment from `React`.
 
@@ -18894,3 +18896,23 @@ const Modal: React.FC<ModalProps> = ({
   )
 }
 ```
+
+#### `Transition` lifecycle props
+
+The `Transition` component has the following props:
+
+- `show` prop that controls whether the children should be shown or hidden 
+
+- and a set of lifecycle props (life `enterFrom` & `leaveTo`) that let you add CSS classes at specific phases of a transition
+
+Here are a list of the lifecycle props:
+
+- `enter`
+- `enterFrom`
+- `enterTo`
+- `leave`
+- `leaveFrom`
+- `leaveTo`
+
+And we can give it the proper css styles from tailwind such as changing the `opacity` or control the easing of CSS transitions such as `ease-out` which is the CSS properties regarding `transition-timing-function`.
+
