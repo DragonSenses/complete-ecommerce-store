@@ -19084,3 +19084,18 @@ Finally add a `div` that positions the content to the top right, and add a `Icon
 
 </Dialog.Panel>
 ```
+
+After the `div` that contains the `IconButton`, render the `children`.
+
+```tsx
+<Dialog.Panel className="w-full max-w-3xl overflow-hidden rounded-lg text-left align-middle">
+  
+  <div className='relative flex w-full items-center overflow-hidden bg-white shadow-2xl px-4 pb-8 pt-14 sm:px-6 sm:pt-8 md:p-6 lg:p-8'>
+    <div className='absolute right-4 top-4'>
+      <IconButton onClick={onClose} icon={<X size={15}/>}/>
+    </div>
+    {children}
+  </div>
+
+</Dialog.Panel>
+```
