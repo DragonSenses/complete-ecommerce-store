@@ -19099,3 +19099,19 @@ After the `div` that contains the `IconButton`, render the `children`.
 
 </Dialog.Panel>
 ```
+
+### `PreviewModal` component
+
+Create `ecommerce-store\components\PreviewModal.tsx`.
+
+```tsx
+import React from 'react';
+
+const PreviewModal = () => {
+  return (
+    <div>PreviewModal</div>
+  )
+}
+
+export default PreviewModal
+```
