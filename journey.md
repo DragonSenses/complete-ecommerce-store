@@ -19285,7 +19285,6 @@ Let's do the following
 
 - Mark as client component
 - Return a fragment that renders the `PreviewModal`
-- Add `isMounted` state variable to prevent rendering of component before the effect (mounting) has run
 
 ```tsx
 "use client";
@@ -19304,3 +19303,17 @@ const ModalProvider = () => {
 
 export default ModalProvider
 ```
+
+#### ModalProvider mounting trick to prevent hydration errors
+
+Next we need to add `isMounted` state variable to delay execution of client-sidde code until after hydration.
+
+- Import React and two hooks: `useEffect` and `useState`
+- Declare a state variable `isMounted` and initialize it to `false`. This tracks whether the component has been mounted or not.
+- Use the `useEffect` hook to set the `isMounted` variable to `true` after the initial render. Hook takes a function as the first argument and empty array as the second argument. The function will be executed only once after the component mounts, and the empty array indicates that there are no dependencies for the effect. This way, the effect will not run on every update, but only on the first render.
+- Use a conditional statement to return `null` if `isMounted` is `false`. This means that the component will not render anything bbefore the effect has run. This is done to prevent hydration errors or unwanted flashes of content when using client-side only code.
+  - ***Hydration** is the process of attaching event listeners to the existing markup rendered by the server*
+- Return the `PreviewModal` component wrapped in a fragment if `isMounted` state variable is `true`. 
+  - A fragment is a way of grouping multiple elements without adding extra nodes to the DOM.
+
+This is a common pattern for using client-side-only code in React. It ensures that the code will only run after the component has been mounted and hydrated. This can be useful for code that relies on browser APIs, such as window or document, that are not available on the server.
