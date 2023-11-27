@@ -19280,3 +19280,27 @@ const ModalProvider = () => {
 
 export default ModalProvider
 ```
+
+Let's do the following
+
+- Mark as client component
+- Return a fragment that renders the `PreviewModal`
+- Add `isMounted` state variable to prevent rendering of component before the effect (mounting) has run
+
+```tsx
+"use client";
+
+import React from 'react';
+
+import PreviewModal from '@/components/PreviewModal';
+
+const ModalProvider = () => {
+  return (
+    <>
+      <PreviewModal />
+    </>
+  )
+}
+
+export default ModalProvider
+```
