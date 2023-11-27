@@ -19177,3 +19177,36 @@ const PreviewModal = () => {
 
 export default PreviewModal
 ```
+
+Now inside `PreviewModal` we want to render the children next. The first one will contain a `div` with the `Gallery` component.
+
+```tsx
+const PreviewModal = () => {
+  const previewModal = usePreviewModal();
+
+  // Use custom hook to access the state of PreviewModal to display product info
+  const product = usePreviewModal((state) => state.data);
+
+  // If product has not loaded any data, do not return a preview modal
+  if (!product){
+    return null;
+  }
+
+  return (
+    <Modal
+      open={previewModal.isOpen}
+      onClose={previewModal.onClose}
+    >
+      {/* Children */}
+      <div className='grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8'>
+        <div className='sm:col-span-4 lg:col-span-5'>
+          <Gallery />
+        </div>
+        <div className='sm:col-span-8 lg:col-span-7'>
+
+        </div>
+      </div>
+    </Modal>
+  )
+}
+```
