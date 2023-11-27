@@ -19351,3 +19351,13 @@ const ModalProvider = () => {
 
 export default ModalProvider
 ```
+
+Now we can add this `ModalProvider` to our global layout. 
+
+- Import ModalProvider from '@/providers/ModalProvider'
+- Render ModalProvider as a child of body element
+- Use ModalProvider to handle modal state and display
+
+Right above the `Navbar` add `ModalProvider`.
+
+`ecommerce-store\app\layout.tsx`
