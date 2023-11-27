@@ -19218,6 +19218,7 @@ import Gallery from '@/components/gallery';
 
 const PreviewModal = () => {
   // ...
+
   return (
     <Modal
       open={previewModal.isOpen}
@@ -19262,4 +19263,20 @@ const PreviewModal = () => {
     </Modal>
   )
 }
+```
+
+## Modal Providers
+
+Next we want to create a `ModalProvider` component. Inside a `providers` folder at the root of the project, create a file named `ModalProvider.tsx` at the file path `ecommerce-store\providers\ModalProvider.tsx`.
+
+```tsx
+import React from 'react';
+
+const ModalProvider = () => {
+  return (
+    <div>ModalProvider</div>
+  )
+}
+
+export default ModalProvider
 ```
