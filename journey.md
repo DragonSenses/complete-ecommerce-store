@@ -19317,3 +19317,37 @@ Next we need to add `isMounted` state variable to delay execution of client-sidd
   - A fragment is a way of grouping multiple elements without adding extra nodes to the DOM.
 
 This is a common pattern for using client-side-only code in React. It ensures that the code will only run after the component has been mounted and hydrated. This can be useful for code that relies on browser APIs, such as window or document, that are not available on the server.
+
+`ecommerce-store\providers\ModalProvider.tsx`
+```tsx
+"use client";
+
+import React, { useEffect, useState } from 'react';
+
+import PreviewModal from '@/components/PreviewModal';
+
+const ModalProvider = () => {
+  // Declare isMounted state variable and initialize it to false
+  const [isMounted, setIsMounted] = useState(false);
+
+  // useEffect hook to set isMounted variable to true
+  // Delays the execution of client-side-only code until after hydration
+  useEffect(() => {
+    setIsMounted(true);
+  }, []); // Only run once after the initial render
+
+  // Prevent rendering of the component before the effect has run
+  // To protect from hydration errors or unwanted flashes of content
+  if (!isMounted) {
+    return null;
+  }
+
+  return (
+    <>
+      <PreviewModal />
+    </>
+  )
+}
+
+export default ModalProvider
+```
