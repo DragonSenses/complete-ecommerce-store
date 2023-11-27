@@ -5,6 +5,7 @@ import React from 'react';
 import usePreviewModal from '@/hooks/use-preview-modal';
 import Modal from '@/components/ui/Modal';
 import Gallery from '@/components/gallery';
+import Info from '@/components/Info';
 
 const PreviewModal = () => {
   const previewModal = usePreviewModal();
@@ -27,7 +28,7 @@ const PreviewModal = () => {
           <Gallery images={product.images} />
         </div>
         <div className='sm:col-span-8 lg:col-span-7'>
-
+          <Info data={product} />
         </div>
       </div>
     </Modal>
