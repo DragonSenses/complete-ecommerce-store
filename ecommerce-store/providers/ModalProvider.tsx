@@ -1,8 +1,14 @@
+"use client";
+
 import React from 'react';
+
+import PreviewModal from '@/components/PreviewModal';
 
 const ModalProvider = () => {
   return (
-    <div>ModalProvider</div>
+    <>
+      <PreviewModal />
+    </>
   )
 }
 
