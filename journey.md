@@ -19402,7 +19402,10 @@ Now to trigger Modals from various places, we will use the hook we created.
 
 We will create a function named `onPreview` to be used inside the individual `ProductCard`.
 
-Navigate to `ecommerce-store\components\ui\ProductCard.tsx`.
+Navigate to `ecommerce-store\components\ui\ProductCard.tsx`. Our goals are:
+
+- Define `onPreview` function as a `MouseEventHandler` type
+- Pass `onPreview` function as `onClick` prop to `IconButton` with `Expand` icon
 
 Then write a function that is a type of `MouseEventHandler<HTMLButtonElement>` that takes in an `event` as the parameter.
 
@@ -19456,3 +19459,75 @@ const ProductCard: React.FC<ProductCard> = ({
         </div>
       </div>
 ```
+
+Next what we want to do now is 
+
+- Call `event.stopPropagation()` to prevent event bubbling
+- Add logic to display preview modal with product data
+
+#### event: stopPropagation()
+
+[stopPropagation](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopPropagation), a method of the [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event) interface, prevents further propagation of the current event in the capturing and bubbling phases.
+
+In other words, we want to prevent the event from bubbling up to the parent elements.
+
+**Event bubbling** is a mechanism that allows an event to be handled by multiple elements in a nested hierarchy, starting from the innermost element and propagating to the outermost element. Sometimes, this behavior is not desirable, and we want to stop the event from reaching the parent elements that may have their own event handlers.
+
+In React, events are handled using synthetic events, which are wrappers around the native browser events. Synthetic events have the same interface as native events, including the `stopPropagation()` method. However, React also attaches its own event listeners at the root of the document, meaning that the event has already bubbled up to the top by the time it reaches the React event handler. Therefore, calling `stopPropagation()` on a synthetic event will only stop the event from reaching other React event handlers, but not the native event handlers [^1](https://stackoverflow.com/questions/66229908/how-to-use-stoppropagation-with-next-js).
+
+To stop the event from reaching the native event handlers, you can use the `nativeEvent` property of the synthetic event, which points to the original browser event. Then, you can call `stopPropagation()` or `stopImmediatePropagation()` on the native event object. The difference between these two methods is that `stopPropagation()` only prevents the event from bubbling up further, while `stopImmediatePropagation()` also prevents other event listeners on the same element from being executed.
+
+This [stackoverflow discussion on event.stopPropagation](https://stackoverflow.com/questions/24415631/reactjs-syntheticevent-stoppropagation-only-works-with-react-events) has an interesting discussion on this subject with the case of click events attached with JQuery in legacy code and React's event listener.
+
+#### Prevent event bubbling in preview handler
+
+- Call `event.stopPropagation()` to prevent event bubbling
+
+Let's add the function in `onPreview`
+
+```tsx
+  const onPreview: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.stopPropagation();
+    // preview Modal
+  }
+```
+
+
+Now look at the code where the `onPreview` function will be assigned to
+
+```tsx
+const ProductCard: React.FC<ProductCard> = ({
+  data
+}) => {
+  // ...
+  const onPreview: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.stopPropagation();
+    // preview Modal
+  }
+  return (
+    // ...
+        <div className='opacity-0 group-hover:opacity-100 transition absolute w-full px-6 bottom-5'>
+          <div className='flex gap-x-6 justify-center'>
+
+            <IconButton
+              onClick={onPreview}
+              icon={<Expand size={20} className="text-gray-600" />}
+            />
+
+            <IconButton
+              onClick={() => { }}
+              icon={<ShoppingCart size={20} className="text-gray-600" />}
+            />
+          </div>
+        </div>
+```
+
+The purpose of `stopPropagation()` in the code is to prevent the click event on the `IconButton` from bubbling up to the parent elements, such as the `div` or the `body`, that may have their own click event handlers. 
+
+Event bubbling is a mechanism that allows an event to be handled by multiple elements in a nested hierarchy, starting from the innermost element and propagating to the outermost element. Sometimes, this behavior is not desirable, and we want to stop the event from reaching the parent elements that may have different actions or effects.
+
+The `stopPropagation()` method is a method of the Event interface that can be called on an event object to stop the event from bubbling up further. It does not, however, prevent any default behaviors from occurring, such as clicks on links or buttons. If you want to stop those behaviors, you can use the [preventDefault() method](https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault). It also does not prevent propagation to other event handlers of the current element. If you want to stop those, you can use the [stopImmediatePropagation() method](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopImmediatePropagation).
+
+For now we just want to isolate the `onPreview` event to the `IconButton`.
+
+Next let's call the hook for our preview modal.
