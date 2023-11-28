@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import { Expand, ShoppingCart } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -24,6 +24,12 @@ const ProductCard: React.FC<ProductCard> = ({
     router.push(`/product/${data?.id}`);
   }
 
+  const onPreview: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.stopPropagation();
+
+    // preview Modal
+  }
+
   return (
     <div onClick={handleClick} className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
       {/* Images & Actions */}
@@ -37,7 +43,7 @@ const ProductCard: React.FC<ProductCard> = ({
         <div className='opacity-0 group-hover:opacity-100 transition absolute w-full px-6 bottom-5'>
           <div className='flex gap-x-6 justify-center'>
             <IconButton
-              onClick={() => { }}
+              onClick={onPreview}
               icon={<Expand size={20} className="text-gray-600" />}
             />
             <IconButton
