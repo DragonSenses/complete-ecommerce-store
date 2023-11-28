@@ -19395,3 +19395,64 @@ export default function RootLayout({
   )
 }
 ```
+
+### Preview Event handler
+
+Now to trigger Modals from various places, we will use the hook we created. 
+
+We will create a function named `onPreview` to be used inside the individual `ProductCard`.
+
+Navigate to `ecommerce-store\components\ui\ProductCard.tsx`.
+
+Then write a function that is a type of `MouseEventHandler<HTMLButtonElement>` that takes in an `event` as the parameter.
+
+`ecommerce-store\components\ui\ProductCard.tsx`
+```tsx
+const ProductCard: React.FC<ProductCard> = ({
+  data
+}) => {
+
+  const onPreview: MouseEventHandler<HTMLButtonElement> = (event) => {
+    // preview Modal
+  }
+```
+
+Now let's assign this `onPreview` function to the `onClick` prop of the `IconButton` that has the `Expand` icon. This will trigger the preview modal.
+
+`ecommerce-store\components\ui\ProductCard.tsx`
+```tsx
+const ProductCard: React.FC<ProductCard> = ({
+  data
+}) => {
+  // ...
+
+  const onPreview: MouseEventHandler<HTMLButtonElement> = (event) => {
+    // preview Modal
+  }
+
+  return (
+    <div onClick={handleClick} className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
+      {/* Images & Actions */}
+      <div className="aspect-square rounded-xl bg-gray-100 relative">
+        <Image
+          src={data?.images?.[0]?.url}
+          fill
+          alt="Product Image"
+          className='aspect-square object-cover rounded-md'
+        />
+        <div className='opacity-0 group-hover:opacity-100 transition absolute w-full px-6 bottom-5'>
+          <div className='flex gap-x-6 justify-center'>
+            {/* Assign the onPreview function to IconButton with Expand*/}
+            <IconButton
+              onClick={onPreview}
+              icon={<Expand size={20} className="text-gray-600" />}
+            />
+
+            <IconButton
+              onClick={() => { }}
+              icon={<ShoppingCart size={20} className="text-gray-600" />}
+            />
+          </div>
+        </div>
+      </div>
+```
