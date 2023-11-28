@@ -24,9 +24,12 @@ const ProductCard: React.FC<ProductCard> = ({
     router.push(`/product/${data?.id}`);
   }
 
+  // Define mouse event handler for the preview button
   const onPreview: MouseEventHandler<HTMLButtonElement> = (event) => {
+    // Prevent the event from bubbling up to the parent elements
     event.stopPropagation();
 
+    // Display preview modal with the product data
     // preview Modal
   }
 
