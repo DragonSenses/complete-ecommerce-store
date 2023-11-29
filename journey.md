@@ -19597,3 +19597,10 @@ const ProductCard: React.FC<ProductCard> = ({
     previewModal.onOpen(data);
   }
 ```
+
+With this in place we can test the preview modal for our `ProductCard`.
+
+## Add to Cart functionality
+
+Before we start implementing the Add-to-Cart function, lets install a toast notification system named [react-hot-toast](https://react-hot-toast.com/docs). Toasts are brief messages that appear on the screen to provide users with non-intrusive feedback or information. It is lightweight, customizable, and quite pretty.
+
