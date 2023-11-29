@@ -19602,5 +19602,43 @@ With this in place we can test the preview modal for our `ProductCard`.
 
 ## Add to Cart functionality
 
+### Notifications using `react-hot-toast`
+
 Before we start implementing the Add-to-Cart function, lets install a toast notification system named [react-hot-toast](https://react-hot-toast.com/docs). Toasts are brief messages that appear on the screen to provide users with non-intrusive feedback or information. It is lightweight, customizable, and quite pretty.
 
+Change to the right directory:
+
+```sh
+cd .\ecommerce-store\
+```
+
+Then install
+
+```sh
+npm i react-hot-toast
+```
+
+#### Create toast provider
+
+Inside `ecommerce-store\providers` create a new file called `ToastProvider.tsx`.
+
+- Mark it as a client component
+- import `Toaster` from `react-hot-toast`
+- Return react arrow functional component that returns `Toaster` as JSX element
+
+```tsx
+"use client";
+
+import React from 'react';
+import { Toaster } from 'react-hot-toast';
+
+const ToastProvider = () => {
+  return (
+    <Toaster />
+  )
+}
+
+export default ToastProvider
+```
+
+This renders a toast notification container using `react-hot-toast` library.
