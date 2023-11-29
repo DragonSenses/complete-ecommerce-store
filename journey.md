@@ -19527,7 +19527,7 @@ Event bubbling is a mechanism that allows an event to be handled by multiple ele
 
 The `stopPropagation()` method is a method of the Event interface that can be called on an event object to stop the event from bubbling up further. It does not, however, prevent any default behaviors from occurring, such as clicks on links or buttons. If you want to stop those behaviors, you can use the [preventDefault() method](https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault). It also does not prevent propagation to other event handlers of the current element. If you want to stop those, you can use the [stopImmediatePropagation() method](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopImmediatePropagation).
 
-Now look back at the entire output of `ProductCard.tsx`
+Now look back at the entire output of `ProductCard.tsx`, notice how the main `div` has on `onClick` prop with `handleClick` assigned.
 
 `ecommerce-store\components\ui\ProductCard.tsx`
 ```tsx
@@ -19571,6 +19571,6 @@ return (
   )
 ```
 
-Because we want to isolate the `onPreview` event to the `IconButton`.
+Because we want to isolate the `onPreview` event to the `IconButton`. We call `event.stopPropagation()` on the `onPreview` function so that we can override the main `div` that has the `onClick` set to `handleClick`.
 
 Next let's call the hook for our preview modal.
