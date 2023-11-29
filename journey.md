@@ -19492,7 +19492,6 @@ Let's add the function in `onPreview`
   }
 ```
 
-
 Now look at the code where the `onPreview` function will be assigned to
 
 ```tsx
@@ -19528,6 +19527,50 @@ Event bubbling is a mechanism that allows an event to be handled by multiple ele
 
 The `stopPropagation()` method is a method of the Event interface that can be called on an event object to stop the event from bubbling up further. It does not, however, prevent any default behaviors from occurring, such as clicks on links or buttons. If you want to stop those behaviors, you can use the [preventDefault() method](https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault). It also does not prevent propagation to other event handlers of the current element. If you want to stop those, you can use the [stopImmediatePropagation() method](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopImmediatePropagation).
 
-For now we just want to isolate the `onPreview` event to the `IconButton`.
+Now look back at the entire output of `ProductCard.tsx`
+
+`ecommerce-store\components\ui\ProductCard.tsx`
+```tsx
+return (
+    <div onClick={handleClick} className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
+      {/* Images & Actions */}
+      <div className="aspect-square rounded-xl bg-gray-100 relative">
+        <Image
+          src={data?.images?.[0]?.url}
+          fill
+          alt="Product Image"
+          className='aspect-square object-cover rounded-md'
+        />
+        <div className='opacity-0 group-hover:opacity-100 transition absolute w-full px-6 bottom-5'>
+          <div className='flex gap-x-6 justify-center'>
+            <IconButton
+              onClick={onPreview}
+              icon={<Expand size={20} className="text-gray-600" />}
+            />
+            <IconButton
+              onClick={() => { }}
+              icon={<ShoppingCart size={20} className="text-gray-600" />}
+            />
+          </div>
+        </div>
+      </div>
+      {/* Description */}
+      <div>
+        <p className='font-semibold text-lg'>
+          {data.name}
+        </p>
+        <p className='text-sm text-gray-500'>
+          {data.category?.name}
+        </p>
+      </div>
+      {/* Price */}
+      <div className='flex items-center justify-between'>
+        <Currency value={data?.price} />
+      </div>
+    </div>
+  )
+```
+
+Because we want to isolate the `onPreview` event to the `IconButton`.
 
 Next let's call the hook for our preview modal.
