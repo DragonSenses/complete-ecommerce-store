@@ -19573,4 +19573,27 @@ return (
 
 Because we want to isolate the `onPreview` event to the `IconButton`. We call `event.stopPropagation()` on the `onPreview` function so that we can override the main `div` that has the `onClick` set to `handleClick`.
 
-Next let's call the hook for our preview modal.
+Next let's call the hook for our preview modal, so that we can create and manage global state using zustand.
+
+```tsx
+import usePreviewModal from '@/hooks/use-preview-modal';
+
+interface ProductCard {
+  data: Product;
+}
+
+const ProductCard: React.FC<ProductCard> = ({
+  data
+}) => {
+  // Use custom hook to access and manipulate the preview modal state
+  const previewModal = usePreviewModal();
+
+  // Define mouse event handler for the preview button
+  const onPreview: MouseEventHandler<HTMLButtonElement> = (event) => {
+    // Prevent the event from bubbling up to the parent elements
+    event.stopPropagation();
+
+    // Display preview modal with the product data
+    previewModal.onOpen(data);
+  }
+```
