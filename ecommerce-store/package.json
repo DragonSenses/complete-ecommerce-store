@@ -16,6 +16,7 @@
     "query-string": "^8.1.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-hot-toast": "^2.4.1",
     "tailwind-merge": "^1.14.0",
     "zustand": "^4.4.6"
   },
