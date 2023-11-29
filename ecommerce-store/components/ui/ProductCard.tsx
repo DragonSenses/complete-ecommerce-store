@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { Product } from '@/types';
 import Currency from '@/components/ui/Currency';
 import IconButton from '@/components/ui/IconButton';
+import usePreviewModal from '@/hooks/use-preview-modal';
 
 interface ProductCard {
   data: Product;
@@ -16,6 +17,9 @@ interface ProductCard {
 const ProductCard: React.FC<ProductCard> = ({
   data
 }) => {
+  // Use custom hook to access and manipulate the preview modal state
+  const previewModal = usePreviewModal();
+
   // Create router object to perform client-side navigation
   const router = useRouter();
 
@@ -30,7 +34,7 @@ const ProductCard: React.FC<ProductCard> = ({
     event.stopPropagation();
 
     // Display preview modal with the product data
-    // preview Modal
+    previewModal.onOpen(data);
   }
 
   return (
