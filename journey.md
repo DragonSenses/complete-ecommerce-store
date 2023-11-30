@@ -19738,3 +19738,60 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 - The persist middleware takes a state creator function, an options object, and an optional callback function as arguments. The options object must have a name property, which is used as a key to store the state in the storage system. 
 
 - The options object can also have a storage property, which is a function that returns a custom storage object. The storage object must implement the methods `getItem`, `setItem`, and `removeItem`
+
+#### How to create a store that persists in `localStorage`
+
+So why do we need `persist` & `createJSONStorage` from `zustand/middleware`? 
+
+We want to create a store that persists in `localStorage`. 
+
+Let's try doing that, first off we need to `create` a store with `persist` middleware. We use the type `CartStore` to do so. We call this hook `useCart`.
+
+```ts
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
+
+import { Product } from '@/types';
+
+interface CartStore {
+  items: Product[];
+  addItem: (data: Product) => void;
+  removeItem: (id: string) => void;
+  removeAll: () => void;
+};
+
+const useCart = create(
+  persist<CartStore>(
+```
+
+Next, inside the state creator function (inside `persist`) we have a function with the parameters `set` and `get` which returns an immediate object that contains the properties we declared in the interface `CartStore` for now we can set each property to a default value.
+
+`ecommerce-store\hooks\use-cart.ts`
+```ts
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
+
+import { Product } from '@/types';
+
+interface CartStore {
+  items: Product[];
+  addItem: (data: Product) => void;
+  removeItem: (id: string) => void;
+  removeAll: () => void;
+};
+
+const useCart = create(
+  persist<CartStore>((set, get) => ({
+    items: [],
+    addItem: (data: Product) => {
+
+    },
+    removeItem: (id: string) => {
+
+    },
+    removeAll(): () => set({}),
+  }))
+);
+
+export default useCart;
+```
