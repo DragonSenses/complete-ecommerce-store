@@ -19713,3 +19713,13 @@ interface CartStore {
   removeAll: () => void;
 };
 ```
+
+#### zustand middleware
+
+Next let's import two more packages namely `persist` & `createJSONStorage` from `zustand/middleware`.
+
+```ts
+import { createJSONStorage, persist } from 'zustand/middleware';
+```
+
+- The `createJSONStorage` function is a helper function that can be used to create a storage object from any object that has a JSON property. For example, `localStorage`, `sessionStorage`, and `AsyncStorage` all have a JSON property, which is an object that can store and retrieve JSON strings. The `createJSONStorage` function takes a function that returns the object with the JSON property, and returns a storage object that implements the methods `getItem`, `setItem`, and `removeItem`. The storage object uses the JSON property of the object to store and retrieve the state as JSON strings
