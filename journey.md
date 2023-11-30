@@ -19721,5 +19721,20 @@ Next let's import two more packages namely `persist` & `createJSONStorage` from 
 ```ts
 import { createJSONStorage, persist } from 'zustand/middleware';
 ```
+##### `createJSONStorage` from zustand/middleware
 
-- The `createJSONStorage` function is a helper function that can be used to create a storage object from any object that has a JSON property. For example, `localStorage`, `sessionStorage`, and `AsyncStorage` all have a JSON property, which is an object that can store and retrieve JSON strings. The `createJSONStorage` function takes a function that returns the object with the JSON property, and returns a storage object that implements the methods `getItem`, `setItem`, and `removeItem`. The storage object uses the JSON property of the object to store and retrieve the state as JSON strings
+- The `createJSONStorage` function is a helper function that can be used to create a storage object from any object that has a JSON property. For example, `localStorage`, `sessionStorage`, and `AsyncStorage` all have a JSON property, which is an object that can store and retrieve JSON strings. 
+
+- The `createJSONStorage` function takes a function that returns the object with the JSON property, and returns a storage object that implements the methods `getItem`, `setItem`, and `removeItem`. 
+
+- The storage object uses the JSON property of the object to store and retrieve the state as JSON strings
+
+##### `persist` from zustand/middleware
+
+- The `persist` middleware is used to persist the state of a store in a storage system, such as `localStorage`, `sessionStorage`, or `AsyncStorage`. 
+
+- It can also perform migrations, versioning, and filtering of the state. 
+
+- The persist middleware takes a state creator function, an options object, and an optional callback function as arguments. The options object must have a name property, which is used as a key to store the state in the storage system. 
+
+- The options object can also have a storage property, which is a function that returns a custom storage object. The storage object must implement the methods `getItem`, `setItem`, and `removeItem`
