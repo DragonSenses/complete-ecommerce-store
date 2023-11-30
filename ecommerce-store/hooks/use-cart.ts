@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { Product } from '@/types';
 
@@ -9,6 +10,17 @@ interface CartStore {
   removeAll: () => void;
 };
 
-const useCartStore = create();
+const useCart = create(
+  persist<CartStore>((set, get) => ({
+    items: [],
+    addItem: (data: Product) => {
 
-export default useCartStore;
+    },
+    removeItem: (id: string) => {
+
+    },
+    removeAll(): () => set({}),
+  }))
+);
+
+export default useCart;
