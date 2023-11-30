@@ -19688,18 +19688,28 @@ import { create } from 'zustand';
 import { Product } from '@/types';
 
 interface CartStore {
-  isOpen: boolean;
-  data?: Product;
-  onOpen: (data: Product) => void;
-  onClose: () => void;
+  // ...
 };
 
 const useCartStore = create<CartStore>((set) => ({
-  isOpen: false,
-  data: undefined,
-  onOpen: (data: Product) => set({ data: data, isOpen: true}),
-  onClose: () => set({ isOpen: false })
+  // ...
 }));
 
 export default useCartStore;
+```
+
+Let's update the `CartStore` interface. It will contain
+
+- `items`, an array of Products
+- `addItem`, function that takes a `Product` and adds it to the cart, returns `void`
+- `removeItem`, function that takes a `string`, removes a single item and returns `void`
+- `removeAll` a function that removes all items in the cart and returns `void`
+
+```ts
+interface CartStore {
+  items: Product[];
+  addItem: (data: Product) => void;
+  removeItem: (id: string) => void;
+  removeAll: () => void;
+};
 ```
