@@ -19651,3 +19651,29 @@ export default ToastProvider
 This renders a toast notification container using `react-hot-toast` library.
 
 This provider will pass data to any nested components that need to access it. A provider can be used to share global state, theme, localization, or any other data that is common to many components in the app. A provider accepts a value prop that contains the data to be passed, and a children prop that contains the component tree to be rendered. Any component that is a descendant of a provider can access the data using a consumer component or a custom hook.
+
+Now add `ToastProvider` to the global (root) layout. Navigate to `ecommerce-store\app\layout.tsx` and render `ToastProvider` right under `ModalProvider`.
+
+`ecommerce-store\app\layout.tsx`
+```tsx
+import ToastProvider from '@/providers/ToastProvider';
+// ...
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body className={font.className}>
+        <ModalProvider />
+        <ToastProvider />
+        <Navbar />
+        {children}
+        <Footer />
+      </body>
+    </html>
+  )
+}
+```
+
