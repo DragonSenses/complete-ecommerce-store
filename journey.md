@@ -19868,3 +19868,19 @@ const useCart = create(
       toast.success("Item added to cart.")
     },
 ```
+
+- `removeItem`, an action, will take `id` a `string` as parameter and remove the following item inside the cart
+
+Here we call the `set` function, open up an object that contains `items` property. It will spread out the array of `items` and `filter()` the items if their `id` is NOT equivalent to the `id` of the item in the parameter.
+
+```tsx
+const useCart = create(
+  persist<CartStore>((set, get) => ({
+    items: [],
+    addItem: (data: Product) => {
+      // ...
+    },
+    removeItem: (id: string) => {
+      set({ items: [...get().items.filter((item) => item.id !== id)] });
+    },
+```
