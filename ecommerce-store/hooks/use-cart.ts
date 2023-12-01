@@ -14,7 +14,18 @@ const useCart = create(
   persist<CartStore>((set, get) => ({
     items: [],
     addItem: (data: Product) => {
+      // Get the current state of items
+      const currentItems = get().items;
+      
+      // Check if user already has an existing item in the cart
+      const existingItem = currentItems.find((item) => item.id === data.id);
 
+      if (existingItem) {
+        return toast("Item already in cart.");
+      }
+
+      set({ items: [...get().items, data] });
+      toast.success("Item added to cart.")
     },
     removeItem: (id: string) => {
 
