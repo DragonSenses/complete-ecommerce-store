@@ -29,8 +29,9 @@ const useCart = create(
     },
     removeItem: (id: string) => {
       set({ items: [...get().items.filter((item) => item.id !== id)] });
+      toast.success("Item removed from the cart.")
     },
-    removeAll(): () => set({}),
+    removeAll(): () => set({ items: [] }),
   }))
 );
 
