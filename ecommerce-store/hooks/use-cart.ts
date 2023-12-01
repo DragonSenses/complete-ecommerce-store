@@ -11,7 +11,8 @@ interface CartStore {
 };
 
 const useCart = create(
-  persist<CartStore>((set, get) => ({
+  persist<CartStore>(
+    (set, get) => ({
     items: [],
     addItem: (data: Product) => {
       // Get the current state of items
@@ -32,7 +33,11 @@ const useCart = create(
       toast.success("Item removed from the cart.")
     },
     removeAll(): () => set({ items: [] }),
-  }))
+  }), 
+  {
+    name: 'cart-storage',
+    storage: createJSONStorage(() => localStorage),
+  }),
 );
 
 export default useCart;
