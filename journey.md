@@ -19902,9 +19902,56 @@ const useCart = create(
   }))
 ```
 
-Finally, we can 
+That should complete our state creator function, the first parameter to `persist` for now.
 
-Now let's try working through what we should put inside `persist`, which takes two arguments:
+[zustand - persisting store data](https://docs.pmnd.rs/zustand/integrations/persisting-store-data)
+
+Finally, we can work on the second parameter of the `persist`. Recall its two arguments:
 
 1. A function that defines the state & actions of the store (state creator function, same signature as the `create` function)
 2. an object that specifies the options for the persistence
+
+The object we pass in will have two properties: `{ name, storage }`. We will give it a name of `cart-storage` and the storage type will use `createJSONStorage()` which takes in an arrow function to `localStorage`.
+
+The object we pass in:
+
+```ts
+  {
+    name: 'cart-storage',
+    storage: createJSONStorage(() => localStorage),
+  }
+```
+
+The `useCart` hook with `persist` middleware:
+
+```tsx
+const useCart = create(
+  persist<CartStore>(
+    (set, get) => ({
+    items: [],
+    addItem: (data: Product) => {
+      // Get the current state of items
+      const currentItems = get().items;
+      
+      // Check if user already has an existing item in the cart
+      const existingItem = currentItems.find((item) => item.id === data.id);
+
+      if (existingItem) {
+        return toast("Item already in cart.");
+      }
+
+      set({ items: [...get().items, data] });
+      toast.success("Item added to cart.")
+    },
+    removeItem: (id: string) => {
+      set({ items: [...get().items.filter((item) => item.id !== id)] });
+      toast.success("Item removed from the cart.")
+    },
+    removeAll(): () => set({ items: [] }),
+  }), 
+  {
+    name: 'cart-storage',
+    storage: createJSONStorage(() => localStorage),
+  }),
+);
+```
