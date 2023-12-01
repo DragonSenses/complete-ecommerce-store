@@ -19817,7 +19817,7 @@ Let's work through each part of the state creator function.
 
 - `addItem`, an action, is a function that takes `data`, a type Product, and add the item to the cart.
 
-How do we do that? Well let's get the current amount of items, named `currentItems` then call `get().items`. The `get()` function in zustand allows you to access the current state of the Zustand store. Used inside actions/selectors to get the values of state properties, in thtis case it gets the array of items in the cart store.  `get()` is provided by the `create` function from zustand.
+How do we do that? Well let's get the current amount of items, named `currentItems` then call `get().items`. The `get()` function in zustand allows you to access the current state of the Zustand store. Used inside actions/selectors to get the values of state properties, in thtis case it gets the array of items in the cart store.  `get()` is provided by the `create` function from zustand. 
 
 ```tsx
 const useCart = create(
@@ -19828,7 +19828,7 @@ const useCart = create(
     },
 ```
 
-If the user adds a duplicate, already existing item in the cart let's notify them with a toast message.
+If the user adds a duplicate, already existing item in the cart let's notify them with a toast message. We can check for a duplicate item by comparing the `item.id` to that of the passed-in `data.id`.
 
 ```tsx
 const useCart = create(
@@ -19847,3 +19847,24 @@ const useCart = create(
     },
 ```
 
+Finally, if the current item is not already in the cart the we should add the `data`, the `Product`, to the `items` array. We do this by using the `set` function to update the state. We open up the array of `items` using `get()`, spread it and add the new `data`. Finally, end it with a successful toast message that the item was added to the cart.
+
+```tsx
+const useCart = create(
+  persist<CartStore>((set, get) => ({
+    items: [],
+    addItem: (data: Product) => {
+      // Get the current state of items
+      const currentItems = get().items;
+      
+      // Check if user already has an existing item in the cart
+      const existingItem = currentItems.find((item) => item.id === data.id);
+
+      if (existingItem) {
+        return toast("Item already in cart.");
+      }
+
+      set({ items: [...get().items, data] });
+      toast.success("Item added to cart.")
+    },
+```
