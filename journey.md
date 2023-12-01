@@ -19784,10 +19784,8 @@ const useCart = create(
   persist<CartStore>((set, get) => ({
     items: [],
     addItem: (data: Product) => {
-
     },
     removeItem: (id: string) => {
-
     },
     removeAll(): () => set({}),
   }))
@@ -19795,3 +19793,21 @@ const useCart = create(
 
 export default useCart;
 ```
+
+So far we have a `useCart` hook made with `zustand` and using `persist` middleware.
+
+- Import create, persist, and createJSONStorage from zustand and zustand/middleware
+- Import Product type from '@/types'
+- Define CartStore interface with items, addItem, removeItem, and removeAll properties
+- Create useCart hook with persist middleware and an empty state
+- Export useCart hook as default
+
+Now let's try working through what we should put inside `persist`, which takes two arguments:
+
+1. A function that defines the state & actions of the store (state creator function, same signature as the `create` function)
+2. an object that specifies the options for the persistence
+
+[zustand - persisting store data](https://docs.pmnd.rs/zustand/integrations/persisting-store-data).
+
+
+
