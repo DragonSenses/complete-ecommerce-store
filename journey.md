@@ -19809,5 +19809,41 @@ Now let's try working through what we should put inside `persist`, which takes t
 
 [zustand - persisting store data](https://docs.pmnd.rs/zustand/integrations/persisting-store-data).
 
+##### zustand/middleware - persist and state creator function
 
+Let's work through each part of the state creator function. 
+
+- `items`, a state, will be an empty array of Products
+
+- `addItem`, an action, is a function that takes `data`, a type Product, and add the item to the cart.
+
+How do we do that? Well let's get the current amount of items, named `currentItems` then call `get().items`. The `get()` function in zustand allows you to access the current state of the Zustand store. Used inside actions/selectors to get the values of state properties, in thtis case it gets the array of items in the cart store.  `get()` is provided by the `create` function from zustand.
+
+```tsx
+const useCart = create(
+  persist<CartStore>((set, get) => ({
+    items: [],
+    addItem: (data: Product) => {
+      const currentItems = get().items;
+    },
+```
+
+If the user adds a duplicate, already existing item in the cart let's notify them with a toast message.
+
+```tsx
+const useCart = create(
+  persist<CartStore>((set, get) => ({
+    items: [],
+    addItem: (data: Product) => {
+      // Get the current state of items
+      const currentItems = get().items;
+      
+      // Check if user already has an existing item in the cart
+      const existingItem = currentItems.find((item) => item.id === data.id);
+
+      if (existingItem) {
+        return toast("Item already in cart.");
+      }
+    },
+```
 
