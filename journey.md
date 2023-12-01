@@ -19871,7 +19871,7 @@ const useCart = create(
 
 - `removeItem`, an action, will take `id` a `string` as parameter and remove the following item inside the cart
 
-Here we call the `set` function, open up an object that contains `items` property. It will spread out the array of `items` and `filter()` the items if their `id` is NOT equivalent to the `id` of the item in the parameter.
+Here we call the `set` function, open up an object that contains `items` property. It will spread out the array of `items` and `filter()` the items if their `id` is NOT equivalent to the `id` of the item in the parameter. Also add a success toast message that the item was removed from the cart.
 
 ```tsx
 const useCart = create(
@@ -19882,5 +19882,29 @@ const useCart = create(
     },
     removeItem: (id: string) => {
       set({ items: [...get().items.filter((item) => item.id !== id)] });
+      toast.success("Item removed from the cart.")
     },
 ```
+
+- `removeAll` is an action that calls a function that simply resets the `items` array. It will use `set()` to update the state.
+
+```tsx
+const useCart = create(
+  persist<CartStore>((set, get) => ({
+    items: [],
+    addItem: (data: Product) => {
+      // ...
+    },
+    removeItem: (id: string) => {
+      // ...
+    },
+    removeAll(): () => set({ items: [] }),
+  }))
+```
+
+Finally, we can 
+
+Now let's try working through what we should put inside `persist`, which takes two arguments:
+
+1. A function that defines the state & actions of the store (state creator function, same signature as the `create` function)
+2. an object that specifies the options for the persistence
