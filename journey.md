@@ -19679,11 +19679,19 @@ export default function RootLayout({
 
 ### Create store for our cart
 
-Go into `hooks` and create the file `use-cart.ts`
+Go into `hooks` and create the file `use-cart.ts`. 
+
+Import:
+-  `create` from zustand 
+- `toast` from `react-hot-toast`
+- `Product` from `@/types`
+
+Create the interfrace `CartStore`. Finally create the hook `useCart`.
 
 `ecommerce-store\hooks\use-cart.ts`
 ```ts
 import { create } from 'zustand';
+import toast from 'react-hot-toast';
 
 import { Product } from '@/types';
 
@@ -19691,11 +19699,11 @@ interface CartStore {
   // ...
 };
 
-const useCartStore = create<CartStore>((set) => ({
+const useCart = create<CartStore>((set) => ({
   // ...
 }));
 
-export default useCartStore;
+export default useCart;
 ```
 
 Let's update the `CartStore` interface. It will contain
@@ -19865,7 +19873,7 @@ const useCart = create(
       }
 
       set({ items: [...get().items, data] });
-      toast.success("Item added to cart.")
+      toast.success("Item added to cart.");
     },
 ```
 
@@ -19882,7 +19890,7 @@ const useCart = create(
     },
     removeItem: (id: string) => {
       set({ items: [...get().items.filter((item) => item.id !== id)] });
-      toast.success("Item removed from the cart.")
+      toast.success("Item removed from the cart.");
     },
 ```
 
@@ -19955,3 +19963,63 @@ const useCart = create(
   }),
 );
 ```
+
+Troubleshooting: "This expression is not callable".
+
+The error message:
+
+```sh
+This expression is not callable.
+  Type '{ items: never[]; addItem: (data: Product) => any; removeItem: (id: string) => void; removeAll(): () => set; }' has no call signatures.ts(2349)
+```
+
+This happens when you are trying to call something that is not a function as a function. In TypeScript, a function is a type that has a call signature, which means that it can be invoked with some arguments and return a value.
+
+Find the error in the code:
+
+```ts
+const useCart = create(
+  persist<CartStore>(
+    (set, get) => ({
+    items: [],
+    addItem: (data: Product) => {
+      // ...
+    },
+    removeItem: (id: string) => {
+      //  ...
+    },
+    removeAll(): () => set({ items: [] }),
+  }), 
+  {
+    name: 'cart-storage',
+    storage: createJSONStorage(() => localStorage),
+  }),
+);
+```
+
+Notice that `removeAll` has `()` which indicates that it is a function that is trying to be called. The fix is to remove the parenthesis after `removeAll`, like so:
+
+```ts
+const useCart = create(
+  persist<CartStore>(
+    (set, get) => ({
+    items: [],
+    addItem: (data: Product) => {
+      // ...
+    },
+    removeItem: (id: string) => {
+      //  ...
+    },
+    removeAll: () => set({ items: [] }),
+  }), 
+  {
+    name: 'cart-storage',
+    storage: createJSONStorage(() => localStorage),
+  }),
+);
+```
+
+- Use the create function from zustand instead of the default import
+to avoid the TypeScript error that occurs when using persist middleware.
+- Add toast notifications for adding and removing items from the cart.
+- Indent code to improve readability
