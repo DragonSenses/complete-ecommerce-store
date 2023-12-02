@@ -20023,3 +20023,38 @@ const useCart = create(
 to avoid the TypeScript error that occurs when using persist middleware.
 - Add toast notifications for adding and removing items from the cart.
 - Indent code to improve readability
+
+Now we can use this cart to add items to, complete with toast messages. We can also check the count of items.
+
+### Add `useCart` in Navbar
+
+Inside `NavbarActions.tsx` create the `cart` with `useCart` hook. Then render `cart.items.length` in the `span` inside the output.
+
+`ecommerce-store\components\NavbarActions.tsx`
+```tsx
+"use client";
+
+import React, { useEffect, useState } from 'react';
+import { ShoppingBag } from 'lucide-react';
+
+import Button from '@/components/ui/Button';
+import useCart from '@/hooks/use-cart';
+
+export default function NavbarActions() {
+  const cart = useCart();
+  // ...
+  return (
+    <div className="ml-auto flex items-center gap-x-4">
+      <Button className="flex items-center rounded-full bg-black px-4 py-2">
+        <ShoppingBag
+          size={20}
+          color="white"
+        />
+        <span className="ml-2 text-sm font-medium text-white">
+          {cart.items.length}
+        </span>
+      </Button>
+    </div>
+  )
+}
+```
