@@ -20026,7 +20026,7 @@ to avoid the TypeScript error that occurs when using persist middleware.
 
 Now we can use this cart to add items to, complete with toast messages. We can also check the count of items.
 
-### Add `useCart` in Navbar
+### Add `useCart` in components
 
 Inside `NavbarActions.tsx` create the `cart` with `useCart` hook. Then render `cart.items.length` in the `span` inside the output.
 
@@ -20057,4 +20057,34 @@ export default function NavbarActions() {
     </div>
   )
 }
+```
+
+Next we navigate to `ProductCard.tsx` and update it with the add to cart functionality.
+
+Import the `useCart` hook and declare `cart` variable to assign it the value returned by the hook.
+
+```tsx
+import useCart from '@/hooks/use-cart';
+
+interface ProductCard {
+  data: Product;
+}
+
+const ProductCard: React.FC<ProductCard> = ({
+  data
+}) => {
+  const cart = useCart();
+```
+
+Similar to the `onPreview` event handler. Let's create the `onAddToCart` function. 
+
+`ecommerce-store\components\ui\ProductCard.tsx`
+```tsx
+  const onAddToCart: MouseEventHandler<HTMLButtonElement> = (event) => {
+    // Prevent the event from bubbling up to the parent elements
+    event.stopPropagation();
+
+    // Display preview modal with the product data
+    previewModal.onOpen(data);
+  }
 ```
