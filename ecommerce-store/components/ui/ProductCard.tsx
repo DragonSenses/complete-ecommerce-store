@@ -41,6 +41,13 @@ const ProductCard: React.FC<ProductCard> = ({
   }
 
 
+  const onAddToCart: MouseEventHandler<HTMLButtonElement> = (event) => {
+    // Prevent the event from bubbling up to the parent elements
+    event.stopPropagation();
+
+    // Add product to cart logic
+  }
+
   return (
     <div onClick={handleClick} className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
       {/* Images & Actions */}
