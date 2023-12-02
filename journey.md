@@ -20084,7 +20084,41 @@ Similar to the `onPreview` event handler. Let's create the `onAddToCart` functio
     // Prevent the event from bubbling up to the parent elements
     event.stopPropagation();
 
-    // Display preview modal with the product data
-    previewModal.onOpen(data);
+    // Add product to cart logic
   }
+```
+
+Then we assign it to `ShoppingCart` `IconButton`.
+
+```tsx
+const ProductCard: React.FC<ProductCard> = ({
+  data
+}) => {
+  // ...
+  return (
+    <div onClick={handleClick} className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
+      {/* Images & Actions */}
+      <div className="aspect-square rounded-xl bg-gray-100 relative">
+        <Image
+          src={data?.images?.[0]?.url}
+          fill
+          alt="Product Image"
+          className='aspect-square object-cover rounded-md'
+        />
+        <div className='opacity-0 group-hover:opacity-100 transition absolute w-full px-6 bottom-5'>
+          <div className='flex gap-x-6 justify-center'>
+
+            <IconButton
+              onClick={onPreview}
+              icon={<Expand size={20} className="text-gray-600" />}
+            />
+
+            <IconButton
+              onClick={onAddToCart}
+              icon={<ShoppingCart size={20} className="text-gray-600" />}
+            />
+
+          </div>
+        </div>
+      </div>
 ```
