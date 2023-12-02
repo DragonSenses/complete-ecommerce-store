@@ -9,6 +9,7 @@ import { Product } from '@/types';
 import Currency from '@/components/ui/Currency';
 import IconButton from '@/components/ui/IconButton';
 import usePreviewModal from '@/hooks/use-preview-modal';
+import useCart from '@/hooks/use-cart';
 
 interface ProductCard {
   data: Product;
@@ -17,6 +18,7 @@ interface ProductCard {
 const ProductCard: React.FC<ProductCard> = ({
   data
 }) => {
+
   // Use custom hook to access and manipulate the preview modal state
   const previewModal = usePreviewModal();
 
@@ -36,6 +38,7 @@ const ProductCard: React.FC<ProductCard> = ({
     // Display preview modal with the product data
     previewModal.onOpen(data);
   }
+
 
   return (
     <div onClick={handleClick} className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
