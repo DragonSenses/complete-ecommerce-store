@@ -20196,7 +20196,7 @@ export default function NavbarActions() {
 
   return (
     <div className="ml-auto flex items-center gap-x-4">
-    
+
       <Button 
         onClick={() => router.push("/cart")}
         className="flex items-center rounded-full bg-black px-4 py-2"
@@ -20213,4 +20213,25 @@ export default function NavbarActions() {
     </div>
   )
 }
+```
+
+With our routing set up, we now need tot create the actual page for the route "/cart"
+
+### Cart Page
+
+Navigate to `ecommerce-store\app\(routes)` folder. Create a new folder named `cart`, with a file named `page.tsx` inside.
+
+`ecommerce-store\app\(routes)\cart\page.tsx`
+```tsx
+import React from 'react';
+
+const CartPage = () => {
+  return (
+    <div>
+      CartPage
+    </div>
+  )
+}
+
+export default CartPage
 ```
