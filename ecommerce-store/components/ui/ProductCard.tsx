@@ -45,7 +45,8 @@ const ProductCard: React.FC<ProductCard> = ({
     // Prevent the event from bubbling up to the parent elements
     event.stopPropagation();
 
-    // Add product to cart logic
+    // Add product data to cart
+    cart.addItem(data);
   }
 
   return (
