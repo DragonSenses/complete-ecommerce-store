@@ -20122,3 +20122,23 @@ const ProductCard: React.FC<ProductCard> = ({
         </div>
       </div>
 ```
+
+Add onAddToCart button to ProductCard component
+
+- Use the useCart custom hook to access the cart state and items
+from the zustand store. 
+- Define a mouse event handler for the button that prevents the event from bubbling up and calls the addItem method from the cart hook with the product data. 
+- Display the button with a shopping cart icon on the bottom of the product image.
+
+Now let's develop the `onAddToCart` function. To implement the add-to-cart functionality, when the user clicks a button we want to add the product item to the cart using its product data.
+
+`ecommerce-store\components\ui\ProductCard.tsx`
+```tsx
+  const onAddToCart: MouseEventHandler<HTMLButtonElement> = (event) => {
+    // Prevent the event from bubbling up to the parent elements
+    event.stopPropagation();
+
+    // Add product data to cart
+    cart.addItem(data);
+  }
+```
