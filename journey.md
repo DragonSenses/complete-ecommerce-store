@@ -20142,3 +20142,14 @@ Now let's develop the `onAddToCart` function. To implement the add-to-cart funct
     cart.addItem(data);
   }
 ```
+
+### Testing Add-To-Cart functionality
+
+Run the project with `npm run dev`, in the main page we should be able to see a rendered `ProductList` containing `ProductCard`s. When user hovers over the card, they should see two `IconButton`s near the bottom of the component. One is the preview button, the other is the shopping cart button.
+
+- First time clicking the shopping cart button while the product is not added to the cart yet, should add the item to the user's cart. Then a toast notification should display at the top.
+- Clicking the cart button again will give the user a toast notification that the "Item already in cart". *It will not add the product again in the cart*.
+- Clicking ANOTHER item's `ProductCard` should add a different product to the cart.
+- Refreshing the page should persist the data in the cart.
+- The amount of items in the cart should be rendered at the top right, inside `NavbarActions` component
+
