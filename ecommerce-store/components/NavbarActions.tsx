@@ -7,6 +7,7 @@ import Button from '@/components/ui/Button';
 import useCart from '@/hooks/use-cart';
 
 export default function NavbarActions() {
+  // Use hook to access and manipulate the shopping cart state and properties
   const cart = useCart();
 
   // Declare isMounted state variable and initialize it to false

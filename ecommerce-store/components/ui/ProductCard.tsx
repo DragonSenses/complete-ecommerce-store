@@ -18,6 +18,7 @@ interface ProductCard {
 const ProductCard: React.FC<ProductCard> = ({
   data
 }) => {
+  // Use hook to access and manipulate the shopping cart state and properties
   const cart = useCart();
 
   // Use custom hook to access and manipulate the preview modal state
