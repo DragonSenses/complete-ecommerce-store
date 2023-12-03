@@ -20153,3 +20153,17 @@ Run the project with `npm run dev`, in the main page we should be able to see a 
 - Refreshing the page should persist the data in the cart.
 - The amount of items in the cart should be rendered at the top right, inside `NavbarActions` component
 
+## Cart view
+
+Next we want to create the cart view when the user clicks on their cart.
+
+Navigate to `NavbarActions.tsx`, and add `router` from `next/navigation`.
+
+`ecommerce-store\components\NavbarActions.tsx`
+```tsx
+import { useRouter } from 'next/navigation';
+
+export default function NavbarActions() {
+  // Create router object to perform client-side navigation
+  const router = useRouter();
+```
