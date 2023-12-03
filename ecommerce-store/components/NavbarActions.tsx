@@ -2,11 +2,15 @@
 
 import React, { useEffect, useState } from 'react';
 import { ShoppingBag } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import Button from '@/components/ui/Button';
 import useCart from '@/hooks/use-cart';
 
 export default function NavbarActions() {
+  // Create router object to perform client-side navigation
+  const router = useRouter();
+
   // Use hook to access and manipulate the shopping cart state and properties
   const cart = useCart();
 
