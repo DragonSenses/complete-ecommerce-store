@@ -20239,6 +20239,7 @@ export default CartPage
 - mark as use client
 - ensure that the code will only run after the component has been mounted and hydrated
 
+`ecommerce-store\app\(routes)\cart\page.tsx`
 ```tsx
 "use client";
 
@@ -20269,4 +20270,27 @@ const CartPage = () => {
 }
 
 export default CartPage
+```
+
+#### Developing the Cart Page
+
+Cart Page will return:
+
+- A `div`, which has a `className` of `bg-white`
+- The children will have a `Container` wrapped around
+- A `div` containing an `h1` with the text "Shopping Cart" as the children
+
+```tsx
+const CartPage = () => {
+  // ...
+  return (
+    <div className='bg-white'>
+      <Container>
+        <div>
+          <h1>Shopping Cart</h1>
+        </div>
+      </Container>
+    </div>
+  )
+}
 ```
