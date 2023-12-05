@@ -19306,7 +19306,7 @@ export default ModalProvider
 
 #### ModalProvider mounting trick to prevent hydration errors
 
-Next we need to add `isMounted` state variable to delay execution of client-sidde code until after hydration.
+Next we need to add `isMounted` state variable to delay execution of client-side code until after hydration.
 
 - Import React and two hooks: `useEffect` and `useState`
 - Declare a state variable `isMounted` and initialize it to `false`. This tracks whether the component has been mounted or not.
@@ -20235,3 +20235,7 @@ const CartPage = () => {
 
 export default CartPage
 ```
+
+- mark as use client
+- ensure that the code will only run after the component has been mounted and hydrated
+
