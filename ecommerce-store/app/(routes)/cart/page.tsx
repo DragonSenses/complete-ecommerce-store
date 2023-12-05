@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 
+import Container from '@/components/ui/Container';
+
 const CartPage = () => {
 
   // Declare isMounted state variable and initialize it to false
@@ -20,8 +22,12 @@ const CartPage = () => {
   }
 
   return (
-    <div>
-      CartPage
+    <div className='bg-white'>
+      <Container>
+        <div className='px-4 py-16 sm:px-6 lg:px-8'>
+          <h1>Shopping Cart</h1>
+        </div>
+      </Container>
     </div>
   )
 }
