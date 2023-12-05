@@ -20311,3 +20311,28 @@ const CartPage = () => {
   )
 }
 ```
+
+Next let's style the title. Then as a sibling, create a `div` that has `grid grid-cols-12 items-start` style for large screen breakpoints. Then inside we have a `div` that has a `col-span-7` also for large scren breakpoints. This inner `div` will render our cart items.
+
+```tsx
+const CartPage = () => {
+  // ...
+  return (
+    <div className='bg-white'>
+      <Container>
+        <div className='px-4 py-16 sm:px-6 lg:px-8'>
+          <h1 className='text-3xl font-bold text-black'>Shopping Cart</h1>
+          <div className='mt-12 lg:grid lg:grid-cols-12 lg:items-start gap-x-12'>
+            <div className='lg:col-span-7'>
+              {/* Iterate over cart items, if no items then render a message */}
+            </div>
+          </div>
+        </div>
+      </Container>
+    </div>
+  )
+}
+```
+
+Now let's call the `useCart` hook to access the shopping cart state. We want to iterate over the items in the cart.
+
