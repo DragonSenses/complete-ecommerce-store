@@ -20336,9 +20336,16 @@ const CartPage = () => {
 
 Now let's call the `useCart` hook to access the shopping cart state. We want to iterate over the items in the cart.
 
+- Import useCart hook from '@/hooks/use-cart'
+- Use useCart hook to access cart state and items
+
 Before we do, we should handle the case where there is no items in the cart. Then render a `p` with neutral text saying that "No items added to cart".
 
+- Add a conditional rendering to display a message if cart is empty
+
 Next, in the case we do have cart items then we should render an unordered list `ul` and map out each item. For now we will render a `li` or list item as an example.
+
+- Add a ul element to display cart items
 
 ```tsx
 import useCart from '@/hooks/use-cart';
@@ -20373,3 +20380,7 @@ const CartPage = () => {
   )
 }
 ```
+
+#### CartItem component
+
+Instead of a `li` item to render while mapping out `cart.items`. I'd like to render a custom component specifically for the `cart` route.
