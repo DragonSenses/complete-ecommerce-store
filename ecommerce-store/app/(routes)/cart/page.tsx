@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import Container from '@/components/ui/Container';
 import useCart from '@/hooks/use-cart';
+import CartItem from './components/CartItem';
 
 const CartPage = () => {
   const cart = useCart();
@@ -35,11 +36,10 @@ const CartPage = () => {
               }
               <ul>
                 {cart.items.map((item) => (
-                  <li
+                  <CartItem
                     key={item.id}
-                  >
-                    {item.name}
-                  </li>
+                    data={item}
+                  />
                 ))}
               </ul>
             </div>
