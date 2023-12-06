@@ -20384,3 +20384,18 @@ const CartPage = () => {
 #### CartItem component
 
 Instead of a `li` item to render while mapping out `cart.items`. I'd like to render a custom component specifically for the `cart` route.
+
+Create `components` folder inside `/app/(routes)/cart`. Inside create a file named `CartItem.tsx`.
+
+`ecommerce-store\app\(routes)\cart\components\CartItem.tsx`
+```tsx
+import React from 'react';
+
+const CartItem = () => {
+  return (
+    <div>CartItem</div>
+  )
+}
+
+export default CartItem
+```
