@@ -20429,3 +20429,22 @@ const CartItem = () => {
 export default CartItem
 ```
 
+Next develop the interface: `CartItemProps`, it will contain `data` which is a type of `Product`. Then assign this interface to the `CartItem` function.
+
+```tsx
+interface CartItemProps {
+  data: Product;
+};
+
+const CartItem: React.FC<CartItemProps> = ({
+  data
+}) => {
+  return (
+    <div>CartItem</div>
+  )
+}
+
+export default CartItem
+```
+
+refactor: create CartItemProps interface
