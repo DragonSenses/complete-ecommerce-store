@@ -10,11 +10,16 @@ import Currency from '@/components/ui/Currency';
 import useCart from '@/hooks/use-cart';
 import { Product } from '@/types';
 
-const CartItem = () => {
+interface CartItemProps {
+  data: Product;
+};
+
+const CartItem: React.FC<CartItemProps> = ({
+  data
+}) => {
   return (
     <div>CartItem</div>
   )
 }
 
 export default CartItem
-
