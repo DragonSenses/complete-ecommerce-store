@@ -20625,9 +20625,22 @@ const CartItem: React.FC<CartItemProps> = ({
             <p>Cart Item's Name</p>
           </div>
         </div>
-        
+
       </div>
     </li>
   )
 }
 ```
+
+Give the `p` a `className` of `text-lg font-semibold text-black` and interpolate `data.name` as the children. This should render the name of the Cart Item.
+
+```tsx
+<div className='relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0'>
+  <div className='flex justify-between'>
+    <p className='text-lg font-semibold text-block'>
+      {data.name}
+    </p>
+  </div>
+</div>
+```
+
