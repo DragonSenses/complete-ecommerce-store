@@ -20489,3 +20489,23 @@ const CartPage = () => {
 
 export default CartPage
 ```
+
+#### Develop the UI output of `CartItem`
+
+Instead of `div` we return a `li`, list item that contains a `div` with a responsive height and width.
+
+```tsx
+const CartItem: React.FC<CartItemProps> = ({
+  data
+}) => {
+  return (
+    <li className='flex py-6 border-b'>
+      <div className='relative h-24 w-24 rounded-md overflow-hidden sm:h-48 sm:w-48'>
+        
+      </div>
+    </li>
+  )
+}
+```
+
+Next render an `Image` within
