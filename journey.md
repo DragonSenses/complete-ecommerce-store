@@ -20561,6 +20561,7 @@ Let's take a step back and notice how the styles work in tandem. The `CartItem` 
 
 See in `CartPage`:
 
+`ecommerce-store\app\(routes)\cart\page.tsx`
 ```tsx
 const CartPage = () => {
   const cart = useCart();
@@ -20593,3 +20594,40 @@ const CartPage = () => {
 ```
 
 This is because the `CartPage` will also contain a "summary" for each `CartItem` to the right of it on Desktop and large screens.
+
+Now back to `CartItem` let's create the containers that render the other data besides the cart image. 
+
+Create a sibling `div` after the `IconButton`'s container `div`. Give it `relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0`, with another `div` that has the style `flex justify-between`. Inside this will be a `p`.
+
+```tsx
+const CartItem: React.FC<CartItemProps> = ({
+  data
+}) => {
+  return (
+    <li className='flex py-6 border-b'>
+      <div className='relative h-24 w-24 rounded-md overflow-hidden sm:h-48 sm:w-48'>
+        <Image
+          fill
+          src={data.images[0].url}
+          alt=''
+          className='object-cover object-center'
+        />
+      </div>
+
+      <div className='relative ml-4 sm:ml-6 flex flex-1 flex-col justify-between'>
+
+        <div className='absolute z-10 right-0 top-0'>
+          <IconButton onClick={() => {}} icon={<X size={15} />} />
+        </div>
+
+        <div className='relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0'>
+          <div className='flex justify-between'>
+            <p>Cart Item's Name</p>
+          </div>
+        </div>
+        
+      </div>
+    </li>
+  )
+}
+```
