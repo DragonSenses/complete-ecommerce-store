@@ -20531,7 +20531,7 @@ const CartItem: React.FC<CartItemProps> = ({
 
 Next we want to create a remove button for the CartItem. 
 
-Outside of the first `div`, make a sibling `div` that is also relative. with the following styles: `relative ml-4 sm:ml-6 flex flex-1 flex-col justify-between`. Then inside is a `div` with style `absolute z-10 right-0 top-0` to position it at the top right. Finally, within we render the `IconButton` that contains the `X` icon from lucide.
+Outside of the first `div`, make a sibling `div` that is also relative. with the following styles: `relative ml-4 sm:ml-6 flex flex-1 flex-col justify-between`. Then inside is a `div` with style `absolute z-10 right-0 top-0` to position it at the top right. Finally, within we render the `IconButton` that contains the `X` icon from lucide with size 15.
 
 ```tsx
 const CartItem: React.FC<CartItemProps> = ({
@@ -20557,4 +20557,39 @@ const CartItem: React.FC<CartItemProps> = ({
 }
 ```
 
+Let's take a step back and notice how the styles work in tandem. The `CartItem` component takes up the full screen width in mobile but on Desktop it only takes up half the screen. 
 
+See in `CartPage`:
+
+```tsx
+const CartPage = () => {
+  const cart = useCart();
+  // ...
+  return (
+    <div className='bg-white'>
+      <Container>
+        <div className='px-4 py-16 sm:px-6 lg:px-8'>
+          <h1 className='text-3xl font-bold text-black'>Shopping Cart</h1>
+          <div className='mt-12 lg:grid lg:grid-cols-12 lg:items-start gap-x-12'>
+            <div className='lg:col-span-7'>
+              {cart.items.length === 0 &&
+                <p className='text-neutral-500'>No items added to cart</p>
+              }
+              <ul>
+                {cart.items.map((item) => (
+                  <CartItem
+                    key={item.id}
+                    data={item}
+                  />
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </div>
+  )
+}
+```
+
+This is because the `CartPage` will also contain a "summary" for each `CartItem` to the right of it on Desktop and large screens.
