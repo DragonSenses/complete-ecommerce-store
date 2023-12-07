@@ -20528,3 +20528,33 @@ const CartItem: React.FC<CartItemProps> = ({
   )
 }
 ```
+
+Next we want to create a remove button for the CartItem. 
+
+Outside of the first `div`, make a sibling `div` that is also relative. with the following styles: `relative ml-4 sm:ml-6 flex flex-1 flex-col justify-between`. Then inside is a `div` with style `absolute z-10 right-0 top-0` to position it at the top right. Finally, within we render the `IconButton` that contains the `X` icon from lucide.
+
+```tsx
+const CartItem: React.FC<CartItemProps> = ({
+  data
+}) => {
+  return (
+    <li className='flex py-6 border-b'>
+      <div className='relative h-24 w-24 rounded-md overflow-hidden sm:h-48 sm:w-48'>
+        <Image
+          fill
+          src={data.images[0].url}
+          alt=''
+          className='object-cover object-center'
+        />
+      </div>
+      <div className='relative ml-4 sm:ml-6 flex flex-1 flex-col justify-between'>
+        <div className='absolute z-10 right-0 top-0'>
+          <IconButton onClick={() => {}} icon={<X size={15} />}/>
+        </div>
+      </div>
+    </li>
+  )
+}
+```
+
+
