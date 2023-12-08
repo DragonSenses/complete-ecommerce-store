@@ -19,6 +19,7 @@ const CartItem: React.FC<CartItemProps> = ({
 }) => {
   return (
     <li className='flex py-6 border-b'>
+      {/* Image */}
       <div className='relative h-24 w-24 rounded-md overflow-hidden sm:h-48 sm:w-48'>
         <Image
           fill
@@ -27,16 +28,27 @@ const CartItem: React.FC<CartItemProps> = ({
           className='object-cover object-center'
         />
       </div>
+      
       <div className='relative ml-4 sm:ml-6 flex flex-1 flex-col justify-between'>
+        {/* Close Button */}
         <div className='absolute z-10 right-0 top-0'>
           <IconButton onClick={() => {}} icon={<X size={15} />} />
         </div>
+        {/* Product Information */}
         <div className='relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0'>
+          {/* Name */}
           <div className='flex justify-between'>
             <p className='text-lg font-semibold text-block'>
               {data.name}
             </p>
           </div>
+
+          {/* Size and Color */}
+          <div className='mt-1 flex text-sm'>
+            <p className='text-gray-500'>{data.color.name}</p>
+            <p className='text-gray-500 ml-4 border-l border-gray-200 pl-4'>{data.size.name}</p>
+          </div>
+
         </div>
       </div>
     </li>
