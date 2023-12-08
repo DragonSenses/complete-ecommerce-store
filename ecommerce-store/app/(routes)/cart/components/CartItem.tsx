@@ -17,6 +17,16 @@ interface CartItemProps {
 const CartItem: React.FC<CartItemProps> = ({
   data
 }) => {
+  // useCart hook: access and manipulate cart state and props
+  const cart = useCart();
+
+  /**
+   * Removes an item from the cart by its id
+   */
+  const onRemove = () => {
+    cart.removeItem(data.id);
+  }
+
   return (
     <li className='flex py-6 border-b'>
       {/* Image */}
@@ -51,7 +61,7 @@ const CartItem: React.FC<CartItemProps> = ({
           
           {/* Price */}
           <Currency value={data.price} />
-          
+
         </div>
       </div>
     </li>
