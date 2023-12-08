@@ -28,7 +28,7 @@ const CartItem: React.FC<CartItemProps> = ({
           className='object-cover object-center'
         />
       </div>
-      
+
       <div className='relative ml-4 sm:ml-6 flex flex-1 flex-col justify-between'>
         {/* Close Button */}
         <div className='absolute z-10 right-0 top-0'>
@@ -48,7 +48,10 @@ const CartItem: React.FC<CartItemProps> = ({
             <p className='text-gray-500'>{data.color.name}</p>
             <p className='text-gray-500 ml-4 border-l border-gray-200 pl-4'>{data.size.name}</p>
           </div>
-
+          
+          {/* Price */}
+          <Currency value={data.price} />
+          
         </div>
       </div>
     </li>
