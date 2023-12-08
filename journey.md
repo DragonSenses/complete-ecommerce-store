@@ -20663,7 +20663,7 @@ const CartItem: React.FC<CartItemProps> = ({
       </div>
       
       <div className='relative ml-4 sm:ml-6 flex flex-1 flex-col justify-between'>
-        {/* Close Button */}
+        {/* Remove Button */}
         <div className='absolute z-10 right-0 top-0'>
           <IconButton onClick={() => {}} icon={<X size={15} />} />
         </div>
@@ -20725,3 +20725,37 @@ const CartItem: React.FC<CartItemProps> = ({
   }
 ```
 
+Now assign the `onRemove` function to the `IconButton`'s `onClick`.
+
+```tsx
+const CartItem: React.FC<CartItemProps> = ({
+  data
+}) => {
+  // useCart hook: access and manipulate cart state and props
+  const cart = useCart();
+
+  /**
+   * Removes an item from the cart by its id
+   */
+  const onRemove = () => {
+    cart.removeItem(data.id);
+  }
+
+  return (
+    <li className='flex py-6 border-b'>
+      {/* Image */}
+      <div className='relative h-24 w-24 rounded-md overflow-hidden sm:h-48 sm:w-48'>
+        <Image
+          fill
+          src={data.images[0].url}
+          alt=''
+          className='object-cover object-center'
+        />
+      </div>
+
+      <div className='relative ml-4 sm:ml-6 flex flex-1 flex-col justify-between'>
+        {/* Remove Button */}
+        <div className='absolute z-10 right-0 top-0'>
+          <IconButton onClick={onRemove} icon={<X size={15} />} />
+        </div>
+```
