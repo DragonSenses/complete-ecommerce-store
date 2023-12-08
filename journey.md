@@ -20759,3 +20759,29 @@ const CartItem: React.FC<CartItemProps> = ({
           <IconButton onClick={onRemove} icon={<X size={15} />} />
         </div>
 ```
+
+- Use useCart hook to access and manipulate cart state and props
+- Add onRemove function that removes an item from the cart by its id
+- Add IconButton component to trigger onRemove function
+
+#### Cart Page Summary
+
+Let's create the `Summary` component for our Cart Page.
+
+Under `/app/(routes)/cart/components` create `Summary.tsx` a react functional component. Add "use client" directive at the top.
+
+```tsx
+"use client";
+
+import React from 'react';
+
+const Summary = () => {
+  return (
+    <div>Summary</div>
+  )
+}
+
+export default Summary
+```
+
+Next we need [axios]().
