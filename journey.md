@@ -20689,3 +20689,15 @@ const CartItem: React.FC<CartItemProps> = ({
 }
 ```
 
+After that we render the `Currency` as a sibling to the size/color `div`. Interpolate `data.price`.
+
+```tsx
+{/* Size and Color */}
+<div className='mt-1 flex text-sm'>
+  <p className='text-gray-500'>{data.color.name}</p>
+  <p className='text-gray-500 ml-4 border-l border-gray-200 pl-4'>{data.size.name}</p>
+</div>
+
+{/* Price */}
+<Currency value={data.price} />
+```
