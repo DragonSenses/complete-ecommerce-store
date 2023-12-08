@@ -20644,7 +20644,7 @@ Give the `p` a `className` of `text-lg font-semibold text-black` and interpolate
 </div>
 ```
 
-Next we want to work on the summary that contains extra information on the `CartItem`. Let's interpolate the data for product color and product size. Create a sibling `div` that contains two `p` children that interpolates `data.color.name` and `data.size.name` respectively.
+Next we want to add information about the `CartItem`. Let's interpolate the data for product color and product size. Create a sibling `div` that contains two `p` children that interpolates `data.color.name` and `data.size.name` respectively.
 
 ```tsx
 const CartItem: React.FC<CartItemProps> = ({
@@ -20701,3 +20701,27 @@ After that we render the `Currency` as a sibling to the size/color `div`. Interp
 {/* Price */}
 <Currency value={data.price} />
 ```
+
+#### Remove a product in cart functionality
+
+Let's add the ability to remove a product in the cart. 
+
+Declare `cart` with `useCart` hook. Then create a function `onRemove` that calls `cart.removeItem(data.id)`.
+
+```tsx
+import useCart from '@/hooks/use-cart';
+
+const CartItem: React.FC<CartItemProps> = ({
+  data
+}) => {
+  // useCart hook: access and manipulate cart state and props
+  const cart = useCart();
+
+  /**
+   * Removes an item from the cart by its id
+   */
+  const onRemove = () => {
+    cart.removeItem(data.id);
+  }
+```
+
