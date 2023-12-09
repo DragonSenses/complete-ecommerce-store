@@ -23,9 +23,13 @@ const Summary = () => {
           <div>
             Order Total
           </div>
+          <Currency value={20} />
         </div>
       </div>
-      
+
+      <Button>
+        Checkout
+      </Button>
     </div>
   )
 }
