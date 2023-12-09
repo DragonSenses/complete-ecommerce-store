@@ -20835,9 +20835,16 @@ npm i axios
 
 Now back to the `Summary.tsx`, here are the following imports:
 
-Global imports:
+Global and local imports:
 ```tsx
+// Global Imports
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { toast } from 'react-hot-toast'; 
+
+// Local imports
+import Button from '@/components/ui/Button';
+import Currency from '@/components/ui/Currency';
+import useCart from '@/hooks/use-cart';
 ```
