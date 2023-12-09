@@ -20891,7 +20891,7 @@ const Summary = () => {
 
 Next we render a `Currency` to the `Summary` next to the `div` that contains Order Total. After that, right before the last div we add the checkout `Button`, with the children text "Checkout".
 
-- Add `Currency` to Order Total
+- Add `Currency` to Order Total, it has an arbitrary placeholder for `value` prop
 - Add `Button` for checkout
 
 ```tsx
@@ -20919,3 +20919,15 @@ const Summary = () => {
 }
 ```
 
+Let's style the `Order Total`. We give the outermost `div` a top margin and some space between child elements. The second `div` will center our items and have a gray top border. Finally the `div` that contains the text will have `text-base font-medium text-gray-900`.
+
+```tsx
+      <div className='mt-6 space-y-4'>
+        <div className='flex items-center justify-between border-t border-gray-200 pt-4'>
+          <div className='text-base font-medium text-gray-900'>
+            Order Total
+          </div>
+          <Currency value={20} />
+        </div>
+      </div>
+```
