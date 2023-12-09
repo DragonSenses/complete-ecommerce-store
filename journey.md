@@ -20823,4 +20823,12 @@ const CartPage = () => {
 }
 ```
 
-Next we need [axios]().
+Next we need [axios](https://www.npmjs.com/package/axios) package.
+
+- [axios documentation](https://axios-http.com/docs/intro)
+
+Let's install it:
+
+```sh
+npm i axios
+```
