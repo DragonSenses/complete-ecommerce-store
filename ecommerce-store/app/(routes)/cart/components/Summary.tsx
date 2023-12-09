@@ -17,6 +17,15 @@ const Summary = () => {
       <h2 className='text-lg font-medium text-gray-900'>
         Order Summary
       </h2>
+
+      <div>
+        <div>
+          <div>
+            Order Total
+          </div>
+        </div>
+      </div>
+      
     </div>
   )
 }
