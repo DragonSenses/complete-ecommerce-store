@@ -20848,3 +20848,20 @@ import Button from '@/components/ui/Button';
 import Currency from '@/components/ui/Currency';
 import useCart from '@/hooks/use-cart';
 ```
+
+Next develop the `Summary` component.
+
+- Give the `div` a `className` with responsive styles. On large screens allow it to span 5 columns. Also give it a light gray backgrounded.
+- Inside the `div` create an `h2` with large text and medium font and have a darker gray for the textt color. Inside the children will be "Order Summary"
+
+```tsx
+const Summary = () => {
+  return (
+    <div className='mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:pt-8'>
+      <h2 className='text-lg font-medium text-gray-900'>
+        Order Summary
+      </h2>
+    </div>
+  )
+}
+```
