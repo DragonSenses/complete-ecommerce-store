@@ -20931,3 +20931,30 @@ Let's style the `Order Total`. We give the outermost `div` a top margin and some
         </div>
       </div>
 ```
+
+Next style the checkout `Button` with `w-full mt-6`. It sets the width of an element to 100% of its parent container, while adding a top margin of 1.5rem.
+
+```tsx
+const Summary = () => {
+  return (
+    <div className='mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:pt-8'>
+      <h2 className='text-lg font-medium text-gray-900'>
+        Order Summary
+      </h2>
+
+      <div className='mt-6 space-y-4'>
+        <div className='flex items-center justify-between border-t border-gray-200 pt-4'>
+          <div className='text-base font-medium text-gray-900'>
+            Order Total
+          </div>
+          <Currency value={20} />
+        </div>
+      </div>
+
+      <Button className='w-full mt-6'>
+        Checkout
+      </Button>
+    </div>
+  )
+}
+```
