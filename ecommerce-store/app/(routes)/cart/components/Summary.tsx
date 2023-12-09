@@ -27,7 +27,7 @@ const Summary = () => {
         </div>
       </div>
 
-      <Button>
+      <Button className='w-full mt-6'>
         Checkout
       </Button>
     </div>
