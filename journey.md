@@ -20832,3 +20832,12 @@ Let's install it:
 ```sh
 npm i axios
 ```
+
+Now back to the `Summary.tsx`, here are the following imports:
+
+Global imports:
+```tsx
+import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+```
