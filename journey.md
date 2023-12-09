@@ -20888,3 +20888,34 @@ const Summary = () => {
   )
 }
 ```
+
+Next we render a `Currency` to the `Summary` next to the `div` that contains Order Total. After that, right before the last div we add the checkout `Button`, with the children text "Checkout".
+
+- Add `Currency` to Order Total
+- Add `Button` for checkout
+
+```tsx
+const Summary = () => {
+  return (
+    <div className='mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:pt-8'>
+      <h2 className='text-lg font-medium text-gray-900'>
+        Order Summary
+      </h2>
+
+      <div>
+        <div>
+          <div>
+            Order Total
+          </div>
+          <Currency value={20} />
+        </div>
+      </div>
+
+      <Button>
+        Checkout
+      </Button>
+    </div>
+  )
+}
+```
+
