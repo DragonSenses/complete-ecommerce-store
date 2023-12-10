@@ -20958,3 +20958,29 @@ const Summary = () => {
   )
 }
 ```
+
+#### Calculate total price of order
+
+To calculate the order total we need to access the state of the cart, in this case we want to use a selector function as an argument to extract the items property of the state, which is an array of Products.
+
+- Add `useSearchParams` to read & update the query string of current URL
+- Add `items` from the cart state
+- Add `removeAll` action from the cart state
+
+```tsx
+import React, { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+
+import useCart from '@/hooks/use-cart';
+
+const Summary = () => {
+  // URLSearchParams interface to read & update the query string of current URL
+  const searchParams = useSearchParams();
+
+  // Get items, an array of products, from cart state
+  const items = useCart((state) => state.items);
+
+  // Get removeAll action from the cart state
+  const removeAll = useCart((state) => state.removeAll);
+```
+
