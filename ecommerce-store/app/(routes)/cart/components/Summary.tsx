@@ -12,6 +12,15 @@ import Currency from '@/components/ui/Currency';
 import useCart from '@/hooks/use-cart';
 
 const Summary = () => {
+  // URLSearchParams interface to read & update the query string of current URL
+  const searchParams = useSearchParams();
+
+  // Get items, an array of products, from cart state
+  const items = useCart((state) => state.items);
+
+  // Get removeAll action from the cart state
+  const removeAll = useCart((state) => state.removeAll);
+
   return (
     <div className='mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:pt-8'>
       <h2 className='text-lg font-medium text-gray-900'>
