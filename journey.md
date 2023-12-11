@@ -21036,3 +21036,14 @@ Now test the cart's order total functionality, check whether the order total is 
 - Remove an item in the cart
 - Check order total if there are no items in the cart
 
+#### onCheckout function
+
+Next we add the `onCheckout` function handler that will send user to checkout.
+
+We will use `axios` for this.
+
+```tsx
+  const onCheckout = async () => {
+    const response = await axios.post(`_checkoutURL`);
+  }
+```
