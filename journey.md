@@ -21018,7 +21018,7 @@ const Summary = () => {
           </div>
           
           <Currency value={totalPrice} />
-          
+
         </div>
       </div>
 
@@ -21029,3 +21029,10 @@ const Summary = () => {
   )
 }
 ```
+
+Now test the cart's order total functionality, check whether the order total is reflected after these changes:
+
+- Add a an item in the cart
+- Remove an item in the cart
+- Check order total if there are no items in the cart
+
