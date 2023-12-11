@@ -21,6 +21,10 @@ const Summary = () => {
   // Get removeAll action from the cart state
   const removeAll = useCart((state) => state.removeAll);
 
+  const totalPrice = items.reduce((total, item) => {
+    return total;
+  })
+
   return (
     <div className='mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:pt-8'>
       <h2 className='text-lg font-medium text-gray-900'>
