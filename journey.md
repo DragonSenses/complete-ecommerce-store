@@ -20984,3 +20984,14 @@ const Summary = () => {
   const removeAll = useCart((state) => state.removeAll);
 ```
 
+Next we `reduce` the items by taking the array of items and taking the price and adding it to the `total`.
+
+```tsx
+const Summary = () => {
+  // ...
+
+  // Calculate the total price of all the items in the cart
+  const totalPrice = items.reduce((total, item) => {
+    return total + Number(item.price)
+  }, 0);
+```
