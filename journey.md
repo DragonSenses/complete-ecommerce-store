@@ -20989,24 +20989,17 @@ Next we `reduce` the items by taking the array of items and taking the price and
 ```tsx
 const Summary = () => {
   // ...
-
   // Calculate the total price of all the items in the cart
   const totalPrice = items.reduce((total, item) => {
     return total + Number(item.price)
   }, 0);
 ```
 
+Now use the `totalPrice` and pass it into the `Currency` component's `value` prop.
+
 ```tsx
 const Summary = () => {
-  // URLSearchParams interface to read & update the query string of current URL
-  const searchParams = useSearchParams();
-
-  // Get items, an array of products, from cart state
-  const items = useCart((state) => state.items);
-
-  // Get removeAll action from the cart state
-  const removeAll = useCart((state) => state.removeAll);
-
+  // ...
   // Calculate the total price of all the items in the cart
   const totalPrice = items.reduce((total, item) => {
     return total + Number(item.price)
@@ -21023,7 +21016,9 @@ const Summary = () => {
           <div className='text-base font-medium text-gray-900'>
             Order Total
           </div>
+          
           <Currency value={totalPrice} />
+          
         </div>
       </div>
 
