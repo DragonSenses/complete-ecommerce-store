@@ -37,7 +37,7 @@ const Summary = () => {
           <div className='text-base font-medium text-gray-900'>
             Order Total
           </div>
-          <Currency value={20} />
+          <Currency value={totalPrice} />
         </div>
       </div>
 
