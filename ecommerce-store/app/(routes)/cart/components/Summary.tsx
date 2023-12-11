@@ -22,7 +22,7 @@ const Summary = () => {
   const removeAll = useCart((state) => state.removeAll);
 
   const totalPrice = items.reduce((total, item) => {
-    return total;
+    return total + Number(item.price);
   })
 
   return (
