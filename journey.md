@@ -21172,3 +21172,14 @@ const Summary = () => {
 
 export default Summary
 ```
+
+An error is caused by the use of `window.location`. 
+
+`window` object in JavaScript returns the current URL of the browser window. In our Next.js app, `window.location` is used to access the URL of the current page. However, `window` *is not defined on the server-side, so it should only be used on the client-side*.
+
+`window.location` functions as a way to change the URL of the browwser window to the checkout response's URL when the user clicks on the "Checkout" button. This code will throw an error on the server-side because `window` is not defined.
+
+But the component has a "use client" directive, will it still have the error? Yes, because after the `onCheckout` which navigates to the checkout URL (in this case the Stripe checkout page) it will redirect us back to `Summary` so we still need to address the problem.
+
+- To avoid this error, wrap the code inside a `useEffect` hook which ensures that the code only runs on the client-side.
+
