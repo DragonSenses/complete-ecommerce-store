@@ -21183,3 +21183,62 @@ But the component has a "use client" directive, will it still have the error? Ye
 
 - To avoid this error, wrap the code inside a `useEffect` hook which ensures that the code only runs on the client-side.
 
+To do this we:
+
+Add useEffect hook to display success and error messages on checkout
+
+- create a `useEffect` hook
+- listen to changes in the `searchParams` and `removeAll` variables
+- if `searchParams` contains the `success` key, hook displays a success message to the user & removes all products from the cart state using `removeAll` action
+- If `searchParams` contains the `canceled` key, the hook displays an error message to the user using the `toast.error` method
+- The `onCheckout` function sends a POST reequest to the dashboard with the item data nad retrieves the checkout response's URL
+- The `window.location` property is then used to change the URL of the browser window to the checkout response's URL
+
+```tsx
+  useEffect(() => {
+    // If checkout was successful, notify the user
+    if (searchParams.get("success")){
+      toast.success("Payment completed.");
+      // After a checkout is complete, remove all products from the cart
+      removeAll();
+    }
+
+    if (searchParams.get("canceled")) {
+      toast.error("Something went wrong.");
+    }
+  }, [searchParams, removeAll]);
+```
+
+
+```tsx
+  useEffect(() => {
+    const onCheckoutSuccess = (message: string) => {
+      toast.success(message);
+      removeAll();
+      searchParams.delete('session_id');
+    };
+
+    const onCheckoutError = (error: Error) => {
+      toast.error(error.message);
+    };
+
+    const checkoutSessionId = searchParams.get('session_id');
+
+    if (checkoutSessionId) {
+      axios
+        .get(`${process.env.NEXT_PUBLIC_API_URL}/checkout-session?session_id=${checkoutSessionId}`)
+        .then((response) => {
+          const { data } = response;
+
+          if (data.success) {
+            onCheckoutSuccess(data.message);
+          } else {
+            onCheckoutError(new Error(data.message));
+          }
+        })
+        .catch((error) => {
+          onCheckoutError(error);
+        });
+    }
+  }, []);
+  ```
