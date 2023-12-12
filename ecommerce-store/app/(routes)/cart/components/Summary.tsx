@@ -26,6 +26,18 @@ const Summary = () => {
     return total + Number(item.price)
   }, 0);
 
+  useEffect(() => {
+    // If checkout was successful, notify the user
+    if (searchParams.get("success")){
+      toast.success("Payment completed.");
+      // After a checkout is complete, remove all products from the cart
+      removeAll();
+    }
+
+    if (searchParams.get("canceled")) {
+      toast.error("Something went wrong.");
+    }
+  }, [searchParams, removeAll]);
 
   const onCheckout = async () => {
     // Send a POST request to the admin dashboard checkout, with item data
