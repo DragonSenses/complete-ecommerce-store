@@ -21040,10 +21040,14 @@ Now test the cart's order total functionality, check whether the order total is 
 
 Next we add the `onCheckout` function handler that will send user to checkout.
 
-We will use `axios` for this.
+We will use `axios` for this. We want to access the `POST` route of the admin dashboard. So to communicate with it we need to use a template string to access our `process.env.NEXT_PUBLIC_API_URL`. WE should also add `/checkout` at the end of that URL to access the checkout route (which will be made later). Then we pass in the data, which is the cart `items` mapped to their `item.id` which is essentially their `productIds`
 
+`ecommerce-store\app\(routes)\cart\components\Summary.tsx`
 ```tsx
   const onCheckout = async () => {
-    const response = await axios.post(`_checkoutURL`);
+    // Send a POST request to the admin dashboard checkout, with item data
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/checkout`,{
+      productIds: items.map((item) => item.id),
+    });
   }
 ```
