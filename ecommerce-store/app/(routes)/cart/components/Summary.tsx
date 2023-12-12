@@ -26,10 +26,13 @@ const Summary = () => {
     return total + Number(item.price)
   }, 0);
 
-  const _checkoutURL = "/checkout";
 
   const onCheckout = async () => {
-    const response = await axios.post(`_checkoutURL`);
+    // Send a POST request to the admin dashboard checkout, with item data
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/checkout`,{
+      productIds: items.map((item) => item.id),
+    });
+
   }
 
   return (
