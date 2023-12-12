@@ -21065,3 +21065,41 @@ Next we have do something with the `response`, in this case we want to re-route 
     window.location = response.data.url;
   }
 ```
+
+Finally, assign the `onCheckout` function to the `onClick` prop of the checkout `Button` in the output.
+
+```tsx
+const Summary = () => {
+  // ...
+  const onCheckout = async () => {
+    // Send a POST request to the admin dashboard checkout, with item data
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/checkout`, {
+      productIds: items.map((item) => item.id),
+    });
+
+    // Change the URL of the browser window to the checkout response's URL
+    window.location = response.data.url;
+  }
+
+  return (
+    <div className='mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:pt-8'>
+      <h2 className='text-lg font-medium text-gray-900'>
+        Order Summary
+      </h2>
+
+      <div className='mt-6 space-y-4'>
+        <div className='flex items-center justify-between border-t border-gray-200 pt-4'>
+          <div className='text-base font-medium text-gray-900'>
+            Order Total
+          </div>
+          <Currency value={totalPrice} />
+        </div>
+      </div>
+
+      <Button onClick={onCheckout} className='w-full mt-6'>
+        Checkout
+      </Button>
+    </div>
+  )
+}
+```
