@@ -29,10 +29,12 @@ const Summary = () => {
 
   const onCheckout = async () => {
     // Send a POST request to the admin dashboard checkout, with item data
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/checkout`,{
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/checkout`, {
       productIds: items.map((item) => item.id),
     });
 
+    // Change the URL of the browser window to the checkout response's URL
+    window.location = response.data.url;
   }
 
   return (
