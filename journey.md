@@ -21185,11 +21185,11 @@ But the component has a "use client" directive, will it still have the error? Ye
 
 To do this we:
 
-Add useEffect hook to display success and error messages on checkout
+Add useEffect hook to display success & error messages on checkout
 
-- create a `useEffect` hook
-- listen to changes in the `searchParams` and `removeAll` variables
-- if `searchParams` contains the `success` key, hook displays a success message to the user & removes all products from the cart state using `removeAll` action
+- Add a `useEffect` hook
+- Listen to changes in the `searchParams` and `removeAll` variables
+- If `searchParams` contains the `success` key, hook displays a success message to the user & removes all products from the cart state using `removeAll` action
 - If `searchParams` contains the `canceled` key, the hook displays an error message to the user using the `toast.error` method
 - The `onCheckout` function sends a POST reequest to the dashboard with the item data nad retrieves the checkout response's URL
 - The `window.location` property is then used to change the URL of the browser window to the checkout response's URL
