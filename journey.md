@@ -21322,3 +21322,15 @@ const Summary = () => {
 
 export default Summary
 ```
+
+## Stripe API
+
+In order to finish the checkout we need to create the functionality to communicate with Stripe API which handles the check out process.
+
+- [Stripe API](https://stripe.com/docs/api)
+
+The first step is to create the `util` for `Stripe`.
+
+Navigate back to the admin-dashboard project and enter its `lib` folder. Here is the pathname: `ecommerce-admin\lib`.
+
+Inside create a file named: `stripe.ts`.
