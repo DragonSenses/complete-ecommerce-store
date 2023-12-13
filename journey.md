@@ -14334,7 +14334,7 @@ npm ERR! to accept an incorrect (and potentially broken) dependency resolution.
 To solve `ERESOLVE` error in 2 steps:
 
 1. Remove `node_modules` and `package_lock.json`
-2. Run the command to install packaages & dependencies using `--legacy-peer-deps` flag
+2. Run the command to install packages & dependencies using `--legacy-peer-deps` flag
 
 ```sh
 npm install --legacy-peer-deps
