@@ -21329,8 +21329,21 @@ In order to finish the checkout we need to create the functionality to communica
 
 - [Stripe API](https://stripe.com/docs/api)
 
-The first step is to create the `util` for `Stripe`.
+Let's setup our imports. Navigate to the correct project which is `ecommerce-admin`, which contains our dashboard.
+
+```sh
+cd ecommerce-admin
+```
+
+Now in the correct project locatiton, install stripe:
+
+```sh
+npm i stripe
+```
+
+With that installed we can now move on to creating the `util` for `Stripe`.
 
 Navigate back to the admin-dashboard project and enter its `lib` folder. Here is the pathname: `ecommerce-admin\lib`.
 
 Inside create a file named: `stripe.ts`.
+
