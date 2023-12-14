@@ -21347,3 +21347,9 @@ Navigate back to the admin-dashboard project and enter its `lib` folder. Here is
 
 Inside create a file named: `stripe.ts`.
 
+`ecommerce-admin\lib\stripe.ts`
+```ts
+import Stripe from "stripe";
+
+export const stripe = new Stripe("YOUR_STRIPE_API_KEY");
+```
