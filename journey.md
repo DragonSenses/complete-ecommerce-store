@@ -21395,3 +21395,34 @@ export const stripe = new Stripe(process.env.STRIPE_API_KEY!, {
   typescript: true,
 });
 ```
+
+### Update Stripe apiVersion to the latest
+
+Currently, we have an error when using `apiVersion` to `2022-11-15`.
+
+The error:
+
+```sh
+Type '"2022-11-15"' is not assignable to type '"2023-10-16"'.ts(2322)
+
+(property) Stripe.StripeConfig.apiVersion?: "2023-10-16" | undefined
+
+This library's types only reflect the latest API version.
+
+We recommend upgrading your account's API Version to the latest version if you wish to use TypeScript with this library.
+
+If you wish to remain on your account's default API version, you may pass null or another version instead of the latest version, and add a @ts-ignore comment here and anywhere the types differ between API versions.
+
+@docs — https://stripe.com/docs/api/versioning
+```
+
+Therefore let's update the API version, in `stripe.ts`:
+
+```ts
+import Stripe from "stripe";
+
+export const stripe = new Stripe(process.env.STRIPE_API_KEY!, {
+  apiVersion: "2023-10-16",
+  typescript: true,
+});
+```
