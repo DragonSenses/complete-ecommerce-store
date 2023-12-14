@@ -21368,5 +21368,22 @@ Now you can click the `Developers` in the dashboard and find your "Publishable k
 
 You have to add an environment variable. So navigate to your `.env` file and add a variable named `STRIPE_API_KEY`. Then set it equal to the Stripe secret key you copied from the website.
 
+Your `env` should look something like this:
 
+`ecommerce-admin\.env`
+```js
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=****
+CLERK_SECRET_KEY=****
+
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
+
+DATABASE_URL="mysql://*****"
+
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="****"
+
+STRIPE_API_KEY=***YOUR_STRIPE_SECRET_KEY_HERE***
+```
 
