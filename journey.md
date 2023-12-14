@@ -21387,3 +21387,11 @@ NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="****"
 STRIPE_API_KEY=***YOUR_STRIPE_SECRET_KEY_HERE***
 ```
 
+With that in place we can work on the `stripe.ts` file
+
+```ts
+export const stripe = new Stripe(process.env.STRIPE_API_KEY!, {
+  apiVersion: "2022-11-15",
+  typescript: true,
+});
+```
