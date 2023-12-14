@@ -21353,3 +21353,20 @@ import Stripe from "stripe";
 
 export const stripe = new Stripe("YOUR_STRIPE_API_KEY");
 ```
+
+Go ahead and use your browser to navigate to [Stripe](https://dashboard.stripe.com/) or the link 
+
+```sh
+https://dashboard.stripe.com/
+```
+
+and register if you don't have an account. Once you have an account go to the top left and click the dropdown menu to create a store for our project. I named it "ecommerce-admin".
+
+Now you can click the `Developers` in the dashboard and find your "Publishable key" and Secret key.
+
+**Your Stripe secret API key is sensitive information!**.
+
+You have to add an environment variable. So navigate to your `.env` file and add a variable named `STRIPE_API_KEY`. Then set it equal to the Stripe secret key you copied from the website.
+
+
+
