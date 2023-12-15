@@ -21535,3 +21535,10 @@ const corsHeaders = {
 };
 ```
 
+- The `Access-Control-Allow-Origin` property specifies which domains are allowed to access the resources on the server. The value `*` means that any domain can access the resources
+
+- The `Access-Control-Allow-Methods` property specifies which HTTP methods are allowed to be used for accessing the resources. In this case, the allowed methods are `GET`, `POST`, `PUT`, `DELETE`, and `OPTIONS`
+
+- The `Access-Control-Allow-Headers` property specifies which headers are allowed to be used in the request. In this case, the allowed headers are `Content-Type` and `Authorization`
+
+These headers are sent by the server in response to a preflight request made by the browser to check if the cross-origin request is allowed.
