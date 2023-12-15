@@ -21480,7 +21480,30 @@ Some requests don't trigger a [CORS preflight](https://developer.mozilla.org/en-
 
 The motivation is that the `<form>` element from HTML 4.0 (which predates cross-site `XMLHttpRequest` and `fetch`) can submit simple requests to any origin, so anyone writing a server must already be protecting against [cross-site request forgery (CSRF)](https://developer.mozilla.org/en-US/docs/Glossary/CSRF). Under this assumption, the server doesn't have to opt-in (by responding to a preflight request) to receive any request that looks like a form submission, since the threat of CSRF is no worse than that of form submission. However, the server still must opt-in using `Access-Control-Allow-Origin` to share the response with the script.
 
+A simple request is one that *meets all the following conditions*:
 
+1. One of the allowed methods:
+  - `GET`
+  - `HEAD`
+  - `POST`
+
+2. Apart from the headers automatically set by the user agent (for example, [Connection](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Connection), [User-Agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent), or [the other headers defined in the Fetch spec as a forbidden header name](https://fetch.spec.whatwg.org/#forbidden-header-name)), the only headers which are allowed to be manually set are those which the Fetch spec defines as a CORS-safelisted request-header, which are:
+
+  - `Accept`
+  - `Accept-Language`
+  - `Content-Language`
+  - `Content-Type` (please note the additional requirements below)
+  - `Range` (only with a simple range header value; e.g., bytes=256- or bytes=127-255)
+
+3. The only type/subtype combinations allowed for the [media type](https://developer.mozilla.org/en-US/docs/Glossary/MIME_type) specified in the [Content-Type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type) header are:
+
+  - `application/x-www-form-urlencoded`
+  - `multipart/form-data`
+  - `text/plain`
+
+4. If the request is made using an `XMLHttpRequest` object, no event listeners are registered on the object returned by the `XMLHttpRequest.upload` property used in the request; that is, given an `XMLHttpRequest` instance `xhr`, no code has called `xhr.upload.addEventListener()` to add an event listener to monitor the upload.
+
+5. No `ReadableStream` object is used in the request.
 
 `ecommerce-admin\app\api\[storeId]\checkout\route.ts`
 ```tsx
