@@ -21519,3 +21519,19 @@ So create the `corsHeader` object inside our checkout route, and let's give the 
 
 These are properties are used to configure the **Cross-Origin Resource Sharing (CORS)** policy for our Next.js application.
 
+
+`ecommerce-admin\app\api\[storeId]\checkout\route.ts`
+```tsx
+import Stripe from 'stripe';
+import { NextResponse } from 'next/server';
+
+import { stripe } from '@/lib/stripe';
+import prismadb from '@/lib/prismadb';
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+```
+
