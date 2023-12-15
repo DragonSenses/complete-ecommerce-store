@@ -21441,7 +21441,42 @@ import { stripe } from '@/lib/stripe';
 import prismadb from '@/lib/prismadb';
 ```
 
-Next we have to create a constant named `corsHeaders`, which will be re-used.
+Next we have to create a constant named `corsHeaders`, which will be re-used. Why do we need it? Well let's recap CORS (Cross-Origin Resource Sharing).
+
+#### CORS: Cross-Origin Resource Sharing
+
+The current `POST` request as of now won't work. Recall that in `Summary` component:
+
+```tsx
+const Summary = () => {
+  // ...
+
+  const onCheckout = async () => {
+    // Send a POST request to the admin dashboard checkout, with item data
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/checkout`, {
+      productIds: items.map((item) => item.id),
+    });
+```
+
+We use `axios` inside the front-end store to make a `POST` request to the admin dashboard's checkout route.
+
+However, the issue is that CORS will prevent this because it is on a different origin.
+
+What is CORS?
+
+[Cross-Origin Resource Sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS).
+
+- CORS is an HTTP-header based mechanism that allows a server to indicate any origins (domain, scheme, or port) other than its own from which a browser should permit loading resources. 
+
+- CORS also relies on a mechanism by which browsers make a "preflight" request to the server hosting the cross-origin resource, in order to check that the server will permit the actual request. In that preflight, the browser sends headers that indicate the HTTP method and headers that will be used in the actual request.
+
+An example of a cross-origin request: the front-end JavaScript code served from `https://domain-a.com` uses `XMLHttpRequest` to make a request for `https://domain-b.com/data.json`.
+
+For security reasons, browsers restrict cross-origin HTTP requests initiated from scripts. For example, `XMLHttpRequest` and the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) follow the [same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy). This means that a web application using those APIs can only request resources from the same origin the application was loaded from unless the response from other origins includes the right CORS headers.
+
+##### Simple requests
+
+
 
 `ecommerce-admin\app\api\[storeId]\checkout\route.ts`
 ```tsx
