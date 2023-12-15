@@ -21476,6 +21476,10 @@ For security reasons, browsers restrict cross-origin HTTP requests initiated fro
 
 ##### Simple requests
 
+Some requests don't trigger a [CORS preflight](https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request). Those are called simple requests from the obsolete [CORS spec](https://www.w3.org/TR/2014/REC-cors-20140116/#terminology), though the [Fetch spec](https://fetch.spec.whatwg.org/) (which now defines CORS) doesn't use that term.
+
+The motivation is that the `<form>` element from HTML 4.0 (which predates cross-site `XMLHttpRequest` and `fetch`) can submit simple requests to any origin, so anyone writing a server must already be protecting against [cross-site request forgery (CSRF)](https://developer.mozilla.org/en-US/docs/Glossary/CSRF). Under this assumption, the server doesn't have to opt-in (by responding to a preflight request) to receive any request that looks like a form submission, since the threat of CSRF is no worse than that of form submission. However, the server still must opt-in using `Access-Control-Allow-Origin` to share the response with the script.
+
 
 
 `ecommerce-admin\app\api\[storeId]\checkout\route.ts`
