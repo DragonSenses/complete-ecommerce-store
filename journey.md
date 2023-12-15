@@ -21505,6 +21505,17 @@ A simple request is one that *meets all the following conditions*:
 
 5. No `ReadableStream` object is used in the request.
 
-`ecommerce-admin\app\api\[storeId]\checkout\route.ts`
-```tsx
-```
+## Integrating the front-end with the back-end
+
+So how do we make that POST request from the front-end store to the admin dashboard back-end? 
+
+After making the request through axios we have to remeber that both projects are from a different origin. The admin-dashboard is from localhost:3000 whereas the front-end store is on localhost:3001.
+
+So create the `corsHeader` object inside our checkout route, and let's give the object 3 properties.
+
+- `Access-Control-Allow-Origin`
+- `Access-Control-Allow-Methods`
+- `Access-Control-Allow-Headers`
+
+These are properties are used to configure the **Cross-Origin Resource Sharing (CORS)** policy for our Next.js application.
+
