@@ -21511,6 +21511,8 @@ So how do we make that POST request from the front-end store to the admin dashbo
 
 After making the request through axios we have to remeber that both projects are from a different origin. The admin-dashboard is from localhost:3000 whereas the front-end store is on localhost:3001.
 
+### Configure the CORS policy for Next.js application
+
 So create the `corsHeader` object inside our checkout route, and let's give the object 3 properties.
 
 - `Access-Control-Allow-Origin`
@@ -21518,7 +21520,6 @@ So create the `corsHeader` object inside our checkout route, and let's give the 
 - `Access-Control-Allow-Headers`
 
 These are properties are used to configure the **Cross-Origin Resource Sharing (CORS)** policy for our Next.js application.
-
 
 `ecommerce-admin\app\api\[storeId]\checkout\route.ts`
 ```tsx
@@ -21528,6 +21529,7 @@ import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import prismadb from '@/lib/prismadb';
 
+// Configure the CORS policy by setting HTTP response headers
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
@@ -21542,3 +21544,27 @@ const corsHeaders = {
 - The `Access-Control-Allow-Headers` property specifies which headers are allowed to be used in the request. In this case, the allowed headers are `Content-Type` and `Authorization`
 
 These headers are sent by the server in response to a preflight request made by the browser to check if the cross-origin request is allowed.
+
+#### Add in OPTIONS request
+
+With the headers set we now need to set the OPTIONS request.
+
+[OPTIONS request](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/OPTIONS) is an HTTP method used to describe communication options for a given URL or server. It is a preflight request that is sent by the browser to check if the cross-origin request is allowed.
+
+When a browser sends an OPTIONS request, it is asking the server to provide information about the allowed methods, headers, and other options that can be used to access the resources on the server. The server responds with an HTTP response that contains the allowed methods, headers, and other options.
+
+The OPTIONS request is part of the Cross-Origin Resource Sharing (CORS) mechanism that allows web servers to specify which origins are allowed to access the resources on their server, and which methods are allowed to be used for accessing those resources.
+
+`ecommerce-admin\app\api\[storeId]\checkout\route.ts`
+```ts
+// Configure the CORS policy by setting HTTP response headers
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+```
