@@ -21426,3 +21426,23 @@ export const stripe = new Stripe(process.env.STRIPE_API_KEY!, {
   typescript: true,
 });
 ```
+
+Now we can finally create the API route for the checkout page.
+
+Navigate to `ecommerce-admin\app\api\[storeId]` and create a new folder named `checkout`, with a file named `route.ts`.
+
+Let's add the following imports:
+
+```ts
+import Stripe from 'stripe';
+import { NextResponse } from 'next/server';
+
+import { stripe } from '@/lib/stripe';
+import prismadb from '@/lib/prismadb';
+```
+
+Next we have to create a constant named `corsHeaders`, which will be re-used.
+
+`ecommerce-admin\app\api\[storeId]\checkout\route.ts`
+```tsx
+```
