@@ -20,4 +20,8 @@ export async function POST(
   { params }: { params: { storeId: string } }
 ) {
   const { productIds } = await req.json();
+
+  if (!productIds || productIds.length === 0) {
+    return new NextResponse("Product IDs are required", { status: 400 });
+  }
 }
