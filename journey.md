@@ -21611,7 +21611,30 @@ export async function POST(
   const { productIds } = await req.json();
 
   if (!productIds || productIds.length === 0) {
-    return new NextResponse("Product ids are required", { status: 400 });
+    return new NextResponse("Product IDs are required", { status: 400 });
   }
+}
+```
+
+Next we want to find all the products given an id using Prisma with the `findMany` method of the Prisma client. This method allows us to query multiple records from a table based on a condition such as matching an id or a list of ids.
+
+```ts
+export async function POST(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  const { productIds } = await req.json();
+
+  if (!productIds || productIds.length === 0) {
+    return new NextResponse("Product IDs are required", { status: 400 });
+  }
+
+  const products = await prismadb.product.findMany({
+    where: {
+      id: {
+        in: productIds
+      }
+    }
+  });
 }
 ```
