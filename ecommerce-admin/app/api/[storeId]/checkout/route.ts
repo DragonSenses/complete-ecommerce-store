@@ -25,6 +25,7 @@ export async function POST(
     return new NextResponse("Product IDs are required", { status: 400 });
   }
 
+  // Fetch products by IDs in checkout route
   const products = await prismadb.product.findMany({
     where: {
       id: {
@@ -32,4 +33,17 @@ export async function POST(
       }
     }
   });
+
+  // Create an array of line items which represents a product that customer is purchasing
+  const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+
+  // Populate the array with each fetched product 
+  products.forEach((product) => {
+    line_items.push({
+
+    })
+  })
+
+  // Use line items to create the checkout session using Stripe API
+
 }
