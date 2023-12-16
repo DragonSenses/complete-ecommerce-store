@@ -21555,6 +21555,10 @@ When a browser sends an OPTIONS request, it is asking the server to provide info
 
 The OPTIONS request is part of the Cross-Origin Resource Sharing (CORS) mechanism that allows web servers to specify which origins are allowed to access the resources on their server, and which methods are allowed to be used for accessing those resources.
 
+- Create an `async` function named `OPTIONS` that returns a JSON response with an empty object and the headers specified in the `corsHeaders` object.
+
+- We have to do the OPTIONS request *before* we do the POST request
+
 `ecommerce-admin\app\api\[storeId]\checkout\route.ts`
 ```ts
 // Configure the CORS policy by setting HTTP response headers
@@ -21567,4 +21571,25 @@ const corsHeaders = {
 export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders });
 }
+```
+#### Create the POST request
+
+Now take a step back and see what type of request the front-end is trying to make.
+
+In `Summary.tsx`, we send a `POST` request in the `onCheckout` handler:
+
+`ecommerce-store\app\(routes)\cart\components\Summary.tsx`
+```tsx
+  const onCheckout = async () => {
+    // Send a POST request to the admin dashboard checkout, with item data
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/checkout`, {
+      productIds: items.map((item) => item.id),
+    });
+```
+
+The object we pass in to the POST request contains `productIds` which is a mapping of each cart item to their product id.
+
+So extract the `productIds` from the request in JSON format inside our `POST` function:
+
+```tsx
 ```
