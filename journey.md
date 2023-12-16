@@ -21587,15 +21587,31 @@ In `Summary.tsx`, we send a `POST` request in the `onCheckout` handler:
     });
 ```
 
-The object we pass in to the POST request contains `productIds` which is a mapping of each cart item to their product id.
+The object we pass in to the POST request contains `productIds` which is a mapping of each cart item to their product id. `productIds` uses `map()` which applies a callback function to every element of an array and returns a new array with the results. The result is a new array that contains the transformed elements of the original array.
 
 So extract the `productIds` from the request in JSON format inside our `POST` function:
 
-```tsx
+`ecommerce-admin\app\api\[storeId]\checkout\route.ts`
+```ts
 export async function POST(
   req: Request,
   { params }: { params: { storeId: string } }
 ) {
   const { productIds } = await req.json();
+}
+```
+
+Next check the request if it contains our data, whether `productIds` is falsy or its length is 0.
+
+```ts
+export async function POST(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  const { productIds } = await req.json();
+
+  if (!productIds || productIds.length === 0) {
+    return new NextResponse("Product ids are required", { status: 400 });
+  }
 }
 ```
