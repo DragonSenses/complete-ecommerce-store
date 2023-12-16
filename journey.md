@@ -21639,7 +21639,17 @@ export async function POST(
 }
 ```
 
+##### Adding the Invoice Line Item object
 
+Next create an empty array named `line_items` that will store the line items for the Stripe Checkout session.
+
+Here are the docs on [Stripe API - Line Item](https://stripe.com/docs/api/invoices/line_item).
+
+A line item is an object that represents a product or service that the customer is purchasing, along with its quantity, price and other details. 
+
+Therefore the `line_items` array will be populated with the products that are fetched from the Prisma database using the `productIds` parameter.
+
+The `line_items` array will then be used to create the checkout session using the Stripe API.
 
 ```ts
 export async function POST(
