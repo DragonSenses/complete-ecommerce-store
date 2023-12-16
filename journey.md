@@ -21638,3 +21638,31 @@ export async function POST(
   });
 }
 ```
+
+
+
+```ts
+export async function POST(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  const { productIds } = await req.json();
+
+  if (!productIds || productIds.length === 0) {
+    return new NextResponse("Product IDs are required", { status: 400 });
+  }
+
+  // Fetch products by IDs in checkout route
+  const products = await prismadb.product.findMany({
+    where: {
+      id: {
+        in: productIds
+      }
+    }
+  });
+
+  // Create an array of line items which represents a product that customer is purchasing
+  const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+
+}
+```
