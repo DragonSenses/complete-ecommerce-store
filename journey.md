@@ -21592,4 +21592,10 @@ The object we pass in to the POST request contains `productIds` which is a mappi
 So extract the `productIds` from the request in JSON format inside our `POST` function:
 
 ```tsx
+export async function POST(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  const { productIds } = await req.json();
+}
 ```
