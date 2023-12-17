@@ -37,12 +37,19 @@ export async function POST(
   // Create an array of line items which represents a product that customer is purchasing
   const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
 
-  // Populate the array with each fetched product 
+  // Populate the array with each product
   products.forEach((product) => {
     line_items.push({
-
-    })
-  })
+      quantity: 1,
+      price_data: {
+        currency: 'USD',
+        product_data: {
+          name: product.name,
+        },
+        unit_amount: product.price.toNumber() * 100
+      }
+    });
+  });
 
   // Use line items to create the checkout session using Stripe API
 
