@@ -21639,11 +21639,15 @@ export async function POST(
 }
 ```
 
-##### Adding the Invoice Line Item object
+##### Adding Line Items for the checkout session
 
 Next create an empty array named `line_items` that will store the line items for the Stripe Checkout session.
 
-Here are the docs on [Stripe API - Line Item](https://stripe.com/docs/api/invoices/line_item).
+Here are the docs on [Stripe API - Line Item](https://stripe.com/docs/api/checkout/sessions/create#create_checkout_session-line_items).
+
+A [Stripe seesion](https://stripe.com/docs/api/checkout/sessions/create) requires `line_items` which is an array of objects.
+
+> A list of items the customer is purchasing. Use this parameter to pass one-time or recurring Prices.
 
 A line item is an object that represents a product or service that the customer is purchasing, along with its quantity, price and other details. 
 
@@ -21676,3 +21680,10 @@ export async function POST(
 
 }
 ```
+
+Next populate the array of `line_items` by converting each product to a line item.
+
+Next we want to create an `Order` in our prisma data base.
+
+
+Create checkout session from products in checkout route.
