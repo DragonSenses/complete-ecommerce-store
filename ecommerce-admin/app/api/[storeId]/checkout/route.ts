@@ -51,6 +51,14 @@ export async function POST(
     });
   });
 
+  // Create the order in the database
+  const order = await prismadb.order.create({
+    data: {
+      storeId: params.storeId,
+      isPaid: false,
+    }
+  })
+
   // Use line items to create the checkout session using Stripe API
 
 }
