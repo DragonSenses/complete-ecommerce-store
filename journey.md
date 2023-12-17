@@ -21723,7 +21723,38 @@ export async function POST(
 }
 ```
 
-Next we want to create an `Order` in our prisma data base.
+Next we want to create an `Order` in our prisma database.
+
+Recall the models for `Order` and `OrderItem`:
+
+```prisma
+model Order {
+  id         String    @id @default(uuid())
+  storeId    String
+  store      Store @relation("StoreToOrder", fields: [storeId], references: [id])
+  orderItems OrderItem[]
+  isPaid     Boolean
+  phone      String    @default("")
+  address    String    @default("")
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  // Manually add index on relation scalar fields
+  @@index([storeId])
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  // Manually add index on relation scalar fields
+  @@index([orderId])
+  @@index([productId])
+}
+```
 
 
 Create checkout session from products in checkout route.
