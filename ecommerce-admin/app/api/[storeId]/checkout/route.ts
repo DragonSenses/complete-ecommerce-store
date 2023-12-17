@@ -56,6 +56,15 @@ export async function POST(
     data: {
       storeId: params.storeId,
       isPaid: false,
+      orderItems: {
+        create: productIds.map((productId: string) => ({
+          product: {
+            connect: {
+              id: productId
+            }
+          }
+        }))
+      }
     }
   })
 
