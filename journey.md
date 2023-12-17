@@ -21767,8 +21767,25 @@ Now back to the checkout route's `POST` method.
 
 We will be mapping an array of productIds to an array of objects that contain a `product` field.
 
-For each `productId`, create an `OrderItem` that references a product by its ID
+For each `productId`, create an `OrderItem` that references a product by its ID.
+
+Use `connect` method in PrismaDB to link an existing record tot a relation field.
+  - Associate each `orderItem` with a product by its ID
+  - `orderItem` model has a one-to-one relation with the `product` model
 
 
+```ts
+export async function POST(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  const { productIds } = await req.json();
+
+  if (!productIds || productIds.length === 0) {
+    return new NextResponse("Product IDs are required", { status: 400 });
+  }
+
+
+```
 
 Create checkout session from products in checkout route.
