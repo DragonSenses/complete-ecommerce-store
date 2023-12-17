@@ -21769,10 +21769,11 @@ We will be mapping an array of productIds to an array of objects that contain a 
 
 For each `productId`, create an `OrderItem` that references a product by its ID.
 
-Use `connect` method in PrismaDB to link an existing record tot a relation field.
+[prisma client - relation queries - connect multiple records](https://www.prisma.io/docs/orm/prisma-client/queries/relation-queries#connect-multiple-records).
+
+Use `connect` method in PrismaDB to link an existing record to a relation field.
   - Associate each `orderItem` with a product by its ID
   - `orderItem` model has a one-to-one relation with the `product` model
-
 
 ```ts
 export async function POST(
@@ -21785,7 +21786,50 @@ export async function POST(
     return new NextResponse("Product IDs are required", { status: 400 });
   }
 
+  // Fetch products by IDs in checkout route
+  const products = await prismadb.product.findMany({
+    where: {
+      id: {
+        in: productIds
+      }
+    }
+  });
 
+  // Create an array of line items which represents a product that customer is purchasing
+  const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+
+  // Populate the array with each product
+  products.forEach((product) => {
+    line_items.push({
+      quantity: 1,
+      price_data: {
+        currency: 'USD',
+        product_data: {
+          name: product.name,
+        },
+        unit_amount: product.price.toNumber() * 100
+      }
+    });
+  });
+
+  // Create the order in the database
+  const order = await prismadb.order.create({
+    data: {
+      storeId: params.storeId,
+      isPaid: false,
+      orderItems: {
+        create: productIds.map((productId: string) => ({
+          product: {
+            connect: {
+              id: productId
+            }
+          }
+        }))
+      }
+    }
+  })
+
+}
 ```
 
 Create checkout session from products in checkout route.
