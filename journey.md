@@ -21727,6 +21727,7 @@ Next we want to create an `Order` in our prisma database.
 
 Recall the models for `Order` and `OrderItem`:
 
+`ecommerce-admin\prisma\schema.prisma`
 ```prisma
 model Order {
   id         String    @id @default(uuid())
@@ -21755,6 +21756,19 @@ model OrderItem {
   @@index([productId])
 }
 ```
+
+Now back to the checkout route's `POST` method.
+
+- use `prismadb.order.create()` to create an `Order` in our database
+- pass in `data` which contains `{ storeId, isPaid, orderItems}`
+  - `storeId` is the `params.storeId`
+  - `isPaid` is false because the `Order` has not been fulfilled yet, we are still in the checkout session
+  - `orderItems` is a field that represeents the one-to-many relation between `order` and `orderItem` models. It allows us to create multiple `orderItem` records that are linked to the `order` record in one query
+
+We will be mapping an array of productIds to an array of objects that contain a `product` field.
+
+For each `productId`, create an `OrderItem` that references a product by its ID
+
 
 
 Create checkout session from products in checkout route.
