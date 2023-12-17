@@ -21769,7 +21769,9 @@ We will be mapping an array of productIds to an array of objects that contain a 
 
 For each `productId`, create an `OrderItem` that references a product by its ID.
 
-[prisma client - relation queries - connect multiple records](https://www.prisma.io/docs/orm/prisma-client/queries/relation-queries#connect-multiple-records).
+- [prisma client - relation queries - connect multiple records](https://www.prisma.io/docs/orm/prisma-client/queries/relation-queries#connect-multiple-records)
+
+- [prisma client - relation queries - connect a single record](https://www.prisma.io/docs/orm/prisma-client/queries/relation-queries#connect-a-single-record)
 
 Use `connect` method in PrismaDB to link an existing record to a relation field.
   - Associate each `orderItem` with a product by its ID
