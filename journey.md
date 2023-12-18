@@ -21883,3 +21883,30 @@ The parameters that are required conditionally:
 - `currency`
 - `return_url`, the URL to redirect your customer back to after they authenticate or cancel their payment on the payment method’s app or site. 
 - `success_url`, the URL to which Stripe should send customers when payment or setup is complete.
+
+Some extra parameters that's interesting are:
+
+- `phone_number_collection`, controls phone number collection settings for the session.
+- `shipping_address_collection`, when set, provides configuration for Checkout to collect a shipping address from a customer.
+
+So let's add these properties to our checkout session:
+
+```ts
+import Stripe from 'stripe';
+
+export async function POST(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  // ...
+  const session = await stripe.checkout.sessions.create({
+    line_items,
+    mode: "payment",
+    billing_address_collection: "required",
+    phone_number_collection: {
+      enabled: true
+    },
+    success_url: ''
+  });
+}
+```
