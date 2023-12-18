@@ -21883,6 +21883,7 @@ The parameters that are required conditionally:
 - `currency`
 - `return_url`, the URL to redirect your customer back to after they authenticate or cancel their payment on the payment method’s app or site. 
 - `success_url`, the URL to which Stripe should send customers when payment or setup is complete.
+- `cancel_url`, if set, Checkout displays a back button and customers will be directed to this URL if they decide to cancel payment and return to your website.
 
 Some extra parameters that's interesting are:
 
@@ -21942,3 +21943,60 @@ export async function POST(
   });
 }
 ```
+
+Let's also add the `cancel_url` property to the checkout session,
+
+```ts
+import Stripe from 'stripe';
+
+export async function POST(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  // ...
+  const session = await stripe.checkout.sessions.create({
+    line_items,
+    mode: "payment",
+    billing_address_collection: "required",
+    phone_number_collection: {
+      enabled: true
+    },
+    success_url: '${process.env.FRONTEND_STORE_URL}/cart?success=1',
+    cancel_url: '${process.env.FRONTEND_STORE_URL}/cart?canceled=1',
+  });
+}
+```
+
+Navigate back to `ecommerce-store\app\(routes)\cart\components\Summary.tsx`, the front-end store's Summary component to see how these URLs work. Take a look at the `useEffect` hook:
+
+```tsx
+import React, { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { toast } from 'react-hot-toast';
+
+const Summary = () => {
+
+  // URLSearchParams interface to read & update the query string of current URL
+  const searchParams = useSearchParams();
+
+  // Get removeAll action from the cart state
+  const removeAll = useCart((state) => state.removeAll);
+
+  useEffect(() => {
+    // If checkout was successful, notify the user
+    if (searchParams.get("success")){
+      toast.success("Payment completed.");
+      // After a checkout is complete, remove all products from the cart
+      removeAll();
+    }
+
+    if (searchParams.get("canceled")) {
+      toast.error("Something went wrong.");
+    }
+  }, [searchParams, removeAll]);
+
+  // ...
+}
+```
+
+The `success_url` will redirect to the `toast.success()` inside the `useEffect`, whereas the `cancel_url` will redirect to `toast.error()`.
