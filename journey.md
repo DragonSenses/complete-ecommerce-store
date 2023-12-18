@@ -21834,4 +21834,11 @@ export async function POST(
 }
 ```
 
-Create checkout session from products in checkout route.
+### Create checkout session from products in checkout route.
+
+- [Sessions | Stripe API Reference](https://stripe.com/docs/api/checkout/sessions)
+- [Create a Session | Stripe API Reference](https://stripe.com/docs/api/checkout/sessions/create)
+- [How Checkout works | Stripe Documentation](https://stripe.com/docs/payments/checkout/how-checkout-works)
+
+Stripe checkout sessions are a way to create and manage payments or subscriptions using Stripe's hosted payment page. A checkout session represents your customer's session as they pay for one-time purchases or subscriptions. You can create a checkout session on your server and redirect to its URL to begin checkout. After the payment is successful, you can use a webhook to fulfill the order using the checkout.session.completed event.
+
