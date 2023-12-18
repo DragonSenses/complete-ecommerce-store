@@ -21868,3 +21868,18 @@ export async function POST(
   });
 }
 ```
+
+Look at the list of paraemeters in the [create a session reference](https://stripe.com/docs/api/checkout/sessions/create). The required ones are:
+
+- `line_items`, a list of items the customer is purchasing. Use this parameter to pass one-time or recurring Prices
+
+- `mode`, an `enum`, is the mode of the Checkout Session. Pass subscription if the Checkout Session includes at least one recurring item. The possible enum values:
+  - `payment`
+  - `setup`
+  - `subscription`
+
+The parameters that are required conditionally:
+  
+- `currency`
+- `return_url`, the URL to redirect your customer back to after they authenticate or cancel their payment on the payment method’s app or site. 
+- `success_url`, the URL to which Stripe should send customers when payment or setup is complete.
