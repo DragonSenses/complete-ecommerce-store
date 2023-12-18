@@ -21842,3 +21842,11 @@ export async function POST(
 
 Stripe checkout sessions are a way to create and manage payments or subscriptions using Stripe's hosted payment page. A checkout session represents your customer's session as they pay for one-time purchases or subscriptions. You can create a checkout session on your server and redirect to its URL to begin checkout. After the payment is successful, you can use a webhook to fulfill the order using the checkout.session.completed event.
 
+Some of the parameters you can use to create a checkout session are:
+
+- `client_reference_id`: A unique string to reference the checkout session. This can be a customer ID, a cart ID, or similar, and can be used to reconcile the session with your internal systems.
+- `currency`: The currency of the payment. Must be a supported currency.
+- `customer`: The ID of an existing customer, if one exists. This will prefill the customer's email, name, card details, and billing address on the checkout page.
+- `customer_email`: The email of the customer, if known. This will prefill the customer's email on the checkout page.
+- `line_items`: A list of items the customer is purchasing. You can use this parameter to pass one-time or recurring prices.
+- `adjustable_quantity`: A configuration for the item's quantity to be adjusted by the customer during checkout.
