@@ -66,8 +66,16 @@ export async function POST(
         }))
       }
     }
-  })
+  });
 
   // Use line items to create the checkout session using Stripe API
-
+  const session = await stripe.checkout.sessions.create({
+    line_items,
+    mode: "payment",
+    billing_address_collection: "required",
+    phone_number_collection: {
+      enabled: true
+    },
+    success_url: ''
+  });
 }
