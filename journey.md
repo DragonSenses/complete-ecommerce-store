@@ -21910,3 +21910,35 @@ export async function POST(
   });
 }
 ```
+
+For the `success_url`, we need to create an environment variable. In the `.env` file create a variable named `FRONTEND_STORE_URL` and set it equal to `http://localhost:3001` or the URL for the front-end store is hosted on.
+
+With that we can set the `success_url` through the environment variable in the `/cart` route while adding a query string.
+
+A query string is a set of key-value pairs that provide additional information to the server, such as parameters, filters, or search terms.
+
+The question mark indicates the start of the query string, and the equal sign separates each key from its value.
+
+We want to have a query string of "success=1" where the key is success with a value of 1. This indicates that the customer will be redirected to the cart page with a success flag.
+
+We can use this flag to show a thank you message or any other relevant content to the customer.
+
+```ts
+import Stripe from 'stripe';
+
+export async function POST(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  // ...
+  const session = await stripe.checkout.sessions.create({
+    line_items,
+    mode: "payment",
+    billing_address_collection: "required",
+    phone_number_collection: {
+      enabled: true
+    },
+    success_url: '${process.env.FRONTEND_STORE_URL}/cart?success=1'
+  });
+}
+```
