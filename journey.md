@@ -21850,3 +21850,21 @@ Some of the parameters you can use to create a checkout session are:
 - `customer_email`: The email of the customer, if known. This will prefill the customer's email on the checkout page.
 - `line_items`: A list of items the customer is purchasing. You can use this parameter to pass one-time or recurring prices.
 - `adjustable_quantity`: A configuration for the item's quantity to be adjusted by the customer during checkout.
+
+Use `create()` method from `stripe.checkout.sessions` and pass in an object that contains `line_items` as a property.
+
+```ts
+import Stripe from 'stripe';
+
+export async function POST(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  // ...
+
+  // Use line items to create the checkout session using Stripe API
+  const session = await stripe.checkout.sessions.create({
+    line_items,
+  });
+}
+```
