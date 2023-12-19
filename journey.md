@@ -22000,3 +22000,23 @@ const Summary = () => {
 ```
 
 The `success_url` will redirect to the `toast.success()` inside the `useEffect`, whereas the `cancel_url` will redirect to `toast.error()`.
+
+#### metadata in checkout session
+
+Let's also add the `metadata` property, which will be used after the webhook. Once the user has paid, we are going to load this exact checkout session, use the `metadata` to find the `order` that was created. Then change the status of the `order` to `paid`.
+
+```ts
+  const session = await stripe.checkout.sessions.create({
+    line_items,
+    mode: "payment",
+    billing_address_collection: "required",
+    phone_number_collection: {
+      enabled: true
+    },
+    success_url: '${process.env.FRONTEND_STORE_URL}/cart?success=1',
+    cancel_url: '${process.env.FRONTEND_STORE_URL}/cart?canceled=1',
+    metadata: {
+      orderId: order.id
+    }
+  });
+```
