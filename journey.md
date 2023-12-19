@@ -22020,3 +22020,80 @@ Let's also add the `metadata` property, which will be used after the webhook. On
     }
   });
 ```
+
+Now let's send back the response with `Next.Response` in json format. Make sure to pass in the `session.url `inside on object as the first parameter and for the second parameter an object containing the key-value pair of `headers: corsHeaders`.
+
+Now the `POST` method in checkout route:
+
+```ts
+export async function POST(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  const { productIds } = await req.json();
+
+  if (!productIds || productIds.length === 0) {
+    return new NextResponse("Product IDs are required", { status: 400 });
+  }
+
+  // Fetch products by IDs in checkout route
+  const products = await prismadb.product.findMany({
+    where: {
+      id: {
+        in: productIds
+      }
+    }
+  });
+
+  // Create an array of line items which represents a product that customer is purchasing
+  const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+
+  // Populate the array with each product
+  products.forEach((product) => {
+    line_items.push({
+      quantity: 1,
+      price_data: {
+        currency: 'USD',
+        product_data: {
+          name: product.name,
+        },
+        unit_amount: product.price.toNumber() * 100
+      }
+    });
+  });
+
+  // Create the order in the database
+  const order = await prismadb.order.create({
+    data: {
+      storeId: params.storeId,
+      isPaid: false,
+      orderItems: {
+        create: productIds.map((productId: string) => ({
+          product: {
+            connect: {
+              id: productId
+            }
+          }
+        }))
+      }
+    }
+  });
+
+  // Use line items to create the checkout session using Stripe API
+  const session = await stripe.checkout.sessions.create({
+    line_items,
+    mode: "payment",
+    billing_address_collection: "required",
+    phone_number_collection: {
+      enabled: true
+    },
+    success_url: '${process.env.FRONTEND_STORE_URL}/cart?success=1',
+    cancel_url: '${process.env.FRONTEND_STORE_URL}/cart?canceled=1',
+    metadata: {
+      orderId: order.id
+    }
+  });
+
+  return NextResponse.json({ url: session.url}, { headers: corsHeaders });
+}
+```
