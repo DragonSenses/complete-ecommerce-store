@@ -22097,3 +22097,22 @@ export async function POST(
   return NextResponse.json({ url: session.url}, { headers: corsHeaders });
 }
 ```
+
+Add checkout functionality for store
+
+- Use Stripe API to create checkout sessions with line items from products
+- Use prismadb to fetch products and create orders
+- Handle CORS and error cases
+- Add various properties to the checkout session
+- Include metadata that tracks the order ID
+
+#### Testing the checkout functionality
+
+Now we can test this by now placing a product in our cart.
+
+- Clicking the product `Summary` or Shopping Cart to arrive at the checkout page.
+- Open up the network tab in developer tools
+- Clicking the checkout button on the checkout page
+- Redirected to the checkout session page
+- Filling out the checkout information in the checkout session
+- An order is created in the database
