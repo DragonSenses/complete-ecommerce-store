@@ -22129,3 +22129,10 @@ This is the result we want so far, an unpaid order.
 
 We now need to create the [Webhook](https://en.wikipedia.org/wiki/Webhook) which will observe when the customer has paid the order.
 
+#### Webhooks
+
+- A webhook in web development is a method of augmenting or altering the behavior of a web page or web application with custom callbacks. These callbacks may be maintained, modified, and managed by third-party users and developers who may not necessarily be affiliated with the originating website or application.
+
+- Webhooks are "user-defined HTTP callbacks". They are usually triggered by some event, such as pushing code to a repository, a comment being posted to a blog, etc. When that event occurs, the source site makes an HTTP request to the URL configured for the webhook. Users can configure them to cause events on one site to invoke behavior on another.
+
+- Common uses are to trigger builds with continuous integration systems, or to notify bug tracking systems. Because webhooks use HTTP, they can be integrated into web services without adding new infrastructure.
