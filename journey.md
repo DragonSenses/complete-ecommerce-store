@@ -22150,3 +22150,41 @@ Because we are not in production right now, we have to connect to a webhook loca
 Access the stripe website and sign-in, click the `Developers` tab, and click the `Webhooks` tab.
 
 In production we will click "Add an endpoint", but since we are testing a webhook locally we click the "Test in a local environment" button.
+
+Install the `Stripe CLI` and open up the terminal.
+
+- Make sure to navigate the the `admin-dashboard` nextjs project, in the directory: `/ecommerce-admin`
+
+Follow the instructions on Stripe Dashboard > Webhooks > Test in a local environment.
+
+1. Listen to Stripe events
+
+- Open up your respective OS terminal and login through the Stripe CLI
+
+```sh
+stripe login
+```
+
+- Allow Stripe CLI to access acount information with the same code
+
+2. Forward events to your webhook
+
+```sh
+stripe listen --forward-to localhost:3000/webhook
+```
+
+And here we get the **webhook signing secret** from our command line interface.
+
+Copy that key we get to create our webhook.
+
+3. Trigger events with the CLI
+
+```sh
+stripe trigger
+```
+
+With our **stripe webhook signing secret** we got from step 2, we can create our webhook.
+
+Navigate to our `ecommerce-admin` dashboard project inside the directory `ecommerce-admin\app\api`.
+
+Now create the following folder and file: `ecommerce-admin\app\api\webhook\route.ts`.
