@@ -22114,5 +22114,18 @@ Now we can test this by now placing a product in our cart.
 - Open up the network tab in developer tools
 - Clicking the checkout button on the checkout page
 - Redirected to the checkout session page
-- Filling out the checkout information in the checkout session
+- Do not fill out anything yet on the checkout session page
 - An order is created in the database
+
+Now we have to check the `admin-dashboard` and see under the `Orders` tab if an order was created in the store.
+
+- In the `Orders` `DataTable` we should see the product that the customer plans to purchase, along with the total price and the `Paid` flag that is `false` currently.
+
+For now in the checkout session page we can click the `Back` button and it should bring us back to the `Shopping Cart` page.
+
+We should get an error, a toast message saying "Something went wrong" because we canceled the order.
+
+This is the result we want so far, an unpaid order. 
+
+We now need to create the [Webhook](https://en.wikipedia.org/wiki/Webhook) which will observe when the customer has paid the order.
+
