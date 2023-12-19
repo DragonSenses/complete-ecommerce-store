@@ -22127,12 +22127,26 @@ We should get an error, a toast message saying "Something went wrong" because we
 
 This is the result we want so far, an unpaid order. 
 
-We now need to create the [Webhook](https://en.wikipedia.org/wiki/Webhook) which will observe when the customer has paid the order.
+We now need to create the webhook which will observe when the customer has paid the order.
 
 #### Webhooks
+
+A webhook is a way for one web application to send data to another web application when a certain event happens. For example, you can use a webhook to notify your email service when someone signs up on your website. A webhook usually consists of a URL and a payload, which is the data that is sent with the request.
+
+- [Webhook](https://en.wikipedia.org/wiki/Webhook)
 
 - A webhook in web development is a method of augmenting or altering the behavior of a web page or web application with custom callbacks. These callbacks may be maintained, modified, and managed by third-party users and developers who may not necessarily be affiliated with the originating website or application.
 
 - Webhooks are "user-defined HTTP callbacks". They are usually triggered by some event, such as pushing code to a repository, a comment being posted to a blog, etc. When that event occurs, the source site makes an HTTP request to the URL configured for the webhook. Users can configure them to cause events on one site to invoke behavior on another.
 
 - Common uses are to trigger builds with continuous integration systems, or to notify bug tracking systems. Because webhooks use HTTP, they can be integrated into web services without adding new infrastructure.
+
+##### Connect to webhook locally using Stripe
+
+- [Webhook endpoints | Stripe API reference](https://stripe.com/docs/api/webhook_endpoints/object)
+
+Because we are not in production right now, we have to connect to a webhook locally. We can set this up by configuring a webhook endpoint via the API or configure webhooks from the dashboards, which provides a UI for registering and testing your webhook endpoints.
+
+Access the stripe website and sign-in, click the `Developers` tab, and click the `Webhooks` tab.
+
+In production we will click "Add an endpoint", but since we are testing a webhook locally we click the "Test in a local environment" button.
