@@ -22280,3 +22280,7 @@ export async function POST(req: Request) {
   }
 }
 ```
+
+With `constructEvent` we now can:
+
+- Verify stripe event signature in webhook endpoint
