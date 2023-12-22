@@ -22185,6 +22185,19 @@ stripe trigger
 
 With our **stripe webhook signing secret** we got from step 2, we can create our webhook.
 
+### Develop the Webhook
+
 Navigate to our `ecommerce-admin` dashboard project inside the directory `ecommerce-admin\app\api`.
 
 Now create the following folder and file: `ecommerce-admin\app\api\webhook\route.ts`.
+
+Let's start with the following imports:
+
+`ecommerce-admin\app\api\webhook\route.ts`
+```ts
+import Stripe from 'stripe';
+import { NextResponse } from 'next/server';
+
+import { stripe } from '@/lib/stripe';
+import prismadb from '@/lib/prismadb';
+```
