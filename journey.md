@@ -22210,3 +22210,21 @@ export async function POST(req: Request) {
 }
 ```
 
+3. Access the HTTP headers of the incoming request from a server component in Next.js using `headers()`. Then save it to a variable named `signature`.
+
+We need to add another import: `headers` from `next/headers`. Then inside the `POST` function we can extract the `signature` from `Stripe-Signature` using `headers()`. This `signature` should be of a type string, so we will use [type assertions, or the 'as type' syntax](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions).
+
+```ts
+import Stripe from 'stripe';
+import { headers } from 'next/headers';
+import { NextResponse } from 'next/server';
+
+import { stripe } from '@/lib/stripe';
+import prismadb from '@/lib/prismadb';
+
+export async function POST(req: Request) {
+  const body = await req.text();
+  const signature = headers().get("Stripe-Signature") as string;
+}
+```
+
