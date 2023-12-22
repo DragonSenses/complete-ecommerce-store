@@ -22191,7 +22191,7 @@ Navigate to our `ecommerce-admin` dashboard project inside the directory `ecomme
 
 Now create the following folder and file: `ecommerce-admin\app\api\webhook\route.ts`.
 
-Let's start with the following imports:
+1. Add the following imports:
 
 `ecommerce-admin\app\api\webhook\route.ts`
 ```ts
@@ -22201,3 +22201,12 @@ import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import prismadb from '@/lib/prismadb';
 ```
+
+2. Create the `POST` function that extracts `body` from the request `req.text()`. Note because this is a web hook it is a special case such that we need to do `req.text()` rather than `req.json()`.
+
+```ts
+export async function POST(req: Request) {
+  const body = await req.text();
+}
+```
+
