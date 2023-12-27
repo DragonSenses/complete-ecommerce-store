@@ -22480,6 +22480,14 @@ Use the customer_details object from the Stripe checkout session to
 create an array of address attributes. This array can be used to access
 or display the customer's shipping address after a successful payment.
 
+Next we need to create the function that consolidates all of these attributes to a single `addressString` to display it in a readable format.
+
+Create address string from address attributes
+
+Use the filter and join methods to consolidate the address attributes
+array into a single string. This string can be used to display the
+customer's shipping address in a readable format.
+
 ```ts
 /**
  * Handle the POST request and verify the webgook signature
@@ -22530,3 +22538,11 @@ export async function POST(req: Request) {
 
 }
 ```
+
+#####  Use webhook to check for payment events
+
+A **Stripe webhook** is an HTTP endpoint that receives events from Stripe. Webhooks allow you to be notified about payment events that happen in the real world outside of your payment flow, such as successful payments, disputed payments, or available balance. You can use webhooks to trigger actions on your server, such as sending a confirmation email, updating a database, or scheduling a shipment.
+
+A **Stripe event** is an object that represents a change or activity in your Stripe account. When an event occurs, Stripe generates a new Event object and sends it to your webhook endpoint as part of a POST request. The Event object contains information about the type of event, the data object that was modified, and the previous attributes of the object, if applicable. You can use the event type and the data object to determine what processing your application needs to perform.
+
+In this case, our webhook will check for the Stripe event that the customer has paid the order. 
