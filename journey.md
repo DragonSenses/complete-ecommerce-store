@@ -22293,3 +22293,33 @@ With `constructEvent` we now can:
 - Verify stripe event signature in webhook endpoint
 
 #### Create stripe checkout session in POST route
+
+Next after successfully constructing the event, create a variable `session` casted to a `Stripe.Checkout.Session` type. `session` will have the properties and methods of a Stripe checkout session object, such as `{ id, customer, line_items, cuurrency, etc... }`.
+
+```ts
+export async function POST(req: Request) {
+  const body = await req.text();
+
+  // Verify the event came from Stripe
+  const signature = headers().get("Stripe-Signature") as string;
+
+  let event: Stripe.Event;
+
+  try {
+    event = stripe.webhooks.constructEvent(
+      body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET!
+    )
+  } catch (error: any) {
+    // On error, log and return the error message
+    return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 });
+  }
+
+  // Successfully constructed event
+
+  // Save the event as a Stripe checkout session
+  const session = event.data.object as Stripe.Checkout.Session;
+
+}
+```
