@@ -34,6 +34,17 @@ export async function POST(req: Request) {
   // Save the event as a Stripe checkout session
   const session = event.data.object as Stripe.Checkout.Session;
   
-  // Get the customer's address from the checkout session using customer details
+  // Extract address from the checkout session using customer details
   const address = session?.customer_details?.address;
+
+  // Extract customer's shipping address details after a checkout session
+  const addressAttributes = [
+    address?.line1,
+    address?.line2,
+    address?.city,
+    address?.state,
+    address?.postal_code,
+    address?.country,
+  ];
+
 }
