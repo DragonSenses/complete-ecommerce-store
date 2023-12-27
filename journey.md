@@ -22429,3 +22429,47 @@ Each of these are separate fields in an object. So we need to create a function 
 We will focus on the address and its many child attributes. The [checkout session's customer_details](https://stripe.com/docs/api/checkout/sessions/object#checkout_session_object-customer_details) has a child attribute `customer_details.address`.
 
 `customer_details.address` itself has its own child attributes such as `{ city, country, line1, line2, postal_code, state }`. This means we can access the "address line 1" that the customer filled out in the payment form during the checkout session.
+
+We are going to create a `const` named `addressAttributes` which is an array that contains each of these child attributes. Make sure to use [optional chaining | MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining) because some of these attributes are optional and the customer may not have filled them out during the checkout session.
+
+`ecommerce-admin\app\api\webhook\route.ts`
+```ts
+export async function POST(req: Request) {
+  const body = await req.text();
+
+  // Verify the event came from Stripe
+  const signature = headers().get("Stripe-Signature") as string;
+
+  let event: Stripe.Event;
+
+  try {
+    event = stripe.webhooks.constructEvent(
+      body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET!
+    )
+  } catch (error: any) {
+    // On error, log and return the error message
+    return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 });
+  }
+
+  // Successfully constructed event
+
+  // Save the event as a Stripe checkout session
+  const session = event.data.object as Stripe.Checkout.Session;
+  
+  // Extract address from the checkout session using customer details
+  const address = session?.customer_details?.address;
+
+  // Extract customer's shipping address details after a checkout session
+  const addressAttributes = [
+    address?.line1,
+    address?.line2,
+    address?.city,
+    address?.state,
+    address?.postal_code,
+    address?.country,
+  ];
+
+}
+```
