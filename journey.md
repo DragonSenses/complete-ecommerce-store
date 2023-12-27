@@ -22562,3 +22562,97 @@ By registering webhook endpoints in your Stripe account, you enable Stripe to au
 The Event object we send to your webhook endpoint provides a snapshot of the object that changed. They might include a previous_attributes property that indicates the change, when applicable.
 
 See the [full list of event types](https://stripe.com/docs/api/events/types) that we send to your webhook.
+
+As we can see in the reference of event types, we can check for many events that Stripe sends. They follow the pattern: `resource.event`. Some event types include:
+
+- `payment_intent.succeeded`
+- `payment_method.attached`
+- `charge.failed`
+- `charge.succeeded`
+- `invoice.payment_action_required`
+- `payout.paid`
+- `checkout.session.async_payment_failed`
+- `checkout.session.async_payment_succeeded`
+- `checkout.session.completed`
+
+The event will listen to for now will be [checkout.session.completed](https://stripe.com/docs/api/events/types#event_types-checkout.session.completed).
+
+In the case that the event is the type `checkout.session.completed`, we want to use the webhook to trigger an action on our seerver. In this case, we want to update the database and schedule a shipment.
+
+Recall during the checkout API route, we create an `order` in the database.
+
+`ecommerce-admin\app\api\[storeId]\checkout\route.ts`
+```ts
+export async function POST(
+  req: Request,
+  { params }: { params: { storeId: string } }
+) {
+  const { productIds } = await req.json();
+
+  if (!productIds || productIds.length === 0) {
+    return new NextResponse("Product IDs are required", { status: 400 });
+  }
+
+  // Fetch products by IDs in checkout route
+  const products = await prismadb.product.findMany({
+    where: {
+      id: {
+        in: productIds
+      }
+    }
+  });
+
+  // Create an array of line items which represents a product that customer is purchasing
+  const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+
+  // Populate the array with each product
+  products.forEach((product) => {
+    line_items.push({
+      quantity: 1,
+      price_data: {
+        currency: 'USD',
+        product_data: {
+          name: product.name,
+        },
+        unit_amount: product.price.toNumber() * 100
+      }
+    });
+  });
+
+  // Create the order in the database
+  const order = await prismadb.order.create({
+    data: {
+      storeId: params.storeId,
+      isPaid: false,
+      orderItems: {
+        create: productIds.map((productId: string) => ({
+          product: {
+            connect: {
+              id: productId
+            }
+          }
+        }))
+      }
+    }
+  });
+
+  // Use line items to create the checkout session using Stripe API
+  const session = await stripe.checkout.sessions.create({
+    line_items,
+    mode: "payment",
+    billing_address_collection: "required",
+    phone_number_collection: {
+      enabled: true
+    },
+    success_url: '${process.env.FRONTEND_STORE_URL}/cart?success=1',
+    cancel_url: '${process.env.FRONTEND_STORE_URL}/cart?canceled=1',
+    metadata: {
+      orderId: order.id
+    }
+  });
+
+  return NextResponse.json({ url: session.url}, { headers: corsHeaders });
+}
+```
+
+We want to update the `order` in our database, so we `prismadb.order.update()` and set the `isPaid` property to `true`. 
