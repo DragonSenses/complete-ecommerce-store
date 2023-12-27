@@ -22323,3 +22323,31 @@ export async function POST(req: Request) {
 
 }
 ```
+
+Create and save Stripe checkout session from webhook event
+
+- Handle the POST request from Stripe and verify the webhook signature
+- Use the stripe.webhooks.constructEvent method to parse the event
+- Cast the event data object as a Stripe.Checkout.Session type
+- Save the session in the database or use it for further processing
+
+Recall that in our checkout route we created a session:
+
+`ecommerce-admin\app\api\[storeId]\checkout\route.ts`
+```ts
+  // Use line items to create the checkout session using Stripe API
+  const session = await stripe.checkout.sessions.create({
+    line_items,
+    mode: "payment",
+    billing_address_collection: "required",
+    phone_number_collection: {
+      enabled: true
+    },
+    success_url: '${process.env.FRONTEND_STORE_URL}/cart?success=1',
+    cancel_url: '${process.env.FRONTEND_STORE_URL}/cart?canceled=1',
+    metadata: {
+      orderId: order.id
+    }
+  });
+```
+
