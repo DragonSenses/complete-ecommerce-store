@@ -22351,3 +22351,15 @@ Recall that in our checkout route we created a session:
   });
 ```
 
+- [Session object | Stripe API Reference](https://stripe.com/docs/api/checkout/sessions)
+
+A Checkout Session represents your customer's session as they pay for one-time purchases or subscriptions through Checkout or Payment Links.
+
+**Once payment is successful, the Checkout Session will contain a reference to the Customer**, and either the successful PaymentIntent or an active Subscription.
+
+You can create a Checkout Session on your server and redirect to its URL to begin Checkout.
+
+- [Customer object | Stripe API Reference](https://stripe.com/docs/api/customers)
+
+This object represents a customer of your business. Use it to create recurring charges and track payments that belong to the same customer.
+
