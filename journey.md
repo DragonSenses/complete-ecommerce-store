@@ -22404,3 +22404,23 @@ export async function POST(req: Request) {
   const address = session?.customer_details?.address;
 }
 ```
+
+Now if we look at the actual Stripe checkout session, we can see a payment form with the following form fields:
+
+- Contact Information
+  - Email
+  - Phone number
+- Card Information
+  - Card number
+  - MM/YY & CVC
+- Name on card
+- Billing address
+  - Country
+  - Address line 1
+  - Address line 2
+  - Postal Code
+  - City
+- Checkbox to save information for 1-click checkout
+
+Each of these are separate fields in an object. So we need to create a function that will consolidate each of these properties to a single string.
+
