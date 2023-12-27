@@ -22546,3 +22546,19 @@ A **Stripe webhook** is an HTTP endpoint that receives events from Stripe. Webho
 A **Stripe event** is an object that represents a change or activity in your Stripe account. When an event occurs, Stripe generates a new Event object and sends it to your webhook endpoint as part of a POST request. The Event object contains information about the type of event, the data object that was modified, and the previous attributes of the object, if applicable. You can use the event type and the data object to determine what processing your application needs to perform.
 
 In this case, our webhook will check for the Stripe event that the customer has paid the order. 
+
+- [Webhooks | Stripe API](https://stripe.com/docs/webhooks)
+
+To enable webhook events, you need to register webhook endpoints. 
+
+After you register them, Stripe can push real-time event data to your application’s webhook endpoint when events happen in your Stripe account. 
+
+Stripe uses HTTPS to send webhook events to your app as a JSON payload that includes an [Event object](https://stripe.com/docs/api/events).
+
+Stripe generates event data that we can send you to inform you of activity in your account. When an event occurs, Stripe generates a new Event object.
+
+By registering webhook endpoints in your Stripe account, you enable Stripe to automatically send Event objects as part of POST requests to the registered webhook endpoint hosted by your application. After your webhook endpoint receives the Event, your app can run backend actions (for example, calling your shipping provider’s APIs to schedule a shipment after you receive a payment_intent.succeded event).
+
+The Event object we send to your webhook endpoint provides a snapshot of the object that changed. They might include a previous_attributes property that indicates the change, when applicable.
+
+See the [full list of event types](https://stripe.com/docs/api/events/types) that we send to your webhook.
