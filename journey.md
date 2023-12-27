@@ -22369,3 +22369,38 @@ Now how do we access this customer information inside our webhook? We use the `c
 
 The `customer_details` object has the properties: `{ address, email, name, phone, tax_exempt }`.
 
+Get customer address from checkout session
+
+- Use the optional chaining operator to access the address property
+- Check if the session is in payment mode and has customer details
+- Use the address for shipping or billing purposes
+
+```ts
+export async function POST(req: Request) {
+  const body = await req.text();
+
+  // Verify the event came from Stripe
+  const signature = headers().get("Stripe-Signature") as string;
+
+  let event: Stripe.Event;
+
+  try {
+    event = stripe.webhooks.constructEvent(
+      body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET!
+    )
+  } catch (error: any) {
+    // On error, log and return the error message
+    return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 });
+  }
+
+  // Successfully constructed event
+
+  // Save the event as a Stripe checkout session
+  const session = event.data.object as Stripe.Checkout.Session;
+  
+  // Get the customer's address from the checkout session using customer details
+  const address = session?.customer_details?.address;
+}
+```
