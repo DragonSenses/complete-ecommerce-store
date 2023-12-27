@@ -5,6 +5,11 @@ import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import prismadb from '@/lib/prismadb';
 
+/**
+ * Handle the POST request and verify the webgook signature
+ * @param req the POST request
+ * @returns 
+ */
 export async function POST(req: Request) {
   const body = await req.text();
 
@@ -26,5 +31,8 @@ export async function POST(req: Request) {
 
   // Successfully constructed event
 
+  // Save the event as a Stripe checkout session
+  const session = event.data.object as Stripe.Checkout.Session;
   
+
 }
