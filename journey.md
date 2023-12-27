@@ -22473,3 +22473,9 @@ export async function POST(req: Request) {
 
 }
 ```
+
+Extract customer address from Stripe checkout session
+
+Use the customer_details object from the Stripe checkout session to
+create an array of address attributes. This array can be used to access
+or display the customer's shipping address after a successful payment.
