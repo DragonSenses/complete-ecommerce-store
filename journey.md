@@ -22405,6 +22405,8 @@ export async function POST(req: Request) {
 }
 ```
 
+##### Consolidate payment field properties to a single string
+
 Now if we look at the actual Stripe checkout session, we can see a payment form with the following form fields:
 
 - Contact Information
@@ -22424,3 +22426,6 @@ Now if we look at the actual Stripe checkout session, we can see a payment form 
 
 Each of these are separate fields in an object. So we need to create a function that will consolidate each of these properties to a single string.
 
+We will focus on the address and its many child attributes. The [checkout session's customer_details](https://stripe.com/docs/api/checkout/sessions/object#checkout_session_object-customer_details) has a child attribute `customer_details.address`.
+
+`customer_details.address` itself has its own child attributes such as `{ city, country, line1, line2, postal_code, state }`. This means we can access the "address line 1" that the customer filled out in the payment form during the checkout session.
