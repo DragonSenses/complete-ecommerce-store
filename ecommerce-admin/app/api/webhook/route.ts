@@ -47,4 +47,9 @@ export async function POST(req: Request) {
     address?.country,
   ];
 
+  // Consolidate each property of address to a single string
+  const addressString = addressAttributes
+    .filter((attribute) => attribute !== null)
+    .join(', ');
+
 }
