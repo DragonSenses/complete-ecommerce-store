@@ -52,4 +52,21 @@ export async function POST(req: Request) {
     .filter((attribute) => attribute !== null)
     .join(', ');
 
+
+  // Check for successful payment event, if so then update the order status
+  if (event.type === "checkout.session.completed") {
+    const order = await prismadb.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        isPaid: true,
+        address: addressString,
+        phone: phone || ''
+      },
+      include: {
+        orderItems: true,
+      }
+    });
+  }
 }
