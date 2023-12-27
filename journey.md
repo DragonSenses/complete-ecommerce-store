@@ -22363,3 +22363,9 @@ You can create a Checkout Session on your server and redirect to its URL to begi
 
 This object represents a customer of your business. Use it to create recurring charges and track payments that belong to the same customer.
 
+Now how do we access this customer information inside our webhook? We use the `customer_details` object, which is the customer details including the customer's tax exempt status and the customer's tax IDs. Only the customer's email is present on Sessions in setup mode.
+
+- [Session object - customer_details | Stripe API Reference](https://stripe.com/docs/api/checkout/sessions/object#checkout_session_object-customer_details)
+
+The `customer_details` object has the properties: `{ address, email, name, phone, tax_exempt }`.
+
