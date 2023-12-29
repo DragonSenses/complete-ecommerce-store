@@ -23022,3 +23022,46 @@ After the `stripe trigger payment_intent.succeeeded`, it seems that we get a [40
 
 We get a [401 Unauthorized](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401) which is a esponse status code indicates that the client request has not been completed because it lacks valid authentication credentials for the requested resource.
 
+#### Solution: `[401]` POST after running `stripe trigger` command
+
+After some debugging, backtracking and stack tracing the issue of the `[401]` after running `stripe trigger` comes down to webhook endpoint.
+
+**An endpoint is a digital location where an API receives requests about a specific resource on its server**. In APIs, an endpoint is typically a uniform resource locator (URL) that provides the location of a resource on the server. 
+
+- [What is an API Endpoint? | blog.hubspot.com](https://blog.hubspot.com/website/api-endpoint)
+
+For example, if you want to access the latest news articles from a news site's API, you would use an endpoint URL like `https://newsapi.org/v2/top-headlines`. This URL tells the API that you want the top headlines resource from its server.
+
+Another example is a way to get videos through YouTube’s API is by requesting them from the endpoint `https://www.googleapis.com/youtube/v3/videos`, which returns a list of videos that match the parameters you specified in your request.
+
+In our case what is our API endpoint? Well we specified it in step 2 of connecting to webhook locally, when we forward events to our webhook:
+
+```sh
+stripe listen --forward-to localhost:3000/webhook
+```
+
+Notice the issue?
+
+**We are running on `localhost:3000/webhook`**, when we *should* be running on the `localhost:3000/api/webhook`.
+
+Now let's redo the steps again, but this time with the correct endpoint.
+
+1. Listen to Stripe events
+
+```sh
+stripe login
+```
+
+2. Forward events to your webhook
+
+```sh
+stripe listen --forward-to localhost:3000/api/webhook
+```
+
+3. Trigger events with the CLI
+
+```sh
+stripe trigger payment_intent.succeeded
+```
+
+With that we get a proper 200 response after we trigger the event with the CLI.
