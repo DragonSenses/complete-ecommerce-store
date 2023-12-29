@@ -22800,10 +22800,50 @@ export async function POST(req: Request) {
 
 Next, we create the [query to update multiple records](https://www.prisma.io/docs/orm/prisma-client/queries/crud#update-multiple-records). We use the array of `productIds`, so for each ordered product in the database we set the `isArchived` flag to `true`.
 
-Update the database to mark the ordered products as archived.
-
 Add code to archive ordered products in inventory.
 
 - This code prevents selling products that are no longer available
 - It also updates the product database with the latest isArchived status
 
+```ts
+export async function POST(req: Request) {
+  // ...
+  // Check for successful payment event, if so then update the order status
+  if (event.type === "checkout.session.completed") {
+    const order = await prismadb.order.update({
+      where: {
+        id: session?.metadata?.orderId,
+      },
+      data: {
+        isPaid: true,
+        address: addressString,
+        phone: session?.customer_details?.phone || ''
+      },
+      include: {
+        orderItems: true,
+      }
+    });
+
+    // Archive the ordered products from the inventory
+    const productIds = order.orderItems.map((orderItem) => orderItem.productId);
+
+    await prismadb.product.updateMany({
+      where: {
+        id: {
+          in: [...productIds],
+        },
+      },
+      data: {
+        isArchived: true,
+      },
+    });
+  }
+```
+
+Update database to mark the ordered products as archived.
+
+Archive ordered products in DB.
+
+- This prevents selling products that are no longer available
+- Also prevents selling out-of-stock products
+- It also updates the product status in the database
