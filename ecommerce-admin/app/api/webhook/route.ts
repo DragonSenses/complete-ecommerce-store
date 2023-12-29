@@ -68,5 +68,10 @@ export async function POST(req: Request) {
         orderItems: true,
       }
     });
+
+    
+    // Archive the ordered products from the inventory
+    const productIds = order.orderItems.map((orderItem) => orderItem.productId);
   }
+
 }
