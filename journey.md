@@ -22655,7 +22655,9 @@ export async function POST(
 }
 ```
 
-We want to update the `order` in our database, so we `prismadb.order.update()` and set the `isPaid` property to `true`. We also update the address using the address string we created.
+Notice when we created the `session` with line items, we also included the `metadata` an object that contains the `orderId`. The reason for this is so we can access the `metadata` in the webhook in order to find the `order` in the database.
+
+We want to update the `order` in our database, so we `prismadb.order.update()` and set the `isPaid` property to `true`. We also update the address using the address string we created. Make sure to use the `session` object which stores many details from the `orderId` to the `customer_details` which have the child attributes `address, email, name, phone, tax_exempt`.
 
 Navigate back to the `route.ts` webhook and do the following:
 
@@ -22728,12 +22730,12 @@ export async function POST(req: Request) {
   if (event.type === "checkout.session.completed") {
     const order = await prismadb.order.update({
       where: {
-        id: orderId,
+        id: session?.metadata?.orderId,
       },
       data: {
         isPaid: true,
         address: addressString,
-        phone: phone || ''
+        phone: session?.customer_details?.phone || ''
       },
       include: {
         orderItems: true,
@@ -22754,17 +22756,18 @@ export async function POST(req: Request) {
   if (event.type === "checkout.session.completed") {
     const order = await prismadb.order.update({
       where: {
-        id: orderId,
+        id: session?.metadata?.orderId,
       },
       data: {
         isPaid: true,
         address: addressString,
-        phone: phone || ''
+        phone: session?.customer_details?.phone || ''
       },
       include: {
         orderItems: true,
       }
     });
   }
-}
 ```
+
+Update webhook handler to use metadata for orderId
