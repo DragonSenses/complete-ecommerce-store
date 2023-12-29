@@ -23013,3 +23013,12 @@ stripe trigger payment_intent.succeeded
 ```
 
 Back on the terminal with Stripe CLI, run the above command: `stripe trigger payment_intent.succeeded`.
+
+### Testing the Webhook
+
+After the `stripe trigger payment_intent.succeeeded`, it seems that we get a [401] POST from the terminal.
+
+#### Issue: `[401]` POST after running `stripe trigger` command
+
+We get a [401 Unauthorized](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401) which is a esponse status code indicates that the client request has not been completed because it lacks valid authentication credentials for the requested resource.
+
