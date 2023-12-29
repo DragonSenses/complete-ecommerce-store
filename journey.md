@@ -23065,3 +23065,59 @@ stripe trigger payment_intent.succeeded
 ```
 
 With that we get a proper 200 response after we trigger the event with the CLI.
+
+Now we can move on to another test. 
+
+- Add a product to the cart
+- Proceed to the checkout session
+- Fill out the payment form (in Test Mode, we can write anything)
+- Check the dashboard's Order page to see if the phone number, address, and paid flag has been updated
+
+Does the flow from front-end store, to Stripe API, to back-end dashboard all reflect the changes in data? If yes, then we have completed integrating the front-end with the back-end.
+
+# Develop the Dashboard Overview page
+
+Navigate to `ecommerce-admin\app\(dashboard)\[storeId]\(routes)\page.tsx`, which we have so far:
+
+```tsx
+// Global Imports
+import React from 'react';
+
+// Local Imports
+import prismadb from '@/lib/prismadb';
+
+interface DashboardPageProps {
+  params: { storeId: string }
+};
+
+const DashboardPage: React.FC<DashboardPageProps> = async ({
+  params
+}) => {
+
+  const store = await prismadb.store.findFirst({
+    where: {
+      id: params.storeId
+    }
+  });
+
+  return (
+    <div>
+      Active Store is: {store?.name}
+    </div>
+  );
+}
+
+export default DashboardPage;
+```
+
+Remove the `store` query for now and clear out the output to start fresh. Then render the following:
+
+- `div` with `flex-col`
+- inner `div` with `flex-1 space-y-4 p-8 pt-6`
+- Inside the 2nd `div` a `Heading` and `Separator` component
+  - `Heading` has a `title` prop of `Dashboard` and a `description` prop
+
+Update the dashboard page component for each store
+
+- Render the dashboard page for a given store ID
+- Use prismadb to fetch the store data and display it using Heading and Separator components
