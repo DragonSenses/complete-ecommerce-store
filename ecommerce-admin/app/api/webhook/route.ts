@@ -72,5 +72,16 @@ export async function POST(req: Request) {
 
     // Archive the ordered products from the inventory
     const productIds = order.orderItems.map((orderItem) => orderItem.productId);
+
+    await prismadb.product.updateMany({
+      where: {
+        id: {
+          in: [...productIds],
+        },
+      },
+      data: {
+        isArchived: true,
+      },
+    });
   }
 }
