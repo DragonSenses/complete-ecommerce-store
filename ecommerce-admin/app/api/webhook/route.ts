@@ -1,14 +1,16 @@
-import Stripe from 'stripe';
-import { headers } from 'next/headers';
-import { NextResponse } from 'next/server';
+import Stripe from "stripe";
+import { headers } from "next/headers";
+import { NextResponse } from "next/server";
 
-import { stripe } from '@/lib/stripe';
-import prismadb from '@/lib/prismadb';
+import { stripe } from "@/lib/stripe";
+import prismadb from "@/lib/prismadb";
 
 /**
- * Handle the POST request and verify the webgook signature
+ * Handle the POST request and verify the webhook signature.
+ * Using Stripe checkout session, update the database order with new details
+ * and archive the ordered products from the inventory.
  * @param req the POST request
- * @returns 
+ * @returns
  */
 export async function POST(req: Request) {
   const body = await req.text();
@@ -23,7 +25,7 @@ export async function POST(req: Request) {
       body,
       signature,
       process.env.STRIPE_WEBHOOK_SECRET!
-    )
+    );
   } catch (error: any) {
     // On error, log and return the error message
     return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 });
@@ -33,7 +35,7 @@ export async function POST(req: Request) {
 
   // Save the event as a Stripe checkout session
   const session = event.data.object as Stripe.Checkout.Session;
-  
+
   // Extract address from the checkout session using customer details
   const address = session?.customer_details?.address;
 
@@ -50,8 +52,7 @@ export async function POST(req: Request) {
   // Consolidate each property of address to a single string
   const addressString = addressAttributes
     .filter((attribute) => attribute !== null)
-    .join(', ');
-
+    .join(", ");
 
   // Check for successful payment event, if so then update the order status
   if (event.type === "checkout.session.completed") {
@@ -62,16 +63,14 @@ export async function POST(req: Request) {
       data: {
         isPaid: true,
         address: addressString,
-        phone: session?.customer_details?.phone || ''
+        phone: session?.customer_details?.phone || "",
       },
       include: {
         orderItems: true,
-      }
+      },
     });
 
-    
     // Archive the ordered products from the inventory
     const productIds = order.orderItems.map((orderItem) => orderItem.productId);
   }
-
 }
