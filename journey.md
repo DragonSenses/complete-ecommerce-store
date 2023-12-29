@@ -22963,4 +22963,11 @@ export async function POST(req: Request) {
 }
 ```
 
-Handle a POST request from a Stripe webhook and update database
+Handle Stripe webhook and update order and product data
+
+- Use stripe.webhooks.constructEvent to verify the webhook signature and get the checkout session object. 
+- Update the order record with the payment status, address, and phone number. 
+- Archive the ordered products from the database by setting the isArchived field to true.  
+- Return a NextResponse object with a status code of 200 if successful, or 400 if an error occurs.
+- Add descriptive comments that explain the purpose and functionality of the POST method in detail
+
