@@ -22655,4 +22655,19 @@ export async function POST(
 }
 ```
 
-We want to update the `order` in our database, so we `prismadb.order.update()` and set the `isPaid` property to `true`. 
+We want to update the `order` in our database, so we `prismadb.order.update()` and set the `isPaid` property to `true`. We also update the address using the address string we created.
+
+Navigate back to the `route.ts` webhook and do the following:
+
+Update order status and address on payment success
+
+Use the checkout.session.completed event from Stripe to update the order
+status and address in the database. Use the customer_details object from
+the checkout session to create a string of the customer's shipping
+address. This string can be used to display the address in a readable
+format.
+
+`ecommerce-admin\app\api\webhook\route.ts`
+```ts
+
+```
