@@ -22971,3 +22971,45 @@ Handle Stripe webhook and update order and product data
 - Return a NextResponse object with a status code of 200 if successful, or 400 if an error occurs.
 - Add descriptive comments that explain the purpose and functionality of the POST method in detail
 
+##### Connect to webhook locally using Stripe - final part
+
+With the webhook completed, we can move on to step 3 on connect to webhook locally.
+
+- [Webhook endpoints | Stripe API reference](https://stripe.com/docs/api/webhook_endpoints/object)
+
+
+1. Listen to Stripe events
+
+- Open up your respective OS terminal and login through the Stripe CLI
+
+```sh
+stripe login
+```
+
+- Allow Stripe CLI to access acount information with the same code
+
+2. Forward events to your webhook
+
+```sh
+stripe listen --forward-to localhost:3000/webhook
+```
+
+And here we get the **webhook signing secret** from our command line interface.
+
+Copy that key we get to create our webhook.
+
+Then add the webhook signing secret as an environment variable. Inside the `.env` file, add the variable named `STRIPE_WEBHOOK_SECRET` and set it equal to the key you copied.
+
+```env
+//...
+
+STRIPE_WEBHOOK_SECRET=YOUR_WEBHOOK_SIGNING_SECRET_KEY_HERE
+```
+
+3. Trigger events with the CLI
+
+```sh
+stripe trigger payment_intent.succeeded
+```
+
+Back on the terminal with Stripe CLI, run the above command: `stripe trigger payment_intent.succeeded`.
