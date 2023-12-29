@@ -22742,3 +22742,29 @@ export async function POST(req: Request) {
   }
 }
 ```
+
+The `if` statement looks at the stripe event type and checks if it is `checkout.session.completed`, which implies a successful payment event.
+
+In that case, we want to get the `order` in the database using its `orderId`. Update its `data` properties of `isPaid` flag to `true`, set the `address` to `addressString` and save the `phone` to that of the customer's `phone`. We should also include `orderItems` related records because they will be modified later.
+
+```ts
+export async function POST(req: Request) {
+  // ...
+  // Check for successful payment event, if so then update the order status
+  if (event.type === "checkout.session.completed") {
+    const order = await prismadb.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        isPaid: true,
+        address: addressString,
+        phone: phone || ''
+      },
+      include: {
+        orderItems: true,
+      }
+    });
+  }
+}
+```
