@@ -22489,11 +22489,6 @@ array into a single string. This string can be used to display the
 customer's shipping address in a readable format.
 
 ```ts
-/**
- * Handle the POST request and verify the webgook signature
- * @param req the POST request
- * @returns 
- */
 export async function POST(req: Request) {
   const body = await req.text();
 
@@ -22678,11 +22673,6 @@ import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import prismadb from '@/lib/prismadb';
 
-/**
- * Handle the POST request and verify the webgook signature
- * @param req the POST request
- * @returns 
- */
 export async function POST(req: Request) {
   const body = await req.text();
 
@@ -22781,7 +22771,8 @@ Next we want to remove the ordered products from the inventory. To do this we se
 We want to map `orderItems` into their respective `productId` and store it in a `const productIds`. Next we use `prismadb.product.updateMany` to update their `isArchived` flag to `true`.
 
 Add code to remove ordered products from inventory.
-Archive ordered products from inventory.
+
+First we want to map each `orderItems` to their respective `productId` which will return an array of `productIds`.
 
 ```ts
 export async function POST(req: Request) {
@@ -22806,4 +22797,13 @@ export async function POST(req: Request) {
     const productIds = order.orderItems.map((orderItem) => orderItem.productId);
   }
 ```
+
+Next, we create the [query to update multiple records](https://www.prisma.io/docs/orm/prisma-client/queries/crud#update-multiple-records). We use the array of `productIds`, so for each ordered product in the database we set the `isArchived` flag to `true`.
+
+Update the database to mark the ordered products as archived.
+
+Add code to archive ordered products in inventory.
+
+- This code prevents selling products that are no longer available
+- It also updates the product database with the latest isArchived status
 
