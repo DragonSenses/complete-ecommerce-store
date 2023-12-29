@@ -22847,3 +22847,13 @@ Archive ordered products in DB.
 - This prevents selling products that are no longer available
 - Also prevents selling out-of-stock products
 - It also updates the product status in the database
+
+Finally after all is done, we return a NextResponse of 200 with a null body inside the POST request.
+
+```ts
+export async function POST(req: Request) {
+  // ...
+  // Return a response with a status code of 200 and a null body
+  return new NextResponse(null, { status: 200 });
+}
+```
