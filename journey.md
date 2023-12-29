@@ -22771,3 +22771,39 @@ export async function POST(req: Request) {
 ```
 
 Update webhook handler to use metadata for orderId
+
+- Use checkout sessions metadata to access the orderId, to be able to access the order record in the database.
+- Update order status and address on payment success
+- Use session customer_details property to update the customer's phone number
+
+Next we want to remove the ordered products from the inventory. To do this we set the archive property of each product to `true`.
+
+We want to map `orderItems` into their respective `productId` and store it in a `const productIds`. Next we use `prismadb.product.updateMany` to update their `isArchived` flag to `true`.
+
+Add code to remove ordered products from inventory.
+Archive ordered products from inventory.
+
+```ts
+export async function POST(req: Request) {
+  // ...
+  // Check for successful payment event, if so then update the order status
+  if (event.type === "checkout.session.completed") {
+    const order = await prismadb.order.update({
+      where: {
+        id: session?.metadata?.orderId,
+      },
+      data: {
+        isPaid: true,
+        address: addressString,
+        phone: session?.customer_details?.phone || ''
+      },
+      include: {
+        orderItems: true,
+      }
+    });
+
+    // Archive the ordered products from the inventory
+    const productIds = order.orderItems.map((orderItem) => orderItem.productId);
+  }
+```
+
