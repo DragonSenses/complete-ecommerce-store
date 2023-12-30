@@ -23120,4 +23120,37 @@ Remove the `store` query for now and clear out the output to start fresh. Then r
 Update the dashboard page component for each store
 
 - Render the dashboard page for a given store ID
-- Use prismadb to fetch the store data and display it using Heading and Separator components
+- Use prismadb to fetch the store data 
+- Display store data using Heading and Separator components
+
+`ecommerce-admin\app\(dashboard)\[storeId]\(routes)\page.tsx`
+```tsx
+// Global Imports
+import React from 'react';
+
+// Local Imports
+import prismadb from '@/lib/prismadb';
+import { Heading } from '@/components/ui/heading';
+import { Separator } from '@/components/ui/separator';
+
+interface DashboardPageProps {
+  params: { storeId: string }
+};
+
+const DashboardPage: React.FC<DashboardPageProps> = async ({
+  params
+}) => {
+
+  return (
+    <div className='flex-col'>
+      <div className='flex-1 space-y-4 p-8 pt-6'>
+        <Heading title='Dashboard' description='Overview of your store' />
+        <Separator />
+        
+      </div>
+    </div>
+  );
+}
+
+export default DashboardPage;
+```
