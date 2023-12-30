@@ -23172,6 +23172,8 @@ Then we use the `Card` component, with a `CardHeader` and a `CardTitle` within.
 Finally, outside of `CardTitle` but still inside the `CardHeader` we will render an icon `DollarSign` from `lucide-react`.
 
 ```tsx
+import { DollarSign } from 'lucide-react';
+
 import {
   Card,
   CardContent,
@@ -23180,11 +23182,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { DollarSign } from 'lucide-react';
-
-interface DashboardPageProps {
-  params: { storeId: string }
-};
 
 const DashboardPage: React.FC<DashboardPageProps> = async ({
   params
@@ -23206,7 +23203,52 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
             </CardHeader>
           </Card>
         </div>
+
+      </div>
+    </div>
+  );
+}
+```
+
+Also give the `DollarSign` a `className='h-4 w-4 text-muted-foreground'`.
+
+After the `CardHeader`, we add the `CardContent` component that contains a `div` of `text-2xl font-bold`. We intepolate the revenue data here, but for now we will use the number '100'. Use the `priceFormatter.format()` method from `/lib/utils`. This will:
+
+Add total revenue card to dashboard page
+
+Use priceFormatter to format the revenue amount and display it in a CardContent component inside a Card component. Add DollarSign icon from lucide-react to the CardHeader.
+
+```tsx
+import { priceFormatter } from '@/lib/utils';
+
+const DashboardPage: React.FC<DashboardPageProps> = async ({
+  params
+}) => {
+
+  return (
+    <div className='flex-col'>
+      <div className='flex-1 space-y-4 p-8 pt-6'>
+        <Heading title='Dashboard' description='Overview of your store' />
+        <Separator />
         
+        <div className="grid gap-4 grid-cols-3">
+
+          <Card>
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-sm font-medium'>
+                Total Revenue
+              </CardTitle>
+              <DollarSign className='h-4 w-4 text-muted-foreground' />
+            </CardHeader>
+            <CardContent>
+              <div className='text-2xl font-bold'>
+                {priceFormatter.format(100)}
+              </div>
+            </CardContent>
+          </Card>
+
+        </div>
+
       </div>
     </div>
   );
