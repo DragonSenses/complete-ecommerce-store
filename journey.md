@@ -23154,3 +23154,61 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
 
 export default DashboardPage;
 ```
+
+Next install [shadcn/ui - Card](https://ui.shadcn.com/docs/components/card) component.
+
+```sh
+npx shadcn-ui@latest add card
+```
+
+Then after the `Separator` a `div` with `grid gap-4 grid-cols-3`.
+
+Then we use the `Card` component, with a `CardHeader` and a `CardTitle` within.
+
+`CardHeader` will be a flexible container set in the horizontal direction while centering the items. It also has `justify-between`, `space-y-0` and `pb-2`.
+
+`CardTitle` will have `text-sm font-medium` and have the text "Total Revenue".
+
+Finally, outside of `CardTitle` but still inside the `CardHeader` we will render an icon `DollarSign` from `lucide-react`.
+
+```tsx
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { DollarSign } from 'lucide-react';
+
+interface DashboardPageProps {
+  params: { storeId: string }
+};
+
+const DashboardPage: React.FC<DashboardPageProps> = async ({
+  params
+}) => {
+
+  return (
+    <div className='flex-col'>
+      <div className='flex-1 space-y-4 p-8 pt-6'>
+        <Heading title='Dashboard' description='Overview of your store' />
+        <Separator />
+
+        <div className="grid gap-4 grid-cols-3">
+          <Card>
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-sm font-medium'>
+                Total Revenue
+              </CardTitle>
+              <DollarSign />
+            </CardHeader>
+          </Card>
+        </div>
+        
+      </div>
+    </div>
+  );
+}
+```
