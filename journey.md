@@ -23259,6 +23259,10 @@ Next copy the same `Card` component and change the `CardTitle` inner text to "Sa
 
 Also replace the inner text of `CardContent` to "+25" to represent the amount of sales.
 
+Add sales card to dashboard page
+
+Create a Card component with a CardHeader and a CardContent to display the number of sales made by the store. Add CreditCard icon from lucide-react to the CardHeader.
+
 ```tsx
 import { CreditCard, DollarSign } from 'lucide-react';
 
@@ -23326,7 +23330,83 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
 }
 ```
 
-Add sales card to dashboard page
+Finally, create another `Card` component that represents the stores inventory.
 
-Create a Card component with a CardHeader and a CardContent to display the number of sales made by the store. Add CreditCard icon from lucide-react to the CardHeader.
+The `CardTitle` will have "Products In Stock" as inner text. It will also use `Package` icon from `lucide-react`. And it will interpolate a non-negative number representing the number of products in stock at the store. Put "12" for now, we will substitue this later.
 
+Add products in stock card to dashboard page
+
+Create a Card component with a CardHeader and a CardContent to display the number of products in stock for the store. Add Package icon from lucide-react to the CardHeader.
+
+```tsx
+import { CreditCard, DollarSign, Package } from 'lucide-react';
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+const DashboardPage: React.FC<DashboardPageProps> = async ({
+  params
+}) => {
+
+  return (
+    <div className='flex-col'>
+      <div className='flex-1 space-y-4 p-8 pt-6'>
+        <Heading title='Dashboard' description='Overview of your store' />
+        <Separator />
+
+        <div className="grid gap-4 grid-cols-3">
+
+          <Card>
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-sm font-medium'>
+                Total Revenue
+              </CardTitle>
+              <DollarSign className='h-4 w-4 text-muted-foreground' />
+            </CardHeader>
+            <CardContent>
+              <div className='text-2xl font-bold'>
+                {priceFormatter.format(100)}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-sm font-medium'>
+                Sales
+              </CardTitle>
+              <CreditCard className='h-4 w-4 text-muted-foreground' />
+            </CardHeader>
+            <CardContent>
+              <div className='text-2xl font-bold'>
+                +25
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-sm font-medium'>
+                Products In Stock
+              </CardTitle>
+              <Package className='h-4 w-4 text-muted-foreground' />
+            </CardHeader>
+            <CardContent>
+              <div className='text-2xl font-bold'>
+                12
+              </div>
+            </CardContent>
+          </Card>
+
+        </div>
+      </div>
+    </div>
+  );
+}
+```
