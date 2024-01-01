@@ -1,34 +1,18 @@
 import prismadb from "@/lib/prismadb";
 
 /**
- * Retrieve the total count of sales of a given store
- * @param storeId - Unique identifier for the given store
- * @returns the sales count for a given store
+ * Get the number of orders that have been paid for a given store
+ * @param storeId - The ID of the store to query
+ * @returns the sales count as a number
  */
 export default async function getSalesCount(storeId: string) {
-  // Query database for orders & product items that have been paid for
-  const paidOrders = await prismadb.order.findMany({
+  // Use prismadb to count the paid orders that match the storeId
+  const salesCount = await prismadb.order.count({
     where: {
       storeId: storeId,
       isPaid: true,
     },
-    include: {
-      orderItems: {
-        include: {
-          product: true,
-        },
-      },
-    },
   });
 
-  // Sum up the product prices of all paid orders
-  const totalRevenue = paidOrders.reduce((total, order) => {
-    // Sum up the product prices of each order item
-    const orderTotal = order.orderItems.reduce((orderSum, item) => {
-      return orderSum + item.product.price.toNumber();
-    }, 0)
-    return total + orderTotal;
-  }, 0);
-
-  return totalRevenue;
+  return salesCount;
 };
