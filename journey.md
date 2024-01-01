@@ -23776,3 +23776,33 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
   );
 }
 ```
+
+Now create the file `getStockCount.ts` in `/actions` and implement the function.
+
+Add function that displays product availability
+
+- Takes a storeId as a parameter and queries the product table of the given store with prismadb. 
+- It returns the count of available & non-archived products
+
+`ecommerce-admin\actions\getStockCount.ts`
+```ts
+import prismadb from "@/lib/prismadb";
+
+/**
+ * Get the count of available products in a given store's inventory. 
+ * Only non-archived products are available.
+ * @param storeId
+ * @returns the count of available products in the store
+ */
+export default async function getStockCount(storeId: string) {
+  // Query product table for the count of available products
+  const stockCount = await prismadb.product.count({
+    where: {
+      storeId: storeId,
+      isArchived: false,
+    },
+  });
+
+  return stockCount;
+};
+```
