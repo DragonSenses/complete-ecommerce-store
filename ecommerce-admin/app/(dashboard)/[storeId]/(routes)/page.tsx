@@ -3,6 +3,7 @@ import React from 'react';
 import { CreditCard, DollarSign, Package } from 'lucide-react';
 
 // Local Imports
+import getTotalRevenue from '@/actions/getTotalRevenue';
 import prismadb from '@/lib/prismadb';
 import { priceFormatter } from '@/lib/utils';
 import { Heading } from '@/components/ui/heading';
@@ -24,7 +25,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
   params
 }) => {
 
-  const totalRevenue = () => await getTotalRevenue(params.storeId);
+  const totalRevenue = await getTotalRevenue(params.storeId);
   const salesCount = () => {};
   const stockCount = () => {};
 
