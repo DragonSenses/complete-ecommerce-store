@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/card";
 import getTotalRevenue from '@/actions/getTotalRevenue';
 import getSalesCount from '@/actions/getSalesCount';
+import getStockCount from '@/actions/getStockCount';
 
 interface DashboardPageProps {
   params: { storeId: string }
@@ -28,7 +29,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
 
   const totalRevenue = await getTotalRevenue(params.storeId);
   const salesCount = await getSalesCount(params.storeId);
-  const stockCount = () => {};
+  const stockCount = await getStockCount(params.storeId);
 
   return (
     <div className='flex-col'>
