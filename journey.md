@@ -23155,6 +23155,8 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
 export default DashboardPage;
 ```
 
+## Add `Card` components to Dashboard Overview Page
+
 Next install [shadcn/ui - Card](https://ui.shadcn.com/docs/components/card) component.
 
 ```sh
@@ -23410,3 +23412,17 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
   );
 }
 ```
+
+### Parameterize the data used in Card components
+
+So far what we did was hard code values for the Card components.
+
+[Hard coding](https://en.wikipedia.org/wiki/Hard_coding) (also hard-coding or hardcoding) is the software development practice of embedding data directly into the source code of a program or other executable object, as opposed to obtaining the data from external sources or generating it at runtime.
+
+Hard coding is when actual data or parameter appears literally in the source-code, or more precisely - whether it's determined at compile-time or at run-time (e.g., getting input from user, read from config file, taken from command line).
+
+The opposite of hard coding is the process of *parameterization* (e.g., we need to parameterize the threshold value used in function X).
+
+Parameterizing is a technique of using variables or parameters to store data or values that can be changed or modified without altering the source code of a program. Hard coding is the opposite of parameterizing, as it means embedding data or values directly into the source code of a program, making it difficult or impossible to change or modify without altering the source code. Parameterizing is generally considered a good practice, as it makes the program more flexible, scalable, and maintainable. Hard coding is sometimes necessary, but can also be an anti-pattern.
+
+Now instead of hard coding the values for total revenue, sales, and products-in-stock we need to create the functions to parameterize these values.
