@@ -23426,3 +23426,43 @@ The opposite of hard coding is the process of *parameterization* (e.g., we need 
 Parameterizing is a technique of using variables or parameters to store data or values that can be changed or modified without altering the source code of a program. Hard coding is the opposite of parameterizing, as it means embedding data or values directly into the source code of a program, making it difficult or impossible to change or modify without altering the source code. Parameterizing is generally considered a good practice, as it makes the program more flexible, scalable, and maintainable. Hard coding is sometimes necessary, but can also be an anti-pattern.
 
 Now instead of hard coding the values for total revenue, sales, and products-in-stock we need to create the functions to parameterize these values.
+
+Create three variables: `totalRevenue`, `salesCount`, `stockCount`.
+
+```tsx
+const DashboardPage: React.FC<DashboardPageProps> = async ({
+  params
+}) => {
+
+  const totalRevenue = () => {};
+  const salesCount = () => {};
+  const stockCount = () => {};
+  // ...
+```
+
+Now for `totalRevenue` it will `await` a function named `getTotalRevenue()` with `storeId` passed in as the argument: 
+
+```tsx
+interface DashboardPageProps {
+  params: { storeId: string }
+};
+
+const DashboardPage: React.FC<DashboardPageProps> = async ({
+  params
+}) => {
+
+  const totalRevenue = () => await getTotalRevenue(params.storeId);
+```
+
+Now we need to create an action. At the root directory of the project (i.e., `/ecommerce-admin`) create a folder named `actions` and inside create a file named `getTotalRevenue.ts`.
+
+Inside we import `prismadb` and create a `async` function with the parameter `storeId`.
+
+`ecommerce-admin\actions\getTotalRevenue.ts`
+```ts
+import prismadb from "@/lib/prismadb";
+
+export const getTotalRevenue = async (storeId: string) => {
+  
+}
+```
