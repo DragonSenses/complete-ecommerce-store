@@ -23501,9 +23501,62 @@ export const getTotalRevenue = async (storeId: string) => {
 
 Now that we have the `paidOrders`, we need to reduce each order to a single sum named `totalRevenue`. But each order has `orderItems`, so we need to calculate the `orderSum` first then add that to the `totalRevenue`.
 
+#### Arrow Function or Function Declaration?
+
+- Also note we convert the arrow function expression (which uses the `=>` syntax) to a function declaration. 
+
+Arrow functions inherit `this` from the enclosing scope and are **non-constructible** (i.e., called with `new` keyword) but **callable* (can be called without `new`).
+
+If you want to be more familiar with `this` keyword, check out this source [You Don't Know: this & Object Prototypes](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20&%20object%20prototypes/README.md#you-dont-know-js-this--object-prototypes).
+
+- Functions created through function declarations / expressions are both constructable and callable.
+
+1. Arrow functions do not have lexical `this` and `arguments` binding and 
+
+2. Arrow functions cannot be called with `new`
+
+Here are examples highlighting some differences between Arrow function, function declaration, function expression.
+
+```tsx
+// Arrow function
+const App: React.FC = ( {children}) => {
+  return (
+    <div className="App">
+      {children}
+    </div>
+  );
+}
+
+// Function declaration
+function App ( {children}: {children: JSX.Element}) {
+  return (
+    <div className="App">
+      {children}
+    </div>
+  );
+}
+
+// Function expression
+const App: React.FC = function ( {children}) {
+  return (
+    <div className="App">
+      {children}
+    </div>
+  );
+}
+```
+
+The choice between using an arrow function or a function declaration/expression for React components is mostly a matter of preference and style, [as there is no significant difference in terms of functionality or performance](https://timmousk.com/blog/typescript-arrow-function/). 
+
+However, some developers prefer using arrow functions for functional components, as they provide type information for some component properties, such as `propTypes`, `defaultProps`, and `displayName`. Others prefer using function declarations/expressions, as they are more familiar and consistent with the official React documentation.
+
+#### Implement `getTotalRevenue` using prismadb
+
 Implement getTotalRevenue function using prismadb
 
+- Use function declaration over arrow function
 - Use storeId as a parameter to filter orders by store
+- Filter for paid orders by the `isPaid` flag
 - Include orderItems and product details in the query result
 - Sum up the product prices of all paid orders
 
@@ -23515,7 +23568,7 @@ import prismadb from "@/lib/prismadb";
  * @param storeId - Unique identifier for the given store
  * @returns the total revenue of every paid order for a given store
  */
-export const getTotalRevenue = async (storeId: string) => {
+export default async function getTotalRevenue(storeId: string) {
   // Query database for orders & product items that have been paid for
   const paidOrders = await prismadb.order.findMany({
     where: {
@@ -23542,4 +23595,51 @@ export const getTotalRevenue = async (storeId: string) => {
 
   return totalRevenue;
 };
+```
+
+Now we can import the function `getTotalRevenue` and use it in the dashboard page:
+
+Use getTotalRevenue in dashboard
+
+- Use storeId from params to get the revenue for the current store
+- Display the totalRevenue in the dashboard page component
+
+```tsx
+import getTotalRevenue from '@/actions/getTotalRevenue';
+
+interface DashboardPageProps {
+  params: { storeId: string }
+};
+
+const DashboardPage: React.FC<DashboardPageProps> = async ({
+  params
+}) => {
+
+  const totalRevenue = await getTotalRevenue(params.storeId);
+
+  return (
+    <div className='flex-col'>
+      <div className='flex-1 space-y-4 p-8 pt-6'>
+        <Heading title='Dashboard' description='Overview of your store' />
+        <Separator />
+
+        <div className="grid gap-4 grid-cols-3">
+
+          <Card>
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-sm font-medium'>
+                Total Revenue
+              </CardTitle>
+              <DollarSign className='h-4 w-4 text-muted-foreground' />
+            </CardHeader>
+            <CardContent>
+              <div className='text-2xl font-bold'>
+
+                {priceFormatter.format(totalRevenue)}
+                
+              </div>
+            </CardContent>
+          </Card>
+  );
+}
 ```
