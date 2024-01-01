@@ -23644,7 +23644,9 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
 }
 ```
 
-Similarly, create the file `getSalesCount.ts` in `/actions`.
+Next, create the file `getSalesCount.ts` in `/actions`. 
+
+Unlike `getTotalRevenue`, we simplify the function to simply return the sales count for a store. This function takes a `storeId` as a parameter and queries the database for the count of paid orders of that store. It then returns the sales count as a number.
 
 `ecommerce-admin\actions\getSalesCount.ts`
 ```ts
@@ -23656,30 +23658,14 @@ import prismadb from "@/lib/prismadb";
  * @returns the sales count for a given store
  */
 export default async function getSalesCount(storeId: string) {
-  // Query database for orders & product items that have been paid for
-  const paidOrders = await prismadb.order.findMany({
+  // Query database for to retrieve the count of paid orders
+  const salesCount = await prismadb.order.count({
     where: {
       storeId: storeId,
       isPaid: true,
     },
-    include: {
-      orderItems: {
-        include: {
-          product: true,
-        },
-      },
-    },
   });
 
-  // Sum up the product prices of all paid orders
-  const totalRevenue = paidOrders.reduce((total, order) => {
-    // Sum up the product prices of each order item
-    const orderTotal = order.orderItems.reduce((orderSum, item) => {
-      return orderSum + item.product.price.toNumber();
-    }, 0)
-    return total + orderTotal;
-  }, 0);
-
-  return totalRevenue;
+  return salesCount;
 };
 ```
