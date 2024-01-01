@@ -23466,3 +23466,36 @@ export const getTotalRevenue = async (storeId: string) => {
   
 }
 ```
+
+Retrieve orders and product items that have been paid for
+
+- Use storeId as a parameter to filter orders by store and isPaid flag
+- Include orderItems and product details in the query result
+
+```ts
+import prismadb from "@/lib/prismadb";
+
+/**
+ * Calculate the total revenue of a store
+ * @param storeId - Unique identifier for a store
+ */
+export const getTotalRevenue = async (storeId: string) => {
+  
+  // Query database for orders & product items that have been paid for
+  const paidOrders = await prismadb.order.findMany({
+    where: {
+      storeId: storeId,
+      isPaid: true,
+    },
+    include: {
+      orderItems: {
+        include: {
+          product: true,
+        },
+      },
+    },
+  });
+
+};
+```
+          Implement getTotalRevenue function using prismadb
