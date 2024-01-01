@@ -24,6 +24,10 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
   params
 }) => {
 
+  const totalRevenue = () => await getTotalRevenue(params.storeId);
+  const salesCount = () => {};
+  const stockCount = () => {};
+
   return (
     <div className='flex-col'>
       <div className='flex-1 space-y-4 p-8 pt-6'>
@@ -41,7 +45,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
             </CardHeader>
             <CardContent>
               <div className='text-2xl font-bold'>
-                {priceFormatter.format(100)}
+                {priceFormatter.format(totalRevenue)}
               </div>
             </CardContent>
           </Card>
@@ -55,7 +59,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
             </CardHeader>
             <CardContent>
               <div className='text-2xl font-bold'>
-                +25
+                {salesCount}
               </div>
             </CardContent>
           </Card>
@@ -69,7 +73,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
             </CardHeader>
             <CardContent>
               <div className='text-2xl font-bold'>
-                12
+                {stockCount}
               </div>
             </CardContent>
           </Card>
