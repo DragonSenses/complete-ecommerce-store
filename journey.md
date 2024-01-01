@@ -23725,3 +23725,54 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
 
 export default DashboardPage;
 ```
+
+Use getSalesCount to display sales data
+
+- Use the getSalesCount function to fetch and display the number of sales for a given store on the dashboard overview page
+
+Finally, let's import `getStockCount` first in the dashboard page, use the method and assign the result to `stockCount` variable which we will render in the "Products in Stock" `Card`
+
+Show product availability with stockCount
+
+- Use the getStockCount function to fetch and display the number of products in stock for a given store on the dashboard overview page
+
+`ecommerce-admin\app\(dashboard)\[storeId]\(routes)\page.tsx`
+```tsx
+// ...
+import getStockCount from '@/actions/getStockCount';
+
+interface DashboardPageProps {
+  params: { storeId: string }
+};
+
+const DashboardPage: React.FC<DashboardPageProps> = async ({
+  params
+}) => {
+
+  const stockCount = await getStockCount(params.storeId);
+
+  return (
+    <div className='flex-col'>
+      // ...
+
+          <Card>
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-sm font-medium'>
+                Products In Stock
+              </CardTitle>
+              <Package className='h-4 w-4 text-muted-foreground' />
+            </CardHeader>
+            <CardContent>
+              <div className='text-2xl font-bold'>
+                {stockCount}
+              </div>
+            </CardContent>
+          </Card>
+
+        </div>
+
+      </div>
+    </div>
+  );
+}
+```
