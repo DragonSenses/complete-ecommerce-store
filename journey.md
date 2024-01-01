@@ -23467,7 +23467,7 @@ export const getTotalRevenue = async (storeId: string) => {
 }
 ```
 
-Retrieve orders and product items that have been paid for
+Fetch paid orders and items
 
 - Use storeId as a parameter to filter orders by store and isPaid flag
 - Include orderItems and product details in the query result
@@ -23498,4 +23498,48 @@ export const getTotalRevenue = async (storeId: string) => {
 
 };
 ```
-          Implement getTotalRevenue function using prismadb
+
+Now that we have the `paidOrders`, we need to reduce each order to a single sum named `totalRevenue`. But each order has `orderItems`, so we need to calculate the `orderSum` first then add that to the `totalRevenue`.
+
+Implement getTotalRevenue function using prismadb
+
+- Use storeId as a parameter to filter orders by store
+- Include orderItems and product details in the query result
+- Sum up the product prices of all paid orders
+
+```ts
+import prismadb from "@/lib/prismadb";
+
+/**
+ * Calculate the total revenue of a given store
+ * @param storeId - Unique identifier for the given store
+ * @returns the total revenue of every paid order for a given store
+ */
+export const getTotalRevenue = async (storeId: string) => {
+  // Query database for orders & product items that have been paid for
+  const paidOrders = await prismadb.order.findMany({
+    where: {
+      storeId: storeId,
+      isPaid: true,
+    },
+    include: {
+      orderItems: {
+        include: {
+          product: true,
+        },
+      },
+    },
+  });
+
+  // Sum up the product prices of all paid orders
+  const totalRevenue = paidOrders.reduce((total, order) => {
+    // Sum up the product prices of each order item
+    const orderTotal = order.orderItems.reduce((orderSum, item) => {
+      return orderSum + item.product.price.toNumber();
+    }, 0)
+    return total + orderTotal;
+  }, 0);
+
+  return totalRevenue;
+};
+```
