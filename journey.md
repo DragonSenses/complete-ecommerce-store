@@ -23653,12 +23653,12 @@ Unlike `getTotalRevenue`, we simplify the function to simply return the sales co
 import prismadb from "@/lib/prismadb";
 
 /**
- * Retrieve the total count of sales of a given store
- * @param storeId - Unique identifier for the given store
- * @returns the sales count for a given store
+ * Get the number of orders that have been paid for a given store
+ * @param storeId - The ID of the store to query
+ * @returns the sales count as a number
  */
 export default async function getSalesCount(storeId: string) {
-  // Query database for to retrieve the count of paid orders
+  // Use prismadb to count the paid orders that match the storeId
   const salesCount = await prismadb.order.count({
     where: {
       storeId: storeId,
@@ -23668,4 +23668,60 @@ export default async function getSalesCount(storeId: string) {
 
   return salesCount;
 };
+```
+
+Now we can import and use this function in the dashboard overview page:
+
+```tsx
+// ...
+import getSalesCount from '@/actions/getSalesCount';
+
+interface DashboardPageProps {
+  params: { storeId: string }
+};
+
+const DashboardPage: React.FC<DashboardPageProps> = async ({
+  params
+}) => {
+  // ...
+  const salesCount = await getSalesCount(params.storeId);
+
+  return (
+    <div className='flex-col'>
+      <div className='flex-1 space-y-4 p-8 pt-6'>
+        <Heading title='Dashboard' description='Overview of your store' />
+        <Separator />
+
+        <div className="grid gap-4 grid-cols-3">
+
+          <Card>
+            // ...
+          </Card>
+
+          <Card>
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-sm font-medium'>
+                Sales
+              </CardTitle>
+              <CreditCard className='h-4 w-4 text-muted-foreground' />
+            </CardHeader>
+            <CardContent>
+              <div className='text-2xl font-bold'>
+                {salesCount}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            // ...
+          </Card>
+
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+export default DashboardPage;
 ```
