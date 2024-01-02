@@ -23807,7 +23807,7 @@ export default async function getStockCount(storeId: string) {
 };
 ```
 
-## Add the Overview
+## Add the Overview Card to the dashboard
 
 After finishing the card container that displays the analytics of revenue, sales and inventory we can move on to the `Overview` `Card`. After the container but before the second to last `div`, add another `Card` component with title of "Overview".
 
@@ -23846,3 +23846,22 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
 
 export default DashboardPage;
 ```
+
+## Create the `Overview` component
+
+Navigate to `ecommerce-admin\components` and create the component `Overview.tsx`.
+
+`ecommerce-admin\components\Overview.tsx`
+```tsx
+import React from 'react';
+
+const Overview = () => {
+  return (
+    <div>Overview</div>
+  )
+}
+
+export default Overview
+```
+
+We want to put an `Overview` component inside `CardContent`.
