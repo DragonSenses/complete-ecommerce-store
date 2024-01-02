@@ -18,6 +18,7 @@ import {
 import getTotalRevenue from '@/actions/getTotalRevenue';
 import getSalesCount from '@/actions/getSalesCount';
 import getStockCount from '@/actions/getStockCount';
+import Overview from '@/components/Overview';
 
 interface DashboardPageProps {
   params: { storeId: string }
@@ -86,7 +87,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
           <CardHeader>
             <CardTitle>Overview</CardTitle>
             <CardContent className='pl-2'>
-
+              <Overview data={[]} />
             </CardContent>
           </CardHeader>
         </Card>
