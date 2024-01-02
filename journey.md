@@ -23898,3 +23898,28 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
     </div>
   );
 }
+```
+
+The `Overview` component will display store data visually. To do this we use a composable charting library built on React components called [recharts](https://recharts.org/en-US/).
+
+Install the [recharts npm package](https://www.npmjs.com/package/recharts).
+
+```sh
+npm i recharts
+```
+
+We can look at the [recharts API reference](https://recharts.org/en-US/api) to see what we can work with.
+
+- [recharts - BarChart](https://recharts.org/en-US/api/BarChart)
+- [recharts - ResponsiveContainer](https://recharts.org/en-US/api/ResponsiveContainer) is the parent component of `BarChart`
+
+Let's develop the `Overview` component using the `BarChart`.
+
+- Mark as client component
+- Import `{ Bar, BarChart, ResponsiveContainer, XAxis, YAxis }`
+  - Optionally, we can use `CartesianGrid`, `Tooltip`, or `Legend` components
+- Define the prop interface `OverviewProps` that contains `data` which is of type `any[]` for now
+- Assign the type and prop interface to `Overview`
+- Return a `ResponsiveContainer` with props `width` of 100% and `height` of 350. This is the parent container for `BarChart`
+- Inside render the `BarChart` with the prop `data`, passing in our `data` argument
+
