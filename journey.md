@@ -23923,3 +23923,43 @@ Let's develop the `Overview` component using the `BarChart`.
 - Return a `ResponsiveContainer` with props `width` of 100% and `height` of 350. This is the parent container for `BarChart`
 - Inside render the `BarChart` with the prop `data`, passing in our `data` argument
 
+`ecommerce-admin\components\Overview.tsx`
+```tsx
+"use client";
+
+import {
+  Bar,
+  BarChart,
+  ResponsiveContainer,
+  XAxis,
+  YAxis
+} from 'recharts';
+
+import React from 'react';
+
+interface OverviewProps {
+  data: any[];
+}
+
+const Overview: React.FC<OverviewProps> = ({
+  data,
+}) => {
+  return (
+    <ResponsiveContainer width="100%" height={350}>
+      <BarChart data={data}>
+
+      </BarChart>
+    </ResponsiveContainer>
+  )
+}
+
+export default Overview
+```
+
+Display data using recharts
+
+- Import recharts components and use client hook
+- Define OverviewProps interface and Overview component
+- Use ResponsiveContainer and BarChart to render data
+- Export Overview component as default
+
