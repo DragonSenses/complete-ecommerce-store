@@ -37,8 +37,8 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
         <Heading title='Dashboard' description='Overview of your store' />
         <Separator />
 
+        {/* Card container that displays analytics for revenue, sales & product inventory */}
         <div className="grid gap-4 grid-cols-3">
-
           <Card>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
               <CardTitle className='text-sm font-medium'>
@@ -80,9 +80,16 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
               </div>
             </CardContent>
           </Card>
-
         </div>
+        {/* Card Overview */}
+        <Card className='col-span-4'>
+          <CardHeader>
+            <CardTitle>Overview</CardTitle>
+            <CardContent className='pl-2'>
 
+            </CardContent>
+          </CardHeader>
+        </Card>
       </div>
     </div>
   );
