@@ -1,8 +1,28 @@
+"use client";
+
+import {
+  Bar,
+  BarChart,
+  ResponsiveContainer,
+  XAxis,
+  YAxis
+} from 'recharts';
+
 import React from 'react';
 
-const Overview = () => {
+interface OverviewProps {
+  data: any[];
+}
+
+const Overview: React.FC<OverviewProps> = ({
+  data,
+}) => {
   return (
-    <div>Overview</div>
+    <ResponsiveContainer width="100%" height={350}>
+      <BarChart data={data}>
+
+      </BarChart>
+    </ResponsiveContainer>
   )
 }
 
