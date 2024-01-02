@@ -23806,3 +23806,43 @@ export default async function getStockCount(storeId: string) {
   return stockCount;
 };
 ```
+
+## Add the Overview
+
+After finishing the card container that displays the analytics of revenue, sales and inventory we can move on to the `Overview` `Card`. After the container but before the second to last `div`, add another `Card` component with title of "Overview".
+
+```tsx
+const DashboardPage: React.FC<DashboardPageProps> = async ({
+  params
+}) => {
+  // ...
+  return (
+    <div className='flex-col'>
+      <div className='flex-1 space-y-4 p-8 pt-6'>
+        <Heading title='Dashboard' description='Overview of your store' />
+        <Separator />
+
+        {/* Card container that displays analytics for revenue, sales & product inventory */}
+        <div className="grid gap-4 grid-cols-3">
+          {/* Total Revenue Card */}
+          {/* Sales Card */}
+          {/* Stock Card */}
+        </div>
+
+        {/* Card Overview */}
+        <Card className='col-span-4'>
+          <CardHeader>
+            <CardTitle>Overview</CardTitle>
+            <CardContent className='pl-2'>
+
+            </CardContent>
+          </CardHeader>
+        </Card>
+
+      </div>
+    </div>
+  );
+}
+
+export default DashboardPage;
+```
