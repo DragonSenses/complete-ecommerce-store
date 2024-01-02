@@ -23864,4 +23864,37 @@ const Overview = () => {
 export default Overview
 ```
 
-We want to put an `Overview` component inside `CardContent`.
+In the dashboard, put `Overview` inside `CardContent`. Give it a prop `data`, for now we can pass it an empty array.
+
+```tsx
+const DashboardPage: React.FC<DashboardPageProps> = async ({
+  params
+}) => {
+  // ...
+  return (
+    <div className='flex-col'>
+      <div className='flex-1 space-y-4 p-8 pt-6'>
+        <Heading title='Dashboard' description='Overview of your store' />
+        <Separator />
+
+        {/* Card container that displays analytics for revenue, sales & product inventory */}
+        <div className="grid gap-4 grid-cols-3">
+          {/* Total Revenue Card */}
+          {/* Sales Card */}
+          {/* Stock Card */}
+        </div>
+
+        {/* Card Overview */}
+        <Card className='col-span-4'>
+          <CardHeader>
+            <CardTitle>Overview</CardTitle>
+            <CardContent className='pl-2'>
+              <Overview data={[]} />
+            </CardContent>
+          </CardHeader>
+        </Card>
+
+      </div>
+    </div>
+  );
+}
