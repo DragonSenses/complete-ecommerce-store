@@ -23963,3 +23963,37 @@ Display data using recharts
 - Use ResponsiveContainer and BarChart to render data
 - Export Overview component as default
 
+Let's develop `BarChart`. Add an `XAxis` and `YAxis` child components and configure their properties.
+
+Add XAxis and YAxis components to BarChart
+
+- Import XAxis and YAxis from recharts library
+- Configure XAxis and YAxis properties such as dataKey, stroke, fontSize, tickLine, axisLine, and tickFormatter
+- Render XAxis and YAxis inside BarChart component
+
+```tsx
+const Overview: React.FC<OverviewProps> = ({
+  data,
+}) => {
+  return (
+    <ResponsiveContainer width="100%" height={350}>
+      <BarChart data={data}>
+        <XAxis
+          dataKey="name"
+          stroke="#888888"
+          fontSize={12}
+          tickLine={false}
+          axisLine={false}
+        />
+        <YAxis
+          stroke="#888888"
+          fontSize={12}
+          tickLine={false}
+          axisLine={false}
+          tickFormatter={(value) => `$${value}`}
+        />
+      </BarChart>
+    </ResponsiveContainer>
+  )
+}
+```
