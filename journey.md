@@ -23997,3 +23997,39 @@ const Overview: React.FC<OverviewProps> = ({
   )
 }
 ```
+
+Now add the cartesian component [Bar](https://recharts.org/en-US/api/Bar). Configure the properties `dataKey` to "total", `fill` to "#3498db" and `radius` to `[4, 4, 0, 0]`.
+
+Add Bar component to BarChart
+
+- Import Bar from recharts library
+- Add Bar component as a child of BarChart component
+- Set dataKey, fill, and radius properties for Bar component
+
+```tsx
+const Overview: React.FC<OverviewProps> = ({
+  data,
+}) => {
+  return (
+    <ResponsiveContainer width="100%" height={350}>
+      <BarChart data={data}>
+        <XAxis
+          dataKey="name"
+          stroke="#888888"
+          fontSize={12}
+          tickLine={false}
+          axisLine={false}
+        />
+        <YAxis
+          stroke="#888888"
+          fontSize={12}
+          tickLine={false}
+          axisLine={false}
+          tickFormatter={(value) => `$${value}`}
+        />
+        <Bar dataKey="total" fill="#3498db" radius={[4, 4, 0, 0]} />
+      </BarChart>
+    </ResponsiveContainer>
+  )
+}
+```
