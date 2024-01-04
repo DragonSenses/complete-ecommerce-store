@@ -24043,11 +24043,56 @@ Create a file in `/actions` named `getGrapheRevenue.ts`.
 import prismadb from "@/lib/prismadb";
 
 /**
- * Get graph revenue for a given store
+ * Get monthly revenue data for a given store
  * @param storeId - The ID of the store to query
- * @returns the data on revenue
+ * @returns revenue data
  */
 export default async function getGraphRevenue(storeId: string) {
   
 };
 ```
+
+Next we want to query the database for a list of paid orders along with the products purchased in those orders. So we include the related records `orderItems`.
+
+Then create a variable `monthlyRevenue` that has the type of an object with numeric keys and numeric values. The object is initialized as an empty object. This way we can assign values to this object like this:
+
+```ts
+monthlyRevenue[1] = 1000; // January revenue
+monthlyRevenue[2] = 2000; // February revenue
+monthlyRevenue[3] = 1500; // March revenue
+```
+
+```tsx
+import prismadb from "@/lib/prismadb";
+
+/**
+ * Get monthly revenue data for a given store
+ * @param storeId - The ID of the store to query
+ * @returns revenue data
+ */
+export default async function getGraphRevenue(storeId: string) {
+  // Query database for orders & product items that have been paid for
+  const paidOrders = await prismadb.order.findMany({
+    where: {
+      storeId: storeId,
+      isPaid: true,
+    },
+    include: {
+      orderItems: {
+        include: {
+          product: true,
+        },
+      },
+    },
+  });
+
+  const monthlyRevenue: { [key: number]: number } = {};
+};
+```
+
+Add getGraphRevenue function to actions
+
+- Import prismadb from "@/lib/prismadb"
+- Define getGraphRevenue function that takes storeId as a parameter
+- Query prismadb for paid orders and order items for a given store
+- Initialize monthlyRevenue object with numeric keys and values
