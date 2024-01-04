@@ -8,7 +8,7 @@ interface GraphData {
 /**
  * Get monthly revenue data for a given store
  * @param storeId - The ID of the store to query
- * @returns revenue data
+ * @returns an array of graph data that contains the total monthly revenue
  */
 export default async function getGraphRevenue(storeId: string) {
   // Fetch all paid orders and their associated products for the store
@@ -26,7 +26,7 @@ export default async function getGraphRevenue(storeId: string) {
     },
   });
 
-  // Initialize an empty oobject to store the monthly revenue data
+  // Initialize an empty object to store the monthly revenue data
   const monthlyRevenue: { [key: number]: number } = {};
 
   // Loop through each order and calculate its revenue
@@ -48,7 +48,10 @@ export default async function getGraphRevenue(storeId: string) {
     monthlyRevenue[month] = (monthlyRevenue[month] || 0) + revenueForOrder;
   }
 
-  const graphData: GraphData[] = [
+  // After populating monthly revenue data, transform it to GraphData
+
+  // Initialize an array of GraphData that contains each month and a total of 0
+  const monthlyGraphData: GraphData[] = [
     {name: "Jan", total: 0  },
     {name: "Feb", total: 0  },
     {name: "Mar", total: 0  },
@@ -63,7 +66,10 @@ export default async function getGraphRevenue(storeId: string) {
     {name: "Dec", total: 0  },
   ];
 
+  // For each month, set the GraphData total to their respective monthly revnue
   for (const month in monthlyRevenue) {
-    graphData[parseInt(month)]
+    monthlyGraphData[parseInt(month)].total = monthlyRevenue[parseInt(month)];
   }
-}
+
+  return monthlyGraphData;
+};
