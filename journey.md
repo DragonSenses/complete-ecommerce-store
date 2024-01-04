@@ -24033,3 +24033,21 @@ const Overview: React.FC<OverviewProps> = ({
   )
 }
 ```
+
+Next we need a function that will organize our data so that we can pass it into the `Overview`'s `data` property.
+
+Create a file in `/actions` named `getGrapheRevenue.ts`.
+
+`ecommerce-admin\actions\getGraphRevenue.ts`
+```ts
+import prismadb from "@/lib/prismadb";
+
+/**
+ * Get graph revenue for a given store
+ * @param storeId - The ID of the store to query
+ * @returns the data on revenue
+ */
+export default async function getGraphRevenue(storeId: string) {
+  
+};
+```
