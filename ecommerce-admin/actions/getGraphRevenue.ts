@@ -1,9 +1,9 @@
 import prismadb from "@/lib/prismadb";
 
 /**
- * Get graph revenue for a given store
+ * Get monthly revenue data for a given store
  * @param storeId - The ID of the store to query
- * @returns the data on revenue
+ * @returns revenue data
  */
 export default async function getGraphRevenue(storeId: string) {
   // Query database for orders & product items that have been paid for
@@ -21,5 +21,5 @@ export default async function getGraphRevenue(storeId: string) {
     },
   });
 
-  return paidOrders;
+  const monthlyRevenue: { [key: number]: number } = {};
 };
