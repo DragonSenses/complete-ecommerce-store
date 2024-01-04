@@ -24308,3 +24308,59 @@ export default async function getGraphRevenue(storeId: string) {
   return monthlyGraphData;
 };
 ```
+
+Transform monthly revenue to graph data for store
+
+- Extract monthly revenue from paid orders
+- Transform monthly revenue to monthlyGraphData, an array of GraphData, and return it
+
+## Putting it all together
+
+Now navigate back to dashboard overview page and create a constant `graphRevenue` where we use the function `getGraphRevenue`. Finally, pass in the `graphRevenu` to the `data` prop of `Overview` component.
+
+`ecommerce-admin\app\(dashboard)\[storeId]\(routes)\page.tsx`
+```tsx
+import getGraphRevenue from '@/actions/getGraphRevenue';
+
+interface DashboardPageProps {
+  params: { storeId: string }
+};
+
+const DashboardPage: React.FC<DashboardPageProps> = async ({
+  params
+}) => {
+
+  const totalRevenue = await getTotalRevenue(params.storeId);
+  const salesCount = await getSalesCount(params.storeId);
+  const stockCount = await getStockCount(params.storeId);
+  const graphRevenue = await getGraphRevenue(params.storeId);
+
+ return (
+    <div className='flex-col'>
+      <div className='flex-1 space-y-4 p-8 pt-6'>
+        <Heading title='Dashboard' description='Overview of your store' />
+        <Separator />
+
+        {/* Card container that displays analytics for revenue, sales & product inventory */}
+        {/* ... */}
+
+        {/* Card Overview */}
+        <Card className='col-span-4'>
+          <CardHeader>
+            <CardTitle>Overview</CardTitle>
+            <CardContent className='pl-2'>
+
+              <Overview data={[graphRevenue]} />
+
+            </CardContent>
+          </CardHeader>
+        </Card>
+      </div>
+    </div>
+  );
+}
+```
+
+Display monthly revenue graph on dashboard page
+
+- Use recharts to display a bar graph that contains the monthly revenue for a given store
