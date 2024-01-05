@@ -24364,3 +24364,33 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
 Display monthly revenue graph on dashboard page
 
 - Use recharts to display a bar graph that contains the monthly revenue for a given store
+
+# Dark Mode
+
+One essential feature to add is dark mode. To do that we will add a theme provider for our nextjs project.
+
+- [shadcn/ui - Dark Mode - Next.js | Reference](https://ui.shadcn.com/docs/dark-mode/next)
+
+1. Install next-themes
+
+```sh
+npm install next-themes
+```
+
+2. Create a theme provider
+
+Navigate to our project's `/providers` folder and create a `theme-provider.tsx`.
+
+`ecommerce-admin\providers\theme-provider.tsx`
+```ts
+"use client"
+
+import * as React from "react"
+import { ThemeProvider as NextThemesProvider } from "next-themes"
+import { type ThemeProviderProps } from "next-themes/dist/types"
+
+export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
+  return <NextThemesProvider {...props}>{children}</NextThemesProvider>
+}
+```
+
