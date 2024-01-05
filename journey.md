@@ -24527,7 +24527,108 @@ export default async function Navbar() {
 
 Now we can toggle between the themes dark, light, and system from the navbar.
 
-## Add Dark Mode to `UserButton` from Clerk
+## Add Dark Mode to Clerk components using the appearance prop
 
-An issue we come across is that the Clerk `UserProfile` component does not share the same theme.
+An issue we come across is that the Clerk `UserProfile` component does not share the same theme as the rest of the UI. In order to do that we need to use a pre-built theme and also modify the `appearance` prop.
 
+- [Clerk Customization - Appearance prop | Reference](https://clerk.com/docs/components/customization/overview)
+
+- [Pass a theme to `<ClerkProvider>`](https://clerk.com/docs/components/customization/overview#pass-a-theme-to-clerk-provider), to apply a theme to all Clerk components, pass the `appearance` prop to the `<ClerkProvider>` component
+
+- [Pass a theme to a single Clerk component](https://clerk.com/docs/components/customization/overview#pass-a-theme-to-a-single-clerk-component)
+
+
+First we want to install the pre-built themes offered by Clerk.
+
+```sh
+npm install @clerk/themes
+```
+
+Next let's pass the theme to `<ClerkProvider>` using the `appearance` prop
+
+`ecommerce-admin\app\layout.tsx`
+```tsx
+// Global Imports
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import { ClerkProvider } from '@clerk/nextjs'
+
+import { dark } from '@clerk/themes';
+
+// Local Imports
+import './globals.css'
+import { ModalProvider } from '@/providers/modal-provider'
+import { ToasterProvider } from '@/providers/toast-provider'
+import { ThemeProvider } from '@/providers/theme-provider'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'Admin Dashboard',
+  description: 'Admin Dashboard for e-commerce store',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <ClerkProvider
+      appearance={{
+        baseTheme: dark
+      }}
+    >
+      <html lang="en">
+        <body className={inter.className}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ToasterProvider />
+            <ModalProvider />
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
+  )
+}
+```
+
+Another option is using the `shadesOfPurple` theme from `@clerk/themes` as it contrasts well in both light and dark modes. This will improve readability.
+
+```tsx
+import { shadesOfPurple } from '@clerk/themes';
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <ClerkProvider
+      appearance={{
+        baseTheme: shadesOfPurple
+      }}
+    >
+      <html lang="en">
+        <body className={inter.className}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ToasterProvider />
+            <ModalProvider />
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
+  )
+}
+```
