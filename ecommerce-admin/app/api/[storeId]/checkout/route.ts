@@ -1,6 +1,9 @@
 import Stripe from 'stripe';
 import { NextResponse } from 'next/server';
 
+import NextCors from 'nextjs-cors';
+var cors = require('cors');
+
 import { stripe } from '@/lib/stripe';
 import prismadb from '@/lib/prismadb';
 
@@ -11,14 +14,38 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
+// Initialize the cors middleware
+const corsMiddleware = cors({
+  origin: "http://localhost:3001", // The origin of frontend app
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // The HTTP methods to allow
+  allowedHeaders: ['Content-Type', 'Authorization'], // The headers to allow
+  optionsSuccessStatus: 200 // The status code to send for OPTIONS requests
+});
+
+// Wrap the cors middleware in a promise
+const runCors = (req: Request, res: Response) => {
+  return new Promise((resolve, reject) => {
+    corsMiddleware(req, res, (result: Error) => {
+      if (result instanceof Error) {
+        return reject(result);
+      }
+      return resolve(result);
+    });
+  });
+};
+
 export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders });
 }
 
 export async function POST(
   req: Request,
+  res: Response,
   { params }: { params: { storeId: string } }
 ) {
+  // Run the cors middleware before handling the request
+  await runCors(req, res);
+
   const { productIds } = await req.json();
 
   if (!productIds || productIds.length === 0) {
@@ -83,5 +110,5 @@ export async function POST(
     }
   });
 
-  return NextResponse.json({ url: session.url}, { headers: corsHeaders });
+  return NextResponse.json({ url: session.url }, { headers: corsHeaders });
 }
