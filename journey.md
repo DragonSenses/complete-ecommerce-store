@@ -22666,6 +22666,50 @@ We will go with the latter, so we need to install the `cors` library.
 npm install cors
 ```
 
+Also install `next-js-cors`
+
+```sh
+npm i nextjs-cors
+```
+
+Then we import `cors` inside our `ecommerce-admin\app\api\[storeId]\checkout\route.ts`
+
+We want to do these steps:
+
+1. import cors libraries
+2. Initialize cors middleware
+3. wrap cors middleware in promise
+4. Run cors middleware before handling the request (use `await`)
+
+Here is a simple blueprint for what we want to do in the checkout API route:
+
+```ts
+// Import the cors library
+import cors from 'cors';
+
+// Initialize the cors middleware
+const corsMiddleware = cors({
+  origin: "http://localhost:3001", // The origin of your frontend app
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // The HTTP methods to allow
+  allowedHeaders: ['Content-Type', 'Authorization'], // The headers to allow
+  optionsSuccessStatus: 200 // The status code to send for OPTIONS requests
+});
+
+// Apply the cors middleware to your request and response objects
+export default async function handler(req, res) {
+  corsMiddleware(req, res, () => {
+    // Rest of the API logic
+    // ...
+  });
+}
+```
+
+The handler will be the POST route.
+
+Enable CORS for checkout API routes
+
+- Create CORS middleware
+- Run CORS middleware before handling the POST request
 
 ---
 
