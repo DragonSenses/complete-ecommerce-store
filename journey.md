@@ -22650,6 +22650,27 @@ export async function POST(
 }
 ```
 
+---
+
+###### Configure Next.js server to allow CORS requests from frontend app
+
+This is an updated section as the previous `corsHeaders` does not properly set the headers and causes CORS errors.
+
+In order to fix this we are going to by 
+
+Configure your Next.js server to allow CORS requests from your frontend app. This means you need to set the Access-Control-Allow-Origin header to the origin of your frontend app, such as http://localhost:3001 or https://your-app.com. You can do this in your Next.js API routes by using the res.setHeader method, or by using a middleware like [nextjs-cors](https://www.npmjs.com/package/nextjs-cors) or [cors](https://www.npmjs.com/package/cors).
+
+We will go with the latter, so we need to install the `cors` library.
+
+```sh
+npm install cors
+```
+
+
+---
+
+#####  Use webhook to check for payment events part 2
+
 Notice when we created the `session` with line items, we also included the `metadata` an object that contains the `orderId`. The reason for this is so we can access the `metadata` in the webhook in order to find the `order` in the database.
 
 We want to update the `order` in our database, so we `prismadb.order.update()` and set the `isPaid` property to `true`. We also update the address using the address string we created. Make sure to use the `session` object which stores many details from the `orderId` to the `customer_details` which have the child attributes `address, email, name, phone, tax_exempt`.
