@@ -27,6 +27,7 @@ Uses Next.js 13
 - Stripe API
 - Clerk for authentication
 - Cloudinary for image management
+- zustand for state management
 
 # Specifications
 
@@ -40,13 +41,15 @@ Uses Next.js 13
 - User can **create**, **read**, **update** and **delete** Billboards, large ads displayed at the top of a store's page to promote products, services, or events
   - Billboards can be attached to a single category or used individually (admin generates API routes for all of these cases)
 
-- User can search through all categories, products, sizes, colors, billboards complete with pagination
+- User can search through all categories, products, sizes, colors, billboards through a `DataTable` complete with *pagination*
 
 - User can highlight and promote products using the *featured* functionality which displays the product on the home page
 
 - User can manage orders and sales
 
 - User can view analytics for total revenue, sales & product inventory
+
+- User can copy API routes from the admin dashboard and apply them to the store
 
 ## Dashboard
 
@@ -138,6 +141,8 @@ cd /ecommerce-admin
 npm run dev
 ```
 
+Make sure that admin project is running before you run the front-end store project.
+
 **7. Run ecommerce-store app on localhost:3001**
 
 ```sh
@@ -145,3 +150,39 @@ cd /ecommerce-store
 
 npm run dev
 ```
+
+**8. Create a new store**
+
+With all things configured, you can create a new store through the store form. If you already have a store, then click the drop-down menu to the top left and click the "Create Store" option.
+
+**9. Populate store with products, billboards, categories, sizes, colors in the admin dashboard**
+
+After creating a new store we can start going through the billboards, categories, colors, products and sizes.
+
+**10. Add your API routes from admin to the front-end, ecommerce-store**
+
+First thing, create an `.env` file under `/ecommerce-store` folder:
+
+```env
+NEXT_PUBLIC_API_URL=
+```
+
+You can find your `NEXT_PUBLIC_API_URL` key in your `Settings` tab in the `admin-dashboard`'s navigation bar.
+
+After filling that in, we can take a specific billboard's ID through the Admin dashboard > Billboards > and right click on the "..." in the DataTable to press "Copy ID". 
+
+Navigate to home page found in `ecommerce-store\app\(routes)\page.tsx` and paste the ID inside the `getBillboard()`
+
+```tsx
+export default async function HomePage() {
+
+  // Fetch featured products
+  const products = await getProducts({ isFeatured: true });
+
+  // Fetch billboard
+  const billboard = await getBillboard("YOUR_BILLBOARD_ID_HERE");
+
+  //  ...
+}
+```
+
