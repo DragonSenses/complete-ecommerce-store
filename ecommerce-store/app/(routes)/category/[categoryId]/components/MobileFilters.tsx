@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import { Plus, X } from 'lucide-react';
 import { Dialog } from '@headlessui/react';
