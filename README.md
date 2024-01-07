@@ -82,15 +82,23 @@ Uses Next.js 13
 
 **3. Install dependencies**
 
+Install dependencies for each project. First change directory to the project and then run the command: npm run install-dependencies
+
     In the terminal:
 
     ```powershell
+    cd /ecommerce-admin
+    npm run install-dependencies
+
+    cd /ecommerce-store
     npm run install-dependencies
     ```
 
 **4. Create an `.env` file**
 
-At the root of the project, create a file named `.env` that contains the following template:
+You want to create a local file to hold your sensitive information.
+
+At the root of the project, create your environment variables in a file named `.env` that contains the following template:
 
 ```.env
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
@@ -159,6 +167,8 @@ With all things configured, you can create a new store through the store form. I
 
 After creating a new store we can start going through the billboards, categories, colors, products and sizes.
 
+**Note: make sure to completely fill out a product creation form, which includes adding an image.**
+
 **10. Add your API routes from admin to the front-end, ecommerce-store**
 
 First thing, create an `.env` file under `/ecommerce-store` folder:
@@ -186,3 +196,18 @@ export default async function HomePage() {
 }
 ```
 
+**11. Create your Stripe Webhook key**
+
+In order for the payment and checkout to work, you need to set up your Stripe webhook.
+
+- Install [Stripe CLI](https://stripe.com/docs/stripe-cli). Download the windows zip file, unzip the folder, change into the directory where its unzipped and run the commands from there (e.g., `stripe login`).
+
+- [Webhooks quickstart| Stripe Reference](https://stripe.com/docs/webhooks/quickstart)
+
+At this point you should be on the test on `Test the webhook`, and just downloaded the CLI. After successfully running the `stripe login` command, you should receieve a "webhook signing secret" key. Copy that and paste it into the `.env` file as the value to the `STRIPE_WEBHOOK_SECRET` variable.
+
+After testing the webhook locally, you can finally start processing orders.
+
+**12. Shop away**
+
+After creating an order after checkout, you can see the order update the admin dashboard's order tab.
