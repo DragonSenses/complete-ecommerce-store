@@ -1,11 +1,12 @@
 import Stripe from 'stripe';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 import NextCors from 'nextjs-cors';
 var cors = require('cors');
 
 import { stripe } from '@/lib/stripe';
 import prismadb from '@/lib/prismadb';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 // Configure the CORS policy by setting HTTP response headers
 const corsHeaders = {
@@ -39,12 +40,25 @@ export async function OPTIONS() {
 }
 
 export async function POST(
-  req: Request,
-  res: Response,
+  req: NextApiRequest,
+  res: NextApiResponse,
   { params }: { params: { storeId: string } }
 ) {
   // Run the cors middleware before handling the request
-  await runCors(req, res);
+  // await runCors(req, res);
+
+  // Run NextCors before handling the request
+  await NextCors(req, res, {
+    origin: "http://localhost:3001", // The origin of frontend app
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // The HTTP methods to allow
+    allowedHeaders: ['Content-Type', 'Authorization'], // The headers to allow
+    optionsSuccessStatus: 200 // The status code to send for OPTIONS requests
+  });
+
+  // Check if storeId exists
+  if (!params.storeId) {
+    return new NextResponse("Store ID is required", { status: 400 });
+  }
 
   const { productIds } = await req.json();
 
@@ -111,4 +125,4 @@ export async function POST(
   });
 
   return NextResponse.json({ url: session.url }, { headers: corsHeaders });
-}
+};
