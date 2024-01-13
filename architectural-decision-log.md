@@ -24697,3 +24697,11 @@ export default function RootLayout({
   )
 }
 ```
+
+# Updates
+
+## Update @clerk/nextjs to 4.29.3 IMMEDIATELY, critical security vulnerability
+
+Update @clerk/nextjs to 4.29.3 for security fix
+
+This commit updates the @clerk/nextjs package to version 4.29.3, which contains a critical security patch. The patch fixes a vulnerability that could allow an attacker to bypass authentication and access user data. See  [clerk changelog](https://clerk.com/changelog/2024-01-12) for more details.
