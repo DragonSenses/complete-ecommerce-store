@@ -23,7 +23,7 @@ Uses Next.js 13
 - Next.JS 13 
 - TypeScript, React, TailwindCSS
 - MySQL, Prisma and PlanetScale for database
-- NextAuth
+- Clerk for authentication
 - Stripe API
 - Clerk for authentication
 - Cloudinary for image management
