@@ -11,13 +11,6 @@ This project contains two parts:
 
 Uses Next.js 13
 
-# Live Link - WIP
-
-- TODO: live link (still finding a service to host on)
-- TODO: add mock up 
-- TODO: Sample Screenshots
-- TODO: Sample Data
-
 # Technologies:
 
 - Next.JS 13 
@@ -62,7 +55,16 @@ Uses Next.js 13
 
 ## Ecommerce Store
 
-- 
+- Front-end store that displays each store as a collection of products
+  - e.g., organize each store as a collection of "shoes", "fruits" or "clothing"
+  - Display each store at the navbar at the top
+- Responsive design, users can view the website in both mobile, tablet or desktop screens
+- User can filter products by size, color and more
+- User can view a grid of featured products
+- User can click the shopping cart icon
+  - User can view their shopping cart, products in shopping cart and order summary
+- User can purchase products securely with [Stripe security](https://docs.stripe.com/security) by encrypting sensitive data (such as credit card or account numbers) both in transit and at rest.
+  - [Stripe dedicated card technology](https://docs.stripe.com/security#:~:text=Stripe%20encrypts%20sensitive%20data%20both,the%20rest%20of%20our%20services.)
 
 ## Prerequisites
 
@@ -202,7 +204,7 @@ In order for the payment and checkout to work, you need to set up your Stripe we
 
 - Install [Stripe CLI](https://stripe.com/docs/stripe-cli). Download the windows zip file, unzip the folder, change into the directory where its unzipped and run the commands from there (e.g., `stripe login`).
 
-- [Webhooks quickstart| Stripe Reference](https://stripe.com/docs/webhooks/quickstart)
+- [Webhooks quickstart | Stripe Reference](https://stripe.com/docs/webhooks/quickstart)
 
 At this point you should be on the test on `Test the webhook`, and just downloaded the CLI. After successfully running the `stripe login` command, you should receieve a "webhook signing secret" key. Copy that and paste it into the `.env` file as the value to the `STRIPE_WEBHOOK_SECRET` variable.
 
