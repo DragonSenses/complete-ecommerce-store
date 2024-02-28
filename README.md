@@ -15,12 +15,13 @@ Uses Next.js 13
 
 - Next.JS 13 
 - TypeScript, React, TailwindCSS
-- MySQL, Prisma and PlanetScale for database
-- Clerk for authentication
-- Stripe API
-- Clerk for authentication
-- Cloudinary for image management
-- zustand for state management
+- MySQL, [Prisma](https://www.prisma.io/docs) and [PlanetScale](https://planetscale.com/docs) for database
+- [Clerk](https://clerk.com/docs) for authentication
+- [Stripe API](https://docs.stripe.com/api) for checkout and payment handling
+- [Cloudinary](https://cloudinary.com/developers) for image management
+- [zustand](https://github.com/pmndrs/zustand) for state management
+- [shadcn/ui](https://ui.shadcn.com/) component collection for admin dashboard
+- [headlessui](https://headlessui.com/react/menu) component library for the front-end store
 
 # Specifications
 
@@ -51,7 +52,6 @@ Uses Next.js 13
 - Dashboard can manage and control multiple stores and vendors through one CMS
   - e.g., Computer parts store, fruit store and a clothing store can be handled all in the admin dashboard
 - CMS dashboard will generate API routes for each store individually
-
 
 ## Ecommerce Store
 
@@ -210,6 +210,8 @@ At this point you should be on the test on `Test the webhook`, and just download
 
 After testing the webhook locally, you can finally start processing orders.
 
-**12. Shop away**
+**12. Deploy to Production**
 
-After creating an order after checkout, you can see the order update the admin dashboard's order tab.
+See the `architectural-decision-log.md` file attached to this repository, and navigate to the section on **# Deployment**.
+
+The **Deployment** section includes a detailed step-by-step guide on how to get this entire app working in production: **live and ready for use by end users**.
