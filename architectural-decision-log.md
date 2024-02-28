@@ -24683,6 +24683,89 @@ export default function RootLayout({
 }
 ```
 
+# Extra features
+
+## Disable checkout button when shopping cart is empty
+
+feat: Disable checkout button when cart is empty
+
+`ecommerce-store\app\(routes)\cart\components\Summary.tsx`
+```tsx
+import useCart from '@/hooks/use-cart';
+
+const Summary = () => {
+  // Get items, an array of products, from cart state
+  const items = useCart((state) => state.items);
+  
+  return (
+    <div className='mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:pt-8'>
+      { /* ... */ }
+
+      <Button 
+        disabled={items.length === 0}
+        onClick={onCheckout} 
+        className='w-full mt-6'
+      >
+        Checkout
+      </Button>
+    </div>
+  )
+}
+```
+
+We also need to extend the `Button` functionality to actually disable the component.
+
+feat: Extend Button with disabled functionality
+
+`ecommerce-store\components\ui\Button.tsx`
+```tsx
+import React, { forwardRef } from "react";
+
+import { cn } from "@/lib/utils";
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
+  className,
+  children,
+  disabled,
+  type = "button",
+  ...props
+}, ref) => {
+  return (
+    <button
+      className={cn(
+        `
+        w-auto
+        rounded-full
+        bg-black
+        border-transparent
+        px-5
+        py-3
+        disabled:cursor-not-allowed
+        disabled:opacity-50
+        text-white
+        font-semibold
+        hover:opacity-75
+        transition
+        `,
+        className
+      )}
+      disabled={disabled}
+      ref={ref}
+      {...props}
+    >
+      {children}
+    </button>
+  )
+})
+
+Button.displayName = "Button";
+
+export default Button;
+```
+
 # Updates
 
 ## Update @clerk/nextjs to 4.29.3 IMMEDIATELY, critical security vulnerability
