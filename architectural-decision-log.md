@@ -20153,6 +20153,53 @@ Run the project with `npm run dev`, in the main page we should be able to see a 
 - Refreshing the page should persist the data in the cart.
 - The amount of items in the cart should be rendered at the top right, inside `NavbarActions` component
 
+### Product page with Add-To-Cart functionality
+
+Now we can finally add the functionality to an individual product. We do this inside the `Info` component.
+
+`ecommerce-store\components\Info.tsx`
+```tsx
+import React, { MouseEventHandler } from 'react';
+
+import useCart from '@/hooks/use-cart';
+
+const Info: React.FC<InfoProps> = ({
+  data
+}) => {
+  // Use hook to access and manipulate the shopping cart state and properties
+  const cart = useCart();
+
+  const onAddToCart: MouseEventHandler<HTMLButtonElement> = (event) => {
+    // Prevent the event from bubbling up to the parent elements
+    event.stopPropagation();
+
+    // Add product data to cart
+    cart.addItem(data);
+  }
+
+return (
+    <div>
+      {/* ... */}
+
+      <div className='mt-10 flex items-center gap-x-3'>
+        <Button
+          onClick={onAddToCart}
+          className='flex items-center gap-x-2'
+        >
+          Add To Cart
+          <ShoppingCart />
+        </Button>
+      </div>
+
+    </div>
+  )
+}
+```
+
+feat: Implement Add-To-Cart functionality in Info
+
+This commit adds the Add-To-Cart feature to the Info component. Users can now browse to an individual product page and click the "Add To Cart" button to add the product data to their shopping cart.
+
 ## Cart view
 
 Next we want to create the cart view when the user clicks on their cart.
