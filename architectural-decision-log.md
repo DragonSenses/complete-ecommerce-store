@@ -21939,7 +21939,7 @@ export async function POST(
     phone_number_collection: {
       enabled: true
     },
-    success_url: '${process.env.FRONTEND_STORE_URL}/cart?success=1'
+    success_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`
   });
 }
 ```
@@ -21961,8 +21961,8 @@ export async function POST(
     phone_number_collection: {
       enabled: true
     },
-    success_url: '${process.env.FRONTEND_STORE_URL}/cart?success=1',
-    cancel_url: '${process.env.FRONTEND_STORE_URL}/cart?canceled=1',
+    success_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`,
+    cancel_url: `${process.env.FRONTEND_STORE_URL}/cart?canceled=1`,
   });
 }
 ```
@@ -22013,8 +22013,8 @@ Let's also add the `metadata` property, which will be used after the webhook. On
     phone_number_collection: {
       enabled: true
     },
-    success_url: '${process.env.FRONTEND_STORE_URL}/cart?success=1',
-    cancel_url: '${process.env.FRONTEND_STORE_URL}/cart?canceled=1',
+    success_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`,
+    cancel_url: `${process.env.FRONTEND_STORE_URL}/cart?canceled=1`,
     metadata: {
       orderId: order.id
     }
@@ -22087,8 +22087,8 @@ export async function POST(
     phone_number_collection: {
       enabled: true
     },
-    success_url: '${process.env.FRONTEND_STORE_URL}/cart?success=1',
-    cancel_url: '${process.env.FRONTEND_STORE_URL}/cart?canceled=1',
+    success_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`,
+    cancel_url: `${process.env.FRONTEND_STORE_URL}/cart?canceled=1`,
     metadata: {
       orderId: order.id
     }
@@ -22343,8 +22343,8 @@ Recall that in our checkout route we created a session:
     phone_number_collection: {
       enabled: true
     },
-    success_url: '${process.env.FRONTEND_STORE_URL}/cart?success=1',
-    cancel_url: '${process.env.FRONTEND_STORE_URL}/cart?canceled=1',
+    success_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`,
+    cancel_url: `${process.env.FRONTEND_STORE_URL}/cart?canceled=1`,
     metadata: {
       orderId: order.id
     }
@@ -22639,8 +22639,8 @@ export async function POST(
     phone_number_collection: {
       enabled: true
     },
-    success_url: '${process.env.FRONTEND_STORE_URL}/cart?success=1',
-    cancel_url: '${process.env.FRONTEND_STORE_URL}/cart?canceled=1',
+    success_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`,
+    cancel_url: `${process.env.FRONTEND_STORE_URL}/cart?canceled=1`,
     metadata: {
       orderId: order.id
     }
@@ -22649,69 +22649,6 @@ export async function POST(
   return NextResponse.json({ url: session.url}, { headers: corsHeaders });
 }
 ```
-
----
-
-###### Configure Next.js server to allow CORS requests from frontend app
-
-This is an updated section as the previous `corsHeaders` does not properly set the headers and causes CORS errors.
-
-In order to fix this we are going to by 
-
-Configure your Next.js server to allow CORS requests from your frontend app. This means you need to set the Access-Control-Allow-Origin header to the origin of your frontend app, such as http://localhost:3001 or https://your-app.com. You can do this in your Next.js API routes by using the res.setHeader method, or by using a middleware like [nextjs-cors](https://www.npmjs.com/package/nextjs-cors) or [cors](https://www.npmjs.com/package/cors).
-
-We will go with the latter, so we need to install the `cors` library.
-
-```sh
-npm install cors
-```
-
-Also install `next-js-cors`
-
-```sh
-npm i nextjs-cors
-```
-
-Then we import `cors` inside our `ecommerce-admin\app\api\[storeId]\checkout\route.ts`
-
-We want to do these steps:
-
-1. import cors libraries
-2. Initialize cors middleware
-3. wrap cors middleware in promise
-4. Run cors middleware before handling the request (use `await`)
-
-Here is a simple blueprint for what we want to do in the checkout API route:
-
-```ts
-// Import the cors library
-import cors from 'cors';
-
-// Initialize the cors middleware
-const corsMiddleware = cors({
-  origin: "http://localhost:3001", // The origin of your frontend app
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // The HTTP methods to allow
-  allowedHeaders: ['Content-Type', 'Authorization'], // The headers to allow
-  optionsSuccessStatus: 200 // The status code to send for OPTIONS requests
-});
-
-// Apply the cors middleware to your request and response objects
-export default async function handler(req, res) {
-  corsMiddleware(req, res, () => {
-    // Rest of the API logic
-    // ...
-  });
-}
-```
-
-The handler will be the POST route.
-
-Enable CORS for checkout API routes
-
-- Create CORS middleware
-- Run CORS middleware before handling the POST request
-
----
 
 #####  Use webhook to check for payment events part 2
 
@@ -24705,3 +24642,4 @@ export default function RootLayout({
 Update @clerk/nextjs to 4.29.3 for security fix
 
 This commit updates the @clerk/nextjs package to version 4.29.3, which contains a critical security patch. The patch fixes a vulnerability that could allow an attacker to bypass authentication and access user data. See  [clerk changelog](https://clerk.com/changelog/2024-01-12) for more details.
+
