@@ -20155,7 +20155,7 @@ Run the project with `npm run dev`, in the main page we should be able to see a 
 
 ### Product page with Add-To-Cart functionality
 
-Now we can finally add the functionality to an individual product. We do this inside the `Info` component.
+Now we can finally add an individual product to the cart in both the individual product page and the preview modal (found in the `ProductCard` when a user hovers over). Both places use the `Info` component, where we can add the functionality to add items to the cart.
 
 `ecommerce-store\components\Info.tsx`
 ```tsx
@@ -24682,6 +24682,116 @@ export default function RootLayout({
   )
 }
 ```
+
+# Deployment
+
+To bring the project into production we can [deploy to Vercel](https://nextjs.org/learn-pages-router/basics/deploying-nextjs-app/deploy).
+
+## Get ready for production
+
+- Add a [postinstall](https://docs.npmjs.com/cli/v10/using-npm/scripts) script 
+  - in `ecommerce-admin/package.json`
+  - runs `prisma generate`
+
+feat: Add postinstall script for Prisma generation
+
+`ecommerce-admin\package.json`
+```json
+{
+  "name": "ecommerce-admin",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "prisma generate"
+  },
+```
+
+In the given `package.json` snippet, the **`postinstall` script** serves a specific purpose related to package management. Let me explain:
+
+1. **`postinstall` Script**:
+   - The `postinstall` script is one of the **lifecycle scripts** defined in the `scripts` section of a `package.json` file.
+   - It runs **automatically** after a package is installed using `npm install`.
+   - Specifically, it executes **immediately after the installation process** completes.
+   - Developers commonly use the `postinstall` script to perform additional setup steps or tasks related to the installed package.
+   - Here, the `postinstall` script runs the command `prisma generate`.
+
+So, whenever someone installs the `ecommerce-admin` package using `npm install`, the `prisma generate` command will be executed as part of the post-installation process. This allows you to generate Prisma artifacts or perform any other necessary actions after the package is installed.
+
+## Deployment steps:
+
+1. Create a GitHub repository for `ecommerce-admin`
+2. Create a GitHub repository for `ecommerce-store`
+   - Note: you can rename the repositories to anything you'd like
+3. Navigate to [https://vercel.com/](https://vercel.com/)
+    - Sign up and log in
+4. In the Overview, click "Add New" project
+5. Import the admin project repo
+6. Inside "Configure Project" window, copy and paste all the environment variables (i.e., .env file)to Vercel's Environment Variables
+7. Click deploy, and wait for the new URL
+8. Take the essential parts of the URL:
+   - Scheme (Protocol): HTTPS
+   - Subdomain: blog (if URL is blog.example.com)
+   - Second-level Domain: example (from example.com)
+   - Top-Level domain: .com (or .org, .net. edu, etc.)
+
+  If we named the repository "ecommerce-admin-project", then vercel wwill give us the following URL:
+  - https://ecommerce-admin-project.vercel.app
+9. Update the environment variable `NEXT_PUBLIC_API_URL` for `ecommerce-store` with the new URL
+
+  - In the `.env` file for the `ecommerce-store` project, replace the "http://localhost:3000" with the new URL given by Vercel or other hosting platform
+
+   ```.env
+   NEXT_PUBLIC_API_URL=https://ecommerce-admin-project.vercel.app/api/...
+   ```
+10. Back to Vercel, add the new project `ecommerce-store`
+  - Add the environment variable `NEXT_PUBLIC_API_URL`
+11. Deploy the store and get the new URL
+  - e.g., https://ecommerce-store-project.vercel.app
+12. Update environment variable `FRONTEND_STORE_URL` in `ecommerce-admin-project` with the new store URL inside of Vercel
+  - we change the environment variable from `FRONTEND_STORE_URL=http://localhost:3001` to the new store URL: `FRONTEND_STORE_URL=https://ecommerce-store-project.vercel.app`
+13. Update Stripe with the proper sign-in key
+    1.  In Stripe dashboard, log-in and navigate to Developers then Webhooks
+    2.  As of now we have a Local listener, but we need to add Hosted endpoint
+    3.  Add endpoint with endpoint URL, which is the deployed dashboard: 
+    - https://ecommerce-admin-project.vercel.app/api/webhook
+14. Select events to listen to in Stripe
+    - Select events for Checkout: `checkout.session.completed`
+    - Click add event
+    - Click Add Endpoint
+15. Click "reveal" on the "Signing secret" in the webhook `https://ecommerce-admin-project.vercel.app/api/webhook` to get the signing secret key
+16. Paste the signing secret into the environment variable `STRIPE_WEBHOOK_SECRET` for the `ecommerce-admin-project` inside Vercel
+17. Redeploy `ecommerce-admin-project`
+    1.  Inside Vercel, click on your dashboard
+    2.  Click Deployments
+    3.  Under deloyments tab, find the latest successful deployment of `ecommerce-admin-project-...`
+    4.  Click the "..." at the end to open a menu, and click "Redeploy"
+    5.  A modal with "Redeploy to Production" opens, do **not** click checkbox for **Use existing Build Cache**
+    6.  Click redeploy inside the Modal
+    
+With that, we now have our projects in production (i.e., **live and ready for use by end users**).
+
+Go ahead and test the following:
+1. Admin dashboard, create a product
+2. Front end store, purchase a product
+3. Checkout product with Stripe
+  - Keep the stripe dashboard open to see if stripe webhook is listening to events
+4. Inside checkout session
+  - Check admin dashboard's Order table, for an *unpurchased* order
+  - Back in the checkout session, fill out the order details
+5. Click pay
+  - Check admin dashboard's Order table for a *purchased* order
+  - Check Stripe dashboard webhook to see if the event `checkout.session.completed` is complete
+  - Check if dashboard analytics in the Overview page reflects the new total revenue and products in stock
+6. Enjoy the successful deployment of the ecommerce store
+7. For the complete production version where the store is monetized, [activate your Stripe account](https://docs.stripe.com/payments/account/activate)
+   - In full production, you must turn off "test mode" in Stripe
+   - Register your business
+
+docs: Add detailed guide for deployment on Vercel
 
 # Extra features
 
