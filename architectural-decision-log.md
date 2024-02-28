@@ -22979,7 +22979,6 @@ With the webhook completed, we can move on to step 3 on connect to webhook local
 
 - [Webhook endpoints | Stripe API reference](https://stripe.com/docs/api/webhook_endpoints/object)
 
-
 1. Listen to Stripe events
 
 - Open up your respective OS terminal and login through the Stripe CLI
@@ -23076,6 +23075,8 @@ Now we can move on to another test.
 - Check the dashboard's Order page to see if the phone number, address, and paid flag has been updated
 
 Does the flow from front-end store, to Stripe API, to back-end dashboard all reflect the changes in data? If yes, then we have completed integrating the front-end with the back-end.
+
+For an in-depth walkthrough see the section on [Test: Submit an Order](#test-submit-an-order).
 
 # Develop the Dashboard Overview page
 
@@ -24643,3 +24644,106 @@ Update @clerk/nextjs to 4.29.3 for security fix
 
 This commit updates the @clerk/nextjs package to version 4.29.3, which contains a critical security patch. The patch fixes a vulnerability that could allow an attacker to bypass authentication and access user data. See  [clerk changelog](https://clerk.com/changelog/2024-01-12) for more details.
 
+## Update added a test walkthrough on how to submit an order
+
+Receieved a request on creating a step-by-step guide on how to use the `complete-ecommerce-store` and complete an order. 
+
+See [Test: Submit an order](#test-submit-an-order) section to have a complete walkthrough on how to complete an order.
+
+docs: Add walkthrough for simulating orders in the checkout process
+
+This commit includes detailed instructions on how to simulate an order, which is crucial for testing and ensuring proper functionality.
+
+# Test: Submit an Order
+
+This assumes you set up all the details found in the README.md which includes
+
+- Installing project dependencies
+- Setting up environment variables
+- Connecting to services such as prisma and planetscale
+- Creating Stripe webhook key
+
+## Setup Stripe webhook to test locally
+
+In the Stripe dashboard we should be on the page where we Listen to Stripe events. We can test in a local environment and should see the 3 steps.
+
+But we need to setup the Stripe CLI on our OS.
+
+- [Stripe CLI](https://docs.stripe.com/stripe-cli)
+
+The Windows installation steps:
+
+1. Download the latest `windows` zip file from [GitHub](https://github.com/stripe/stripe-cli/releases/latest).
+2. Unzip the `stripe_X.X.X_windows_x86_64.zip` file.
+3. Add the path to the unzipped `stripe.exe` file to your Path environment variable. To learn how to update environment variables, see the [Microsoft PowerShell documentation](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables?view=powershell-7.3#saving-changes-to-environment-variables).
+
+At this point we should have a directory such as "C:/Program Files/Stripe". We have to `cd` into it and run the commands. 
+
+**Important: make sure you are in Command Prompt and not in Powershell or Windows Terminal**.
+
+The `stripe login` command won't work or will be recognized but won't be run if you are not in command prompt. After this command it will send a stripe link in the terminal, navigate to it and allow access to authenticate. now we can forward events to webhook.
+
+1. Log in to CLI
+   
+```sh
+stripe login
+```
+
+2. Forward events to your webhook
+
+```sh
+stripe listen --forward-to localhost:3000/api/webhook
+```
+
+if using Stripe CLI online then just the command
+
+```sh
+stripe listen
+```
+
+3. Trigger events with the CLI
+
+```sh
+stripe trigger payment_intent.succeeded
+```
+
+## Make an order
+
+Keep the following open on separate terminals:
+Key:
+- `FE`: Front-End store
+- `Admin`: Admin dashboard
+- `webhook`: Stripe webhook
+
+Steps to reproduce:
+1. Create a store, then a product in the Admin
+2. In FE, as a user add a product to the shopping cart
+3. In FE, click the checkout button in the top right to arrive at the shopping cart page
+4. In FE, shopping cart page, click checkout
+5. Fill out the order details
+
+```sh
+Contact Information
+test@test.com
+(201)555-0123
+
+Card information
+4242 4242 4242 4242
+05/55 555
+
+Name on card
+Luna Berry
+
+Billing address
+United States
+9999
+Dog City 99999
+Alaska
+```
+
+6. Click pay
+
+We should see the front-end store redirect the user to the success page.
+
+7. Trigger a Stripe `payment_intent.succeeded` through the CLI to update our order status
+8. Check `admin` Order tab to see the order details.
