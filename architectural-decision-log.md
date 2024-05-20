@@ -1789,6 +1789,24 @@ With that this is a fully working Zod Form validation.
 
 refactor: Migrate from Planetscale to PostgreSQL
 
+### Install local PostgreSQL database
+
+- [Set up a local postgresql database | Prisma](https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database)
+
+To install on Windows
+
+1. Get [Windows postgresql installer](https://www.postgresql.org/download/windows/), get the Windows x86-64
+2. Go through the installer steps
+3. Confirm a password for the PostgreSQL superuser called `postgres`
+   - Write this password down physically somewhere to be used later
+4. Setup port (default at 5432)
+5. Default locale
+6. Review the pre installation summary log (can be found in the directory "C:\Program Files\PostgreSQL\16\installation_summary.log" )
+7. Finish installation
+8. Skip or cancel Stack Builder
+
+docs: Add PostgreSQL installation instructions
+
 ## Prisma ORM
 
 **Prisma** is a next-generation **object-relational mapper (ORM)** for Node.js and TypeScript. Unlike traditional ORMs, Prisma uses a custom **Schema Definition Language (SDL)** that automatically handles migrations and generates type-safe code. It simplifies database access by providing a type-safe query builder and auto-generator, making it easier for developers to work with databases and build faster, more reliable applications.
