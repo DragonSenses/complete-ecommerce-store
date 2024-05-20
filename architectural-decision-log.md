@@ -1783,7 +1783,15 @@ With that this is a fully working Zod Form validation.
 
 # Database
 
-## Prisma
+## PostgreSQL
+
+**PostgreSQL** is an advanced, enterprise-class, and open-source **relational database system**. It supports both SQL (relational) and JSON (non-relational) querying. 
+
+refactor: Migrate from Planetscale to PostgreSQL
+
+## Prisma ORM
+
+**Prisma** is a next-generation **object-relational mapper (ORM)** for Node.js and TypeScript. Unlike traditional ORMs, Prisma uses a custom **Schema Definition Language (SDL)** that automatically handles migrations and generates type-safe code. It simplifies database access by providing a type-safe query builder and auto-generator, making it easier for developers to work with databases and build faster, more reliable applications.
 
 - [prisma](https://www.npmjs.com/package/prisma)
 
@@ -1863,11 +1871,7 @@ datasource db {
 }
 ```
 
-- the `provider` db will be changed from `"postgresql"` to `"mysql"` later
-
 We can also see that our `.env` file has a new change. It preserved our current environment variables and added a comment & variable `DATABASE_URL="..."`.
-
- - This URL will be changed to PlanetScale URL later.
 
 ### Create a lib for prisma database
 
@@ -1931,6 +1935,12 @@ if(process.env.NODE_ENV !== "production") globalThis.prisma = prismadb;
 
 export default prismadb;
 ```
+
+## Database Models
+
+The Prisma schema is a declarative way to define your application models and map them to your database. The Prisma schema is independent of the database provider you choose, so you can use the same syntax and logic to define your models for MySQL or PostgreSQL. 
+
+However, there may be some differences in how Prisma handles certain features or data types depending on the database provider. For example, PostgreSQL supports enums and arrays, while MySQL does not. Prisma will automatically generate the appropriate SQL code for each database provider based on your Prisma schema.
 
 ### Adding a simplified model of our store to push to the database
 
@@ -2014,9 +2024,9 @@ Your database is now in sync with your Prisma schema. Done in 4.60s
 ✔ Generated Prisma Client (5.1.1 | library) to .\node_modules\@prisma\client in 52ms
 ```
 
-We can head over to planetscale dashboard and refresh the page, and we can see that we have 1 Table.
+We can check our local database to see that we have 1 Table. We can do this with a database management tool such as [pgAdmin](https://www.pgadmin.org/) or [DBeaver](https://dbeaver.io/).
 
-We can click the table, which is a `Store` table:
+We can see a `Store` table:
 
 ```js
 CREATE TABLE `Store` (
@@ -2041,7 +2051,7 @@ CREATE TABLE `Store` (
 
 A database provider allows us to host our project online. Choose one to host our SQL or PostgreSQL database and set it up with Prisma.
 
-#### Neon tech
+### Neon tech
 
 We can use postgresql with [neon tech](https://neon.tech/docs/connect/connect-from-any-app).
 
@@ -2099,6 +2109,35 @@ datasource db {
   url      = env("DATABASE_URL")
   relationMode = "prisma"
 }
+```
+
+#### Troubleshoot - unable to connect to branch *
+
+If you see the following:
+
+```sh
+Error: Schema engine error:
+unavailable: unable to connect to branch *******
+```
+
+Know that this may be due to your database in Planetscale is sleeping, so you must wake it up before you can query it.
+
+See [Planetscale - Sleeping Databases](https://planetscale.com/docs/concepts/database-sleeping#what-is-branch-sleeping)
+
+After waking up your database, you can now run your project again and run these commands:
+
+To reset prisma DB:
+
+1. Delete the DB
+2. Generate prisma
+3. Push prisma db
+
+```sh
+npx prisma migrate reset
+
+npx prisma generate
+
+npx prisma db push
 ```
 
 # API Routes
@@ -3668,35 +3707,6 @@ Current Features of the Navbar & Command Menu:
 - Can switch between stores through Command
 
 Now we can move on to renaming our store or deleting it through the `Settings`.
-
-#### Troubleshoot - unable to connect to branch *
-
-If you see the following:
-
-```sh
-Error: Schema engine error:
-unavailable: unable to connect to branch *******
-```
-
-Know that this may be due to your database in Planetscale is sleeping, so you must wake it up before you can query it.
-
-See [Planetscale - Sleeping Databases](https://planetscale.com/docs/concepts/database-sleeping#what-is-branch-sleeping)
-
-After waking up your database, you can now run your project again and run these commands:
-
-To reset prisma DB:
-
-1. Delete the DB
-2. Generate prisma
-3. Push prisma db
-
-```sh
-npx prisma migrate reset
-
-npx prisma generate
-
-npx prisma db push
-```
 
 ## Settings Form
 
@@ -5996,7 +6006,7 @@ To demonstrate, now we can navigate to `ecommerce-admin\app\(root)\layout.tsx` a
 const billboard = await prismadb.billboard
 ```
 
-#### Push new `schema.prisma` to planetscale
+#### Push new `schema.prisma` to database
 
 Run the command
 
@@ -24909,6 +24919,12 @@ export default Button;
 
 # Updates
 
+## Refactored database solution to PostgreSQL
+
+**Update:** On 6 March 2024, the **Planetscale** team announced their decision **to remove their Hobby plan — a free tier developers used to manage and deploy their serverless databases**. According to Sam Lambert, the CEO of Planetscale, they made this decision to "prioritize profitability and build a company that can last forever."
+
+This means we have to look to a new database management solution, see the sections on [Database](#database) and [database providers](#database-providers).
+
 ## Update @clerk/nextjs to 4.29.3 IMMEDIATELY, critical security vulnerability
 
 Update @clerk/nextjs to 4.29.3 for security fix
@@ -24931,7 +24947,7 @@ This assumes you set up all the details found in the README.md which includes
 
 - Installing project dependencies
 - Setting up environment variables
-- Connecting to services such as prisma and planetscale
+- Connecting to services such as prisma and database providder
 - Creating Stripe webhook key
 
 ## Setup Stripe webhook to test locally
