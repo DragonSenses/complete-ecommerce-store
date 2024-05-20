@@ -3696,6 +3696,8 @@ import {
 }
 ```
 
+
+
 ##### Dynamically styled `Check` icon component
 
 Now notice that `Check` component is a self-closing tag. It is an icon form `lucide-react`, and we want to dynamically style it. Use `cn()` to do this, by merging classNames we give by default and conditional styles when the currentStore is selected.
@@ -25129,7 +25131,13 @@ semver helps maintain compatibility and ensures smooth package updates.
 
 #### Install the latest minor version of npm package
 
-To install only the **wanted** versions of each npm package we can run `npm install` with specific requirements. 
+To install only the **wanted** versions of each npm package run the following command:
+
+```sh
+npm update
+```
+
+Or we can run `npm install` with specific requirements. 
 
 To install the latest minor version:
 
@@ -25159,9 +25167,55 @@ This commit updates the @clerk/nextjs package to version 4.29.3, which contains 
 
 ### Dependency log
 
+#### ecommerce-admin
+
+chore: Update dependencies to latest versions
+
 ```sh
+npm i @hookform/resolvers@latest
+npm i @prisma/client@latest
+npm i @tanstack/react-table@latest
+npm i axios@latest
+npm i clsx@latest
+npm i prisma@latest
+npm i react@latest
+npm i react-dom@latest
+npm i react-hook-form@latest
+npm i recharts@latest
 npm i zustand@latest
 npm i zod@latest
+```
+
+chore: Update dependencies to latest minor version
+
+```sh
+npm i stripe@14.25.0
+```
+
+#### ecommerce-store
+
+```sh
+# ...
+```
+
+#### Components that need maintenance
+
+##### `Command` component depends on `cmdk` package
+
+chore: Update Command component and dependencies
+
+To quickly update the `Command` component run this command in the terminal:
+
+```sh
+npx shadcn-ui@latest add command
+```
+
+Or update `cmdk` package manually:
+
+- Update `cmdk` to the latest *minor* version or what the maximum allowed in **semver**
+  
+```sh
+npm install cmdk
 ```
 
 # Test: Submit an Order
