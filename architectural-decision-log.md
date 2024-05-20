@@ -25133,6 +25133,8 @@ semver helps maintain compatibility and ensures smooth package updates.
 
 To install only the **wanted** versions of each npm package run the following command:
 
+chore: Update npm packages and address vulnerabilities
+
 ```sh
 npm update
 ```
