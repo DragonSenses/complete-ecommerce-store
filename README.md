@@ -1,6 +1,6 @@
 # complete-ecommerce-store
 
-A full-stack e-commerce store with an admin dashboard built using Next.JS's App Router, TypeScript, React, TailwindCSS, MySQL, Prisma, & NextAuth.
+A full-stack e-commerce store with an admin dashboard built using Next.JS's App Router, TypeScript, React, TailwindCSS, PostgreSQL & Prisma.
 
 # Description
 
@@ -9,13 +9,11 @@ This project contains two parts:
 1. Admin dashboard to manage the e-commerce store
 2. A front-end e-commerce store
 
-Uses Next.js 13
-
 # Technologies:
 
 - Next.JS 13 
 - TypeScript, React, TailwindCSS
-- MySQL, [Prisma](https://www.prisma.io/docs) and [PlanetScale](https://planetscale.com/docs) for database
+- PostgreSQL and [Prisma ORM](https://www.prisma.io/docs) for database
 - [Clerk](https://clerk.com/docs) for authentication
 - [Stripe API](https://docs.stripe.com/api) for checkout and payment handling
 - [Cloudinary](https://cloudinary.com/developers) for image management
@@ -27,15 +25,14 @@ Uses Next.js 13
 
 - User can **create**, **read**, **update** and **delete** categories
 - User can **create**, **read**, **update** and **delete** products
-
-- User can upload multiple images for products, and update them whenever
+- Users can upload multiple product images and update them as needed
 - User can **create**, **read**, **update** and **delete**  filters such as *Color* and *Size*
 - User can apply filters to products
 
 - User can **create**, **read**, **update** and **delete** Billboards, large ads displayed at the top of a store's page to promote products, services, or events
   - Billboards can be attached to a single category or used individually (admin generates API routes for all of these cases)
 
-- User can search through all categories, products, sizes, colors, billboards through a `DataTable` complete with *pagination*
+- User can search through all categories, products, sizes, colors, billboards through a `DataTable` complete with ***pagination***
 
 - User can highlight and promote products using the *featured* functionality which displays the product on the home page
 
@@ -127,14 +124,16 @@ STRIPE_WEBHOOK_SECRET=
 The services you'll need to create an account in to fill in these variables are:
 
 - [Clerk](https://clerk.com/) for user authentication and management
-- [PlanetScale](https://planetscale.com/) for a MySQL database platform
 - [Cloudinary](https://cloudinary.com/) for image and media management
 - [Stripe](https://stripe.com/) to handle payments, orders and checkout session
 - [Stripe Webhook](https://stripe.com/docs/webhooks) so our app can update payment, product and order data in real time
+- A database provider
 
 After creating an account at each service, get your own personal API key and save it inside the `.env` file.
 
-**5. Connect to PlanetScale and Push Prisma**
+**5. Get Connection URI string from database provider and connect it with Prisma**
+
+To establish a connection with Prisma, one must retrieve the connection URI string. For more details see the [connection URLs in Prisma](https://www.prisma.io/docs/orm/reference/connection-urls) and the documentation from your respective database provider.
 
 Setup your database by running the following commands in the right directory: `/ecommerce-admin`
 
