@@ -9,27 +9,27 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.17",
-    "axios": "^1.6.2",
-    "clsx": "^2.0.0",
+    "@headlessui/react": "^1.7.19",
+    "axios": "^1.7.1",
+    "clsx": "^2.1.1",
     "lucide-react": "^0.289.0",
     "next": "13.5.6",
-    "query-string": "^8.1.0",
-    "react": "^18",
-    "react-dom": "^18",
+    "query-string": "^8.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
     "tailwind-merge": "^1.14.0",
-    "zustand": "^4.4.6"
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "autoprefixer": "^10",
-    "eslint": "^8",
+    "@types/node": "^20.12.12",
+    "@types/react": "^18.3.2",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^8.57.0",
     "eslint-config-next": "13.5.6",
-    "postcss": "^8",
-    "tailwindcss": "^3",
-    "typescript": "^5"
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.4.5"
   }
 }
