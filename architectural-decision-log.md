@@ -1789,6 +1789,8 @@ With that this is a fully working Zod Form validation.
 
 refactor: Migrate from Planetscale to PostgreSQL
 
+To quickly get a local PostgreSQL database and prisma working see [Summary: PostgreSQL and Prisma ORM](#summary-postgresql-and-prisma-orm). Read further for more detailed instructions.
+
 ### Install local PostgreSQL database
 
 - [Set up a local postgresql database | Prisma](https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database)
@@ -1870,7 +1872,73 @@ datasource db {
 }
 ```
 
+#### Connection URI strings
 
+- [Connection Urls | Prisma docs](https://pris.ly/d/connection-strings)
+
+- [Intro to PostgreSQL connection URIs](https://www.prisma.io/dataguide/postgresql/short-guides/connection-uris)
+
+Let's look at the spec for a PostgreSQL connection URI:
+```sh
+postgres[ql]://[username[:password]@][host[:port],]/database[?parameter_list]
+
+\_____________/\____________________/\____________/\_______/\_______________/
+     |                   |                  |          |            |
+     |- schema           |- userspec        |          |            |- parameter list
+                                            |          |
+                                            |          |- database name
+                                            |
+                                            |- hostspec
+```
+
+We can test a PostgreSQL connection string in the terminal by running the command `pg_isready`
+
+```sh
+pg_isready -d DATABASE_NAME -h HOST_NAME -p PORT_NUMBER -U DATABASE_USER
+```
+
+##### **Important** Connection URL for PostgreSQL must percentage-encode special characters!
+
+For MySQL, PostgreSQL and CockroachDB you must [percentage-encode special characters](https://developer.mozilla.org/en-US/docs/Glossary/percent-encoding) in any part of your connection URL - including passwords. For example, `p@$$w0rd` becomes `p%40%24%24w0rd`.
+
+For Microsoft SQL Server, you must escape special characters in any part of your connection string.
+
+### Summary: PostgreSQL and Prisma ORM
+
+Steps to quickly set up a local postgreSQL database and get it to work with prisma client:
+
+- Install PostgreSQL with username and password credentials.
+- Set up a local database, name it `ecommerce-store`
+- **Configure the Prisma Schema**
+  ```prisma
+  datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  }
+
+  generator client {
+    provider = "prisma-client-js"
+  }
+  ```
+- Using the schema, postgreSQL credentials and database name we can create a [connection string](https://pris.ly/d/connection-strings) for the prisma client
+  - Remeber that your password must be [percentage-encoded](https://developer.mozilla.org/en-US/docs/Glossary/percent-encoding)
+- Create the **Connection string/Connection URI**
+  - Given a username of `postgresUsername`, a password of `p@$$w0rd`, a local host on port `5432` and a database named `ecommerce-store` here is the PostgreSQL connection URI:
+  - `postgres://postgresUsername:p%40%24%24w0rd@localhost:5432/ecommerce-store`
+- In `.env` file create the environment variable `DATABASE_URL` and set the value to the **Connection URI**
+
+  ```.env
+  DATABASE_URL="postgres://postgresUsername:p%40%24%24w0rd@localhost:5432/ecommerce-store"
+  ```
+
+feat: Set up PostgreSQL database for Prisma Client
+
+- Install PostgreSQL with credentials
+- Create a local database named "ecommerce-store"
+- Configure Prisma Schema with PostgreSQL data source
+- Generate a connection string for Prisma Client
+- Remember to percentage-encode the password
+- Set the DATABASE_URL environment variable in .env
 
 ## Prisma ORM
 
