@@ -1807,6 +1807,71 @@ To install on Windows
 
 docs: Add PostgreSQL installation instructions
 
+### Set up postgreSQL and prisma
+
+docs: Add Prisma setup instructions for PostgreSQL
+
+- [PostgreSQL | Prisma.io](https://www.prisma.io/dataguide/postgresql)
+- [Setting up a PostgreSQL database](https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database)
+- [Connecting to PostgreSQL databases](https://www.prisma.io/dataguide/postgresql/connecting-to-postgresql-databases)
+- [Intro to PostgreSQL connection URIs](https://www.prisma.io/dataguide/postgresql/short-guides/connection-uris)
+- [Data Sources in Prisma Schema](https://www.prisma.io/docs/orm/prisma-schema/overview/data-sources)
+
+### Set up prisma schema with local database
+
+- [Connection Urls | Prisma docs](https://pris.ly/d/connection-strings)
+- [PostgreSQL in prisma connection string](https://www.prisma.io/docs/orm/overview/databases/postgresql)
+
+Create an `.env` file. Add an environment variable for the postgresql connection URI.
+
+Inside the `.env` file create a `DATABASE_URL` variable. This will store the connection URI string to our local database. 
+
+An example connection URI string should be something like this: 
+
+`.env`
+```shell
+DATABASE_URL="postgresql://johndoe:mypassword@localhost:5432/mydb?schema=public"
+```
+
+1. **Provider**: The `provider` specifies the type of database you're connecting to. In this case, it's PostgreSQL.
+
+2. **URL Components**:
+   - **User**: `"johndoe"` is the username for the database.
+   - **Password**: `"mypassword"` is the password for the user.
+   - **Host**: `"localhost"` refers to the machine where the PostgreSQL server is running.
+   - **Port**: `5432` is the default port for PostgreSQL.
+   - **Database Name**: `"mydb"` is the name of the database.
+   - **Schema**: `"public"` specifies the schema within the database.
+     - If you omit the schema, Prisma will use the `"public"` schema by default
+
+So, the complete URL connects to a PostgreSQL database with the given credentials and schema. If you're using Prisma, this URL allows Prisma ORM to connect to your database when executing queries with Prisma Client or making schema changes with Prisma Migrate. If you need to make the URL dynamic, you can pass it programmatically when creating the Prisma Client. 
+
+To connect to a PostgreSQL database server, you need to configure a [datasource](https://www.prisma.io/docs/orm/prisma-schema/overview/data-sources) block in your [Prisma schema file](https://www.prisma.io/docs/orm/prisma-schema):
+
+`schema.prisma`
+```prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+```
+
+The fields passed to the datasource block are:
+
+- `provider`: Specifies the `postgresql` data source connector.
+- `url`: Specifies the [connection URL](https://www.prisma.io/docs/orm/overview/databases/postgresql#connection-url) for the PostgreSQL database server. In this case, an [environment variable is used](https://www.prisma.io/docs/orm/prisma-schema/overview#accessing-environment-variables-from-the-schema) to provide the connection URL.
+
+Or without environment variables (not recommended):
+
+```prisma
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://johndoe:mypassword@localhost:5432/mydb?schema=public"
+}
+```
+
+
+
 ## Prisma ORM
 
 **Prisma** is a next-generation **object-relational mapper (ORM)** for Node.js and TypeScript. Unlike traditional ORMs, Prisma uses a custom **Schema Definition Language (SDL)** that automatically handles migrations and generates type-safe code. It simplifies database access by providing a type-safe query builder and auto-generator, making it easier for developers to work with databases and build faster, more reliable applications.
