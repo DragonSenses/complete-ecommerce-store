@@ -19,20 +19,26 @@ Front-End
 - Tailwind CSS
 - [shadcn/ui](https://ui.shadcn.com/)
 - zustand (global state management)
-
-Headless UI
+- Headless UI
 
 Database
-- MySQL
-- PlanetScale
+- PostgreSQL
 - Prisma (ORM)
 
+(Formerly used for Database)
+  - MySQL
+  - PlanetScale  
+
+Financial management
 - Stripe
 
 Authentication
 - Clerk
 
+Promise-based HTTP Client library
 - Axios
+
+Pop-ups (toasts)
 - react-hot-toast
 
 Image Delivery
@@ -122,7 +128,7 @@ npx shadcn-ui@latest init
 Here are the prompts, I just pressed Enter to all the default options:
 
 ```sh
-npx shadcn-ui@latest init                                                                                                          
+npx shadcn-ui@latest init                                                                                                          
 Need to install the following packages:
   shadcn-ui@0.3.0
 Ok to proceed? (y) y
@@ -1775,10 +1781,11 @@ Example:
 
 With that this is a fully working Zod Form validation.
 
-## Prisma & PlanetScale
+# Database
+
+## Prisma
 
 - [prisma](https://www.npmjs.com/package/prisma)
-- [What is PlanetScale?](https://planetscale.com/docs/concepts/what-is-planetscale)
 
 Let's install prisma as a *dev dependency*. To do that we need to add another argument to the `npm install` command: `-D`. 
 
@@ -1925,48 +1932,6 @@ if(process.env.NODE_ENV !== "production") globalThis.prisma = prismadb;
 export default prismadb;
 ```
 
-### Setup PlanetScale
-
-[planetscale](https://planetscale.com/)
-
-Head on over to the website. Go ahead and sign-in.
-
-We are at a landing page named `app.planetscale.com/YOUR_USER_NAME`
-
-We can click on `[See how PlanetScale works >]`, but we can go ahead and create our databse by clicking on the button / hyperlink in [Ready to `create`].
-
-Set the `Database name` to `ecommerce-admin` change Plan Type to `Hobby`. Though you may have to put in your card as the message they give below is:
-
-> Please add a credit or debit card to this organization
-
-> In order to prevent fraud, PlanetScale requires a valid payment method to create databases. You will not be charged unless you create a Scaler or Scaler Pro database.
-
-It should say that your database is successfully created. We have to wait until database is successfully initialized. Afterwards we get a prompt to "Ready to `connect to your database`?". Or the button `[Get connection strings]`.
-
-It prompts us to create a new password. We can leave it exactly as it is and click `[Create password]`.
-
-We are this modal with a title "Connection strings". Here there is a drop-down menu right next to `[Connect with]`, we should select Prisma.
-
-It will give us :
-- `.env` file which contains our `DATABASE_URL='...'`
-- `schema.prisma` which contains what changes we need to make to this file.
-
-1. Let's place our connection string `DATABASE_URL` inside our `.env` and replace the old one. 
-
-2. Now update our provider in `schema.prisma`. Still inside the "Connecting to your database" window in planetscale, switch from the `.env` tab to `schema.prisma` tab.
-
-```prisma
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
-  relationMode = "prisma"
-}
-```
-
 ### Adding a simplified model of our store to push to the database
 
 Create a simplified store to attempt to push to the database to test our connection.
@@ -1994,7 +1959,7 @@ npx prisma generate
 Output:
 
 ```sh
-npx prisma generate                                                                                                  
+npx prisma generate                                                                                                  
 Environment variables loaded from .env
 Prisma schema loaded from prisma\schema.prisma
 
@@ -2039,7 +2004,7 @@ npx prisma db push
 
 Output:
 ```sh
-npx prisma db push                                                                                                   
+npx prisma db push                                                                                                 
 Environment variables loaded from .env
 Prisma schema loaded from prisma\schema.prisma
 Datasource "db": MySQL database "ecommerce-admin" at "aws.connect.psdb.cloud"
@@ -2072,7 +2037,71 @@ CREATE TABLE `Store` (
 
 - Make sure your project does not have a `.env.local` file because prisma may not be able to read it
 
-## API Routes
+## Database Providers
+
+A database provider allows us to host our project online. Choose one to host our SQL or PostgreSQL database and set it up with Prisma.
+
+#### Neon tech
+
+We can use postgresql with [neon tech](https://neon.tech/docs/connect/connect-from-any-app).
+
+### (Optional) Database providers
+
+We can host our database online with database providers. Here are some free or affordable options:
+
+1. **Supabase**: Offers a fantastic free tier with PostgreSQL, authentication, real-time subscriptions, and storage. It's an open-source alternative to Firebase
+2. **Neon**: Fully managed serverless platform with a free tier, providing autoscaling, branching, and unlimited storage
+3. **Turso**: Offers a generous free tier with SQLite, especially known for ultra-low latency edge deployments
+4. **CockroachDB**: Provides a free tier with distributed SQL, suitable for most hobby projects
+5. **AWS RDS**: AWS offers free usage (750 hours and 20GB storage) for Amazon RDS with MySQL, MariaDB, and PostgreSQL
+
+### (Optional) PlanetScale
+
+**Update note (2024)**: This project formerly relied on planetscale, a MySQL database platform, because it included a free tier and expedited development time. The **planetscale** team **removed their Hobby plan — a free tier** developers used to manage and deploy their serverless databases. Therefore this project was refactored to use a local PostgreSQL database instead. This section is preserved here for posterity.
+
+- [What is PlanetScale?](https://planetscale.com/docs/concepts/what-is-planetscale)
+
+- [planetscale](https://planetscale.com/)
+
+Head on over to the website. Go ahead and sign-in.
+
+We are at a landing page named `app.planetscale.com/YOUR_USER_NAME`
+
+We can click on `[See how PlanetScale works >]`, but we can go ahead and create our databse by clicking on the button / hyperlink in [Ready to `create`].
+
+Set the `Database name` to `ecommerce-admin` change Plan Type to `Hobby`. Though you may have to put in your card as the message they give below is:
+
+> Please add a credit or debit card to this organization
+
+> In order to prevent fraud, PlanetScale requires a valid payment method to create databases. You will not be charged unless you create a Scaler or Scaler Pro database.
+
+It should say that your database is successfully created. We have to wait until database is successfully initialized. Afterwards we get a prompt to "Ready to `connect to your database`?". Or the button `[Get connection strings]`.
+
+It prompts us to create a new password. We can leave it exactly as it is and click `[Create password]`.
+
+We are this modal with a title "Connection strings". Here there is a drop-down menu right next to `[Connect with]`, we should select Prisma.
+
+It will give us :
+- `.env` file which contains our `DATABASE_URL='...'`
+- `schema.prisma` which contains what changes we need to make to this file.
+
+1. Let's place our connection string `DATABASE_URL` inside our `.env` and replace the old one. 
+
+2. Now update our provider in `schema.prisma`. Still inside the "Connecting to your database" window in planetscale, switch from the `.env` tab to `schema.prisma` tab.
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+```
+
+# API Routes
 
 Now we are going to attempt to create a `Store` to push to our database, we need to create our API routes.
 
@@ -24686,6 +24715,8 @@ export default function RootLayout({
 # Deployment
 
 To bring the project into production we can [deploy to Vercel](https://nextjs.org/learn-pages-router/basics/deploying-nextjs-app/deploy).
+
+**Update note:** Ensure that you use a database provider to host the project's data. This step is necessary for others to access the project online.
 
 ## Get ready for production
 
