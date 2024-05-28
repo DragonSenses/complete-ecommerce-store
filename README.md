@@ -135,7 +135,18 @@ After creating an account at each service, get your own personal API key and sav
 
 To establish a connection with Prisma, one must retrieve the connection URI string. For more details see the [connection URLs in Prisma](https://www.prisma.io/docs/orm/reference/connection-urls) and the documentation from your respective database provider.
 
-Setup your database by running the following commands in the right directory: `/ecommerce-admin`
+**For local PostgreSQL database:** [Set up a local postgreSQL database](https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database) on your computer and create the database. Then create your local [connection URL](https://www.prisma.io/docs/orm/reference/connection-urls).
+
+An example connection URI string should be something like this: 
+
+`.env`
+```shell
+DATABASE_URL="postgresql://johndoe:mypassword@localhost:5432/mydb?schema=public"
+```
+
+- **Important note:** For PostgreSQL you must [percentage-encode special characters](https://developer.mozilla.org/en-US/docs/Glossary/percent-encoding) in any part of your connection URL - including passwords. For example, `p@$$w0rd` becomes `p%40%24%24w0rd`.
+
+**Setup your database with prisma** by running the following commands in the right directory: `/ecommerce-admin`
 
 ```sh
 npx prisma generate
